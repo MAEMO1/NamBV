@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Phone, Mail, MapPin, Clock, Facebook, Instagram, Linkedin } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, Facebook, Instagram, Linkedin, ArrowUpRight } from 'lucide-react';
 
 const navigation = {
   diensten: [
@@ -9,7 +9,7 @@ const navigation = {
     { name: 'Technieken', href: '/diensten/technieken' },
   ],
   bedrijf: [
-    { name: 'Over Nam', href: '/over-nam' },
+    { name: 'Over ons', href: '/over-nam' },
     { name: 'Onze Aanpak', href: '/aanpak' },
     { name: 'Projecten', href: '/projecten' },
     { name: 'Contact', href: '/contact' },
@@ -23,58 +23,97 @@ const navigation = {
 
 export default function Footer() {
   return (
-    <footer className="bg-neutral-900 text-white">
-      {/* Main footer */}
-      <div className="container-custom py-16 md:py-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
-          {/* Brand & contact */}
-          <div className="lg:col-span-2">
-            <Link href="/" className="inline-block mb-6">
-              <span className="text-2xl font-display font-bold text-white">
-                Nam<span className="text-primary-400">Construction</span>
-              </span>
+    <footer className="bg-forest-950 text-cream-100 relative overflow-hidden">
+      {/* Decorative elements */}
+      <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-forest-900/50 to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-forest-800/30 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2 pointer-events-none" />
+
+      {/* CTA Section */}
+      <div className="relative border-b border-forest-800">
+        <div className="container-custom py-16 md:py-20">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+            <div className="max-w-xl">
+              <h2 className="text-display-sm font-display text-cream-50 mb-4">
+                Klaar voor uw renovatieproject?
+              </h2>
+              <p className="text-forest-300 text-lg">
+                Plan een gratis adviesgesprek en ontdek hoe we uw woning kunnen transformeren.
+              </p>
+            </div>
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-3 px-8 py-4 bg-terracotta-500 hover:bg-terracotta-600 text-cream-50 rounded-full font-medium transition-all duration-300 group shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+            >
+              Start uw project
+              <ArrowUpRight className="h-5 w-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
             </Link>
-            <p className="text-neutral-400 mb-6 max-w-sm">
+          </div>
+        </div>
+      </div>
+
+      {/* Main footer */}
+      <div className="relative container-custom py-16 md:py-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8">
+          {/* Brand & contact */}
+          <div className="lg:col-span-5">
+            <Link href="/" className="inline-flex items-center gap-3 mb-6 group">
+              <div className="w-12 h-12 rounded-2xl bg-forest-700 flex items-center justify-center group-hover:bg-forest-600 transition-colors duration-300">
+                <span className="text-cream-50 font-display font-bold text-2xl">N</span>
+              </div>
+              <div>
+                <span className="text-2xl font-display font-semibold text-cream-50">Nam</span>
+                <span className="text-2xl font-display font-normal text-forest-300">Construction</span>
+              </div>
+            </Link>
+            <p className="text-forest-300 mb-8 max-w-md leading-relaxed">
               Duurzaam renoveren in Gent, met kwaliteitsafwerking en heldere opvolging.
               Circulair waar het kan, perfect afgewerkt waar het moet.
             </p>
-            <div className="space-y-3">
+            <div className="space-y-4">
               <a
                 href="tel:+32123456789"
-                className="flex items-center gap-3 text-neutral-300 hover:text-white transition-colors"
+                className="flex items-center gap-4 text-forest-200 hover:text-cream-50 transition-colors duration-300 group"
               >
-                <Phone className="h-5 w-5 text-primary-400" />
+                <div className="w-10 h-10 rounded-xl bg-forest-800 flex items-center justify-center group-hover:bg-forest-700 transition-colors duration-300">
+                  <Phone className="h-5 w-5 text-terracotta-400" />
+                </div>
                 +32 123 45 67 89
               </a>
               <a
                 href="mailto:info@namconstruction.be"
-                className="flex items-center gap-3 text-neutral-300 hover:text-white transition-colors"
+                className="flex items-center gap-4 text-forest-200 hover:text-cream-50 transition-colors duration-300 group"
               >
-                <Mail className="h-5 w-5 text-primary-400" />
+                <div className="w-10 h-10 rounded-xl bg-forest-800 flex items-center justify-center group-hover:bg-forest-700 transition-colors duration-300">
+                  <Mail className="h-5 w-5 text-terracotta-400" />
+                </div>
                 info@namconstruction.be
               </a>
-              <div className="flex items-center gap-3 text-neutral-300">
-                <MapPin className="h-5 w-5 text-primary-400" />
+              <div className="flex items-center gap-4 text-forest-200">
+                <div className="w-10 h-10 rounded-xl bg-forest-800 flex items-center justify-center">
+                  <MapPin className="h-5 w-5 text-terracotta-400" />
+                </div>
                 Gent en omstreken
               </div>
-              <div className="flex items-center gap-3 text-neutral-300">
-                <Clock className="h-5 w-5 text-primary-400" />
+              <div className="flex items-center gap-4 text-forest-200">
+                <div className="w-10 h-10 rounded-xl bg-forest-800 flex items-center justify-center">
+                  <Clock className="h-5 w-5 text-terracotta-400" />
+                </div>
                 Ma - Vr: 8:00 - 18:00
               </div>
             </div>
           </div>
 
           {/* Diensten */}
-          <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
+          <div className="lg:col-span-2">
+            <h3 className="text-sm font-semibold text-cream-50 uppercase tracking-wider mb-6">
               Diensten
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-4">
               {navigation.diensten.map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="text-neutral-400 hover:text-white transition-colors"
+                    className="text-forest-300 hover:text-cream-50 transition-colors duration-300"
                   >
                     {item.name}
                   </Link>
@@ -84,16 +123,16 @@ export default function Footer() {
           </div>
 
           {/* Bedrijf */}
-          <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
+          <div className="lg:col-span-2">
+            <h3 className="text-sm font-semibold text-cream-50 uppercase tracking-wider mb-6">
               Bedrijf
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-4">
               {navigation.bedrijf.map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="text-neutral-400 hover:text-white transition-colors"
+                    className="text-forest-300 hover:text-cream-50 transition-colors duration-300"
                   >
                     {item.name}
                   </Link>
@@ -102,59 +141,67 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Meer */}
-          <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
+          {/* Meer info */}
+          <div className="lg:col-span-3">
+            <h3 className="text-sm font-semibold text-cream-50 uppercase tracking-wider mb-6">
               Meer info
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-4">
               {navigation.meer.map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="text-neutral-400 hover:text-white transition-colors"
+                    className="text-forest-300 hover:text-cream-50 transition-colors duration-300"
                   >
                     {item.name}
                   </Link>
                 </li>
               ))}
             </ul>
+
+            {/* Social links */}
+            <div className="mt-8 pt-8 border-t border-forest-800">
+              <p className="text-sm text-forest-400 mb-4">Volg ons</p>
+              <div className="flex items-center gap-3">
+                <a
+                  href="https://facebook.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-xl bg-forest-800 flex items-center justify-center text-forest-400 hover:bg-forest-700 hover:text-cream-50 transition-all duration-300"
+                >
+                  <Facebook className="h-5 w-5" />
+                </a>
+                <a
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-xl bg-forest-800 flex items-center justify-center text-forest-400 hover:bg-forest-700 hover:text-cream-50 transition-all duration-300"
+                >
+                  <Instagram className="h-5 w-5" />
+                </a>
+                <a
+                  href="https://linkedin.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-xl bg-forest-800 flex items-center justify-center text-forest-400 hover:bg-forest-700 hover:text-cream-50 transition-all duration-300"
+                >
+                  <Linkedin className="h-5 w-5" />
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-neutral-800">
+      <div className="relative border-t border-forest-800">
         <div className="container-custom py-6 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-neutral-500">
+          <p className="text-sm text-forest-500">
             &copy; {new Date().getFullYear()} Nam Construction. Alle rechten voorbehouden.
           </p>
-          <div className="flex items-center gap-4">
-            <a
-              href="https://facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-neutral-500 hover:text-white transition-colors"
-            >
-              <Facebook className="h-5 w-5" />
-            </a>
-            <a
-              href="https://instagram.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-neutral-500 hover:text-white transition-colors"
-            >
-              <Instagram className="h-5 w-5" />
-            </a>
-            <a
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-neutral-500 hover:text-white transition-colors"
-            >
-              <Linkedin className="h-5 w-5" />
-            </a>
-          </div>
+          <p className="text-sm text-forest-500">
+            Renoveren met respect voor mens, materiaal en milieu.
+          </p>
         </div>
       </div>
     </footer>

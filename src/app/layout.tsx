@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { inter, playfair } from "@/lib/fonts";
+import { fraunces, outfit } from "@/lib/fonts";
 import { Header, Footer } from "@/components";
 import "./globals.css";
 
@@ -27,10 +27,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="nl" className={`${inter.variable} ${playfair.variable}`}>
-      <body className="font-sans bg-white">
+    <html lang="nl" className={`${fraunces.variable} ${outfit.variable}`}>
+      <body className="font-sans">
+        {/* Subtle grain texture overlay */}
+        <div className="grain-overlay" aria-hidden="true" />
+
         <Header />
-        <main className="pt-20">
+        <main className="pt-24">
           {children}
         </main>
         <Footer />

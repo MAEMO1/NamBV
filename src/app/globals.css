@@ -8,50 +8,171 @@
   }
 
   body {
-    @apply antialiased text-neutral-800;
+    @apply antialiased text-stone-700 bg-cream-50;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display text-neutral-900;
+    @apply font-display text-forest-900;
+  }
+
+  ::selection {
+    @apply bg-forest-200 text-forest-900;
   }
 }
 
 @layer components {
+  /* Layout */
   .container-custom {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    @apply max-w-7xl mx-auto px-5 sm:px-8 lg:px-12;
   }
 
   .section-padding {
-    @apply py-16 md:py-24 lg:py-32;
+    @apply py-20 md:py-28 lg:py-36;
   }
 
+  .section-padding-sm {
+    @apply py-12 md:py-16 lg:py-20;
+  }
+
+  /* Buttons */
   .btn-primary {
-    @apply inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md;
+    @apply inline-flex items-center justify-center gap-2 px-7 py-3.5 text-base font-medium text-cream-50 bg-forest-700 hover:bg-forest-800 rounded-full transition-all duration-300 ease-organic shadow-organic hover:shadow-organic-lg hover:-translate-y-0.5;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center px-6 py-3 text-base font-medium text-primary-700 bg-primary-50 hover:bg-primary-100 rounded-lg transition-colors duration-200 border border-primary-200;
+    @apply inline-flex items-center justify-center gap-2 px-7 py-3.5 text-base font-medium text-forest-800 bg-sand-100 hover:bg-sand-200 rounded-full transition-all duration-300 ease-organic border border-sand-300;
   }
 
   .btn-outline {
-    @apply inline-flex items-center justify-center px-6 py-3 text-base font-medium text-neutral-700 bg-transparent hover:bg-neutral-50 rounded-lg transition-colors duration-200 border border-neutral-300;
+    @apply inline-flex items-center justify-center gap-2 px-7 py-3.5 text-base font-medium text-forest-700 bg-transparent hover:bg-forest-50 rounded-full transition-all duration-300 ease-organic border-2 border-forest-300 hover:border-forest-400;
   }
 
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 text-base font-medium text-forest-700 hover:text-forest-900 bg-transparent hover:bg-forest-50 rounded-full transition-all duration-300 ease-organic;
+  }
+
+  /* Cards */
   .card {
-    @apply bg-white rounded-2xl shadow-sm border border-neutral-100 overflow-hidden transition-shadow duration-300 hover:shadow-md;
+    @apply bg-cream-50 rounded-3xl overflow-hidden transition-all duration-500 ease-organic;
   }
 
+  .card-elevated {
+    @apply bg-cream-50 rounded-3xl shadow-warm overflow-hidden transition-all duration-500 ease-organic hover:shadow-warm-lg hover:-translate-y-1;
+  }
+
+  .card-bordered {
+    @apply bg-cream-50 rounded-3xl border border-sand-200 overflow-hidden transition-all duration-500 ease-organic hover:border-sand-300 hover:shadow-warm;
+  }
+
+  /* Typography */
   .section-title {
-    @apply text-3xl md:text-4xl lg:text-5xl font-display font-semibold tracking-tight;
+    @apply text-display-lg font-display font-semibold text-forest-900 text-balance;
   }
 
   .section-subtitle {
-    @apply text-lg md:text-xl text-neutral-600 max-w-3xl;
+    @apply text-lg md:text-xl text-stone-600 max-w-3xl leading-relaxed;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-forest-700 via-forest-600 to-forest-500 bg-clip-text text-transparent;
+  }
+
+  /* Decorative */
+  .grain-overlay {
+    @apply pointer-events-none fixed inset-0 z-50 opacity-[0.015];
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  }
+
+  .divider-organic {
+    @apply w-24 h-1 bg-gradient-to-r from-transparent via-sand-400 to-transparent rounded-full;
+  }
+
+  .blob {
+    @apply absolute rounded-full blur-3xl opacity-30;
+  }
+
+  /* Links */
+  .link-underline {
+    @apply relative inline-block text-forest-700 font-medium;
+  }
+
+  .link-underline::after {
+    @apply content-[''] absolute left-0 bottom-0 w-full h-0.5 bg-forest-400 origin-right scale-x-0 transition-transform duration-300 ease-organic;
+  }
+
+  .link-underline:hover::after {
+    @apply origin-left scale-x-100;
+  }
+
+  /* Form elements */
+  .input-field {
+    @apply w-full px-5 py-4 text-stone-800 bg-cream-100 border border-sand-200 rounded-2xl transition-all duration-300 ease-organic focus:border-forest-400 focus:ring-4 focus:ring-forest-100 focus:outline-none placeholder:text-stone-400;
+  }
+
+  .input-label {
+    @apply block text-sm font-medium text-stone-700 mb-2;
+  }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center gap-1.5 px-4 py-1.5 text-sm font-medium rounded-full;
+  }
+
+  .badge-forest {
+    @apply badge bg-forest-100 text-forest-700;
+  }
+
+  .badge-sand {
+    @apply badge bg-sand-200 text-sand-800;
+  }
+
+  .badge-terracotta {
+    @apply badge bg-terracotta-100 text-terracotta-700;
   }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  /* Hide scrollbar */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Animation delays */
+  .delay-100 { animation-delay: 100ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-400 { animation-delay: 400ms; }
+  .delay-500 { animation-delay: 500ms; }
+  .delay-600 { animation-delay: 600ms; }
+
+  /* Scroll animations */
+  .animate-on-scroll {
+    @apply opacity-0;
+  }
+
+  .animate-on-scroll.is-visible {
+    @apply animate-fade-up;
+  }
+
+  /* Image treatments */
+  .img-warm {
+    @apply brightness-[1.02] contrast-[1.02];
+    filter: brightness(1.02) contrast(1.02) sepia(0.05);
+  }
+
+  /* Organic shapes mask */
+  .mask-organic {
+    mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23000' d='M44.7,-76.4C58.8,-69.2,71.8,-59.1,79.6,-45.8C87.4,-32.5,90,-16.3,88.5,-0.9C87,14.5,81.4,29,73.1,41.8C64.8,54.6,53.8,65.7,40.6,73.1C27.4,80.5,12,84.2,-3.1,84.6C-18.2,85,-36.3,82.1,-50.4,74.1C-64.5,66.1,-74.6,53,-80.4,38.2C-86.2,23.4,-87.7,6.9,-85.2,-8.6C-82.7,-24.1,-76.2,-38.6,-65.7,-49.1C-55.2,-59.6,-40.7,-66.1,-26.4,-72.8C-12.1,-79.5,2,-86.4,16.4,-85.8C30.8,-85.2,45.5,-77.1,44.7,-76.4Z' transform='translate(100 100)'/%3E%3C/svg%3E");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
   }
 }

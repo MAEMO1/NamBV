@@ -1,13 +1,14 @@
-import { Inter, Playfair_Display } from 'next/font/google';
+import { Fraunces, Outfit } from 'next/font/google';
 
-export const inter = Inter({
+export const fraunces = Fraunces({
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-fraunces',
   display: 'swap',
+  axes: ['SOFT', 'WONK', 'opsz'],
 });
 
-export const playfair = Playfair_Display({
+export const outfit = Outfit({
   subsets: ['latin'],
-  variable: '--font-playfair',
+  variable: '--font-outfit',
   display: 'swap',
 });
