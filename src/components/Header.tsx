@@ -40,7 +40,7 @@ export default function Header() {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-organic ${
         scrolled
           ? 'bg-cream-50/95 backdrop-blur-md shadow-warm'
-          : 'bg-transparent'
+          : 'bg-stone-900/30 backdrop-blur-sm'
       }`}
     >
       <nav className="container-custom" aria-label="Global">
@@ -53,10 +53,14 @@ export default function Header() {
                 <span className="text-cream-50 font-display font-bold text-xl">N</span>
               </div>
               <div className="hidden sm:block">
-                <span className="text-xl font-display font-semibold text-forest-900">
+                <span className={`text-xl font-display font-semibold transition-colors duration-300 ${
+                  scrolled ? 'text-forest-900' : 'text-white'
+                }`}>
                   Nam
                 </span>
-                <span className="text-xl font-display font-normal text-forest-600">
+                <span className={`text-xl font-display font-normal transition-colors duration-300 ${
+                  scrolled ? 'text-forest-600' : 'text-white/80'
+                }`}>
                   Construction
                 </span>
               </div>
@@ -77,7 +81,7 @@ export default function Header() {
                   className={`flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
                     scrolled
                       ? 'text-stone-700 hover:text-forest-700 hover:bg-forest-50'
-                      : 'text-stone-600 hover:text-forest-700 hover:bg-cream-100/50'
+                      : 'text-white/90 hover:text-white hover:bg-white/10'
                   }`}
                 >
                   {item.name}
@@ -116,12 +120,21 @@ export default function Header() {
           <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center lg:gap-x-3">
             <a
               href="tel:+32123456789"
-              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-stone-600 hover:text-forest-700 transition-colors duration-300"
+              className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors duration-300 ${
+                scrolled ? 'text-stone-600 hover:text-forest-700' : 'text-white/80 hover:text-white'
+              }`}
             >
               <Phone className="h-4 w-4" />
               <span className="hidden xl:inline">+32 123 45 67 89</span>
             </a>
-            <Link href="/afspraak" className="btn-primary text-sm">
+            <Link
+              href="/afspraak"
+              className={`inline-flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-medium rounded-full transition-all duration-300 ${
+                scrolled
+                  ? 'bg-forest-700 text-cream-50 hover:bg-forest-800'
+                  : 'bg-white text-forest-800 hover:bg-white/90'
+              }`}
+            >
               Plan afspraak
             </Link>
           </div>
@@ -130,7 +143,11 @@ export default function Header() {
           <div className="flex lg:hidden">
             <button
               type="button"
-              className="w-11 h-11 inline-flex items-center justify-center rounded-2xl text-stone-700 hover:bg-sand-100 transition-colors duration-300"
+              className={`w-11 h-11 inline-flex items-center justify-center rounded-2xl transition-colors duration-300 ${
+                scrolled
+                  ? 'text-stone-700 hover:bg-sand-100'
+                  : 'text-white hover:bg-white/10'
+              }`}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               <span className="sr-only">Menu openen</span>

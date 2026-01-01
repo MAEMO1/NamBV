@@ -202,35 +202,44 @@ const testimonials = [
 export default function HomePage() {
   return (
     <>
-      {/* Hero Section - Minimalist Luxury inspired by Brightstone */}
+      {/* Hero Section - Full-bleed image/video background */}
       <section className="relative min-h-screen flex items-center overflow-hidden">
-        {/* Clean background with subtle organic shapes */}
-        <div className="absolute inset-0 bg-cream-50">
-          <div className="absolute top-0 right-0 w-2/3 h-full">
-            <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-forest-100/20 rounded-full blur-[100px]" />
-          </div>
-          <div className="absolute bottom-0 left-0 w-1/2 h-1/2">
-            <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-sand-100/30 rounded-full blur-[80px]" />
-          </div>
+        {/* Full-bleed background image */}
+        <div className="absolute inset-0">
+          <Image
+            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&h=1080&fit=crop"
+            alt="Prachtig gerenoveerde woning"
+            fill
+            className="object-cover"
+            priority
+          />
+          {/* Dark overlay for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-r from-stone-900/80 via-stone-900/60 to-stone-900/40" />
         </div>
 
-        <div className="container-custom relative z-10 py-24 lg:py-40">
-          <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-            <div className="max-w-xl">
+        {/* Video play button - centered, doesn't block other elements */}
+        <button className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 group cursor-pointer">
+          <div className="w-24 h-24 md:w-28 md:h-28 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 transition-all duration-500 group-hover:scale-110 group-hover:bg-white/30">
+            <Play className="h-10 w-10 md:h-12 md:w-12 text-white ml-1" />
+          </div>
+        </button>
+
+        <div className="container-custom relative z-10 py-32 lg:py-40">
+          <div className="max-w-3xl">
               {/* Minimal badge */}
               <div className="inline-flex items-center gap-2 mb-10 animate-fade-up">
-                <span className="w-8 h-[2px] bg-forest-500" />
-                <span className="text-sm font-medium text-forest-600 tracking-wide uppercase">Gent & omstreken</span>
+                <span className="w-8 h-[2px] bg-terracotta-400" />
+                <span className="text-sm font-medium text-white/80 tracking-wide uppercase">Gent & omstreken</span>
               </div>
 
               {/* Large aspirational heading */}
-              <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-display font-semibold text-stone-900 leading-[1.05] mb-10 animate-fade-up animation-delay-100">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-display font-semibold text-white leading-[1.05] mb-10 animate-fade-up animation-delay-100">
                 Wonen met{' '}
-                <span className="text-forest-600">ziel</span>
+                <span className="text-terracotta-400">ziel</span>
               </h1>
 
               {/* Refined subtitle - shorter, more aspirational */}
-              <p className="text-xl md:text-2xl text-stone-500 mb-12 leading-relaxed font-light animate-fade-up animation-delay-200">
+              <p className="text-xl md:text-2xl text-white/70 mb-12 leading-relaxed font-light animate-fade-up animation-delay-200">
                 Vakkundige renovatie met respect voor karakter.
                 Hergebruik waar het kan, perfectie waar het moet.
               </p>
@@ -239,14 +248,14 @@ export default function HomePage() {
               <div className="flex flex-col sm:flex-row gap-4 animate-fade-up animation-delay-300">
                 <Link
                   href="/afspraak"
-                  className="group inline-flex items-center justify-center px-10 py-5 bg-forest-600 text-white rounded-full font-medium text-lg hover:bg-forest-700 transition-all duration-500 hover:shadow-xl hover:shadow-forest-600/20 hover:-translate-y-0.5"
+                  className="group inline-flex items-center justify-center px-10 py-5 bg-terracotta-500 text-white rounded-full font-medium text-lg hover:bg-terracotta-400 transition-all duration-500 hover:shadow-xl hover:shadow-terracotta-500/30 hover:-translate-y-0.5"
                 >
                   Begin uw verhaal
                   <ArrowRight className="h-5 w-5 ml-3 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
                 <a
                   href="tel:+32123456789"
-                  className="inline-flex items-center justify-center px-8 py-5 text-stone-600 font-medium hover:text-forest-700 transition-colors duration-300"
+                  className="inline-flex items-center justify-center px-8 py-5 text-white/80 font-medium hover:text-white transition-colors duration-300"
                 >
                   <Phone className="h-5 w-5 mr-2" />
                   +32 123 45 67 89
@@ -254,59 +263,20 @@ export default function HomePage() {
               </div>
 
               {/* Minimal trust indicators */}
-              <div className="mt-16 flex items-center gap-8 text-sm text-stone-400 animate-fade-up animation-delay-400">
+              <div className="mt-16 flex flex-wrap items-center gap-4 md:gap-8 text-sm text-white/60 animate-fade-up animation-delay-400">
                 <span>10+ jaar ervaring</span>
-                <span className="w-1 h-1 rounded-full bg-stone-300" />
+                <span className="w-1 h-1 rounded-full bg-white/40 hidden md:block" />
                 <span>50+ projecten</span>
-                <span className="w-1 h-1 rounded-full bg-stone-300" />
+                <span className="w-1 h-1 rounded-full bg-white/40 hidden md:block" />
                 <span>Lokaal vakmanschap</span>
               </div>
-            </div>
-
-            {/* Hero Image with video play button */}
-            <div className="relative hidden lg:block animate-fade-left animation-delay-200">
-              <div className="relative">
-                {/* Main image - larger, cleaner */}
-                <div className="relative h-[650px] rounded-[2rem] overflow-hidden shadow-2xl">
-                  <Image
-                    src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop"
-                    alt="Prachtig gerenoveerde woning"
-                    fill
-                    className="object-cover"
-                    priority
-                  />
-                  {/* Subtle gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-stone-900/20 via-transparent to-transparent" />
-
-                  {/* Video play button overlay */}
-                  <button className="absolute inset-0 flex items-center justify-center group cursor-pointer">
-                    <div className="w-20 h-20 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-xl transition-all duration-500 group-hover:scale-110 group-hover:bg-white">
-                      <Play className="h-8 w-8 text-forest-600 ml-1" />
-                    </div>
-                  </button>
-                </div>
-
-                {/* Single floating accent */}
-                <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl p-5 border border-sand-100">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-terracotta-100 flex items-center justify-center">
-                      <Recycle className="h-6 w-6 text-terracotta-600" />
-                    </div>
-                    <div>
-                      <p className="font-semibold text-stone-900">Circulair</p>
-                      <p className="text-sm text-stone-500">Hergebruik materiaal</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
-        {/* Scroll indicator - more subtle */}
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2">
-          <div className="w-5 h-8 rounded-full border border-stone-300 flex items-start justify-center p-1.5">
-            <div className="w-1 h-2 rounded-full bg-stone-400 animate-bounce" />
+        {/* Scroll indicator - white for dark bg */}
+        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-10">
+          <div className="w-5 h-8 rounded-full border border-white/30 flex items-start justify-center p-1.5">
+            <div className="w-1 h-2 rounded-full bg-white/50 animate-bounce" />
           </div>
         </div>
       </section>
