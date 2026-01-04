@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Phone, Mail, MapPin, Clock, Facebook, Instagram, Linkedin, ArrowUpRight } from 'lucide-react';
+import Logo from './Logo';
 
 const navigation = {
   diensten: [
@@ -58,7 +59,7 @@ export default function Footer() {
           <div className="lg:col-span-5">
             <Link href="/" className="inline-flex items-center gap-3 mb-6 group">
               <div className="w-12 h-12 rounded-2xl bg-forest-700 flex items-center justify-center group-hover:bg-forest-600 transition-colors duration-300">
-                <span className="text-cream-50 font-display font-bold text-2xl">N</span>
+                <Logo size={30} color="#faf9f7" />
               </div>
               <div>
                 <span className="text-2xl font-display font-semibold text-cream-50">Nam</span>

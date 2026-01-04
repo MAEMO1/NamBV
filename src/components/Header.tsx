@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { Menu, X, Phone, ChevronDown, ArrowRight } from 'lucide-react';
+import Logo from './Logo';
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -50,7 +51,7 @@ export default function Header() {
             <Link href="/" className="group flex items-center gap-3">
               {/* Logo mark */}
               <div className="w-11 h-11 rounded-2xl bg-forest-700 flex items-center justify-center group-hover:bg-forest-800 transition-colors duration-300">
-                <span className="text-cream-50 font-display font-bold text-xl">N</span>
+                <Logo size={28} color="#faf9f7" />
               </div>
               <div className="hidden sm:block">
                 <span className={`text-xl font-display font-semibold transition-colors duration-300 ${
