@@ -42,10 +42,10 @@ export default function Footer() {
               </p>
             </div>
             <Link
-              href="/contact"
+              href="/afspraak"
               className="inline-flex items-center gap-3 px-8 py-4 bg-terracotta-500 hover:bg-terracotta-600 text-cream-50 rounded-full font-medium transition-all duration-300 group shadow-lg hover:shadow-xl hover:-translate-y-0.5"
             >
-              Start uw project
+              Plan gratis afspraak
               <ArrowUpRight className="h-5 w-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
             </Link>
           </div>
@@ -163,7 +163,7 @@ export default function Footer() {
             {/* Socials */}
             <div className="mt-8 pt-8 border-t border-forest-800">
               <p className="text-sm text-forest-400 mb-4">Volg ons</p>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 flex-wrap">
                 <a
                   href="https://wa.me/32493812789"
                   target="_blank"
@@ -181,6 +181,13 @@ export default function Footer() {
                 >
                   <Instagram className="h-4 w-4" />
                   Instagram
+                </a>
+                <a
+                  href="mailto:info@namconstruction.be"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-forest-800 text-forest-300 hover:bg-forest-700 hover:text-cream-50 transition-all duration-300"
+                >
+                  <Mail className="h-4 w-4" />
+                  Email
                 </a>
               </div>
             </div>

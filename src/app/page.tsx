@@ -217,10 +217,10 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-gradient-to-r from-stone-900/80 via-stone-900/60 to-stone-900/40" />
         </div>
 
-        {/* Video play button - centered, doesn't block other elements */}
-        <button className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 group cursor-pointer">
-          <div className="w-24 h-24 md:w-28 md:h-28 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 transition-all duration-500 group-hover:scale-110 group-hover:bg-white/30">
-            <Play className="h-10 w-10 md:h-12 md:w-12 text-white ml-1" />
+        {/* Video play button - hidden on mobile to avoid text overlap */}
+        <button className="hidden md:flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 group cursor-pointer">
+          <div className="w-28 h-28 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 transition-all duration-500 group-hover:scale-110 group-hover:bg-white/30">
+            <Play className="h-12 w-12 text-white ml-1" />
           </div>
         </button>
 
@@ -250,7 +250,7 @@ export default function HomePage() {
                   href="/afspraak"
                   className="group inline-flex items-center justify-center px-10 py-5 bg-terracotta-500 text-white rounded-full font-medium text-lg hover:bg-terracotta-400 transition-all duration-500 hover:shadow-xl hover:shadow-terracotta-500/30 hover:-translate-y-0.5"
                 >
-                  Begin uw verhaal
+                  Plan gratis afspraak
                   <ArrowRight className="h-5 w-5 ml-3 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
                 <a
