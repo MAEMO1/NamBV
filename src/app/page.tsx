@@ -26,7 +26,7 @@ const usps = [
     title: 'Hergebruik materiaal',
     description: 'Bestaand materiaal behouden waar mogelijk',
     color: 'terracotta',
-    href: '/duurzaam#hergebruik'
+    href: '/waarden/hergebruik'
   },
   {
     icon: Calendar,
@@ -40,32 +40,32 @@ const usps = [
     title: 'Volledige attestering',
     description: 'AREI, EPB & alle certificaten',
     color: 'forest',
-    href: '/aanpak#garanties'
+    href: '/waarden/attestering'
   },
   {
     icon: CreditCard,
     title: 'Betalingsspreiding',
     description: 'Betaal per mijlpaal',
     color: 'sand',
-    href: '/aanpak'
+    href: '/waarden/betalingsspreiding'
   },
   {
     icon: Shield,
     title: 'Subsidie-ondersteuning',
     description: 'Hulp bij premieaanvragen',
     color: 'terracotta',
-    href: '/duurzaam#premies'
+    href: '/waarden/subsidies'
   }
 ];
 
-// 5 pillars aligned with USPs - with links to detailed sections
+// 5 pillars aligned with USPs - with links to dedicated pages
 const pillars = [
   {
     icon: Recycle,
     title: 'Hergebruik & Circulariteit',
     description: 'Waar mogelijk behouden en hergebruiken we bestaand materiaal. Minder afval, meer karakter, lagere kosten.',
     color: 'terracotta',
-    href: '/duurzaam#hergebruik',
+    href: '/waarden/hergebruik',
     cta: 'Bekijk voorbeelden'
   },
   {
@@ -73,7 +73,7 @@ const pillars = [
     title: 'Volledige Attestering',
     description: 'AREI-conforme installaties, EPB-attesten en alle nodige certificaten. Premie-proof en zonder zorgen.',
     color: 'forest',
-    href: '/duurzaam#premies',
+    href: '/waarden/attestering',
     cta: 'Bekijk attesten & premies'
   },
   {
@@ -81,7 +81,7 @@ const pillars = [
     title: 'Betalingsspreiding',
     description: 'Betaal in fasen per afgeronde mijlpaal. Transparant, eerlijk en overzichtelijk voor uw budget.',
     color: 'sand',
-    href: '/aanpak#betaling',
+    href: '/waarden/betalingsspreiding',
     cta: 'Bekijk betalingsplan'
   },
   {
@@ -89,7 +89,7 @@ const pillars = [
     title: 'Subsidie-ondersteuning',
     description: 'We helpen bij het aanvragen van beschikbare premies en subsidies. Maximaal voordeel uit uw investering.',
     color: 'terracotta',
-    href: '/duurzaam#premies',
+    href: '/waarden/subsidies',
     cta: 'Bekijk premies'
   },
   {
@@ -97,7 +97,7 @@ const pillars = [
     title: 'Heldere Communicatie',
     description: 'Eén vast aanspreekpunt, regelmatige updates en duidelijke afspraken. U weet altijd waar u aan toe bent.',
     color: 'stone',
-    href: '/aanpak#communicatie',
+    href: '/waarden/communicatie',
     cta: 'Bekijk werkwijze'
   }
 ];
