@@ -85,7 +85,7 @@ export default function CTABanner({
             <ArrowRight className="h-5 w-5 ml-2 transition-transform group-hover:translate-x-1" />
           </Link>
           <a
-            href="tel:+32123456789"
+            href="tel:+32493812789"
             className={`inline-flex items-center justify-center px-8 py-4 rounded-full font-medium border-2 transition-all duration-300 ${
               isDark
                 ? 'border-forest-600 text-white hover:bg-forest-800 hover:border-forest-500'
@@ -93,7 +93,7 @@ export default function CTABanner({
             }`}
           >
             <Phone className="h-5 w-5 mr-2" />
-            +32 123 45 67 89
+            +32 493 81 27 89
           </a>
         </div>
 

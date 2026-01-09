@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Phone, Mail, MapPin, Clock, Facebook, Instagram, Linkedin, ArrowUpRight } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, ArrowUpRight } from 'lucide-react';
 import Logo from './Logo';
 
 const navigation = {
@@ -72,28 +72,28 @@ export default function Footer() {
             </p>
             <div className="space-y-4">
               <a
-                href="tel:+32123456789"
+                href="tel:+32493812789"
                 className="flex items-center gap-4 text-forest-200 hover:text-cream-50 transition-colors duration-300 group"
               >
                 <div className="w-10 h-10 rounded-xl bg-forest-800 flex items-center justify-center group-hover:bg-forest-700 transition-colors duration-300">
                   <Phone className="h-5 w-5 text-terracotta-400" />
                 </div>
-                +32 123 45 67 89
+                +32 (0) 493 81 27 89
               </a>
               <a
-                href="mailto:info@namconstruction.be"
+                href="mailto:Contact@namconstruction.be"
                 className="flex items-center gap-4 text-forest-200 hover:text-cream-50 transition-colors duration-300 group"
               >
                 <div className="w-10 h-10 rounded-xl bg-forest-800 flex items-center justify-center group-hover:bg-forest-700 transition-colors duration-300">
                   <Mail className="h-5 w-5 text-terracotta-400" />
                 </div>
-                info@namconstruction.be
+                Contact@namconstruction.be
               </a>
               <div className="flex items-center gap-4 text-forest-200">
                 <div className="w-10 h-10 rounded-xl bg-forest-800 flex items-center justify-center">
                   <MapPin className="h-5 w-5 text-terracotta-400" />
                 </div>
-                Gent en omstreken
+                Zwijnaardsesteenweg 683, 9000 Gent
               </div>
               <div className="flex items-center gap-4 text-forest-200">
                 <div className="w-10 h-10 rounded-xl bg-forest-800 flex items-center justify-center">
@@ -160,35 +160,18 @@ export default function Footer() {
               ))}
             </ul>
 
-            {/* Social links */}
+            {/* WhatsApp */}
             <div className="mt-8 pt-8 border-t border-forest-800">
-              <p className="text-sm text-forest-400 mb-4">Volg ons</p>
-              <div className="flex items-center gap-3">
-                <a
-                  href="https://facebook.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-xl bg-forest-800 flex items-center justify-center text-forest-400 hover:bg-forest-700 hover:text-cream-50 transition-all duration-300"
-                >
-                  <Facebook className="h-5 w-5" />
-                </a>
-                <a
-                  href="https://instagram.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-xl bg-forest-800 flex items-center justify-center text-forest-400 hover:bg-forest-700 hover:text-cream-50 transition-all duration-300"
-                >
-                  <Instagram className="h-5 w-5" />
-                </a>
-                <a
-                  href="https://linkedin.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-xl bg-forest-800 flex items-center justify-center text-forest-400 hover:bg-forest-700 hover:text-cream-50 transition-all duration-300"
-                >
-                  <Linkedin className="h-5 w-5" />
-                </a>
-              </div>
+              <p className="text-sm text-forest-400 mb-4">Direct contact</p>
+              <a
+                href="https://wa.me/32493812789"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-forest-800 text-forest-300 hover:bg-forest-700 hover:text-cream-50 transition-all duration-300"
+              >
+                <Phone className="h-4 w-4" />
+                WhatsApp
+              </a>
             </div>
           </div>
         </div>
@@ -196,13 +179,31 @@ export default function Footer() {
 
       {/* Bottom bar */}
       <div className="relative border-t border-forest-800">
-        <div className="container-custom py-6 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-forest-500">
-            &copy; {new Date().getFullYear()} Nam Construction. Alle rechten voorbehouden.
-          </p>
-          <p className="text-sm text-forest-500">
-            Renoveren met respect voor mens, materiaal en milieu.
-          </p>
+        <div className="container-custom py-6">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
+            <p className="text-sm text-forest-500">
+              &copy; {new Date().getFullYear()} NAM BV. Alle rechten voorbehouden.
+            </p>
+            <p className="text-sm text-forest-500">
+              BTW: BE0792.212.559
+            </p>
+          </div>
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <div className="flex items-center gap-4 text-sm text-forest-500">
+              <Link href="/algemene-voorwaarden" className="hover:text-cream-50 transition-colors">
+                Algemene Voorwaarden
+              </Link>
+              <Link href="/privacy" className="hover:text-cream-50 transition-colors">
+                Privacyverklaring
+              </Link>
+              <Link href="/cookies" className="hover:text-cream-50 transition-colors">
+                Cookiebeleid
+              </Link>
+            </div>
+            <p className="text-sm text-forest-600">
+              NAM BV - voor bouwen zonder zorgen
+            </p>
+          </div>
         </div>
       </div>
     </footer>

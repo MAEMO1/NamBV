@@ -120,13 +120,13 @@ export default function Header() {
           {/* CTA buttons */}
           <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center lg:gap-x-3">
             <a
-              href="tel:+32123456789"
+              href="tel:+32493812789"
               className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors duration-300 ${
                 scrolled ? 'text-stone-600 hover:text-forest-700' : 'text-white/80 hover:text-white'
               }`}
             >
               <Phone className="h-4 w-4" />
-              <span className="hidden xl:inline">+32 123 45 67 89</span>
+              <span className="hidden xl:inline">+32 493 81 27 89</span>
             </a>
             <Link
               href="/afspraak"
@@ -196,11 +196,11 @@ export default function Header() {
 
             <div className="pt-4 mt-3 border-t border-sand-200 space-y-2">
               <a
-                href="tel:+32123456789"
+                href="tel:+32493812789"
                 className="flex items-center gap-3 py-2 px-4 text-stone-700"
               >
                 <Phone className="h-5 w-5 text-forest-600" />
-                +32 123 45 67 89
+                +32 493 81 27 89
               </a>
               <Link
                 href="/afspraak"

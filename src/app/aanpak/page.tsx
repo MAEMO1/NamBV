@@ -169,7 +169,7 @@ export default function AanpakPage() {
                   <ArrowRight className="h-5 w-5 ml-2 transition-transform group-hover:translate-x-1" />
                 </Link>
                 <a
-                  href="tel:+32123456789"
+                  href="tel:+32493812789"
                   className="inline-flex items-center justify-center px-8 py-4 bg-white border-2 border-stone-200 text-stone-700 rounded-full font-medium hover:border-forest-600 hover:text-forest-700 transition-all duration-300"
                 >
                   <Phone className="h-5 w-5 mr-2" />

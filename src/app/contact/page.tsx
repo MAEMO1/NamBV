@@ -22,16 +22,16 @@ const contactInfo = [
   {
     icon: Phone,
     title: 'Telefoon',
-    content: '+32 123 45 67 89',
-    href: 'tel:+32123456789',
+    content: '+32 (0) 493 81 27 89',
+    href: 'tel:+32493812789',
     description: 'Ma-Vr 8:00-18:00',
     color: 'forest'
   },
   {
     icon: Mail,
     title: 'Email',
-    content: 'info@namconstruction.be',
-    href: 'mailto:info@namconstruction.be',
+    content: 'Contact@namconstruction.be',
+    href: 'mailto:Contact@namconstruction.be',
     description: 'Reactie binnen 24u',
     color: 'terracotta'
   },
@@ -39,14 +39,14 @@ const contactInfo = [
     icon: MessageSquare,
     title: 'WhatsApp',
     content: 'Stuur foto\'s van uw project',
-    href: 'https://wa.me/32123456789',
+    href: 'https://wa.me/32493812789',
     description: 'Snel en laagdrempelig',
     color: 'sand'
   },
   {
     icon: MapPin,
-    title: 'Regio',
-    content: 'Gent en omstreken',
+    title: 'Kantoor',
+    content: 'Zwijnaardsesteenweg 683, 9000 Gent',
     description: 'Oost-Vlaanderen',
     color: 'stone'
   }
@@ -146,7 +146,7 @@ export default function ContactPage() {
               {/* Quick contact buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
                 <a
-                  href="tel:+32123456789"
+                  href="tel:+32493812789"
                   className="group inline-flex items-center justify-center px-8 py-4 bg-forest-600 text-white rounded-full font-medium hover:bg-forest-700 transition-all duration-300 hover:shadow-lg hover:shadow-forest-600/25"
                 >
                   <Phone className="h-5 w-5 mr-2" />
@@ -154,7 +154,7 @@ export default function ContactPage() {
                   <ArrowRight className="h-5 w-5 ml-2 transition-transform group-hover:translate-x-1" />
                 </a>
                 <a
-                  href="https://wa.me/32123456789"
+                  href="https://wa.me/32493812789"
                   className="inline-flex items-center justify-center px-8 py-4 bg-white border-2 border-stone-200 text-stone-700 rounded-full font-medium hover:border-forest-600 hover:text-forest-700 transition-all duration-300"
                 >
                   <MessageSquare className="h-5 w-5 mr-2" />
@@ -433,11 +433,11 @@ export default function ContactPage() {
                       </div>
                       <p className="text-sm text-stone-600">
                         Foto&apos;s of plannen? Stuur ze via{' '}
-                        <a href="https://wa.me/32123456789" className="text-forest-600 hover:underline font-medium">
+                        <a href="https://wa.me/32493812789" className="text-forest-600 hover:underline font-medium">
                           WhatsApp
                         </a>{' '}
                         of{' '}
-                        <a href="mailto:info@namconstruction.be" className="text-forest-600 hover:underline font-medium">
+                        <a href="mailto:Contact@namconstruction.be" className="text-forest-600 hover:underline font-medium">
                           email
                         </a>
                       </p>
