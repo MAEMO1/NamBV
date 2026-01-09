@@ -19,7 +19,6 @@ const navigation = [
   },
   { name: 'Duurzaam', href: '/duurzaam' },
   { name: 'Projecten', href: '/projecten' },
-  { name: 'Aanpak', href: '/aanpak' },
   { name: 'Over ons', href: '/over-nam' },
 ];
 
