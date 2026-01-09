@@ -17,7 +17,6 @@ const navigation = [
       { name: 'Technieken', href: '/diensten/technieken', desc: 'Elektriciteit, sanitair' },
     ],
   },
-  { name: 'Duurzaam', href: '/duurzaam' },
   { name: 'Projecten', href: '/projecten' },
   { name: 'Over ons', href: '/over-nam' },
 ];

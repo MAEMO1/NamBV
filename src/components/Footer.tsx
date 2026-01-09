@@ -16,8 +16,6 @@ const navigation = {
     { name: 'Contact', href: '/contact' },
   ],
   meer: [
-    { name: 'Duurzaam & Ecologisch', href: '/duurzaam' },
-    { name: 'Premies & Attesten', href: '/duurzaam#premies' },
     { name: 'FAQ', href: '/aanpak#faq' },
   ],
 };
