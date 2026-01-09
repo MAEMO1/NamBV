@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Phone, Mail, MapPin, Clock, ArrowUpRight } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, ArrowUpRight, Instagram } from 'lucide-react';
 import Logo from './Logo';
 
 const navigation = {
@@ -81,13 +81,13 @@ export default function Footer() {
                 +32 (0) 493 81 27 89
               </a>
               <a
-                href="mailto:Contact@namconstruction.be"
+                href="mailto:info@namconstruction.be"
                 className="flex items-center gap-4 text-forest-200 hover:text-cream-50 transition-colors duration-300 group"
               >
                 <div className="w-10 h-10 rounded-xl bg-forest-800 flex items-center justify-center group-hover:bg-forest-700 transition-colors duration-300">
                   <Mail className="h-5 w-5 text-terracotta-400" />
                 </div>
-                Contact@namconstruction.be
+                info@namconstruction.be
               </a>
               <div className="flex items-center gap-4 text-forest-200">
                 <div className="w-10 h-10 rounded-xl bg-forest-800 flex items-center justify-center">
@@ -160,18 +160,29 @@ export default function Footer() {
               ))}
             </ul>
 
-            {/* WhatsApp */}
+            {/* Socials */}
             <div className="mt-8 pt-8 border-t border-forest-800">
-              <p className="text-sm text-forest-400 mb-4">Direct contact</p>
-              <a
-                href="https://wa.me/32493812789"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-forest-800 text-forest-300 hover:bg-forest-700 hover:text-cream-50 transition-all duration-300"
-              >
-                <Phone className="h-4 w-4" />
-                WhatsApp
-              </a>
+              <p className="text-sm text-forest-400 mb-4">Volg ons</p>
+              <div className="flex items-center gap-3">
+                <a
+                  href="https://wa.me/32493812789"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-forest-800 text-forest-300 hover:bg-forest-700 hover:text-cream-50 transition-all duration-300"
+                >
+                  <Phone className="h-4 w-4" />
+                  WhatsApp
+                </a>
+                <a
+                  href="https://www.instagram.com/namconstruction.be/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-forest-800 text-forest-300 hover:bg-forest-700 hover:text-cream-50 transition-all duration-300"
+                >
+                  <Instagram className="h-4 w-4" />
+                  Instagram
+                </a>
+              </div>
             </div>
           </div>
         </div>

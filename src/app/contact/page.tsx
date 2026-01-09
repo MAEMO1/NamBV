@@ -30,8 +30,8 @@ const contactInfo = [
   {
     icon: Mail,
     title: 'Email',
-    content: 'Contact@namconstruction.be',
-    href: 'mailto:Contact@namconstruction.be',
+    content: 'info@namconstruction.be',
+    href: 'mailto:info@namconstruction.be',
     description: 'Reactie binnen 24u',
     color: 'terracotta'
   },
@@ -437,7 +437,7 @@ export default function ContactPage() {
                           WhatsApp
                         </a>{' '}
                         of{' '}
-                        <a href="mailto:Contact@namconstruction.be" className="text-forest-600 hover:underline font-medium">
+                        <a href="mailto:info@namconstruction.be" className="text-forest-600 hover:underline font-medium">
                           email
                         </a>
                       </p>
