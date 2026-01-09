@@ -162,32 +162,35 @@ export default function Footer() {
 
             {/* Socials */}
             <div className="mt-8 pt-8 border-t border-forest-800">
-              <p className="text-sm text-forest-400 mb-4">Volg ons</p>
-              <div className="flex items-center gap-3 flex-wrap">
+              <p className="text-sm text-forest-400 mb-3">Volg ons</p>
+              <div className="flex items-center gap-2">
                 <a
                   href="https://wa.me/32493812789"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-forest-800 text-forest-300 hover:bg-forest-700 hover:text-cream-50 transition-all duration-300"
+                  className="inline-flex items-center justify-center w-9 h-9 sm:w-auto sm:h-auto sm:gap-1.5 sm:px-3 sm:py-1.5 rounded-lg bg-forest-800 text-forest-300 hover:bg-forest-700 hover:text-cream-50 transition-all duration-300 text-sm"
+                  aria-label="WhatsApp"
                 >
                   <Phone className="h-4 w-4" />
-                  WhatsApp
+                  <span className="hidden sm:inline">WhatsApp</span>
                 </a>
                 <a
                   href="https://www.instagram.com/namconstruction.be/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-forest-800 text-forest-300 hover:bg-forest-700 hover:text-cream-50 transition-all duration-300"
+                  className="inline-flex items-center justify-center w-9 h-9 sm:w-auto sm:h-auto sm:gap-1.5 sm:px-3 sm:py-1.5 rounded-lg bg-forest-800 text-forest-300 hover:bg-forest-700 hover:text-cream-50 transition-all duration-300 text-sm"
+                  aria-label="Instagram"
                 >
                   <Instagram className="h-4 w-4" />
-                  Instagram
+                  <span className="hidden sm:inline">Instagram</span>
                 </a>
                 <a
                   href="mailto:info@namconstruction.be"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-forest-800 text-forest-300 hover:bg-forest-700 hover:text-cream-50 transition-all duration-300"
+                  className="inline-flex items-center justify-center w-9 h-9 sm:w-auto sm:h-auto sm:gap-1.5 sm:px-3 sm:py-1.5 rounded-lg bg-forest-800 text-forest-300 hover:bg-forest-700 hover:text-cream-50 transition-all duration-300 text-sm"
+                  aria-label="Email"
                 >
                   <Mail className="h-4 w-4" />
-                  Email
+                  <span className="hidden sm:inline">Email</span>
                 </a>
               </div>
             </div>
