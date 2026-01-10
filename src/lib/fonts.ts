@@ -1,14 +1,17 @@
-import { Fraunces, Outfit } from 'next/font/google';
+import { DM_Sans, Playfair_Display } from 'next/font/google';
 
-export const fraunces = Fraunces({
+// Primary sans-serif - clean, modern, professional
+export const dmSans = DM_Sans({
   subsets: ['latin'],
-  variable: '--font-fraunces',
+  variable: '--font-dm-sans',
   display: 'swap',
-  axes: ['SOFT', 'WONK', 'opsz'],
+  weight: ['400', '500', '600', '700'],
 });
 
-export const outfit = Outfit({
+// Display font - elegant, refined for headlines
+export const playfair = Playfair_Display({
   subsets: ['latin'],
-  variable: '--font-outfit',
+  variable: '--font-playfair',
   display: 'swap',
+  weight: ['400', '500', '600', '700'],
 });

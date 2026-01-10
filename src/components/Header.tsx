@@ -2,215 +2,211 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { Menu, X, Phone, ChevronDown, ArrowRight } from 'lucide-react';
-import Logo from './Logo';
+import { Menu, X, ArrowUpRight } from 'lucide-react';
 
 const navigation = [
   { name: 'Home', href: '/' },
-  {
-    name: 'Diensten',
-    href: '/diensten',
-    children: [
-      { name: 'Totaalrenovatie', href: '/diensten/totaalrenovatie', desc: 'Volledige renovatie' },
-      { name: 'Renovatie & Verbouwing', href: '/diensten/renovatie', desc: 'Gerichte projecten' },
-      { name: 'Afwerking', href: '/diensten/afwerking', desc: 'Tegelwerk, plakwerk' },
-      { name: 'Technieken', href: '/diensten/technieken', desc: 'Elektriciteit, sanitair' },
-    ],
-  },
+  { name: 'Diensten', href: '/diensten' },
   { name: 'Projecten', href: '/projecten' },
-  { name: 'Over ons', href: '/over-nam' },
+  { name: 'Contact', href: '/contact' },
 ];
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      setScrolled(window.scrollY > 50);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-organic ${
-        scrolled
-          ? 'bg-cream-50/95 backdrop-blur-md shadow-warm'
-          : 'bg-stone-900/30 backdrop-blur-sm'
-      }`}
-    >
-      <nav className="container-custom" aria-label="Global">
-        <div className="flex items-center justify-between h-24">
-          {/* Logo */}
-          <div className="flex lg:flex-1">
-            <Link href="/" className="group flex items-center gap-3">
-              {/* Logo mark */}
-              <div className="w-11 h-11 rounded-2xl bg-forest-700 flex items-center justify-center group-hover:bg-forest-800 transition-colors duration-300">
-                <Logo size={28} color="#faf9f7" />
-              </div>
-              <div className="hidden sm:block">
-                <span className={`text-xl font-display font-semibold transition-colors duration-300 ${
-                  scrolled ? 'text-forest-900' : 'text-white'
-                }`}>
-                  Nam
-                </span>
-                <span className={`text-xl font-display font-normal transition-colors duration-300 ${
-                  scrolled ? 'text-forest-600' : 'text-white/80'
-                }`}>
-                  Construction
-                </span>
-              </div>
-            </Link>
-          </div>
+  // Prevent body scroll when menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
 
-          {/* Desktop navigation */}
-          <div className="hidden lg:flex lg:items-center lg:gap-x-1">
-            {navigation.map((item) => (
-              <div
-                key={item.name}
-                className="relative"
-                onMouseEnter={() => item.children && setActiveDropdown(item.name)}
-                onMouseLeave={() => setActiveDropdown(null)}
-              >
+  return (
+    <>
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-smooth ${
+          scrolled
+            ? 'bg-white/95 backdrop-blur-md'
+            : 'bg-transparent'
+        }`}
+      >
+        <nav className="container-wide" aria-label="Global">
+          <div className="flex items-center justify-between h-20 md:h-24">
+            {/* Logo */}
+            <Link href="/" className="relative z-10 group">
+              <div className="flex items-center gap-1">
+                <span className={`text-2xl md:text-3xl font-display font-semibold tracking-tight transition-colors duration-500 ${
+                  scrolled || mobileMenuOpen ? 'text-noir-900' : 'text-white'
+                }`}>
+                  NAM
+                </span>
+                <span className={`text-2xl md:text-3xl font-display font-normal tracking-tight transition-colors duration-500 ${
+                  scrolled || mobileMenuOpen ? 'text-noir-400' : 'text-white/60'
+                }`}>
+                  CONSTRUCTION
+                </span>
+              </div>
+              <span className={`text-[10px] uppercase tracking-[0.2em] transition-colors duration-500 ${
+                scrolled || mobileMenuOpen ? 'text-accent-500' : 'text-accent-400'
+              }`}>
+                Renovatie & Afwerking
+              </span>
+            </Link>
+
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex lg:items-center lg:gap-x-1">
+              {navigation.map((item) => (
                 <Link
+                  key={item.name}
                   href={item.href}
-                  className={`flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
+                  className={`px-5 py-2 text-sm font-medium tracking-wide uppercase transition-all duration-300 ${
                     scrolled
-                      ? 'text-stone-700 hover:text-forest-700 hover:bg-forest-50'
-                      : 'text-white/90 hover:text-white hover:bg-white/10'
+                      ? 'text-noir-600 hover:text-noir-900'
+                      : 'text-white/80 hover:text-white'
                   }`}
                 >
                   {item.name}
-                  {item.children && (
-                    <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${
-                      activeDropdown === item.name ? 'rotate-180' : ''
-                    }`} />
-                  )}
                 </Link>
+              ))}
+            </div>
 
-                {/* Dropdown menu */}
-                {item.children && activeDropdown === item.name && (
-                  <div className="absolute left-0 top-full pt-3 animate-fade-down">
-                    <div className="bg-cream-50 rounded-3xl shadow-warm-lg border border-sand-100 p-3 min-w-[280px]">
-                      {item.children.map((child) => (
-                        <Link
-                          key={child.name}
-                          href={child.href}
-                          className="flex items-center justify-between p-3 rounded-2xl text-stone-700 hover:bg-forest-50 hover:text-forest-800 transition-all duration-300 group"
-                        >
-                          <div>
-                            <p className="font-medium">{child.name}</p>
-                            <p className="text-sm text-stone-500">{child.desc}</p>
-                          </div>
-                          <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-forest-600" />
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                )}
+            {/* CTA Button - Desktop */}
+            <div className="hidden lg:flex lg:items-center lg:gap-6">
+              <Link
+                href="/offerte"
+                className={`group inline-flex items-center gap-2 px-6 py-3 text-sm font-medium uppercase tracking-wide transition-all duration-500 ${
+                  scrolled
+                    ? 'bg-noir-900 text-white hover:bg-accent-500'
+                    : 'bg-white text-noir-900 hover:bg-accent-500 hover:text-white'
+                }`}
+              >
+                Offerte aanvragen
+                <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
+            </div>
+
+            {/* Mobile menu button */}
+            <button
+              type="button"
+              className={`relative z-10 lg:hidden w-12 h-12 flex items-center justify-center transition-colors duration-300 ${
+                scrolled || mobileMenuOpen
+                  ? 'text-noir-900'
+                  : 'text-white'
+              }`}
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label={mobileMenuOpen ? 'Menu sluiten' : 'Menu openen'}
+            >
+              <div className="relative w-6 h-6">
+                <span
+                  className={`absolute left-0 h-0.5 bg-current transition-all duration-300 ease-smooth ${
+                    mobileMenuOpen
+                      ? 'top-1/2 w-6 -rotate-45 -translate-y-1/2'
+                      : 'top-1 w-6'
+                  }`}
+                />
+                <span
+                  className={`absolute left-0 top-1/2 -translate-y-1/2 h-0.5 bg-current transition-all duration-300 ease-smooth ${
+                    mobileMenuOpen ? 'w-0 opacity-0' : 'w-4 opacity-100'
+                  }`}
+                />
+                <span
+                  className={`absolute left-0 h-0.5 bg-current transition-all duration-300 ease-smooth ${
+                    mobileMenuOpen
+                      ? 'bottom-1/2 w-6 rotate-45 translate-y-1/2'
+                      : 'bottom-1 w-5'
+                  }`}
+                />
               </div>
-            ))}
+            </button>
           </div>
+        </nav>
+      </header>
 
-          {/* CTA buttons */}
-          <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center lg:gap-x-3">
-            <a
-              href="tel:+32493812789"
-              className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors duration-300 ${
-                scrolled ? 'text-stone-600 hover:text-forest-700' : 'text-white/80 hover:text-white'
-              }`}
-            >
-              <Phone className="h-4 w-4" />
-              <span className="hidden xl:inline">+32 493 81 27 89</span>
-            </a>
+      {/* Mobile Menu Overlay */}
+      <div
+        className={`fixed inset-0 z-40 lg:hidden transition-all duration-700 ease-smooth ${
+          mobileMenuOpen
+            ? 'opacity-100 pointer-events-auto'
+            : 'opacity-0 pointer-events-none'
+        }`}
+      >
+        {/* Background */}
+        <div className="absolute inset-0 bg-white" />
+
+        {/* Content */}
+        <div className="relative h-full flex flex-col pt-32 pb-8 px-8">
+          {/* Navigation Links */}
+          <nav className="flex-1 flex flex-col justify-center -mt-20">
+            {navigation.map((item, index) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`group flex items-center justify-between py-4 border-b border-noir-100 transition-all duration-500 ${
+                  mobileMenuOpen
+                    ? 'opacity-100 translate-x-0'
+                    : 'opacity-0 -translate-x-8'
+                }`}
+                style={{ transitionDelay: mobileMenuOpen ? `${150 + index * 75}ms` : '0ms' }}
+              >
+                <span className="text-3xl md:text-4xl font-display font-medium text-noir-900 group-hover:text-accent-500 transition-colors duration-300">
+                  {item.name}
+                </span>
+                <ArrowUpRight className="h-6 w-6 text-noir-300 group-hover:text-accent-500 transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+              </Link>
+            ))}
+          </nav>
+
+          {/* CTA Button */}
+          <div
+            className={`transition-all duration-500 ${
+              mobileMenuOpen
+                ? 'opacity-100 translate-y-0'
+                : 'opacity-0 translate-y-8'
+            }`}
+            style={{ transitionDelay: mobileMenuOpen ? '500ms' : '0ms' }}
+          >
             <Link
-              href="/afspraak"
-              className={`inline-flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-medium rounded-full transition-all duration-300 ${
-                scrolled
-                  ? 'bg-forest-700 text-cream-50 hover:bg-forest-800'
-                  : 'bg-white text-forest-800 hover:bg-white/90'
-              }`}
+              href="/offerte"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block w-full py-5 text-center text-lg font-medium uppercase tracking-wide bg-noir-900 text-white hover:bg-accent-500 transition-colors duration-300"
             >
-              Plan afspraak
+              Offerte aanvragen
             </Link>
           </div>
 
-          {/* Mobile menu button */}
-          <div className="flex lg:hidden">
-            <button
-              type="button"
-              className={`w-11 h-11 inline-flex items-center justify-center rounded-2xl transition-colors duration-300 ${
-                scrolled
-                  ? 'text-stone-700 hover:bg-sand-100'
-                  : 'text-white hover:bg-white/10'
-              }`}
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              <span className="sr-only">Menu openen</span>
-              {mobileMenuOpen ? (
-                <X className="h-6 w-6" aria-hidden="true" />
-              ) : (
-                <Menu className="h-6 w-6" aria-hidden="true" />
-              )}
-            </button>
+          {/* Contact Info */}
+          <div
+            className={`mt-8 flex flex-col gap-2 text-sm text-noir-500 transition-all duration-500 ${
+              mobileMenuOpen
+                ? 'opacity-100 translate-y-0'
+                : 'opacity-0 translate-y-8'
+            }`}
+            style={{ transitionDelay: mobileMenuOpen ? '600ms' : '0ms' }}
+          >
+            <a href="tel:+32493812789" className="hover:text-noir-900 transition-colors">
+              +32 493 81 27 89
+            </a>
+            <a href="mailto:info@namconstruction.be" className="hover:text-noir-900 transition-colors">
+              info@namconstruction.be
+            </a>
           </div>
         </div>
-
-        {/* Mobile menu */}
-        <div
-          className={`lg:hidden overflow-hidden transition-all duration-500 ease-organic ${
-            mobileMenuOpen ? 'max-h-[calc(100dvh-96px)] opacity-100' : 'max-h-0 opacity-0'
-          }`}
-        >
-          <div className="py-4 space-y-1 border-t border-sand-200 bg-cream-50 overflow-y-auto max-h-[calc(100dvh-120px)]">
-            {navigation.map((item) => (
-              <div key={item.name}>
-                <Link
-                  href={item.href}
-                  className="block py-2.5 px-4 text-base font-medium text-stone-700 hover:text-forest-700 hover:bg-forest-50 rounded-xl transition-all duration-300"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {item.name}
-                </Link>
-                {item.children && (
-                  <div className="ml-4 space-y-0.5 border-l-2 border-sand-200 pl-3">
-                    {item.children.map((child) => (
-                      <Link
-                        key={child.name}
-                        href={child.href}
-                        className="block py-2 px-3 text-sm text-stone-600 hover:text-forest-700 hover:bg-forest-50 rounded-lg transition-all duration-300"
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
-                        {child.name}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
-
-            <div className="pt-4 mt-3 border-t border-sand-200 space-y-2">
-              <a
-                href="tel:+32493812789"
-                className="flex items-center gap-3 py-2 px-4 text-stone-700"
-              >
-                <Phone className="h-5 w-5 text-forest-600" />
-                +32 493 81 27 89
-              </a>
-              <Link
-                href="/afspraak"
-                className="btn-primary w-full justify-center text-sm py-3"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Plan gratis afspraak
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
-    </header>
+      </div>
+    </>
   );
 }

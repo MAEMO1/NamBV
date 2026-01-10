@@ -1,507 +1,279 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import {
-  ArrowRight,
-  Leaf,
-  Wrench,
-  MessageSquare,
-  Users,
-  Recycle,
-  Calendar,
-  FileCheck,
-  CreditCard,
-  Shield,
-  Star,
-  Phone,
-  CheckCircle2,
-  MapPin,
-  Play
-} from 'lucide-react';
-import { SectionHeader, CTABanner } from '@/components';
+import { ArrowRight, ArrowUpRight, ChevronDown, MapPin } from 'lucide-react';
 
-// USP data according to strategic plan - the 5 key differentiators
-const usps = [
-  {
-    icon: Recycle,
-    title: 'Hergebruik materiaal',
-    description: 'Bestaand materiaal behouden waar mogelijk',
-    color: 'terracotta',
-    href: '/waarden/hergebruik'
-  },
-  {
-    icon: Calendar,
-    title: 'Gratis adviesgesprek',
-    description: 'Direct online inplannen',
-    color: 'forest',
-    href: '/afspraak'
-  },
-  {
-    icon: FileCheck,
-    title: 'Volledige attestering',
-    description: 'AREI, EPB & alle certificaten',
-    color: 'forest',
-    href: '/waarden/attestering'
-  },
-  {
-    icon: CreditCard,
-    title: 'Betalingsspreiding',
-    description: 'Betaal per mijlpaal',
-    color: 'sand',
-    href: '/waarden/betalingsspreiding'
-  },
-  {
-    icon: Shield,
-    title: 'Subsidie-ondersteuning',
-    description: 'Hulp bij premieaanvragen',
-    color: 'terracotta',
-    href: '/waarden/subsidies'
-  }
-];
-
-// 5 pillars aligned with USPs - with links to dedicated pages
-const pillars = [
-  {
-    icon: Recycle,
-    title: 'Hergebruik & Circulariteit',
-    description: 'Waar mogelijk behouden en hergebruiken we bestaand materiaal. Minder afval, meer karakter, lagere kosten.',
-    color: 'terracotta',
-    href: '/waarden/hergebruik',
-    cta: 'Bekijk voorbeelden'
-  },
-  {
-    icon: FileCheck,
-    title: 'Volledige Attestering',
-    description: 'AREI-conforme installaties, EPB-attesten en alle nodige certificaten. Premie-proof en zonder zorgen.',
-    color: 'forest',
-    href: '/waarden/attestering',
-    cta: 'Bekijk attesten & premies'
-  },
-  {
-    icon: CreditCard,
-    title: 'Betalingsspreiding',
-    description: 'Betaal in fasen per afgeronde mijlpaal. Transparant, eerlijk en overzichtelijk voor uw budget.',
-    color: 'sand',
-    href: '/waarden/betalingsspreiding',
-    cta: 'Bekijk betalingsplan'
-  },
-  {
-    icon: Shield,
-    title: 'Subsidie-ondersteuning',
-    description: 'We helpen bij het aanvragen van beschikbare premies en subsidies. Maximaal voordeel uit uw investering.',
-    color: 'terracotta',
-    href: '/waarden/subsidies',
-    cta: 'Bekijk premies'
-  },
-  {
-    icon: MessageSquare,
-    title: 'Heldere Communicatie',
-    description: 'Eén vast aanspreekpunt, regelmatige updates en duidelijke afspraken. U weet altijd waar u aan toe bent.',
-    color: 'stone',
-    href: '/waarden/communicatie',
-    cta: 'Bekijk werkwijze'
-  }
-];
-
-// Services
+// Services data
 const services = [
   {
     title: 'Totaalrenovatie',
-    description: 'Volledige renovatie van uw woning, van ruwbouw tot afwerking. Eén aanspreekpunt voor uw hele project.',
+    description: 'Volledige transformatie van uw woning. Van concept tot oplevering onder één dak.',
     href: '/diensten/totaalrenovatie',
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=400&fit=crop',
-    tag: 'Populair'
+    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop',
   },
   {
-    title: 'Renovatie & Verbouwing',
-    description: 'Gerichte renovaties en verbouwingen. Of het nu gaat om een badkamer, keuken of uitbreiding.',
+    title: 'Renovatie',
+    description: 'Gerichte verbouwingen en renovaties. Badkamer, keuken of uitbreiding.',
     href: '/diensten/renovatie',
-    image: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=600&h=400&fit=crop'
+    image: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&h=600&fit=crop',
   },
   {
     title: 'Afwerking',
-    description: 'Tegelwerk, plakwerk, schilderwerk en meer. Vakkundige afwerking die het verschil maakt.',
+    description: 'Tegelwerk, plakwerk en schilderwerk. Vakkundige afwerking die het verschil maakt.',
     href: '/diensten/afwerking',
-    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop'
+    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop',
   },
   {
     title: 'Technieken',
-    description: 'Sanitair en elektriciteit door erkende vakmensen. Veilig en volgens alle normen.',
+    description: 'Elektriciteit en sanitair door erkende vakmensen. Veilig en conform alle normen.',
     href: '/diensten/technieken',
-    image: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=600&h=400&fit=crop'
-  }
+    image: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800&h=600&fit=crop',
+  },
 ];
 
-// Projects
+// Featured projects
 const projects = [
   {
-    title: 'Herenhuis Gent-centrum',
+    title: 'Herenhuis Centrum',
     category: 'Totaalrenovatie',
     location: 'Gent',
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=400&fit=crop'
+    year: '2024',
+    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&h=800&fit=crop',
+    featured: true,
   },
   {
     title: 'Rijwoning Mariakerke',
     category: 'Renovatie & Afwerking',
     location: 'Mariakerke',
-    image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=600&h=400&fit=crop'
+    year: '2024',
+    image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&h=600&fit=crop',
   },
   {
-    title: 'Appartement Ledeberg',
+    title: 'Appartement Zuid',
     category: 'Badkamerrenovatie',
     location: 'Ledeberg',
-    image: 'https://images.unsplash.com/photo-1600566753051-f0b89df2dd90?w=600&h=400&fit=crop'
-  }
+    year: '2023',
+    image: 'https://images.unsplash.com/photo-1600566753051-f0b89df2dd90?w=800&h=600&fit=crop',
+  },
 ];
 
-// Process steps
-const processSteps = [
-  {
-    step: '01',
-    title: 'Intake',
-    description: 'Gratis kennismaking en bespreking van uw wensen en mogelijkheden.'
-  },
-  {
-    step: '02',
-    title: 'Voorstel & Offerte',
-    description: 'Gedetailleerde offerte met duidelijke scope en premie-proof opmaak.'
-  },
-  {
-    step: '03',
-    title: 'Uitvoering',
-    description: 'Vakkundige uitvoering met regelmatige updates en heldere communicatie.'
-  },
-  {
-    step: '04',
-    title: 'Oplevering & Nazorg',
-    description: 'Grondige oplevering en ondersteuning bij premieaanvragen en attesten.'
-  }
-];
-
-// Testimonials
-const testimonials = [
-  {
-    quote: "Nam Construction heeft onze volledige woning gerenoveerd met oog voor detail en duurzaamheid. De communicatie was uitstekend.",
-    author: "Sarah & Thomas",
-    location: "Gent-centrum",
-    rating: 5
-  },
-  {
-    quote: "Professioneel, betrouwbaar en vakkundig. De afwerking is prachtig en alles werd netjes opgeleverd.",
-    author: "Marc D.",
-    location: "Mariakerke",
-    rating: 5
-  },
-  {
-    quote: "Fijne samenwerking met duidelijke afspraken. Ze denken mee over duurzame oplossingen.",
-    author: "Familie Peeters",
-    location: "Ledeberg",
-    rating: 5
-  }
+// Value propositions
+const values = [
+  { number: '01', title: 'Vakmanschap', description: 'Ervaren vakmensen met oog voor detail' },
+  { number: '02', title: 'Transparantie', description: 'Heldere communicatie en eerlijke prijzen' },
+  { number: '03', title: 'Betrouwbaar', description: 'Afspraken nakomen, deadlines halen' },
+  { number: '04', title: 'Kwaliteit', description: 'Hoogwaardige materialen en afwerking' },
 ];
 
 export default function HomePage() {
   return (
     <>
-      {/* Hero Section - Full-bleed image/video background */}
-      <section className="relative min-h-screen flex items-center overflow-hidden">
-        {/* Full-bleed background image */}
+      {/* Hero Section - Full viewport, dramatic statement */}
+      <section className="relative h-screen flex items-center overflow-hidden">
+        {/* Background Image */}
         <div className="absolute inset-0">
           <Image
             src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&h=1080&fit=crop"
-            alt="Prachtig gerenoveerde woning"
+            alt="Gerenoveerd interieur"
             fill
             className="object-cover"
             priority
           />
-          {/* Dark overlay for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-r from-stone-900/80 via-stone-900/60 to-stone-900/40" />
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-noir-950/90 via-noir-950/70 to-noir-950/50" />
+          <div className="absolute inset-0 bg-gradient-to-t from-noir-950/50 via-transparent to-transparent" />
         </div>
 
-        {/* Video play button - hidden on mobile to avoid text overlap */}
-        <button className="hidden md:flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 group cursor-pointer">
-          <div className="w-28 h-28 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 transition-all duration-500 group-hover:scale-110 group-hover:bg-white/30">
-            <Play className="h-12 w-12 text-white ml-1" />
-          </div>
-        </button>
+        {/* Content */}
+        <div className="container-wide relative z-10">
+          <div className="max-w-4xl">
+            {/* Tagline */}
+            <div className="flex items-center gap-4 mb-8 animate-fade-up">
+              <div className="w-12 h-px bg-accent-500" />
+              <span className="text-sm font-medium text-accent-500 uppercase tracking-[0.2em]">
+                Renovatie in Gent
+              </span>
+            </div>
 
-        <div className="container-custom relative z-10 py-32 lg:py-40">
-          <div className="max-w-3xl">
-              {/* Minimal badge */}
-              <div className="inline-flex items-center gap-2 mb-10 animate-fade-up">
-                <span className="w-8 h-[2px] bg-terracotta-400" />
-                <span className="text-sm font-medium text-white/80 tracking-wide uppercase">Gent & omstreken</span>
-              </div>
+            {/* Main Statement - Ghelamco style */}
+            <h1 className="text-hero font-display text-white mb-8 animate-fade-up animation-delay-200">
+              WIJ BOUWEN<br />
+              <span className="text-accent-400">UW TOEKOMST</span>
+            </h1>
 
-              {/* Large aspirational heading */}
-              <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-display font-semibold text-white leading-[1.05] mb-10 animate-fade-up animation-delay-100">
-                Wonen met{' '}
-                <span className="text-terracotta-400">ziel</span>
-              </h1>
+            {/* Subtitle */}
+            <p className="text-xl md:text-2xl text-white/60 max-w-2xl mb-12 leading-relaxed font-light animate-fade-up animation-delay-300">
+              Vakkundige renovatie met oog voor detail en respect voor uw woning.
+              Van totaalrenovatie tot afwerking.
+            </p>
 
-              {/* Refined subtitle - shorter, more aspirational */}
-              <p className="text-xl md:text-2xl text-white/70 mb-12 leading-relaxed font-light animate-fade-up animation-delay-200">
-                Vakkundige renovatie met respect voor karakter.
-                Hergebruik waar het kan, perfectie waar het moet.
-              </p>
-
-              {/* Single prominent CTA */}
-              <div className="flex flex-col sm:flex-row gap-4 animate-fade-up animation-delay-300">
-                <Link
-                  href="/afspraak"
-                  className="group inline-flex items-center justify-center px-10 py-5 bg-terracotta-500 text-white rounded-full font-medium text-lg hover:bg-terracotta-400 transition-all duration-500 hover:shadow-xl hover:shadow-terracotta-500/30 hover:-translate-y-0.5"
-                >
-                  Plan gratis afspraak
-                  <ArrowRight className="h-5 w-5 ml-3 transition-transform duration-300 group-hover:translate-x-1" />
-                </Link>
-                <a
-                  href="tel:+32493812789"
-                  className="inline-flex items-center justify-center px-8 py-5 text-white/80 font-medium hover:text-white transition-colors duration-300"
-                >
-                  <Phone className="h-5 w-5 mr-2" />
-                  +32 493 81 27 89
-                </a>
-              </div>
-
-              {/* Minimal trust indicators */}
-              <div className="mt-16 flex flex-wrap items-center gap-4 md:gap-8 text-sm text-white/60 animate-fade-up animation-delay-400">
-                <span>10+ jaar ervaring</span>
-                <span className="w-1 h-1 rounded-full bg-white/40 hidden md:block" />
-                <span>50+ projecten</span>
-                <span className="w-1 h-1 rounded-full bg-white/40 hidden md:block" />
-                <span>Lokaal vakmanschap</span>
-              </div>
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 animate-fade-up animation-delay-400">
+              <Link
+                href="/offerte"
+                className="group inline-flex items-center justify-center gap-3 px-8 py-5 bg-white text-noir-900 font-medium uppercase tracking-wide hover:bg-accent-500 hover:text-white transition-all duration-500"
+              >
+                Offerte aanvragen
+                <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
+              <Link
+                href="/projecten"
+                className="group inline-flex items-center justify-center gap-3 px-8 py-5 border border-white/30 text-white font-medium uppercase tracking-wide hover:bg-white hover:text-noir-900 transition-all duration-500"
+              >
+                Bekijk projecten
+                <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
+            </div>
           </div>
         </div>
 
-        {/* Scroll indicator - white for dark bg */}
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-10">
-          <div className="w-5 h-8 rounded-full border border-white/30 flex items-start justify-center p-1.5">
-            <div className="w-1 h-2 rounded-full bg-white/50 animate-bounce" />
-          </div>
+        {/* Scroll indicator */}
+        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-10 animate-bounce">
+          <ChevronDown className="h-8 w-8 text-white/50" />
         </div>
       </section>
 
-      {/* USP Trust Bar - Simplified, Brightstone-inspired */}
-      <section className="bg-white border-y border-sand-100 py-6 md:py-8">
-        <div className="container-custom">
-          <div className="flex gap-8 overflow-x-auto pb-2 md:pb-0 md:justify-center lg:justify-between scrollbar-hide">
-            {usps.map((usp) => (
-              <Link
-                key={usp.title}
-                href={usp.href}
-                className="flex items-center gap-3 group min-w-max transition-all duration-300 hover:opacity-70"
-              >
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 ${
-                  usp.color === 'forest' ? 'bg-forest-100' :
-                  usp.color === 'terracotta' ? 'bg-terracotta-100' :
-                  'bg-sand-100'
-                }`}>
-                  <usp.icon className={`h-5 w-5 ${
-                    usp.color === 'forest' ? 'text-forest-600' :
-                    usp.color === 'terracotta' ? 'text-terracotta-600' :
-                    'text-sand-700'
-                  }`} />
-                </div>
-                <span className="font-medium text-stone-700 text-sm">{usp.title}</span>
-              </Link>
+      {/* Value Propositions - Clean, minimal */}
+      <section className="py-20 md:py-28 bg-white border-b border-noir-100">
+        <div className="container-wide">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+            {values.map((value, index) => (
+              <div key={value.number} className="group">
+                <span className="text-sm text-accent-500 font-medium mb-3 block">
+                  {value.number}
+                </span>
+                <h3 className="text-xl md:text-2xl font-display font-medium text-noir-900 mb-2">
+                  {value.title}
+                </h3>
+                <p className="text-noir-500 text-sm leading-relaxed">
+                  {value.description}
+                </p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 5 Pillars Section - Clean & Minimal */}
-      <section className="py-24 md:py-32 bg-cream-50 relative overflow-hidden">
-        <div className="container-custom relative">
-          {/* Minimal section header */}
-          <div className="max-w-2xl mb-16">
-            <div className="inline-flex items-center gap-2 mb-4">
-              <span className="w-8 h-[2px] bg-terracotta-400" />
-              <span className="text-sm font-medium text-terracotta-600 tracking-wide uppercase">Onze waarden</span>
+      {/* Services Section */}
+      <section className="section-padding bg-ivory-200">
+        <div className="container-wide">
+          {/* Section Header */}
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-16">
+            <div>
+              <span className="text-sm text-accent-500 font-medium uppercase tracking-[0.2em] mb-4 block">
+                Diensten
+              </span>
+              <h2 className="text-display-lg font-display font-medium text-noir-900">
+                Wat wij doen
+              </h2>
             </div>
-            <h2 className="text-4xl md:text-5xl font-display font-semibold text-stone-900 mb-6">
-              Waarvoor we staan
-            </h2>
-            <p className="text-xl text-stone-500">
-              Vijf pijlers die elk project vormgeven.
-            </p>
+            <Link
+              href="/diensten"
+              className="group inline-flex items-center gap-2 text-noir-600 hover:text-noir-900 font-medium transition-colors duration-300"
+            >
+              Alle diensten bekijken
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {pillars.map((pillar) => (
-              <Link
-                key={pillar.title}
-                href={pillar.href}
-                className="group relative bg-white rounded-2xl p-8 border border-sand-100 transition-all duration-500 hover:shadow-xl hover:-translate-y-2 hover:border-transparent overflow-hidden"
-              >
-                {/* Hover background effect */}
-                <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${
-                  pillar.color === 'forest' ? 'bg-gradient-to-br from-forest-50 to-transparent' :
-                  pillar.color === 'terracotta' ? 'bg-gradient-to-br from-terracotta-50 to-transparent' :
-                  pillar.color === 'sand' ? 'bg-gradient-to-br from-sand-50 to-transparent' :
-                  'bg-gradient-to-br from-stone-50 to-transparent'
-                }`} />
-
-                <div className="relative">
-                  {/* Icon */}
-                  <div className={`w-14 h-14 rounded-xl flex items-center justify-center mb-6 transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 ${
-                    pillar.color === 'forest' ? 'bg-forest-100' :
-                    pillar.color === 'terracotta' ? 'bg-terracotta-100' :
-                    pillar.color === 'sand' ? 'bg-sand-100' :
-                    'bg-stone-100'
-                  }`}>
-                    <pillar.icon className={`h-7 w-7 ${
-                      pillar.color === 'forest' ? 'text-forest-600' :
-                      pillar.color === 'terracotta' ? 'text-terracotta-600' :
-                      pillar.color === 'sand' ? 'text-sand-700' :
-                      'text-stone-600'
-                    }`} />
-                  </div>
-                  <h3 className="text-xl font-display font-semibold text-stone-900 mb-3">{pillar.title}</h3>
-                  <p className="text-stone-600 leading-relaxed mb-6">{pillar.description}</p>
-
-                  {/* CTA Link with arrow animation */}
-                  <span className="inline-flex items-center text-sm font-medium text-stone-500 group-hover:text-forest-600 transition-colors duration-300">
-                    {pillar.cta}
-                    <ArrowRight className="h-4 w-4 ml-2 transition-all duration-300 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0" />
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Services Section - Clean Grid */}
-      <section className="py-24 md:py-32 bg-white relative">
-        <div className="container-custom">
-          {/* Minimal section header */}
-          <div className="max-w-2xl mb-16">
-            <div className="inline-flex items-center gap-2 mb-4">
-              <span className="w-8 h-[2px] bg-forest-500" />
-              <span className="text-sm font-medium text-forest-600 tracking-wide uppercase">Wat we doen</span>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-display font-semibold text-stone-900 mb-6">
-              Onze diensten
-            </h2>
-            <p className="text-xl text-stone-500">
-              Van totaalrenovatie tot vakkundige afwerking.
-            </p>
-          </div>
-
+          {/* Services Grid */}
           <div className="grid md:grid-cols-2 gap-6">
-            {services.map((service) => (
+            {services.map((service, index) => (
               <Link
                 key={service.title}
                 href={service.href}
-                className="group relative rounded-2xl overflow-hidden aspect-[16/10] border border-sand-100 hover:border-transparent transition-all duration-500"
+                className="group relative overflow-hidden bg-white"
               >
                 {/* Image */}
-                <Image
-                  src={service.image}
-                  alt={service.title}
-                  fill
-                  className="object-cover transition-all duration-700 group-hover:scale-105"
-                />
-
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-stone-900/80 via-stone-900/40 to-stone-900/10 group-hover:from-stone-900/90 transition-all duration-300" />
-
-                {/* Tag */}
-                {service.tag && (
-                  <div className="absolute top-5 left-5">
-                    <span className="px-3 py-1 bg-terracotta-500 text-white rounded-full text-xs font-medium">
-                      {service.tag}
-                    </span>
-                  </div>
-                )}
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  <Image
+                    src={service.image}
+                    alt={service.title}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-noir-900/30 group-hover:bg-noir-900/50 transition-colors duration-500" />
+                </div>
 
                 {/* Content */}
-                <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
-                  <h3 className="text-2xl md:text-3xl font-display font-semibold text-white mb-2">
+                <div className="p-6 md:p-8">
+                  <h3 className="text-2xl font-display font-medium text-noir-900 mb-2 group-hover:text-accent-600 transition-colors duration-300">
                     {service.title}
                   </h3>
-                  <p className="text-white/70 mb-4 max-w-md">{service.description}</p>
-                  <span className="inline-flex items-center text-white font-medium opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-                    Meer ontdekken
-                    <ArrowRight className="h-4 w-4 ml-2 transition-transform group-hover:translate-x-1" />
+                  <p className="text-noir-500 mb-4">
+                    {service.description}
+                  </p>
+                  <span className="inline-flex items-center gap-2 text-sm font-medium text-noir-400 group-hover:text-accent-500 transition-colors duration-300">
+                    Meer info
+                    <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </span>
                 </div>
               </Link>
             ))}
           </div>
-
-          <div className="text-center mt-12">
-            <Link
-              href="/diensten"
-              className="group inline-flex items-center px-6 py-3 border border-stone-200 rounded-full font-medium text-stone-600 hover:border-forest-600 hover:text-forest-700 transition-all duration-300"
-            >
-              Bekijk alle diensten
-              <ArrowRight className="h-4 w-4 ml-2 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
-            </Link>
-          </div>
         </div>
       </section>
 
-      {/* Projects Section - Prominent Gallery */}
-      <section className="py-24 md:py-32 bg-stone-900 relative overflow-hidden">
-        <div className="container-custom relative">
-          {/* Header with CTA */}
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-16">
-            <div className="max-w-xl">
-              <div className="inline-flex items-center gap-2 mb-4">
-                <span className="w-8 h-[2px] bg-terracotta-400" />
-                <span className="text-sm font-medium text-terracotta-400 tracking-wide uppercase">Portfolio</span>
-              </div>
-              <h2 className="text-4xl md:text-5xl font-display font-semibold text-white mb-4">
+      {/* Projects Section - Portfolio focus */}
+      <section className="section-padding bg-noir-900">
+        <div className="container-wide">
+          {/* Section Header */}
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-16">
+            <div>
+              <span className="text-sm text-accent-500 font-medium uppercase tracking-[0.2em] mb-4 block">
+                Portfolio
+              </span>
+              <h2 className="text-display-lg font-display font-medium text-white">
                 Recente projecten
               </h2>
-              <p className="text-lg text-stone-400">
-                Een selectie van realisaties in Gent en omstreken.
-              </p>
             </div>
             <Link
               href="/projecten"
-              className="group inline-flex items-center px-6 py-3 bg-white rounded-full font-medium text-stone-900 hover:bg-terracotta-400 hover:text-white transition-all duration-300 mt-8 md:mt-0"
+              className="group inline-flex items-center gap-2 text-white/60 hover:text-white font-medium transition-colors duration-300"
             >
-              Bekijk alle projecten
-              <ArrowRight className="h-4 w-4 ml-2 transition-transform group-hover:translate-x-1" />
+              Alle projecten bekijken
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </div>
 
-          {/* Large project grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          {/* Projects Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project, index) => (
               <Link
                 key={project.title}
                 href="/projecten"
-                className={`group relative rounded-2xl overflow-hidden ${
-                  index === 0 ? 'md:col-span-2 md:row-span-2 aspect-[4/3] md:aspect-auto md:h-full' : 'aspect-[4/3]'
+                className={`group relative overflow-hidden ${
+                  project.featured ? 'md:col-span-2 lg:col-span-2 lg:row-span-2' : ''
                 }`}
               >
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  fill
-                  className="object-cover transition-all duration-700 group-hover:scale-105"
-                />
-                {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-stone-900/90 via-stone-900/30 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
+                {/* Image */}
+                <div className={`relative overflow-hidden ${
+                  project.featured ? 'aspect-[16/10] lg:aspect-auto lg:h-full' : 'aspect-[4/3]'
+                }`}>
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-noir-900/80 via-noir-900/20 to-transparent" />
+                </div>
 
-                {/* Content - revealed on hover */}
+                {/* Content Overlay */}
                 <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
-                  {/* Category tag */}
-                  <span className="inline-block w-fit px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-xs font-medium text-white mb-3 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                  <span className="text-xs text-accent-400 font-medium uppercase tracking-wider mb-2">
                     {project.category}
                   </span>
-                  <h3 className={`font-display font-semibold text-white mb-2 ${
-                    index === 0 ? 'text-2xl md:text-3xl' : 'text-xl'
+                  <h3 className={`font-display font-medium text-white mb-2 ${
+                    project.featured ? 'text-3xl md:text-4xl' : 'text-2xl'
                   }`}>
                     {project.title}
                   </h3>
-                  <div className="flex items-center gap-2 text-white/70 text-sm">
-                    <MapPin className="h-4 w-4" />
-                    {project.location}
-                    <ArrowRight className="h-4 w-4 ml-auto opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
+                  <div className="flex items-center gap-4 text-white/60 text-sm">
+                    <span className="flex items-center gap-1">
+                      <MapPin className="h-3 w-3" />
+                      {project.location}
+                    </span>
+                    <span>{project.year}</span>
                   </div>
                 </div>
               </Link>
@@ -510,57 +282,36 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Testimonials Section - Clean */}
-      <section className="py-24 md:py-32 bg-white relative">
-        <div className="container-custom relative">
-          {/* Minimal section header */}
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <div className="inline-flex items-center gap-2 mb-4 justify-center">
-              <span className="w-8 h-[2px] bg-terracotta-300" />
-              <span className="text-sm font-medium text-terracotta-500 tracking-wide uppercase">Ervaringen</span>
-              <span className="w-8 h-[2px] bg-terracotta-300" />
-            </div>
-            <h2 className="text-4xl md:text-5xl font-display font-semibold text-stone-900">
-              Wat klanten zeggen
+      {/* CTA Section - Clean, impactful */}
+      <section className="py-32 md:py-40 bg-white relative overflow-hidden">
+        <div className="container-wide">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-display-xl font-display font-medium text-noir-900 mb-6">
+              Klaar om te beginnen?
             </h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            {testimonials.map((testimonial, index) => (
-              <div
-                key={index}
-                className="relative bg-cream-50 rounded-2xl p-8 border border-sand-100 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+            <p className="text-xl text-noir-500 mb-12 max-w-xl mx-auto">
+              Neem contact op voor een vrijblijvend adviesgesprek.
+              Wij denken graag met u mee over uw renovatieproject.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                href="/offerte"
+                className="group inline-flex items-center justify-center gap-3 px-10 py-5 bg-noir-900 text-white font-medium uppercase tracking-wide hover:bg-accent-500 transition-all duration-500"
               >
-                {/* Stars */}
-                <div className="flex gap-1 mb-6">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="h-4 w-4 text-terracotta-400 fill-current" />
-                  ))}
-                </div>
-
-                <blockquote className="text-stone-700 mb-8 leading-relaxed text-lg">
-                  &ldquo;{testimonial.quote}&rdquo;
-                </blockquote>
-
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-forest-100 flex items-center justify-center">
-                    <span className="font-semibold text-forest-600 text-sm">
-                      {testimonial.author.charAt(0)}
-                    </span>
-                  </div>
-                  <div>
-                    <p className="font-medium text-stone-900">{testimonial.author}</p>
-                    <p className="text-sm text-stone-500">{testimonial.location}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
+                Offerte aanvragen
+                <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
+              <Link
+                href="/afspraak"
+                className="group inline-flex items-center justify-center gap-3 px-10 py-5 border border-noir-300 text-noir-900 font-medium uppercase tracking-wide hover:bg-noir-900 hover:text-white hover:border-noir-900 transition-all duration-500"
+              >
+                Plan afspraak
+                <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
+            </div>
           </div>
         </div>
       </section>
-
-      {/* CTA Banner */}
-      <CTABanner variant="dark" />
     </>
   );
 }

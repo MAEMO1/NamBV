@@ -1,23 +1,23 @@
 import type { Metadata } from "next";
-import { fraunces, outfit } from "@/lib/fonts";
+import { dmSans, playfair } from "@/lib/fonts";
 import { Header, Footer } from "@/components";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Nam Construction | Duurzaam Renoveren in Gent",
+    default: "Nam Construction | Vakkundige Renovatie in Gent",
     template: "%s | Nam Construction"
   },
-  description: "Duurzaam renoveren in Gent met kwaliteitsafwerking en heldere opvolging. Circulair waar het kan, perfect afgewerkt waar het moet. Gratis adviesgesprek.",
-  keywords: ["renovatie Gent", "duurzaam renoveren", "aannemer Gent", "totaalrenovatie", "afwerking", "ecologisch bouwen"],
+  description: "Vakkundige renovatie in Gent met oog voor detail en duurzaamheid. Van totaalrenovatie tot afwerking. Vraag een gratis adviesgesprek aan.",
+  keywords: ["renovatie Gent", "aannemer Gent", "totaalrenovatie", "verbouwing", "renovatiebedrijf"],
   authors: [{ name: "Nam Construction" }],
   openGraph: {
     type: "website",
     locale: "nl_BE",
     url: "https://namconstruction.be",
     siteName: "Nam Construction",
-    title: "Nam Construction | Duurzaam Renoveren in Gent",
-    description: "Duurzaam renoveren in Gent met kwaliteitsafwerking en heldere opvolging. Circulair waar het kan, perfect afgewerkt waar het moet.",
+    title: "Nam Construction | Vakkundige Renovatie in Gent",
+    description: "Vakkundige renovatie in Gent met oog voor detail en duurzaamheid. Van totaalrenovatie tot afwerking.",
   },
 };
 
@@ -27,13 +27,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="nl" className={`${fraunces.variable} ${outfit.variable}`}>
+    <html lang="nl" className={`${dmSans.variable} ${playfair.variable}`}>
       <body className="font-sans">
-        {/* Subtle grain texture overlay */}
-        <div className="grain-overlay" aria-hidden="true" />
+        {/* Subtle noise texture overlay */}
+        <div className="noise-overlay" aria-hidden="true" />
 
         <Header />
-        <main className="pt-24">
+        <main>
           {children}
         </main>
         <Footer />
