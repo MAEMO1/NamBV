@@ -172,3 +172,9 @@
     aspect-ratio: 2.35 / 1;
   }
 }
+
+/* Offerte page - hide main header and footer */
+body.offerte-page > header,
+body.offerte-page > footer {
+  display: none !important;
+}

@@ -2,18 +2,27 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { Menu, X, ArrowUpRight } from 'lucide-react';
 
 const navigation = [
   { name: 'Home', href: '/' },
   { name: 'Diensten', href: '/diensten' },
   { name: 'Projecten', href: '/projecten' },
+  { name: 'Afspraak', href: '/afspraak' },
   { name: 'Contact', href: '/contact' },
 ];
+
+// Pages with dark hero backgrounds where transparent header with white text works
+const darkHeroPages = ['/', '/projecten'];
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+
+  // Check if current page has a dark hero
+  const hasDarkHero = darkHeroPages.includes(pathname);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,11 +44,14 @@ export default function Header() {
     };
   }, [mobileMenuOpen]);
 
+  // Determine if we should use dark text (scrolled OR on light pages)
+  const useDarkText = scrolled || !hasDarkHero;
+
   return (
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-smooth ${
-          scrolled
+          scrolled || !hasDarkHero
             ? 'bg-white/95 backdrop-blur-md'
             : 'bg-transparent'
         }`}
@@ -50,18 +62,18 @@ export default function Header() {
             <Link href="/" className="relative z-10 group">
               <div className="flex items-center gap-1">
                 <span className={`text-2xl md:text-3xl font-display font-semibold tracking-tight transition-colors duration-500 ${
-                  scrolled || mobileMenuOpen ? 'text-noir-900' : 'text-white'
+                  useDarkText || mobileMenuOpen ? 'text-noir-900' : 'text-white'
                 }`}>
                   NAM
                 </span>
                 <span className={`text-2xl md:text-3xl font-display font-normal tracking-tight transition-colors duration-500 ${
-                  scrolled || mobileMenuOpen ? 'text-noir-400' : 'text-white/60'
+                  useDarkText || mobileMenuOpen ? 'text-noir-400' : 'text-white/60'
                 }`}>
                   CONSTRUCTION
                 </span>
               </div>
               <span className={`text-[10px] uppercase tracking-[0.2em] transition-colors duration-500 ${
-                scrolled || mobileMenuOpen ? 'text-accent-500' : 'text-accent-400'
+                useDarkText || mobileMenuOpen ? 'text-accent-500' : 'text-accent-400'
               }`}>
                 Renovatie & Afwerking
               </span>
@@ -73,8 +85,8 @@ export default function Header() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`px-5 py-2 text-sm font-medium tracking-wide uppercase transition-all duration-300 ${
-                    scrolled
+                  className={`px-4 py-2 text-sm font-medium tracking-wide uppercase transition-all duration-300 ${
+                    useDarkText
                       ? 'text-noir-600 hover:text-noir-900'
                       : 'text-white/80 hover:text-white'
                   }`}
@@ -89,7 +101,7 @@ export default function Header() {
               <Link
                 href="/offerte"
                 className={`group inline-flex items-center gap-2 px-6 py-3 text-sm font-medium uppercase tracking-wide transition-all duration-500 ${
-                  scrolled
+                  useDarkText
                     ? 'bg-noir-900 text-white hover:bg-accent-500'
                     : 'bg-white text-noir-900 hover:bg-accent-500 hover:text-white'
                 }`}
@@ -103,7 +115,7 @@ export default function Header() {
             <button
               type="button"
               className={`relative z-10 lg:hidden w-12 h-12 flex items-center justify-center transition-colors duration-300 ${
-                scrolled || mobileMenuOpen
+                useDarkText || mobileMenuOpen
                   ? 'text-noir-900'
                   : 'text-white'
               }`}
