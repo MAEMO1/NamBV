@@ -1,0 +1,236 @@
+// Nam Construction - Prisma Schema
+// Database: PostgreSQL (recommended) or MySQL
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ============================================================================
+// ENUMS
+// ============================================================================
+
+enum UserRole {
+  SUPERADMIN
+  ADMIN
+}
+
+enum QuoteStatus {
+  NEW
+  CONTACTED
+  SITE_VISIT
+  QUOTE_SENT
+  NEGOTIATING
+  WON
+  LOST
+  CANCELLED
+}
+
+enum BudgetRange {
+  UNDER_10K
+  RANGE_10K_25K
+  RANGE_25K_50K
+  RANGE_50K_100K
+  OVER_100K
+  UNKNOWN
+}
+
+// ============================================================================
+// USERS - Admin accounts
+// ============================================================================
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String    @map("password_hash")
+  fullName     String    @map("full_name")
+  role         UserRole  @default(ADMIN)
+  isActive     Boolean   @default(true) @map("is_active")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+  lastLogin    DateTime? @map("last_login")
+
+  // Relations
+  assignedQuotes  QuoteRequest[]       @relation("AssignedQuotes")
+  createdServices ServiceType[]        @relation("CreatedServices")
+  notes           QuoteNote[]
+  statusChanges   QuoteStatusHistory[] @relation("ChangedBy")
+
+  @@map("users")
+}
+
+// ============================================================================
+// SERVICE TYPES - Renovation categories (rubrieken)
+// ============================================================================
+
+model ServiceType {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  icon        String?
+  isActive    Boolean  @default(true) @map("is_active")
+  sortOrder   Int      @default(0) @map("sort_order")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  createdBy   User?                    @relation("CreatedServices", fields: [createdById], references: [id])
+  createdById String?                  @map("created_by")
+  quotes      QuoteServiceSelection[]
+
+  @@index([isActive, sortOrder])
+  @@map("service_types")
+}
+
+// ============================================================================
+// PROPERTY TYPES - Housing types
+// ============================================================================
+
+model PropertyType {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  sortOrder Int      @default(0) @map("sort_order")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  quotes QuoteRequest[]
+
+  @@map("property_types")
+}
+
+// ============================================================================
+// QUOTE REQUESTS - Main entity for quote submissions
+// ============================================================================
+
+model QuoteRequest {
+  id              String       @id @default(cuid())
+  referenceNumber String       @unique @map("reference_number")
+  status          QuoteStatus  @default(NEW)
+
+  // Contact info
+  fullName        String       @map("full_name")
+  email           String
+  phone           String
+  postalCode      String       @map("postal_code")
+  city            String?
+  streetAddress   String?      @map("street_address")
+
+  // Project details
+  description     String       @db.Text
+  preferredStart  String?      @map("preferred_start")
+  budgetRange     BudgetRange? @map("budget_range")
+  gdprConsent     Boolean      @default(false) @map("gdpr_consent")
+
+  // Timestamps
+  createdAt       DateTime     @default(now()) @map("created_at")
+  updatedAt       DateTime     @updatedAt @map("updated_at")
+  convertedAt     DateTime?    @map("converted_at")
+
+  // Soft delete
+  deletedAt       DateTime?    @map("deleted_at")
+
+  // Relations
+  propertyType    PropertyType?           @relation(fields: [propertyTypeId], references: [id])
+  propertyTypeId  String?                 @map("property_type_id")
+  assignedTo      User?                   @relation("AssignedQuotes", fields: [assignedToId], references: [id])
+  assignedToId    String?                 @map("assigned_to")
+  services        QuoteServiceSelection[]
+  photos          QuotePhoto[]
+  notes           QuoteNote[]
+  statusHistory   QuoteStatusHistory[]
+
+  // Indexes for common queries
+  @@index([status])
+  @@index([createdAt(sort: Desc)])
+  @@index([postalCode])
+  @@index([assignedToId])
+  @@index([deletedAt])
+  @@map("quote_requests")
+}
+
+// ============================================================================
+// QUOTE SERVICE SELECTIONS - Many-to-many relation
+// ============================================================================
+
+model QuoteServiceSelection {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  quote         QuoteRequest @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  quoteId       String       @map("quote_id")
+  serviceType   ServiceType  @relation(fields: [serviceTypeId], references: [id], onDelete: Cascade)
+  serviceTypeId String       @map("service_type_id")
+
+  @@unique([quoteId, serviceTypeId])
+  @@map("quote_service_selections")
+}
+
+// ============================================================================
+// QUOTE PHOTOS - Uploaded images
+// ============================================================================
+
+model QuotePhoto {
+  id         String   @id @default(cuid())
+  filePath   String   @map("file_path")
+  fileName   String   @map("file_name")
+  fileSize   Int      @map("file_size")
+  mimeType   String   @map("mime_type")
+  uploadedAt DateTime @default(now()) @map("uploaded_at")
+
+  // Relations
+  quote   QuoteRequest @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  quoteId String       @map("quote_id")
+
+  @@index([quoteId])
+  @@map("quote_photos")
+}
+
+// ============================================================================
+// QUOTE NOTES - Internal admin notes
+// ============================================================================
+
+model QuoteNote {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  quote   QuoteRequest @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  quoteId String       @map("quote_id")
+  user    User         @relation(fields: [userId], references: [id])
+  userId  String       @map("user_id")
+
+  @@index([quoteId, createdAt(sort: Desc)])
+  @@map("quote_notes")
+}
+
+// ============================================================================
+// QUOTE STATUS HISTORY - Audit trail for status changes
+// ============================================================================
+
+model QuoteStatusHistory {
+  id         String       @id @default(cuid())
+  fromStatus QuoteStatus? @map("from_status")
+  toStatus   QuoteStatus  @map("to_status")
+  reason     String?      @db.Text
+  changedAt  DateTime     @default(now()) @map("changed_at")
+
+  // Relations
+  quote       QuoteRequest @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  quoteId     String       @map("quote_id")
+  changedBy   User         @relation("ChangedBy", fields: [changedById], references: [id])
+  changedById String       @map("changed_by")
+
+  @@index([quoteId, changedAt(sort: Desc)])
+  @@map("quote_status_history")
+}
