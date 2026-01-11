@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" fill="none">
+  <!-- Architectural mark - stylized building/house with N shape -->
+  <g id="mark">
+    <!-- Left pillar -->
+    <rect x="8" y="12" width="6" height="36" fill="currentColor"/>
+    <!-- Diagonal connector -->
+    <polygon points="14,12 14,20 32,48 32,40" fill="currentColor"/>
+    <!-- Right pillar -->
+    <rect x="32" y="12" width="6" height="36" fill="currentColor"/>
+    <!-- Roof accent -->
+    <polygon points="4,12 23,0 42,12 38,12 23,4 8,12" fill="#6b7f54"/>
+  </g>
+
+  <!-- Company name -->
+  <g id="wordmark" font-family="Georgia, serif">
+    <!-- NAM -->
+    <text x="52" y="32" font-size="24" font-weight="600" fill="currentColor" letter-spacing="-1">NAM</text>
+    <!-- CONSTRUCTION -->
+    <text x="52" y="48" font-size="11" font-weight="400" fill="currentColor" letter-spacing="3" opacity="0.7">CONSTRUCTION</text>
+  </g>
+</svg>

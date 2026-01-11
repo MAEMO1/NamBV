@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Phone, Mail, MapPin, ArrowUpRight, Instagram } from 'lucide-react';
+import Logo from './Logo';
 
 const navigation = {
   diensten: [
@@ -25,17 +26,7 @@ export default function Footer() {
           <div className="lg:col-span-5">
             {/* Logo */}
             <Link href="/" className="inline-block mb-8">
-              <div className="flex items-center gap-1">
-                <span className="text-3xl font-display font-semibold tracking-tight text-white">
-                  NAM
-                </span>
-                <span className="text-3xl font-display font-normal tracking-tight text-white/40">
-                  CONSTRUCTION
-                </span>
-              </div>
-              <span className="text-[10px] uppercase tracking-[0.2em] text-accent-500">
-                Renovatie & Afwerking
-              </span>
+              <Logo color="light" showTagline={true} />
             </Link>
 
             <p className="text-noir-400 mb-8 max-w-sm leading-relaxed">

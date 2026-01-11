@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <rect width="32" height="32" rx="6" fill="#1c1917"/>
+  <g transform="translate(4, 6)">
+    <!-- Left pillar -->
+    <rect x="4" y="6" width="4" height="14" fill="white"/>
+    <!-- Diagonal connector -->
+    <polygon points="8,6 8,10 18,20 18,16" fill="white"/>
+    <!-- Right pillar -->
+    <rect x="18" y="6" width="4" height="14" fill="white"/>
+    <!-- Roof accent -->
+    <polygon points="2,6 13,0 24,6 22,6 13,2 4,6" fill="#6b7f54"/>
+  </g>
+</svg>

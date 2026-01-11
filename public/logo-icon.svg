@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <!-- Architectural N mark with roof -->
+  <g id="mark">
+    <!-- Left pillar -->
+    <rect x="8" y="14" width="7" height="28" fill="currentColor"/>
+    <!-- Diagonal connector -->
+    <polygon points="15,14 15,24 33,42 33,32" fill="currentColor"/>
+    <!-- Right pillar -->
+    <rect x="33" y="14" width="7" height="28" fill="currentColor"/>
+    <!-- Roof accent with green -->
+    <polygon points="4,14 24,2 44,14 40,14 24,6 8,14" fill="#6b7f54"/>
+  </g>
+</svg>
