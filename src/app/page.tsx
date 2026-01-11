@@ -359,89 +359,43 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Kernwaarden Section - The 5 Pillars */}
-      <section className="py-24 md:py-32 bg-noir-950 relative overflow-hidden">
-        {/* Decorative background */}
-        <div className="absolute inset-0">
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-noir-800 to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-noir-800 to-transparent" />
-
-          {/* Pentagon pattern - subtle 5-fold geometry */}
-          <svg className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] opacity-[0.02]" viewBox="0 0 400 400">
-            <polygon points="200,20 380,140 330,350 70,350 20,140" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-accent-500" />
-            <polygon points="200,60 340,155 300,320 100,320 60,155" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-accent-500" />
-            <polygon points="200,100 300,170 270,290 130,290 100,170" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-accent-500" />
-          </svg>
-        </div>
-
-        <div className="container-wide relative">
-          {/* Section Header */}
-          <div className="text-center mb-16 md:mb-20">
-            <div className="inline-flex items-center gap-3 mb-6">
-              <span className="w-8 h-px bg-accent-500/50" />
-              <span className="text-sm text-accent-500 font-medium uppercase tracking-[0.3em]">
-                Onze Waarden
-              </span>
-              <span className="w-8 h-px bg-accent-500/50" />
+      {/* Kernwaarden Section - Refined horizontal strip */}
+      <section className="py-16 md:py-20 bg-noir-950 relative overflow-hidden border-y border-noir-900">
+        <div className="container-wide">
+          {/* Compact header */}
+          <div className="flex items-center justify-between mb-10">
+            <div className="flex items-center gap-4">
+              <span className="text-accent-500 font-display text-5xl md:text-6xl font-medium">5</span>
+              <div>
+                <span className="text-xs text-accent-500/60 uppercase tracking-[0.3em] block mb-1">Kernwaarden</span>
+                <span className="text-white/60 text-sm">Ons fundament voor elk project</span>
+              </div>
             </div>
-            <h2 className="text-display-lg font-display font-medium text-white mb-4">
-              Gebouwd op <span className="text-accent-400">5 pijlers</span>
-            </h2>
-            <p className="text-lg text-white/50 max-w-2xl mx-auto">
-              Elke renovatie rust op een fundament van waarden die we nooit uit het oog verliezen.
-            </p>
           </div>
 
-          {/* Values Grid - Elegant cards */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6">
+          {/* Horizontal values strip */}
+          <div className="flex flex-wrap md:flex-nowrap gap-0 border-t border-noir-800">
             {kernwaarden.map((waarde, index) => (
               <Link
                 key={waarde.id}
                 href={waarde.href}
-                className="group relative bg-noir-900/50 backdrop-blur-sm border border-noir-800/50 p-6 md:p-8 hover:border-accent-500/30 hover:bg-noir-900/80 transition-all duration-500"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                className="group flex-1 min-w-[200px] md:min-w-0 py-8 px-6 border-b md:border-b-0 md:border-r border-noir-800 last:border-r-0 last:border-b-0 hover:bg-noir-900/50 transition-all duration-300"
               >
-                {/* Number indicator */}
-                <div className="absolute top-4 right-4 text-xs font-medium text-accent-500/30 tracking-wider">
-                  0{index + 1}
+                <div className="flex items-start gap-4">
+                  <span className="text-accent-500/20 font-display text-2xl font-medium group-hover:text-accent-500/40 transition-colors">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <div className="flex-1">
+                    <h3 className="text-white font-medium mb-2 group-hover:text-accent-400 transition-colors duration-300">
+                      {waarde.shortTitle}
+                    </h3>
+                    <p className="text-white/30 text-sm leading-relaxed group-hover:text-white/50 transition-colors duration-300">
+                      {waarde.description}
+                    </p>
+                  </div>
                 </div>
-
-                {/* Icon */}
-                <div className="mb-6 opacity-80 group-hover:opacity-100 transition-opacity duration-300">
-                  {waarde.icon}
-                </div>
-
-                {/* Title */}
-                <h3 className="text-lg font-display font-medium text-white mb-3 group-hover:text-accent-400 transition-colors duration-300">
-                  {waarde.shortTitle}
-                </h3>
-
-                {/* Description - Hidden on smaller cards, visible on hover */}
-                <p className="text-sm text-white/40 leading-relaxed line-clamp-3 group-hover:text-white/60 transition-colors duration-300">
-                  {waarde.description}
-                </p>
-
-                {/* Hover indicator */}
-                <div className="mt-4 flex items-center gap-2 text-xs text-accent-500 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-                  <span className="font-medium uppercase tracking-wider">Meer info</span>
-                  <ArrowRight className="h-3 w-3" />
-                </div>
-
-                {/* Bottom accent line */}
-                <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent-500 to-transparent opacity-0 group-hover:opacity-50 transition-opacity duration-500" />
               </Link>
             ))}
-          </div>
-
-          {/* Bottom CTA */}
-          <div className="text-center mt-12">
-            <Link
-              href="/waarden"
-              className="group inline-flex items-center gap-3 text-white/50 hover:text-white font-medium transition-colors duration-300"
-            >
-              <span className="border-b border-current pb-1">Ontdek al onze waarden</span>
-              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-2" />
-            </Link>
           </div>
         </div>
       </section>
