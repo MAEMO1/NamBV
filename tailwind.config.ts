@@ -9,42 +9,42 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Sophisticated monochrome palette with cyan accent
+        // Warm charcoal palette - softer than pure black
         noir: {
-          50: '#f7f7f7',
-          100: '#e3e3e3',
-          200: '#c8c8c8',
-          300: '#a4a4a4',
-          400: '#818181',
-          500: '#666666',
-          600: '#515151',
-          700: '#434343',
-          800: '#383838',
-          900: '#1a1a1a',
-          950: '#0d0d0d',
+          50: '#fafaf9',
+          100: '#f5f5f4',
+          200: '#e7e5e4',
+          300: '#d6d3d1',
+          400: '#a8a29e',
+          500: '#78716c',
+          600: '#57534e',
+          700: '#44403c',
+          800: '#292524',
+          900: '#1c1917',
+          950: '#0c0a09',
         },
-        // Cyan accent - refined, premium
+        // Sage green accent - natural, residential, fresh
         accent: {
-          50: '#f0fdfb',
-          100: '#ccfbf4',
-          200: '#99f6ea',
-          300: '#5eeadb',
-          400: '#2dd4c5',
-          500: '#5BBEC5', // Main accent - Ghelamco teal
-          600: '#0e9488',
-          700: '#10756d',
-          800: '#125d58',
-          900: '#144d49',
-          950: '#042f2c',
+          50: '#f6f7f4',
+          100: '#e3e7dc',
+          200: '#c8d1bc',
+          300: '#a7b593',
+          400: '#8a9c72',
+          500: '#6b7f54', // Main accent - sage green
+          600: '#546542',
+          700: '#424e35',
+          800: '#37402e',
+          900: '#2f3628',
+          950: '#171c12',
         },
-        // Warm white for backgrounds
+        // Warm cream for backgrounds
         ivory: {
           50: '#ffffff',
-          100: '#fefefe',
-          200: '#fafafa',
-          300: '#f5f5f5',
-          400: '#e8e8e8',
-          500: '#d4d4d4',
+          100: '#fdfcfb',
+          200: '#faf8f5',
+          300: '#f5f2ed',
+          400: '#ebe6de',
+          500: '#ddd5c8',
         },
       },
       fontFamily: {
@@ -73,7 +73,7 @@ export default {
         'soft': '0 4px 30px rgba(0, 0, 0, 0.06)',
         'soft-lg': '0 10px 50px rgba(0, 0, 0, 0.1)',
         'soft-xl': '0 25px 80px rgba(0, 0, 0, 0.12)',
-        'glow': '0 0 40px rgba(91, 190, 197, 0.3)',
+        'glow': '0 0 40px rgba(107, 127, 84, 0.3)',
       },
       animation: {
         'fade-in': 'fadeIn 1s ease-out forwards',

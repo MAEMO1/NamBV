@@ -14,7 +14,7 @@ const navigation = [
 ];
 
 // Pages with dark hero backgrounds where transparent header with white text works
-const darkHeroPages = ['/', '/projecten'];
+const darkHeroPages: string[] = [];
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -100,9 +100,9 @@ export default function Header() {
             <div className="hidden lg:flex lg:items-center lg:gap-6">
               <Link
                 href="/offerte"
-                className={`group inline-flex items-center gap-2 px-6 py-3 text-sm font-medium uppercase tracking-wide transition-all duration-500 ${
+                className={`group inline-flex items-center gap-2 px-6 py-3 text-sm font-medium uppercase tracking-wide rounded-lg transition-all duration-500 ${
                   useDarkText
-                    ? 'bg-noir-900 text-white hover:bg-accent-500'
+                    ? 'bg-accent-500 text-white hover:bg-accent-600'
                     : 'bg-white text-noir-900 hover:bg-accent-500 hover:text-white'
                 }`}
               >
@@ -195,7 +195,7 @@ export default function Header() {
             <Link
               href="/offerte"
               onClick={() => setMobileMenuOpen(false)}
-              className="block w-full py-5 text-center text-lg font-medium uppercase tracking-wide bg-noir-900 text-white hover:bg-accent-500 transition-colors duration-300"
+              className="block w-full py-5 text-center text-lg font-medium uppercase tracking-wide rounded-lg bg-accent-500 text-white hover:bg-accent-600 transition-colors duration-300"
             >
               Offerte aanvragen
             </Link>
