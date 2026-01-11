@@ -11,6 +11,12 @@ export const metadata: Metadata = {
   description: "Vakkundige renovatie in Gent met oog voor detail en duurzaamheid. Van totaalrenovatie tot afwerking. Vraag een gratis adviesgesprek aan.",
   keywords: ["renovatie Gent", "aannemer Gent", "totaalrenovatie", "verbouwing", "renovatiebedrijf"],
   authors: [{ name: "Nam Construction" }],
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    apple: "/favicon.svg",
+  },
   openGraph: {
     type: "website",
     locale: "nl_BE",
