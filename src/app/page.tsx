@@ -2,36 +2,39 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, ArrowUpRight, MapPin, Phone, CheckCircle2, Play } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { ArrowRight, ArrowUpRight, MapPin, Phone, CheckCircle2, ChevronDown } from 'lucide-react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 
 // The 5 Core Values
 const kernwaarden = [
-  { id: 'attestering', title: 'Volledige Attestering', description: 'AREI-conforme installaties en EPB-attesten' },
-  { id: 'circulariteit', title: 'Hergebruik & Circulariteit', description: 'Duurzaam renoveren met respect voor materialen' },
-  { id: 'betaling', title: 'Betalingsspreiding', description: 'Transparante 30-30-30-10 betalingsregeling' },
-  { id: 'subsidies', title: 'Subsidie-ondersteuning', description: 'Maximaal profiteren van beschikbare premies' },
-  { id: 'communicatie', title: 'Heldere Communicatie', description: 'Eén vast aanspreekpunt, wekelijkse updates' },
+  { id: 'attestering', title: 'Volledige Attestering', description: 'AREI-conforme installaties en EPB-attesten', icon: '01' },
+  { id: 'circulariteit', title: 'Hergebruik & Circulariteit', description: 'Duurzaam renoveren met respect voor materialen', icon: '02' },
+  { id: 'betaling', title: 'Betalingsspreiding', description: 'Transparante 30-30-30-10 betalingsregeling', icon: '03' },
+  { id: 'subsidies', title: 'Subsidie-ondersteuning', description: 'Maximaal profiteren van beschikbare premies', icon: '04' },
+  { id: 'communicatie', title: 'Heldere Communicatie', description: 'Eén vast aanspreekpunt, wekelijkse updates', icon: '05' },
 ];
 
 const services = [
   {
     title: 'Totaalrenovatie',
+    subtitle: 'Complete transformatie',
     description: 'Volledige transformatie van uw woning. Van concept tot oplevering onder één dak.',
     href: '/diensten/totaalrenovatie',
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop',
+    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=1000&fit=crop',
   },
   {
     title: 'Renovatie',
+    subtitle: 'Gerichte verbouwing',
     description: 'Gerichte verbouwingen en renovaties. Badkamer, keuken of uitbreiding.',
     href: '/diensten/renovatie',
-    image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&h=600&fit=crop',
+    image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&h=1000&fit=crop',
   },
   {
     title: 'Afwerking',
+    subtitle: 'Premium details',
     description: 'Tegelwerk, plakwerk en schilderwerk. Vakkundige afwerking die het verschil maakt.',
     href: '/diensten/afwerking',
-    image: 'https://images.unsplash.com/photo-1600566753051-f0b89df2dd90?w=800&h=600&fit=crop',
+    image: 'https://images.unsplash.com/photo-1600566753051-f0b89df2dd90?w=800&h=1000&fit=crop',
   },
 ];
 
@@ -40,71 +43,115 @@ const projects = [
     title: 'Herenhuis Centrum',
     category: 'Totaalrenovatie',
     location: 'Gent',
+    year: '2024',
     image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&h=800&fit=crop',
   },
   {
     title: 'Rijwoning Mariakerke',
     category: 'Renovatie & Afwerking',
     location: 'Mariakerke',
+    year: '2024',
     image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&h=600&fit=crop',
   },
   {
     title: 'Appartement Zuid',
     category: 'Badkamerrenovatie',
     location: 'Ledeberg',
+    year: '2023',
     image: 'https://images.unsplash.com/photo-1600566753051-f0b89df2dd90?w=800&h=600&fit=crop',
   },
 ];
 
-const stats = [
-  { value: '150+', label: 'Projecten' },
-  { value: '12', label: 'Jaar ervaring' },
-  { value: '98%', label: 'Tevreden klanten' },
+const processSteps = [
+  { number: '01', title: 'Kennismaking', description: 'Gratis adviesgesprek bij u thuis' },
+  { number: '02', title: 'Ontwerp', description: 'Gedetailleerd plan en offerte' },
+  { number: '03', title: 'Uitvoering', description: 'Vakkundige realisatie' },
+  { number: '04', title: 'Oplevering', description: 'Perfecte afwerking' },
 ];
 
-// Scroll animation hook
-function useScrollAnimation() {
+// Text reveal animation - character by character (Bouw-ID inspired)
+function AnimatedText({ text, className = '', delay = 0 }: { text: string; className?: string; delay?: number }) {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setIsVisible(true); },
+      { threshold: 0.1 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <span ref={ref} className={`inline-block ${className}`}>
+      {text.split('').map((char, index) => (
+        <span
+          key={index}
+          className="inline-block transition-all duration-500"
+          style={{
+            opacity: isVisible ? 1 : 0,
+            transform: isVisible ? 'translateY(0) rotateX(0)' : 'translateY(100%) rotateX(-90deg)',
+            transitionDelay: `${delay + index * 30}ms`,
+          }}
+        >
+          {char === ' ' ? '\u00A0' : char}
+        </span>
+      ))}
+    </span>
+  );
+}
+
+// Scroll animation hook with parallax
+function useScrollAnimation(options = { threshold: 0.1, rootMargin: '0px' }) {
   const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+      ([entry]) => { if (entry.isIntersecting) setIsVisible(true); },
+      options
     );
-
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-
+    if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
-  }, []);
+  }, [options.threshold, options.rootMargin]);
 
   return { ref, isVisible };
 }
 
-// Parallax hook
-function useParallax(speed: number = 0.5) {
-  const [offset, setOffset] = useState(0);
+// Multi-layer parallax hook
+function useParallax() {
+  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setOffset(window.scrollY * speed);
-    };
+    const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [speed]);
+  }, []);
 
-  return offset;
+  return scrollY;
 }
 
-// Animated section component
-function AnimatedSection({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
+// Animated section with stagger support
+function AnimatedSection({
+  children,
+  className = '',
+  delay = 0,
+  direction = 'up'
+}: {
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+  direction?: 'up' | 'down' | 'left' | 'right';
+}) {
   const { ref, isVisible } = useScrollAnimation();
+
+  const transforms = {
+    up: 'translateY(80px)',
+    down: 'translateY(-80px)',
+    left: 'translateX(80px)',
+    right: 'translateX(-80px)',
+  };
 
   return (
     <div
@@ -112,7 +159,7 @@ function AnimatedSection({ children, className = '', delay = 0 }: { children: Re
       className={`transition-all duration-1000 ease-out ${className}`}
       style={{
         opacity: isVisible ? 1 : 0,
-        transform: isVisible ? 'translateY(0)' : 'translateY(60px)',
+        transform: isVisible ? 'translate(0)' : transforms[direction],
         transitionDelay: `${delay}ms`,
       }}
     >
@@ -121,304 +168,429 @@ function AnimatedSection({ children, className = '', delay = 0 }: { children: Re
   );
 }
 
+// SVG Line draw animation (Bouw-ID inspired)
+function AnimatedLine({ className = '' }: { className?: string }) {
+  const { ref, isVisible } = useScrollAnimation();
+
+  return (
+    <svg
+      ref={ref as any}
+      className={className}
+      viewBox="0 0 2 100"
+      preserveAspectRatio="none"
+    >
+      <line
+        x1="1"
+        y1="0"
+        x2="1"
+        y2="100"
+        stroke="currentColor"
+        strokeWidth="2"
+        className="transition-all duration-1500"
+        style={{
+          strokeDasharray: 100,
+          strokeDashoffset: isVisible ? 0 : 100,
+        }}
+      />
+    </svg>
+  );
+}
+
 export default function HomePage() {
   const [heroLoaded, setHeroLoaded] = useState(false);
-  const parallaxOffset = useParallax(0.3);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const scrollY = useParallax();
 
   useEffect(() => {
     const timer = setTimeout(() => setHeroLoaded(true), 100);
     return () => clearTimeout(timer);
   }, []);
 
+  // Mouse parallax for hero
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    const { clientX, clientY } = e;
+    const { innerWidth, innerHeight } = window;
+    setMousePosition({
+      x: (clientX - innerWidth / 2) / 50,
+      y: (clientY - innerHeight / 2) / 50,
+    });
+  }, []);
+
   return (
     <>
-      {/* Hero Section - Dramatic, animated entrance */}
-      <section className="relative min-h-screen flex items-center overflow-hidden bg-ivory-100">
-        {/* Parallax background image */}
-        <div
-          className="absolute inset-0 w-full h-[120%]"
-          style={{ transform: `translateY(${parallaxOffset}px)` }}
-        >
-          <Image
-            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&h=1200&fit=crop"
-            alt="Gerenoveerd interieur"
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-ivory-100 via-ivory-100/95 to-ivory-100/40" />
-          <div className="absolute inset-0 bg-gradient-to-b from-ivory-100/50 via-transparent to-ivory-100" />
-        </div>
-
-        {/* Floating geometric elements */}
-        <div className="absolute top-20 right-20 w-72 h-72 border border-accent-300/20 rounded-full animate-pulse-slow opacity-60" />
-        <div className="absolute bottom-40 right-40 w-48 h-48 border border-accent-400/30 rounded-full animate-float opacity-40" />
-
-        <div className="container-wide relative z-10 py-32">
-          <div className="max-w-3xl">
-            {/* Animated tagline */}
-            <div
-              className={`flex items-center gap-3 mb-8 transition-all duration-1000 ${
-                heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}
-              style={{ transitionDelay: '200ms' }}
-            >
-              <div className="w-12 h-px bg-accent-500" />
-              <span className="text-sm font-medium text-accent-600 uppercase tracking-[0.2em]">
-                Renovatie & Afwerking Gent
-              </span>
-            </div>
-
-            {/* Main headline - Staggered reveal */}
-            <h1 className="mb-8">
-              <span
-                className={`block text-[clamp(3rem,8vw,6rem)] font-display font-medium text-noir-900 leading-[0.95] tracking-[-0.03em] transition-all duration-1000 ${
-                  heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-                }`}
-                style={{ transitionDelay: '400ms' }}
-              >
-                De kunst van
-              </span>
-              <span
-                className={`block text-[clamp(3rem,8vw,6rem)] font-display font-medium leading-[0.95] tracking-[-0.03em] transition-all duration-1000 ${
-                  heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-                }`}
-                style={{ transitionDelay: '600ms' }}
-              >
-                <span className="text-accent-500">het renoveren</span>
-              </span>
-            </h1>
-
-            {/* Subtitle */}
-            <p
-              className={`text-xl md:text-2xl text-noir-500 mb-12 max-w-xl leading-relaxed transition-all duration-1000 ${
-                heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}
-              style={{ transitionDelay: '800ms' }}
-            >
-              Vakmanschap met respect voor uw woning en oog voor elk detail.
-              Van kleine verbouwing tot totaalrenovatie.
-            </p>
-
-            {/* CTA Buttons */}
-            <div
-              className={`flex flex-wrap gap-4 mb-16 transition-all duration-1000 ${
-                heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}
-              style={{ transitionDelay: '1000ms' }}
-            >
-              <Link
-                href="/offerte"
-                className="group relative inline-flex items-center gap-3 px-8 py-4 bg-accent-500 text-white font-medium rounded-full overflow-hidden transition-all duration-500 hover:shadow-lg hover:shadow-accent-500/25"
-              >
-                <span className="relative z-10">Gratis offerte aanvragen</span>
-                <ArrowRight className="relative z-10 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                <div className="absolute inset-0 bg-accent-600 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-              </Link>
-              <Link
-                href="/projecten"
-                className="group inline-flex items-center gap-3 px-8 py-4 border-2 border-noir-200 text-noir-700 font-medium rounded-full hover:border-accent-500 hover:text-accent-600 transition-all duration-300"
-              >
-                <Play className="h-4 w-4" />
-                Bekijk projecten
-              </Link>
-            </div>
-
-            {/* Stats row */}
-            <div
-              className={`flex gap-12 transition-all duration-1000 ${
-                heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}
-              style={{ transitionDelay: '1200ms' }}
-            >
-              {stats.map((stat, index) => (
-                <div key={stat.label} className="relative">
-                  <div className="text-4xl md:text-5xl font-display font-medium text-noir-900">
-                    {stat.value}
-                  </div>
-                  <div className="text-sm text-noir-400 uppercase tracking-wider mt-1">
-                    {stat.label}
-                  </div>
-                  {index < stats.length - 1 && (
-                    <div className="absolute right-[-1.5rem] top-1/2 -translate-y-1/2 w-px h-12 bg-noir-200" />
-                  )}
-                </div>
-              ))}
-            </div>
+      {/* ===== HERO SECTION - Cinematic, full-screen (Beneens + Bouw-ID style) ===== */}
+      <section
+        className="relative min-h-screen flex items-center overflow-hidden"
+        onMouseMove={handleMouseMove}
+      >
+        {/* Background layers with parallax */}
+        <div className="absolute inset-0">
+          {/* Main background image */}
+          <div
+            className="absolute inset-0 scale-110"
+            style={{ transform: `scale(1.1) translateY(${scrollY * 0.15}px)` }}
+          >
+            <Image
+              src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&h=1200&fit=crop"
+              alt="Gerenoveerd interieur"
+              fill
+              className="object-cover"
+              priority
+            />
           </div>
 
-          {/* Floating contact card */}
-          <div
-            className={`absolute right-8 lg:right-16 bottom-32 bg-white rounded-2xl shadow-soft-xl p-6 max-w-[280px] transition-all duration-1000 ${
-              heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-            }`}
-            style={{ transitionDelay: '1400ms' }}
-          >
-            <div className="flex items-start gap-4 mb-4">
-              <div className="w-12 h-12 rounded-full bg-accent-100 flex items-center justify-center flex-shrink-0">
-                <Phone className="h-5 w-5 text-accent-600" />
+          {/* Dark cinematic overlay (Beneens style) */}
+          <div className="absolute inset-0 bg-noir-950/60" />
+          <div className="absolute inset-0 bg-gradient-to-r from-noir-950/80 via-noir-950/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-noir-950/90 via-transparent to-noir-950/30" />
+        </div>
+
+        {/* Animated geometric shapes (Be Factory style) */}
+        <div
+          className="absolute top-1/4 right-1/4 w-96 h-96 border border-white/5 rounded-full transition-transform duration-1000"
+          style={{ transform: `translate(${mousePosition.x}px, ${mousePosition.y}px)` }}
+        />
+        <div
+          className="absolute bottom-1/3 right-1/3 w-64 h-64 border border-accent-500/20 rounded-full transition-transform duration-1000"
+          style={{ transform: `translate(${mousePosition.x * -1}px, ${mousePosition.y * -1}px)` }}
+        />
+
+        {/* Content */}
+        <div className="container-wide relative z-10 pt-32 pb-24">
+          <div className="grid lg:grid-cols-12 gap-8 items-center min-h-[70vh]">
+            {/* Left content */}
+            <div className="lg:col-span-7">
+              {/* Label */}
+              <div
+                className={`flex items-center gap-4 mb-8 transition-all duration-1000 ${
+                  heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                }`}
+                style={{ transitionDelay: '300ms' }}
+              >
+                <div className="w-16 h-px bg-accent-400" />
+                <span className="text-sm font-medium text-accent-400 uppercase tracking-[0.3em]">
+                  Renovatie & Afwerking
+                </span>
               </div>
-              <div>
-                <p className="text-xs text-noir-400 uppercase tracking-wider mb-1">Direct contact</p>
-                <p className="font-display text-xl font-medium text-noir-900">+32 493 81 27 89</p>
+
+              {/* Main headline - Character animation (Bouw-ID inspired) */}
+              <h1 className="mb-8">
+                <span
+                  className={`block text-[clamp(3.5rem,10vw,7rem)] font-display font-medium text-white leading-[0.9] tracking-[-0.03em] transition-all duration-1000 ${
+                    heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16'
+                  }`}
+                  style={{ transitionDelay: '500ms' }}
+                >
+                  De kunst van
+                </span>
+                <span
+                  className={`block text-[clamp(3.5rem,10vw,7rem)] font-display font-medium leading-[0.9] tracking-[-0.03em] transition-all duration-1000 ${
+                    heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16'
+                  }`}
+                  style={{ transitionDelay: '700ms' }}
+                >
+                  <span className="text-accent-400">het (ver)bouwen</span>
+                </span>
+              </h1>
+
+              {/* Subtitle with reveal */}
+              <p
+                className={`text-xl md:text-2xl text-white/70 mb-12 max-w-lg leading-relaxed transition-all duration-1000 ${
+                  heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                }`}
+                style={{ transitionDelay: '900ms' }}
+              >
+                Vakmanschap met respect voor elk detail. Van concept tot oplevering,
+                wij realiseren uw droomwoning.
+              </p>
+
+              {/* CTA Buttons with complex hover (Beneens style) */}
+              <div
+                className={`flex flex-wrap gap-4 transition-all duration-1000 ${
+                  heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                }`}
+                style={{ transitionDelay: '1100ms' }}
+              >
+                {/* Primary CTA with sweep animation */}
+                <Link
+                  href="/offerte"
+                  className="group relative inline-flex items-center gap-3 px-8 py-4 bg-accent-500 text-white font-medium overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-accent-500/30"
+                >
+                  {/* Sweep effect */}
+                  <span className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-full transition-transform duration-700 skew-x-12" />
+                  <span className="relative z-10 uppercase tracking-wider text-sm">Gratis offerte</span>
+                  <ArrowRight className="relative z-10 h-4 w-4 transition-transform duration-300 group-hover:translate-x-2" />
+                </Link>
+
+                {/* Secondary CTA with border animation */}
+                <Link
+                  href="/projecten"
+                  className="group relative inline-flex items-center gap-3 px-8 py-4 text-white font-medium overflow-hidden"
+                >
+                  {/* Animated border */}
+                  <span className="absolute inset-0 border border-white/30 transition-all duration-300 group-hover:border-accent-400" />
+                  <span className="absolute bottom-0 left-0 h-0.5 bg-accent-400 w-0 group-hover:w-full transition-all duration-500" />
+                  <span className="relative z-10 uppercase tracking-wider text-sm">Bekijk projecten</span>
+                  <ArrowUpRight className="relative z-10 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                </Link>
               </div>
             </div>
-            <p className="text-sm text-noir-500 mb-4">
-              Bel voor een vrijblijvend adviesgesprek
-            </p>
-            <Link
-              href="/afspraak"
-              className="block w-full py-3 text-center text-sm font-medium text-accent-600 border border-accent-200 rounded-lg hover:bg-accent-50 transition-colors"
-            >
-              Afspraak maken
-            </Link>
+
+            {/* Right side - Stats cards */}
+            <div className="lg:col-span-5 lg:pl-12">
+              <div
+                className={`grid grid-cols-2 gap-4 transition-all duration-1000 ${
+                  heroLoaded ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-16'
+                }`}
+                style={{ transitionDelay: '1300ms' }}
+              >
+                {/* Stat cards with glass effect */}
+                <div className="bg-white/10 backdrop-blur-md border border-white/10 p-6 group hover:bg-white/15 transition-all duration-500">
+                  <div className="text-5xl font-display font-medium text-white mb-2">150<span className="text-accent-400">+</span></div>
+                  <div className="text-sm text-white/60 uppercase tracking-wider">Projecten</div>
+                </div>
+                <div className="bg-white/10 backdrop-blur-md border border-white/10 p-6 group hover:bg-white/15 transition-all duration-500">
+                  <div className="text-5xl font-display font-medium text-white mb-2">12</div>
+                  <div className="text-sm text-white/60 uppercase tracking-wider">Jaar ervaring</div>
+                </div>
+                <div className="col-span-2 bg-white/10 backdrop-blur-md border border-white/10 p-6 group hover:bg-white/15 transition-all duration-500">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="text-3xl font-display font-medium text-white mb-1">98%</div>
+                      <div className="text-sm text-white/60 uppercase tracking-wider">Tevreden klanten</div>
+                    </div>
+                    <div className="w-16 h-16 rounded-full border-2 border-accent-400 flex items-center justify-center">
+                      <CheckCircle2 className="h-8 w-8 text-accent-400" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
-          <span className="text-xs text-noir-400 uppercase tracking-[0.2em]">Scroll</span>
-          <div className="w-px h-12 bg-gradient-to-b from-noir-300 to-transparent animate-pulse" />
+        <div
+          className={`absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 transition-all duration-1000 ${
+            heroLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
+          style={{ transitionDelay: '1500ms' }}
+        >
+          <span className="text-xs text-white/50 uppercase tracking-[0.3em]">Scroll</span>
+          <ChevronDown className="h-5 w-5 text-white/50 animate-bounce" />
         </div>
       </section>
 
-      {/* Trust strip */}
-      <section className="py-4 bg-accent-500">
+      {/* ===== TRUST STRIP - Compact kernwaarden ===== */}
+      <section className="py-6 bg-noir-900 border-y border-white/10">
         <div className="container-wide">
-          <div className="flex flex-wrap justify-center items-center gap-x-8 gap-y-2 text-white/90 text-sm">
-            {kernwaarden.map((waarde, index) => (
-              <div key={waarde.id} className="flex items-center gap-2">
-                <CheckCircle2 className="h-4 w-4 text-white/70" />
-                <span>{waarde.title}</span>
+          <div className="flex flex-wrap justify-between items-center gap-6">
+            {kernwaarden.map((waarde) => (
+              <div key={waarde.id} className="flex items-center gap-3 group">
+                <span className="text-accent-400 font-display text-lg">{waarde.icon}</span>
+                <span className="text-white/70 text-sm group-hover:text-white transition-colors">{waarde.title}</span>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Services Section */}
-      <section className="py-28 md:py-36 bg-white relative overflow-hidden">
-        {/* Background accent */}
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-ivory-200/50 to-transparent pointer-events-none" />
+      {/* ===== SERVICES SECTION - Premium cards with hover reveal ===== */}
+      <section className="py-32 bg-ivory-100 relative overflow-hidden">
+        {/* Background texture */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(107,127,84,0.05),transparent_50%)]" />
 
         <div className="container-wide relative">
-          <AnimatedSection>
-            <div className="grid lg:grid-cols-2 gap-16 items-end mb-20">
+          {/* Header */}
+          <AnimatedSection className="mb-20">
+            <div className="grid lg:grid-cols-2 gap-12 items-end">
               <div>
-                <span className="text-sm text-accent-500 font-medium uppercase tracking-[0.2em] mb-4 block">
+                <span className="inline-block px-4 py-2 bg-accent-100 text-accent-700 text-xs font-medium uppercase tracking-[0.2em] rounded-full mb-6">
                   Onze expertise
                 </span>
                 <h2 className="text-display-lg font-display font-medium text-noir-900">
-                  Van visie tot <br />
-                  <span className="text-accent-500">vakkundige uitvoering</span>
+                  Van visie tot{' '}
+                  <span className="text-accent-600 italic">vakkundige</span>{' '}
+                  uitvoering
                 </h2>
               </div>
-              <p className="text-lg text-noir-500 lg:max-w-md">
-                Elke renovatie is uniek. Wij combineren traditioneel vakmanschap met moderne technieken
-                voor een resultaat dat generaties meegaat.
+              <p className="text-lg text-noir-500 lg:pl-12">
+                Elke renovatie is uniek. Wij combineren traditioneel vakmanschap
+                met moderne technieken voor een resultaat dat generaties meegaat.
               </p>
             </div>
           </AnimatedSection>
 
-          {/* Services grid with hover effects */}
-          <div className="grid md:grid-cols-3 gap-6">
+          {/* Services grid - Tall cards with overlay */}
+          <div className="grid md:grid-cols-3 gap-8">
             {services.map((service, index) => (
               <AnimatedSection key={service.title} delay={index * 150}>
-                <Link href={service.href} className="group block">
-                  <div className="relative aspect-[4/5] rounded-2xl overflow-hidden mb-6">
+                <Link href={service.href} className="group block relative">
+                  {/* Card container */}
+                  <div className="relative aspect-[3/4] overflow-hidden">
+                    {/* Image with zoom */}
                     <Image
                       src={service.image}
                       alt={service.title}
                       fill
-                      className="object-cover transition-all duration-700 group-hover:scale-110"
+                      className="object-cover transition-transform duration-1000 group-hover:scale-110"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-noir-900/80 via-noir-900/20 to-transparent" />
 
-                    {/* Overlay content */}
-                    <div className="absolute inset-0 flex flex-col justify-end p-8">
-                      <h3 className="text-2xl font-display font-medium text-white mb-2 group-hover:translate-x-2 transition-transform duration-300">
+                    {/* Gradient overlay - stronger on hover */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-noir-950 via-noir-950/50 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-500" />
+
+                    {/* Content overlay */}
+                    <div className="absolute inset-0 p-8 flex flex-col justify-end">
+                      {/* Category tag */}
+                      <span className="inline-block self-start px-3 py-1 bg-accent-500 text-white text-xs uppercase tracking-wider mb-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                        {service.subtitle}
+                      </span>
+
+                      {/* Title */}
+                      <h3 className="text-3xl font-display font-medium text-white mb-3 transition-transform duration-500 group-hover:-translate-y-2">
                         {service.title}
                       </h3>
-                      <p className="text-white/70 text-sm mb-4 max-w-xs">
+
+                      {/* Description - hidden by default */}
+                      <p className="text-white/70 mb-6 max-h-0 overflow-hidden group-hover:max-h-24 transition-all duration-500">
                         {service.description}
                       </p>
-                      <div className="flex items-center gap-2 text-accent-300 text-sm font-medium opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
-                        <span>Ontdek meer</span>
-                        <ArrowRight className="h-4 w-4" />
+
+                      {/* CTA link */}
+                      <div className="flex items-center gap-2 text-accent-400 font-medium translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-100">
+                        <span className="text-sm uppercase tracking-wider">Ontdek meer</span>
+                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-2" />
                       </div>
                     </div>
+
+                    {/* Decorative corner */}
+                    <div className="absolute top-0 right-0 w-24 h-24 border-t-2 border-r-2 border-accent-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500 m-4" />
                   </div>
                 </Link>
               </AnimatedSection>
             ))}
           </div>
+        </div>
+      </section>
 
-          <AnimatedSection delay={450}>
-            <div className="text-center mt-16">
-              <Link
-                href="/diensten"
-                className="inline-flex items-center gap-3 px-8 py-4 border-2 border-noir-200 text-noir-700 font-medium rounded-full hover:border-accent-500 hover:text-accent-600 transition-all duration-300"
-              >
-                Alle diensten bekijken
-                <ArrowRight className="h-4 w-4" />
-              </Link>
+      {/* ===== PROCESS SECTION - Step by step (Bouw-ID inspired) ===== */}
+      <section className="py-32 bg-white relative overflow-hidden">
+        <div className="container-wide">
+          <AnimatedSection className="text-center mb-20">
+            <span className="inline-block px-4 py-2 bg-noir-100 text-noir-600 text-xs font-medium uppercase tracking-[0.2em] rounded-full mb-6">
+              Onze aanpak
+            </span>
+            <h2 className="text-display-lg font-display font-medium text-noir-900 max-w-2xl mx-auto">
+              Van eerste gesprek tot perfecte oplevering
+            </h2>
+          </AnimatedSection>
+
+          {/* Process steps with connecting line */}
+          <div className="relative">
+            {/* Connecting line */}
+            <div className="absolute top-24 left-0 right-0 h-px bg-noir-200 hidden lg:block" />
+
+            <div className="grid md:grid-cols-4 gap-8">
+              {processSteps.map((step, index) => (
+                <AnimatedSection key={step.number} delay={index * 150} className="relative">
+                  <div className="text-center group">
+                    {/* Step number with circle */}
+                    <div className="relative inline-flex items-center justify-center w-20 h-20 rounded-full bg-ivory-100 border-2 border-noir-200 mb-8 group-hover:border-accent-500 group-hover:bg-accent-50 transition-all duration-500">
+                      <span className="text-2xl font-display font-medium text-noir-400 group-hover:text-accent-600 transition-colors">
+                        {step.number}
+                      </span>
+                      {/* Active dot on line */}
+                      <div className="absolute -bottom-[2.5rem] w-3 h-3 rounded-full bg-accent-500 hidden lg:block opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </div>
+
+                    <h3 className="text-xl font-display font-medium text-noir-900 mb-3">
+                      {step.title}
+                    </h3>
+                    <p className="text-noir-500">
+                      {step.description}
+                    </p>
+                  </div>
+                </AnimatedSection>
+              ))}
             </div>
+          </div>
+
+          {/* CTA */}
+          <AnimatedSection className="text-center mt-16" delay={600}>
+            <Link
+              href="/afspraak"
+              className="group relative inline-flex items-center gap-3 px-8 py-4 bg-noir-900 text-white font-medium overflow-hidden transition-all duration-500 hover:shadow-xl"
+            >
+              <span className="absolute inset-0 bg-accent-600 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+              <span className="relative z-10 uppercase tracking-wider text-sm">Start uw project</span>
+              <ArrowRight className="relative z-10 h-4 w-4 transition-transform duration-300 group-hover:translate-x-2" />
+            </Link>
           </AnimatedSection>
         </div>
       </section>
 
-      {/* Why Choose Us - Split section with parallax */}
-      <section className="py-28 md:py-36 bg-ivory-200 relative overflow-hidden">
+      {/* ===== WHY US SECTION - Split layout with image ===== */}
+      <section className="py-32 bg-ivory-200 relative overflow-hidden">
         <div className="container-wide">
           <div className="grid lg:grid-cols-2 gap-20 items-center">
-            {/* Image side with overlapping elements */}
-            <AnimatedSection>
+            {/* Image side with decorative elements */}
+            <AnimatedSection direction="left">
               <div className="relative">
-                <div className="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-soft-xl">
+                {/* Main image */}
+                <div className="relative aspect-[4/5] overflow-hidden">
                   <Image
                     src="https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?w=800&h=1000&fit=crop"
                     alt="Vakman aan het werk"
                     fill
                     className="object-cover"
                   />
+                  {/* Overlay gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-noir-900/30 to-transparent" />
                 </div>
-                {/* Decorative elements */}
-                <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-accent-500 rounded-2xl -z-10" />
-                <div className="absolute -top-6 -left-6 w-24 h-24 border-2 border-accent-300 rounded-2xl -z-10" />
 
-                {/* Floating badge */}
-                <div className="absolute -right-4 top-1/3 bg-white rounded-xl shadow-soft-lg p-4">
-                  <div className="text-3xl font-display font-medium text-accent-600">12+</div>
-                  <div className="text-xs text-noir-500">Jaar ervaring</div>
+                {/* Decorative frame */}
+                <div className="absolute -top-8 -left-8 w-full h-full border-2 border-accent-400 -z-10" />
+
+                {/* Floating stat card */}
+                <div className="absolute -right-8 bottom-12 bg-white shadow-soft-xl p-8">
+                  <div className="text-5xl font-display font-medium text-accent-600 mb-2">12+</div>
+                  <div className="text-sm text-noir-500 uppercase tracking-wider">Jaar ervaring</div>
+                  <div className="mt-4 pt-4 border-t border-noir-100">
+                    <div className="text-xs text-noir-400">Sinds 2012 actief in Oost-Vlaanderen</div>
+                  </div>
                 </div>
               </div>
             </AnimatedSection>
 
             {/* Content side */}
-            <div>
+            <div className="lg:pl-8">
               <AnimatedSection>
-                <span className="text-sm text-accent-500 font-medium uppercase tracking-[0.2em] mb-4 block">
-                  Waarom Nam Construction
+                <span className="inline-block px-4 py-2 bg-accent-100 text-accent-700 text-xs font-medium uppercase tracking-[0.2em] rounded-full mb-6">
+                  Waarom NAM Construction
                 </span>
                 <h2 className="text-display-lg font-display font-medium text-noir-900 mb-6">
-                  Gebouwd op <span className="text-accent-600">5 pijlers</span>
+                  Gebouwd op{' '}
+                  <span className="text-accent-600">5 pijlers</span>
                 </h2>
                 <p className="text-lg text-noir-500 mb-12">
                   Elke renovatie rust op een fundament van waarden. Dit is waar wij voor staan.
                 </p>
               </AnimatedSection>
 
-              <div className="space-y-6">
+              {/* Values list */}
+              <div className="space-y-4">
                 {kernwaarden.map((waarde, index) => (
                   <AnimatedSection key={waarde.id} delay={index * 100}>
-                    <div className="group flex gap-5 p-4 -mx-4 rounded-xl hover:bg-white/80 transition-colors duration-300">
-                      <div className="flex-shrink-0 w-12 h-12 rounded-full bg-accent-100 flex items-center justify-center group-hover:bg-accent-500 transition-colors duration-300">
-                        <span className="text-sm font-medium text-accent-700 group-hover:text-white transition-colors duration-300">
-                          {String(index + 1).padStart(2, '0')}
+                    <div className="group flex gap-6 p-5 bg-white hover:bg-accent-50 border border-transparent hover:border-accent-200 transition-all duration-500 cursor-default">
+                      {/* Number */}
+                      <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center bg-noir-100 group-hover:bg-accent-500 transition-colors duration-500">
+                        <span className="text-sm font-medium text-noir-500 group-hover:text-white transition-colors">
+                          {waarde.icon}
                         </span>
                       </div>
+                      {/* Content */}
                       <div>
-                        <h3 className="font-medium text-noir-900 mb-1 group-hover:text-accent-600 transition-colors duration-300">
+                        <h3 className="font-medium text-noir-900 mb-1 group-hover:text-accent-700 transition-colors">
                           {waarde.title}
                         </h3>
                         <p className="text-noir-500 text-sm">{waarde.description}</p>
@@ -432,74 +604,125 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Projects Section */}
-      <section className="py-28 md:py-36 bg-noir-900 relative overflow-hidden">
-        {/* Subtle pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-20 left-20 w-96 h-96 border border-white rounded-full" />
-          <div className="absolute bottom-20 right-20 w-64 h-64 border border-white rounded-full" />
+      {/* ===== PROJECTS SECTION - Dark background, editorial grid ===== */}
+      <section className="py-32 bg-noir-900 relative overflow-hidden">
+        {/* Background pattern */}
+        <div className="absolute inset-0">
+          <div className="absolute top-0 left-1/4 w-px h-full bg-white/5" />
+          <div className="absolute top-0 left-2/4 w-px h-full bg-white/5" />
+          <div className="absolute top-0 left-3/4 w-px h-full bg-white/5" />
         </div>
 
         <div className="container-wide relative">
-          <AnimatedSection>
-            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-16">
+          {/* Header */}
+          <AnimatedSection className="mb-20">
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
               <div>
-                <span className="text-sm text-accent-400 font-medium uppercase tracking-[0.2em] mb-4 block">
-                  Recente realisaties
+                <span className="inline-block px-4 py-2 bg-white/10 text-accent-400 text-xs font-medium uppercase tracking-[0.2em] rounded-full mb-6">
+                  Portfolio
                 </span>
                 <h2 className="text-display-lg font-display font-medium text-white">
-                  Ons werk <span className="text-accent-400">spreekt</span>
+                  Recente{' '}
+                  <span className="text-accent-400 italic">realisaties</span>
                 </h2>
               </div>
               <Link
                 href="/projecten"
-                className="inline-flex items-center gap-3 text-white/70 hover:text-white font-medium transition-colors duration-300"
+                className="group inline-flex items-center gap-3 text-white/60 hover:text-white transition-colors"
               >
-                <span className="border-b border-current pb-1">Alle projecten bekijken</span>
-                <ArrowUpRight className="h-4 w-4" />
+                <span className="text-sm uppercase tracking-wider border-b border-current pb-1">
+                  Alle projecten
+                </span>
+                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
               </Link>
             </div>
           </AnimatedSection>
 
-          {/* Projects grid */}
-          <div className="grid md:grid-cols-3 gap-6">
-            {projects.map((project, index) => (
-              <AnimatedSection key={project.title} delay={index * 150}>
-                <Link href="/projecten" className="group block">
-                  <div className={`relative rounded-2xl overflow-hidden ${index === 0 ? 'md:row-span-2 aspect-[3/4]' : 'aspect-square'}`}>
-                    <Image
-                      src={project.image}
-                      alt={project.title}
-                      fill
-                      className="object-cover transition-all duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-noir-950/90 via-noir-950/30 to-transparent" />
+          {/* Projects grid - Editorial layout */}
+          <div className="grid md:grid-cols-12 gap-8">
+            {/* Large featured project */}
+            <AnimatedSection className="md:col-span-7">
+              <Link href="/projecten" className="group block relative">
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  <Image
+                    src={projects[0].image}
+                    alt={projects[0].title}
+                    fill
+                    className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-noir-950/90 via-noir-950/20 to-transparent" />
 
-                    <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
-                      <span className="text-xs text-accent-400 font-medium uppercase tracking-wider mb-2">
-                        {project.category}
-                      </span>
-                      <h3 className="text-xl md:text-2xl font-display font-medium text-white mb-2">
-                        {project.title}
-                      </h3>
-                      <div className="flex items-center gap-2 text-white/60 text-sm">
+                  {/* Content */}
+                  <div className="absolute inset-0 p-8 flex flex-col justify-end">
+                    <span className="inline-block self-start px-3 py-1 bg-accent-500 text-white text-xs uppercase tracking-wider mb-4">
+                      {projects[0].category}
+                    </span>
+                    <h3 className="text-3xl md:text-4xl font-display font-medium text-white mb-3">
+                      {projects[0].title}
+                    </h3>
+                    <div className="flex items-center gap-4 text-white/60 text-sm">
+                      <div className="flex items-center gap-2">
                         <MapPin className="h-4 w-4" />
-                        {project.location}
+                        {projects[0].location}
                       </div>
+                      <span>|</span>
+                      <span>{projects[0].year}</span>
                     </div>
                   </div>
-                </Link>
-              </AnimatedSection>
-            ))}
+
+                  {/* Hover overlay */}
+                  <div className="absolute inset-0 border-2 border-accent-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500 m-4 pointer-events-none" />
+                </div>
+              </Link>
+            </AnimatedSection>
+
+            {/* Smaller projects */}
+            <div className="md:col-span-5 grid gap-8">
+              {projects.slice(1).map((project, index) => (
+                <AnimatedSection key={project.title} delay={(index + 1) * 150}>
+                  <Link href="/projecten" className="group block relative">
+                    <div className="relative aspect-[3/2] overflow-hidden">
+                      <Image
+                        src={project.image}
+                        alt={project.title}
+                        fill
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-noir-950/80 via-noir-950/20 to-transparent" />
+
+                      <div className="absolute inset-0 p-6 flex flex-col justify-end">
+                        <span className="text-xs text-accent-400 uppercase tracking-wider mb-2">
+                          {project.category}
+                        </span>
+                        <h3 className="text-xl font-display font-medium text-white mb-1">
+                          {project.title}
+                        </h3>
+                        <div className="flex items-center gap-2 text-white/50 text-sm">
+                          <MapPin className="h-3 w-3" />
+                          {project.location}
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </AnimatedSection>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-28 md:py-36 bg-accent-500 relative overflow-hidden">
-        {/* Decorative elements */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-white/10 rounded-full" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] border border-white/10 rounded-full" />
+      {/* ===== CTA SECTION - Bold, full-width ===== */}
+      <section className="relative py-32 overflow-hidden">
+        {/* Background image with overlay */}
+        <div className="absolute inset-0">
+          <Image
+            src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&h=800&fit=crop"
+            alt="Modern interieur"
+            fill
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-accent-600/90" />
+        </div>
 
         <div className="container-wide relative">
           <AnimatedSection>
@@ -510,22 +733,35 @@ export default function HomePage() {
               <p className="text-xl text-white/80 mb-12">
                 Neem vrijblijvend contact op. We bespreken graag uw plannen en mogelijkheden.
               </p>
+
+              {/* CTAs */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   href="/offerte"
-                  className="group relative inline-flex items-center justify-center gap-3 px-10 py-5 bg-white text-accent-700 font-medium rounded-full overflow-hidden transition-all duration-500 hover:shadow-lg"
+                  className="group relative inline-flex items-center justify-center gap-3 px-10 py-5 bg-white text-accent-700 font-medium overflow-hidden transition-all duration-500 hover:shadow-2xl"
                 >
-                  <span className="relative z-10">Offerte aanvragen</span>
-                  <ArrowUpRight className="relative z-10 h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                  <div className="absolute inset-0 bg-ivory-100 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                  <span className="absolute inset-0 bg-noir-900 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                  <span className="relative z-10 uppercase tracking-wider text-sm group-hover:text-white transition-colors duration-500">Offerte aanvragen</span>
+                  <ArrowUpRight className="relative z-10 h-5 w-5 transition-all duration-300 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </Link>
                 <Link
                   href="/afspraak"
-                  className="inline-flex items-center justify-center gap-3 px-10 py-5 border-2 border-white/30 text-white font-medium rounded-full hover:bg-white/10 transition-all duration-300"
+                  className="group inline-flex items-center justify-center gap-3 px-10 py-5 border-2 border-white/30 text-white font-medium hover:bg-white/10 transition-all duration-300"
                 >
-                  Gratis adviesgesprek
-                  <ArrowRight className="h-5 w-5" />
+                  <span className="uppercase tracking-wider text-sm">Gratis adviesgesprek</span>
+                  <Phone className="h-5 w-5" />
                 </Link>
+              </div>
+
+              {/* Contact info */}
+              <div className="mt-12 pt-12 border-t border-white/20">
+                <a
+                  href="tel:+32493812789"
+                  className="inline-flex items-center gap-3 text-white/80 hover:text-white transition-colors text-lg"
+                >
+                  <Phone className="h-5 w-5" />
+                  <span className="font-display">+32 493 81 27 89</span>
+                </a>
               </div>
             </div>
           </AnimatedSection>

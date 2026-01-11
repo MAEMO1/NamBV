@@ -14,7 +14,7 @@ const navigation = [
 ];
 
 // Pages with dark hero backgrounds where transparent header with white text works
-const darkHeroPages: string[] = [];
+const darkHeroPages: string[] = ['/', '/projecten'];
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
