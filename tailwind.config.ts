@@ -23,19 +23,19 @@ export default {
           900: '#1c1917',
           950: '#0c0a09',
         },
-        // Sage green accent - natural, residential, fresh
+        // Official brand colors - forest green palette
         accent: {
-          50: '#f6f7f4',
-          100: '#e3e7dc',
-          200: '#c8d1bc',
-          300: '#a7b593',
-          400: '#8a9c72',
-          500: '#6b7f54', // Main accent - sage green
-          600: '#546542',
-          700: '#424e35',
-          800: '#37402e',
-          900: '#2f3628',
-          950: '#171c12',
+          50: '#f0f4f3',
+          100: '#dce5e3',
+          200: '#b9cbc8',
+          300: '#8fada8',
+          400: '#5a7a6b', // Secondary brand color (CONSTRUCTION text)
+          500: '#3d5c56',
+          600: '#2d4a47', // Primary brand color (main logo)
+          700: '#243b39',
+          800: '#1d302e',
+          900: '#182726',
+          950: '#0d1716',
         },
         // Warm cream for backgrounds
         ivory: {
@@ -73,7 +73,7 @@ export default {
         'soft': '0 4px 30px rgba(0, 0, 0, 0.06)',
         'soft-lg': '0 10px 50px rgba(0, 0, 0, 0.1)',
         'soft-xl': '0 25px 80px rgba(0, 0, 0, 0.12)',
-        'glow': '0 0 40px rgba(107, 127, 84, 0.3)',
+        'glow': '0 0 40px rgba(45, 74, 71, 0.3)',
       },
       animation: {
         'fade-in': 'fadeIn 1s ease-out forwards',

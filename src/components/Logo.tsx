@@ -13,56 +13,57 @@ export default function Logo({
   color = 'dark',
   showTagline = true
 }: LogoProps) {
-  const textColor = color === 'light' ? '#ffffff' : '#1c1917';
-  const textColorMuted = color === 'light' ? 'rgba(255,255,255,0.6)' : 'rgba(28,25,23,0.5)';
-  const accentColor = '#6b7f54';
+  // Official brand colors
+  const primaryColor = color === 'light' ? '#ffffff' : '#2d4a47';
+  const secondaryColor = color === 'light' ? 'rgba(255,255,255,0.7)' : '#5a7a6b';
+
+  // NM Symbol path - N + mirrored N
+  const symbolPath = `
+    M 0 0 L 12 0 L 12 60 L 0 60 Z
+    M 0 0 L 12 0 L 32 60 L 20 60 Z
+    M 26 0 L 38 0 L 38 60 L 26 60 Z
+    M 32 60 L 44 60 L 64 0 L 52 0 Z
+    M 52 0 L 64 0 L 64 60 L 52 60 Z
+  `;
 
   // Icon only version
   if (variant === 'icon') {
     return (
       <svg
-        viewBox="0 0 48 48"
+        viewBox="0 0 64 60"
         fill="none"
         className={className}
         aria-label="NAM Construction"
       >
-        <g>
-          {/* Left pillar */}
-          <rect x="8" y="14" width="7" height="28" fill={textColor} />
-          {/* Diagonal connector */}
-          <polygon points="15,14 15,24 33,42 33,32" fill={textColor} />
-          {/* Right pillar */}
-          <rect x="33" y="14" width="7" height="28" fill={textColor} />
-          {/* Roof accent */}
-          <polygon points="4,14 24,2 44,14 40,14 24,6 8,14" fill={accentColor} />
-        </g>
+        <path d={symbolPath} fill={primaryColor} fillRule="nonzero" />
       </svg>
     );
   }
 
-  // Stacked version for footer
+  // Stacked version (like in the PDF - symbol on top, text below)
   if (variant === 'stacked') {
     return (
-      <div className={`flex flex-col ${className}`}>
+      <div className={`flex flex-col items-center ${className}`}>
         <svg
-          viewBox="0 0 48 48"
+          viewBox="0 0 64 60"
           fill="none"
-          className="w-12 h-12 mb-3"
+          className="w-16 h-14 mb-4"
           aria-label="NAM Construction"
         >
-          <g>
-            <rect x="8" y="14" width="7" height="28" fill={textColor} />
-            <polygon points="15,14 15,24 33,42 33,32" fill={textColor} />
-            <rect x="33" y="14" width="7" height="28" fill={textColor} />
-            <polygon points="4,14 24,2 44,14 40,14 24,6 8,14" fill={accentColor} />
-          </g>
+          <path d={symbolPath} fill={primaryColor} fillRule="nonzero" />
         </svg>
-        <div className="flex flex-col">
-          <span style={{ color: textColor }} className="text-xl font-display font-semibold tracking-tight">
+        <div className="flex flex-col items-center">
+          <span
+            style={{ color: primaryColor }}
+            className="text-2xl font-display font-semibold tracking-[0.3em]"
+          >
             NAM
           </span>
-          <span style={{ color: textColorMuted }} className="text-xs uppercase tracking-[0.2em]">
-            Construction
+          <span
+            style={{ color: secondaryColor }}
+            className="text-sm tracking-[0.25em] mt-1"
+          >
+            CONSTRUCTION
           </span>
         </div>
       </div>
@@ -71,39 +72,31 @@ export default function Logo({
 
   // Full horizontal version (default)
   return (
-    <div className={`flex items-center gap-3 ${className}`}>
+    <div className={`flex items-center gap-4 ${className}`}>
       {/* Icon mark */}
       <svg
-        viewBox="0 0 48 48"
+        viewBox="0 0 64 60"
         fill="none"
-        className="w-10 h-10 md:w-12 md:h-12 flex-shrink-0"
+        className="w-10 h-9 md:w-12 md:h-11 flex-shrink-0"
         aria-label="NAM Construction"
       >
-        <g>
-          {/* Left pillar */}
-          <rect x="8" y="14" width="7" height="28" fill={textColor} />
-          {/* Diagonal connector */}
-          <polygon points="15,14 15,24 33,42 33,32" fill={textColor} />
-          {/* Right pillar */}
-          <rect x="33" y="14" width="7" height="28" fill={textColor} />
-          {/* Roof accent */}
-          <polygon points="4,14 24,2 44,14 40,14 24,6 8,14" fill={accentColor} />
-        </g>
+        <path d={symbolPath} fill={primaryColor} fillRule="nonzero" />
       </svg>
 
       {/* Text */}
       <div className="flex flex-col">
-        <div className="flex items-baseline gap-1">
-          <span style={{ color: textColor }} className="text-xl md:text-2xl font-display font-semibold tracking-tight">
-            NAM
-          </span>
-          <span style={{ color: textColorMuted }} className="text-xl md:text-2xl font-display font-normal tracking-tight">
-            CONSTRUCTION
-          </span>
-        </div>
+        <span
+          style={{ color: primaryColor }}
+          className="text-xl md:text-2xl font-display font-semibold tracking-[0.2em]"
+        >
+          NAM
+        </span>
         {showTagline && (
-          <span style={{ color: accentColor }} className="text-[10px] uppercase tracking-[0.15em]">
-            Renovatie & Afwerking
+          <span
+            style={{ color: secondaryColor }}
+            className="text-[10px] md:text-xs tracking-[0.15em]"
+          >
+            CONSTRUCTION
           </span>
         )}
       </div>

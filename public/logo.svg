@@ -1,21 +1,36 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" fill="none">
-  <!-- Architectural mark - stylized building/house with N shape -->
-  <g id="mark">
-    <!-- Left pillar -->
-    <rect x="8" y="12" width="6" height="36" fill="currentColor"/>
-    <!-- Diagonal connector -->
-    <polygon points="14,12 14,20 32,48 32,40" fill="currentColor"/>
-    <!-- Right pillar -->
-    <rect x="32" y="12" width="6" height="36" fill="currentColor"/>
-    <!-- Roof accent -->
-    <polygon points="4,12 23,0 42,12 38,12 23,4 8,12" fill="#6b7f54"/>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 80" fill="none">
+  <!-- NM Symbol - N + mirrored N as unified shape -->
+  <path d="
+    M 0 0
+    L 12 0
+    L 12 60
+    L 0 60
+    Z
+    M 0 0
+    L 12 0
+    L 32 60
+    L 20 60
+    Z
+    M 26 0
+    L 38 0
+    L 38 60
+    L 26 60
+    Z
+    M 32 60
+    L 44 60
+    L 64 0
+    L 52 0
+    Z
+    M 52 0
+    L 64 0
+    L 64 60
+    L 52 60
+    Z
+  " fill="#2d4a47" fill-rule="nonzero"/>
 
   <!-- Company name -->
-  <g id="wordmark" font-family="Georgia, serif">
-    <!-- NAM -->
-    <text x="52" y="32" font-size="24" font-weight="600" fill="currentColor" letter-spacing="-1">NAM</text>
-    <!-- CONSTRUCTION -->
-    <text x="52" y="48" font-size="11" font-weight="400" fill="currentColor" letter-spacing="3" opacity="0.7">CONSTRUCTION</text>
+  <g id="wordmark">
+    <text x="80" y="36" font-family="system-ui, -apple-system, sans-serif" font-size="26" font-weight="600" fill="#2d4a47" letter-spacing="6">NAM</text>
+    <text x="80" y="54" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="400" fill="#5a7a6b" letter-spacing="4">CONSTRUCTION</text>
   </g>
 </svg>

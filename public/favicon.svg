@@ -1,13 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <rect width="32" height="32" rx="6" fill="#1c1917"/>
+  <rect width="32" height="32" rx="4" fill="#2d4a47"/>
   <g transform="translate(4, 6)">
-    <!-- Left pillar -->
-    <rect x="4" y="6" width="4" height="14" fill="white"/>
-    <!-- Diagonal connector -->
-    <polygon points="8,6 8,10 18,20 18,16" fill="white"/>
-    <!-- Right pillar -->
-    <rect x="18" y="6" width="4" height="14" fill="white"/>
-    <!-- Roof accent -->
-    <polygon points="2,6 13,0 24,6 22,6 13,2 4,6" fill="#6b7f54"/>
+    <!-- NM Symbol - N + mirrored N -->
+    <path d="
+      M 0 0 L 4.5 0 L 4.5 20 L 0 20 Z
+      M 0 0 L 4.5 0 L 12 20 L 7.5 20 Z
+      M 9.75 0 L 14.25 0 L 14.25 20 L 9.75 20 Z
+      M 12 20 L 16.5 20 L 24 0 L 19.5 0 Z
+      M 19.5 0 L 24 0 L 24 20 L 19.5 20 Z
+    " fill="white" fill-rule="nonzero"/>
   </g>
 </svg>
