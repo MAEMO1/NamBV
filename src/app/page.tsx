@@ -1,6 +1,9 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, ArrowUpRight, ChevronDown, MapPin } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, MapPin, Play } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 
 // Services data
 const services = [
@@ -9,24 +12,28 @@ const services = [
     description: 'Volledige transformatie van uw woning. Van concept tot oplevering onder één dak.',
     href: '/diensten/totaalrenovatie',
     image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop',
+    number: '01',
   },
   {
     title: 'Renovatie',
     description: 'Gerichte verbouwingen en renovaties. Badkamer, keuken of uitbreiding.',
     href: '/diensten/renovatie',
     image: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&h=600&fit=crop',
+    number: '02',
   },
   {
     title: 'Afwerking',
     description: 'Tegelwerk, plakwerk en schilderwerk. Vakkundige afwerking die het verschil maakt.',
     href: '/diensten/afwerking',
     image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop',
+    number: '03',
   },
   {
     title: 'Technieken',
     description: 'Elektriciteit en sanitair door erkende vakmensen. Veilig en conform alle normen.',
     href: '/diensten/technieken',
     image: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800&h=600&fit=crop',
+    number: '04',
   },
 ];
 
@@ -56,224 +63,201 @@ const projects = [
   },
 ];
 
-// Value propositions
-const values = [
-  { number: '01', title: 'Vakmanschap', description: 'Ervaren vakmensen met oog voor detail' },
-  { number: '02', title: 'Transparantie', description: 'Heldere communicatie en eerlijke prijzen' },
-  { number: '03', title: 'Betrouwbaar', description: 'Afspraken nakomen, deadlines halen' },
-  { number: '04', title: 'Kwaliteit', description: 'Hoogwaardige materialen en afwerking' },
+// Stats
+const stats = [
+  { number: '150+', label: 'Projecten voltooid' },
+  { number: '12', label: 'Jaar ervaring' },
+  { number: '98%', label: 'Klanttevredenheid' },
 ];
 
 export default function HomePage() {
+  const [scrollY, setScrollY] = useState(0);
+  const heroRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <>
-      {/* Hero Section - Full viewport, dramatic statement */}
-      <section className="relative h-screen flex items-center overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0">
+      {/* Hero Section - Cinematic, dramatic entrance */}
+      <section ref={heroRef} className="relative min-h-screen flex items-end pb-20 md:pb-32 overflow-hidden">
+        {/* Background Image with Parallax */}
+        <div
+          className="absolute inset-0"
+          style={{ transform: `translateY(${scrollY * 0.3}px)` }}
+        >
           <Image
             src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&h=1080&fit=crop"
             alt="Gerenoveerd interieur"
             fill
-            className="object-cover"
+            className="object-cover scale-110"
             priority
           />
-          {/* Gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-noir-950/90 via-noir-950/70 to-noir-950/50" />
-          <div className="absolute inset-0 bg-gradient-to-t from-noir-950/50 via-transparent to-transparent" />
+          {/* Cinematic gradient overlays */}
+          <div className="absolute inset-0 bg-gradient-to-r from-noir-950 via-noir-950/80 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-noir-950 via-noir-950/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-noir-950/30 to-transparent" />
+
+          {/* Grain texture overlay */}
+          <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay bg-noise" />
         </div>
+
+        {/* Floating accent line */}
+        <div className="absolute left-8 md:left-16 top-1/4 bottom-1/4 w-px bg-gradient-to-b from-transparent via-accent-500 to-transparent opacity-40" />
 
         {/* Content */}
         <div className="container-wide relative z-10">
-          <div className="max-w-4xl">
-            {/* Tagline */}
-            <div className="flex items-center gap-4 mb-8 animate-fade-up">
-              <div className="w-12 h-px bg-accent-500" />
-              <span className="text-sm font-medium text-accent-500 uppercase tracking-[0.2em]">
-                Renovatie in Gent
+          <div className="max-w-5xl">
+            {/* Animated tagline */}
+            <div className="flex items-center gap-4 mb-8 opacity-0 animate-fade-up" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
+              <span className="w-12 h-px bg-accent-500" />
+              <span className="text-sm font-medium text-accent-400 uppercase tracking-[0.3em]">
+                Renovatie Gent & Omgeving
               </span>
             </div>
 
-            {/* Main Statement - Ghelamco style */}
-            <h1 className="text-hero font-display text-white mb-8 animate-fade-up animation-delay-200">
-              WIJ BOUWEN<br />
-              <span className="text-accent-400">UW TOEKOMST</span>
+            {/* Main headline - Dramatic typography */}
+            <h1 className="mb-10">
+              <span
+                className="block text-[clamp(3.5rem,12vw,10rem)] font-display font-medium text-white leading-[0.9] tracking-[-0.04em] opacity-0 animate-fade-up"
+                style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}
+              >
+                Vakmanschap
+              </span>
+              <span
+                className="block text-[clamp(3.5rem,12vw,10rem)] font-display font-medium leading-[0.9] tracking-[-0.04em] opacity-0 animate-fade-up"
+                style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}
+              >
+                <span className="text-accent-400">dat</span>{' '}
+                <span className="text-white/40">blijft</span>
+              </span>
             </h1>
 
-            {/* Subtitle */}
-            <p className="text-xl md:text-2xl text-white/60 max-w-2xl mb-12 leading-relaxed font-light animate-fade-up animation-delay-300">
-              Vakkundige renovatie met oog voor detail en respect voor uw woning.
-              Van totaalrenovatie tot afwerking.
+            {/* Subtitle with elegant reveal */}
+            <p
+              className="text-xl md:text-2xl text-white/50 max-w-xl mb-14 leading-relaxed font-light opacity-0 animate-fade-up"
+              style={{ animationDelay: '0.8s', animationFillMode: 'forwards' }}
+            >
+              Renovatie met respect voor het verleden en oog voor de toekomst.
+              Uw woning in deskundige handen.
             </p>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 animate-fade-up animation-delay-400">
+            {/* CTA Buttons - Refined */}
+            <div
+              className="flex flex-col sm:flex-row gap-4 opacity-0 animate-fade-up"
+              style={{ animationDelay: '1s', animationFillMode: 'forwards' }}
+            >
               <Link
                 href="/offerte"
-                className="group inline-flex items-center justify-center gap-3 px-8 py-5 bg-white text-noir-900 font-medium uppercase tracking-wide hover:bg-accent-500 hover:text-white transition-all duration-500"
+                className="group relative inline-flex items-center justify-center gap-3 px-10 py-5 bg-white text-noir-900 font-medium uppercase tracking-wider text-sm overflow-hidden"
               >
-                Offerte aanvragen
-                <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <span className="relative z-10 flex items-center gap-3 transition-colors duration-500 group-hover:text-white">
+                  Offerte aanvragen
+                  <ArrowUpRight className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                </span>
+                <div className="absolute inset-0 bg-accent-500 translate-y-full transition-transform duration-500 group-hover:translate-y-0" />
               </Link>
               <Link
                 href="/projecten"
-                className="group inline-flex items-center justify-center gap-3 px-8 py-5 border border-white/30 text-white font-medium uppercase tracking-wide hover:bg-white hover:text-noir-900 transition-all duration-500"
+                className="group inline-flex items-center justify-center gap-3 px-10 py-5 border border-white/20 text-white font-medium uppercase tracking-wider text-sm hover:border-white/50 transition-all duration-500"
               >
+                <Play className="h-4 w-4" />
                 Bekijk projecten
-                <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </div>
           </div>
-        </div>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-10 animate-bounce">
-          <ChevronDown className="h-8 w-8 text-white/50" />
-        </div>
-      </section>
-
-      {/* Value Propositions - Clean, minimal */}
-      <section className="py-20 md:py-28 bg-white border-b border-noir-100">
-        <div className="container-wide">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
-            {values.map((value, index) => (
-              <div key={value.number} className="group">
-                <span className="text-sm text-accent-500 font-medium mb-3 block">
-                  {value.number}
-                </span>
-                <h3 className="text-xl md:text-2xl font-display font-medium text-noir-900 mb-2">
-                  {value.title}
-                </h3>
-                <p className="text-noir-500 text-sm leading-relaxed">
-                  {value.description}
-                </p>
+          {/* Stats bar - Bottom right */}
+          <div
+            className="absolute right-0 bottom-0 hidden lg:flex items-end gap-16 opacity-0 animate-fade-up"
+            style={{ animationDelay: '1.2s', animationFillMode: 'forwards' }}
+          >
+            {stats.map((stat) => (
+              <div key={stat.label} className="text-right">
+                <p className="text-4xl font-display font-medium text-white mb-1">{stat.number}</p>
+                <p className="text-sm text-white/40 uppercase tracking-wider">{stat.label}</p>
               </div>
             ))}
           </div>
         </div>
+
+        {/* Scroll indicator - Elegant */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 opacity-0 animate-fade-in" style={{ animationDelay: '1.5s', animationFillMode: 'forwards' }}>
+          <span className="text-xs text-white/30 uppercase tracking-[0.2em]">Scroll</span>
+          <div className="w-px h-12 bg-gradient-to-b from-white/40 to-transparent animate-pulse" />
+        </div>
       </section>
 
-      {/* Services Section */}
-      <section className="section-padding bg-ivory-200">
-        <div className="container-wide">
-          {/* Section Header */}
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-16">
+      {/* Services Section - Architectural grid */}
+      <section className="py-32 md:py-40 bg-ivory-200 relative overflow-hidden">
+        {/* Background accent */}
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-accent-500/5 to-transparent pointer-events-none" />
+
+        <div className="container-wide relative">
+          {/* Section Header - Asymmetric */}
+          <div className="grid lg:grid-cols-2 gap-8 mb-20">
             <div>
-              <span className="text-sm text-accent-500 font-medium uppercase tracking-[0.2em] mb-4 block">
+              <span className="text-sm text-accent-500 font-medium uppercase tracking-[0.3em] mb-6 block">
                 Diensten
               </span>
               <h2 className="text-display-lg font-display font-medium text-noir-900">
-                Wat wij doen
+                Expertise in elke<br />
+                <span className="text-noir-400">renovatiefase</span>
               </h2>
             </div>
-            <Link
-              href="/diensten"
-              className="group inline-flex items-center gap-2 text-noir-600 hover:text-noir-900 font-medium transition-colors duration-300"
-            >
-              Alle diensten bekijken
-              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-            </Link>
+            <div className="flex items-end lg:justify-end">
+              <Link
+                href="/diensten"
+                className="group inline-flex items-center gap-3 text-noir-500 hover:text-noir-900 font-medium transition-colors duration-300"
+              >
+                <span className="border-b border-current pb-1">Alle diensten ontdekken</span>
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-2" />
+              </Link>
+            </div>
           </div>
 
-          {/* Services Grid */}
-          <div className="grid md:grid-cols-2 gap-6">
+          {/* Services Grid - Alternating sizes */}
+          <div className="grid md:grid-cols-2 gap-4">
             {services.map((service, index) => (
               <Link
                 key={service.title}
                 href={service.href}
-                className="group relative overflow-hidden bg-white"
-              >
-                {/* Image */}
-                <div className="relative aspect-[16/10] overflow-hidden">
-                  <Image
-                    src={service.image}
-                    alt={service.title}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-noir-900/30 group-hover:bg-noir-900/50 transition-colors duration-500" />
-                </div>
-
-                {/* Content */}
-                <div className="p-6 md:p-8">
-                  <h3 className="text-2xl font-display font-medium text-noir-900 mb-2 group-hover:text-accent-600 transition-colors duration-300">
-                    {service.title}
-                  </h3>
-                  <p className="text-noir-500 mb-4">
-                    {service.description}
-                  </p>
-                  <span className="inline-flex items-center gap-2 text-sm font-medium text-noir-400 group-hover:text-accent-500 transition-colors duration-300">
-                    Meer info
-                    <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Projects Section - Portfolio focus */}
-      <section className="section-padding bg-noir-900">
-        <div className="container-wide">
-          {/* Section Header */}
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-16">
-            <div>
-              <span className="text-sm text-accent-500 font-medium uppercase tracking-[0.2em] mb-4 block">
-                Portfolio
-              </span>
-              <h2 className="text-display-lg font-display font-medium text-white">
-                Recente projecten
-              </h2>
-            </div>
-            <Link
-              href="/projecten"
-              className="group inline-flex items-center gap-2 text-white/60 hover:text-white font-medium transition-colors duration-300"
-            >
-              Alle projecten bekijken
-              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-            </Link>
-          </div>
-
-          {/* Projects Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {projects.map((project, index) => (
-              <Link
-                key={project.title}
-                href="/projecten"
-                className={`group relative overflow-hidden ${
-                  project.featured ? 'md:col-span-2 lg:col-span-2 lg:row-span-2' : ''
+                className={`group relative overflow-hidden bg-white ${
+                  index === 0 || index === 3 ? 'md:row-span-2' : ''
                 }`}
               >
                 {/* Image */}
                 <div className={`relative overflow-hidden ${
-                  project.featured ? 'aspect-[16/10] lg:aspect-auto lg:h-full' : 'aspect-[4/3]'
+                  index === 0 || index === 3 ? 'aspect-[4/5]' : 'aspect-[16/10]'
                 }`}>
                   <Image
-                    src={project.image}
-                    alt={project.title}
+                    src={service.image}
+                    alt={service.title}
                     fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="object-cover transition-all duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-noir-900/80 via-noir-900/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-noir-900/80 via-noir-900/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
+
+                  {/* Number badge */}
+                  <div className="absolute top-6 left-6">
+                    <span className="text-sm font-medium text-white/60 uppercase tracking-wider">{service.number}</span>
+                  </div>
                 </div>
 
-                {/* Content Overlay */}
-                <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
-                  <span className="text-xs text-accent-400 font-medium uppercase tracking-wider mb-2">
-                    {project.category}
-                  </span>
-                  <h3 className={`font-display font-medium text-white mb-2 ${
-                    project.featured ? 'text-3xl md:text-4xl' : 'text-2xl'
-                  }`}>
-                    {project.title}
+                {/* Content overlay */}
+                <div className="absolute inset-0 flex flex-col justify-end p-8">
+                  <h3 className="text-2xl md:text-3xl font-display font-medium text-white mb-3 group-hover:text-accent-400 transition-colors duration-300">
+                    {service.title}
                   </h3>
-                  <div className="flex items-center gap-4 text-white/60 text-sm">
-                    <span className="flex items-center gap-1">
-                      <MapPin className="h-3 w-3" />
-                      {project.location}
-                    </span>
-                    <span>{project.year}</span>
+                  <p className="text-white/60 mb-4 max-w-sm">
+                    {service.description}
+                  </p>
+                  <div className="flex items-center gap-2 text-sm font-medium text-accent-400 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                    <span>Meer ontdekken</span>
+                    <ArrowUpRight className="h-4 w-4" />
                   </div>
                 </div>
               </Link>
@@ -282,31 +266,128 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA Section - Clean, impactful */}
-      <section className="py-32 md:py-40 bg-white relative overflow-hidden">
+      {/* Projects Section - Editorial layout */}
+      <section className="py-32 md:py-40 bg-noir-950 relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-noir-800 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-noir-800 to-transparent" />
+
         <div className="container-wide">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-display-xl font-display font-medium text-noir-900 mb-6">
-              Klaar om te beginnen?
+          {/* Section Header */}
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-20">
+            <div>
+              <span className="text-sm text-accent-500 font-medium uppercase tracking-[0.3em] mb-6 block">
+                Portfolio
+              </span>
+              <h2 className="text-display-lg font-display font-medium text-white">
+                Recente<br />
+                <span className="text-white/40">realisaties</span>
+              </h2>
+            </div>
+            <Link
+              href="/projecten"
+              className="group inline-flex items-center gap-3 text-white/50 hover:text-white font-medium transition-colors duration-300"
+            >
+              <span className="border-b border-current pb-1">Alle projecten bekijken</span>
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-2" />
+            </Link>
+          </div>
+
+          {/* Projects Grid - Masonry-like */}
+          <div className="grid md:grid-cols-12 gap-4">
+            {projects.map((project, index) => (
+              <Link
+                key={project.title}
+                href="/projecten"
+                className={`group relative overflow-hidden ${
+                  project.featured
+                    ? 'md:col-span-8 md:row-span-2'
+                    : index === 1 ? 'md:col-span-4' : 'md:col-span-4'
+                }`}
+              >
+                {/* Image */}
+                <div className={`relative overflow-hidden ${
+                  project.featured ? 'aspect-[16/10] md:aspect-auto md:h-full min-h-[400px]' : 'aspect-square'
+                }`}>
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    className="object-cover transition-all duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-noir-950/90 via-noir-950/30 to-transparent" />
+                </div>
+
+                {/* Content Overlay */}
+                <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
+                  <span className="text-xs text-accent-400 font-medium uppercase tracking-[0.2em] mb-3">
+                    {project.category}
+                  </span>
+                  <h3 className={`font-display font-medium text-white mb-3 ${
+                    project.featured ? 'text-3xl md:text-4xl' : 'text-xl md:text-2xl'
+                  }`}>
+                    {project.title}
+                  </h3>
+                  <div className="flex items-center gap-4 text-white/50 text-sm">
+                    <span className="flex items-center gap-1.5">
+                      <MapPin className="h-3.5 w-3.5" />
+                      {project.location}
+                    </span>
+                    <span>{project.year}</span>
+                  </div>
+
+                  {/* Hover reveal */}
+                  <div className="mt-4 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                    <span className="inline-flex items-center gap-2 text-sm text-accent-400 font-medium">
+                      Bekijk project <ArrowUpRight className="h-4 w-4" />
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section - Bold, impactful */}
+      <section className="py-40 md:py-56 bg-white relative overflow-hidden">
+        {/* Background pattern */}
+        <div className="absolute inset-0 opacity-[0.02]">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-noir-900 rounded-full" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-noir-900 rounded-full" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] border border-noir-900 rounded-full" />
+        </div>
+
+        <div className="container-wide relative">
+          <div className="max-w-4xl mx-auto text-center">
+            {/* Large statement */}
+            <h2 className="text-[clamp(2.5rem,6vw,5rem)] font-display font-medium text-noir-900 leading-[1.1] mb-8">
+              Klaar om uw<br />
+              <span className="text-accent-500">droom</span> te realiseren?
             </h2>
-            <p className="text-xl text-noir-500 mb-12 max-w-xl mx-auto">
-              Neem contact op voor een vrijblijvend adviesgesprek.
-              Wij denken graag met u mee over uw renovatieproject.
+            <p className="text-xl text-noir-400 mb-14 max-w-xl mx-auto">
+              Neem vrijblijvend contact op. We bespreken graag uw plannen
+              en mogelijkheden.
             </p>
+
+            {/* Dual CTA */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/offerte"
-                className="group inline-flex items-center justify-center gap-3 px-10 py-5 bg-noir-900 text-white font-medium uppercase tracking-wide hover:bg-accent-500 transition-all duration-500"
+                className="group relative inline-flex items-center justify-center gap-3 px-12 py-6 bg-noir-900 text-white font-medium uppercase tracking-wider text-sm overflow-hidden"
               >
-                Offerte aanvragen
-                <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <span className="relative z-10 flex items-center gap-3 transition-colors duration-500">
+                  Offerte aanvragen
+                  <ArrowUpRight className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                </span>
+                <div className="absolute inset-0 bg-accent-500 translate-y-full transition-transform duration-500 group-hover:translate-y-0" />
               </Link>
               <Link
                 href="/afspraak"
-                className="group inline-flex items-center justify-center gap-3 px-10 py-5 border border-noir-300 text-noir-900 font-medium uppercase tracking-wide hover:bg-noir-900 hover:text-white hover:border-noir-900 transition-all duration-500"
+                className="group inline-flex items-center justify-center gap-3 px-12 py-6 border-2 border-noir-200 text-noir-700 font-medium uppercase tracking-wider text-sm hover:border-noir-900 hover:bg-noir-900 hover:text-white transition-all duration-500"
               >
-                Plan afspraak
-                <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                Gratis adviesgesprek
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </div>
           </div>

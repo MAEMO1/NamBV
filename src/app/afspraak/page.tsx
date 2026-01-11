@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
-import { Calendar, CheckCircle2, Leaf, Recycle, FileCheck, Euro, Shield } from 'lucide-react';
+import { Calendar, Leaf, Recycle, FileCheck, Euro, Shield, ArrowUpRight } from 'lucide-react';
+import Link from 'next/link';
 import { BookingFlow } from '@/components';
 
 export const metadata: Metadata = {
@@ -30,49 +31,67 @@ const benefits = [
   }
 ];
 
+const trustPoints = [
+  {
+    icon: Recycle,
+    title: 'Hergebruik materiaal',
+    description: 'Waar mogelijk hergebruiken we bestaand materiaal. Duurzaam en kostenbesparend.'
+  },
+  {
+    icon: Shield,
+    title: 'Volledige attestering',
+    description: 'AREI-conforme installaties, EPB-attesten en alle nodige certificaten.'
+  },
+  {
+    icon: Leaf,
+    title: 'Ecologische focus',
+    description: 'Duurzame en milieuvriendelijke materialen voor een gezonder thuis.'
+  }
+];
+
 export default function AfspraakPage() {
   return (
     <>
-      {/* Hero */}
-      <section className="relative bg-gradient-to-br from-cream-50 via-sand-50 to-forest-50/20 py-16 md:py-24 overflow-hidden">
+      {/* Hero - Clean, professional */}
+      <section className="relative bg-ivory-200 pt-32 pb-16 md:pt-40 md:pb-24 overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-1/2 h-full pointer-events-none">
-          <div className="absolute top-20 right-20 w-96 h-96 bg-forest-100/30 rounded-full blur-3xl" />
+          <div className="absolute top-20 right-20 w-96 h-96 bg-accent-500/5 rounded-full blur-3xl" />
         </div>
         <div className="absolute bottom-0 left-0 w-1/3 h-1/2 pointer-events-none">
-          <div className="absolute bottom-10 left-10 w-64 h-64 bg-terracotta-100/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-10 left-10 w-64 h-64 bg-noir-200/30 rounded-full blur-3xl" />
         </div>
 
-        <div className="container-custom relative">
-          <div className="text-center max-w-2xl mx-auto mb-12">
+        <div className="container-wide relative">
+          <div className="text-center max-w-2xl mx-auto mb-16">
             {/* Badge */}
-            <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-sand-200 text-sm font-medium text-stone-600 mb-6">
-              <span className="w-2 h-2 rounded-full bg-forest-500 animate-pulse" />
+            <span className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-noir-100 text-sm font-medium text-noir-600 mb-8">
+              <span className="w-2 h-2 bg-accent-500 animate-pulse" />
               Direct inplannen
             </span>
 
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-semibold text-stone-900 mb-4">
+            <h1 className="text-display-lg font-display font-medium text-noir-900 mb-6">
               Plan uw gratis
-              <span className="text-forest-600"> adviesgesprek</span>
+              <span className="text-accent-500"> adviesgesprek</span>
             </h1>
-            <p className="text-lg text-stone-600">
+            <p className="text-lg text-noir-500 leading-relaxed">
               Beantwoord enkele vragen over uw project en kies direct een moment dat u past.
               Vrijblijvend en zonder verplichtingen.
             </p>
           </div>
 
           {/* Benefits bar */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             {benefits.map((benefit) => (
               <div
                 key={benefit.title}
-                className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 border border-sand-100 text-center"
+                className="bg-white p-5 border border-noir-100 text-center"
               >
-                <div className="w-10 h-10 rounded-xl bg-forest-100 flex items-center justify-center mx-auto mb-3">
-                  <benefit.icon className="h-5 w-5 text-forest-600" />
+                <div className="w-12 h-12 bg-noir-900 flex items-center justify-center mx-auto mb-4">
+                  <benefit.icon className="h-5 w-5 text-white" />
                 </div>
-                <p className="font-semibold text-stone-900 text-sm">{benefit.title}</p>
-                <p className="text-xs text-stone-500">{benefit.description}</p>
+                <p className="font-medium text-noir-900 text-sm mb-1">{benefit.title}</p>
+                <p className="text-xs text-noir-500">{benefit.description}</p>
               </div>
             ))}
           </div>
@@ -80,8 +99,8 @@ export default function AfspraakPage() {
       </section>
 
       {/* Booking Flow */}
-      <section className="py-12 md:py-16 bg-gradient-to-br from-white via-cream-50/30 to-sand-50/20">
-        <div className="container-custom">
+      <section className="py-16 md:py-24 bg-white">
+        <div className="container-wide">
           <div className="max-w-3xl mx-auto">
             <BookingFlow />
           </div>
@@ -89,49 +108,51 @@ export default function AfspraakPage() {
       </section>
 
       {/* Trust indicators */}
-      <section className="py-16 bg-gradient-to-br from-forest-900 to-forest-950 relative overflow-hidden">
+      <section className="py-24 md:py-32 bg-noir-950 relative overflow-hidden">
+        {/* Decorative lines */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-noir-800 to-transparent" />
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-10 left-10 w-64 h-64 bg-forest-800/50 rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-48 h-48 bg-terracotta-900/30 rounded-full blur-3xl" />
+          <div className="absolute top-10 left-10 w-64 h-64 bg-accent-500/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-10 right-10 w-48 h-48 bg-accent-500/5 rounded-full blur-3xl" />
         </div>
 
-        <div className="container-custom relative">
-          <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-display font-semibold text-white mb-4">
-              Waarom kiezen voor Nam Construction?
+        <div className="container-wide relative">
+          <div className="text-center mb-16">
+            <span className="text-sm text-accent-500 font-medium uppercase tracking-[0.3em] mb-6 block">
+              Onze belofte
+            </span>
+            <h2 className="text-display-md font-display font-medium text-white">
+              Waarom kiezen voor<br />
+              <span className="text-white/40">Nam Construction?</span>
             </h2>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-forest-800/50 backdrop-blur-sm rounded-2xl p-6 text-center">
-              <div className="w-14 h-14 rounded-2xl bg-terracotta-500/20 flex items-center justify-center mx-auto mb-4">
-                <Recycle className="h-7 w-7 text-terracotta-400" />
+            {trustPoints.map((point) => (
+              <div key={point.title} className="bg-noir-900 border border-noir-800 p-8 text-center group hover:border-accent-500/50 transition-colors duration-500">
+                <div className="w-16 h-16 bg-accent-500/10 flex items-center justify-center mx-auto mb-6">
+                  <point.icon className="h-7 w-7 text-accent-500" />
+                </div>
+                <h3 className="text-xl font-display font-medium text-white mb-3">{point.title}</h3>
+                <p className="text-noir-400 text-sm leading-relaxed">
+                  {point.description}
+                </p>
               </div>
-              <h3 className="text-lg font-semibold text-white mb-2">Hergebruik materiaal</h3>
-              <p className="text-forest-200 text-sm">
-                Waar mogelijk hergebruiken we bestaand materiaal. Duurzaam en kostenbesparend.
-              </p>
-            </div>
+            ))}
+          </div>
 
-            <div className="bg-forest-800/50 backdrop-blur-sm rounded-2xl p-6 text-center">
-              <div className="w-14 h-14 rounded-2xl bg-forest-500/20 flex items-center justify-center mx-auto mb-4">
-                <Shield className="h-7 w-7 text-forest-300" />
-              </div>
-              <h3 className="text-lg font-semibold text-white mb-2">Volledige attestering</h3>
-              <p className="text-forest-200 text-sm">
-                AREI-conforme installaties, EPB-attesten en alle nodige certificaten.
-              </p>
-            </div>
-
-            <div className="bg-forest-800/50 backdrop-blur-sm rounded-2xl p-6 text-center">
-              <div className="w-14 h-14 rounded-2xl bg-sand-500/20 flex items-center justify-center mx-auto mb-4">
-                <Leaf className="h-7 w-7 text-sand-300" />
-              </div>
-              <h3 className="text-lg font-semibold text-white mb-2">Ecologische focus</h3>
-              <p className="text-forest-200 text-sm">
-                Duurzame en milieuvriendelijke materialen voor een gezonder thuis.
-              </p>
-            </div>
+          {/* Alternative CTA */}
+          <div className="mt-16 text-center">
+            <p className="text-noir-400 mb-6">
+              Liever direct een offerte aanvragen?
+            </p>
+            <Link
+              href="/offerte"
+              className="inline-flex items-center gap-3 px-8 py-4 border border-noir-700 text-white font-medium uppercase tracking-wide hover:bg-white hover:text-noir-900 transition-all duration-500"
+            >
+              Offerte aanvragen
+              <ArrowUpRight className="h-4 w-4" />
+            </Link>
           </div>
         </div>
       </section>
