@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight, Check, Phone } from 'lucide-react'
 import {
@@ -11,6 +11,14 @@ import {
   Step4Schema,
   budgetRangeLabels,
 } from '@/lib/validations/quote'
+import {
+  trackFormStart,
+  trackFormProgress,
+  trackFormSubmit,
+  trackFormSuccess,
+  trackFormError,
+  trackClickToCall,
+} from '@/lib/analytics'
 
 type ServiceType = { id: string; name: string; slug: string; icon: string }
 type PropertyType = { id: string; name: string; slug: string }
@@ -44,6 +52,7 @@ export default function OfferteFormulier() {
   const [referenceNumber, setReferenceNumber] = useState<string | null>(null)
   const [serviceTypes, setServiceTypes] = useState<ServiceType[]>([])
   const [propertyTypes, setPropertyTypes] = useState<PropertyType[]>([])
+  const formStartTracked = useRef(false)
 
   const [formData, setFormData] = useState<FormData>({
     fullName: '',
@@ -80,7 +89,16 @@ export default function OfferteFormulier() {
   const totalSteps = 4
   const stepLabels = ['Project', 'Details', 'Contact', 'Bevestig']
 
+  // Track form start on first interaction
+  const trackStart = () => {
+    if (!formStartTracked.current) {
+      formStartTracked.current = true
+      trackFormStart('offerte', '/offerte')
+    }
+  }
+
   const updateField = <K extends keyof FormData>(field: K, value: FormData[K]) => {
+    trackStart() // Track on first field interaction
     setFormData(prev => ({ ...prev, [field]: value }))
     if (errors[field]) {
       setErrors(prev => {
@@ -92,6 +110,7 @@ export default function OfferteFormulier() {
   }
 
   const toggleService = (serviceId: string) => {
+    trackStart() // Track on first field interaction
     setFormData(prev => ({
       ...prev,
       serviceTypeIds: prev.serviceTypeIds.includes(serviceId)
@@ -152,7 +171,9 @@ export default function OfferteFormulier() {
 
   const nextStep = () => {
     if (validateStep(step)) {
-      setStep(prev => Math.min(prev + 1, totalSteps))
+      const newStep = Math.min(step + 1, totalSteps)
+      trackFormProgress('offerte', stepLabels[step - 1], step, totalSteps)
+      setStep(newStep)
     }
   }
 
@@ -162,6 +183,7 @@ export default function OfferteFormulier() {
     if (!validateStep(step)) return
 
     setIsSubmitting(true)
+    trackFormSubmit('offerte', '/offerte')
 
     try {
       const validatedData = QuoteRequestInputSchema.parse({
@@ -185,8 +207,10 @@ export default function OfferteFormulier() {
 
       const result = await response.json()
       setReferenceNumber(result.referenceNumber)
+      trackFormSuccess('offerte', result.referenceNumber)
       setIsSubmitted(true)
     } catch {
+      trackFormError('offerte', 'server', undefined, 'Submission failed')
       setErrors({ submit: 'Er is iets misgegaan. Probeer het opnieuw.' })
     } finally {
       setIsSubmitting(false)
@@ -238,6 +262,7 @@ export default function OfferteFormulier() {
           </Link>
           <a
             href="tel:+32493812789"
+            onClick={() => trackClickToCall('+32493812789', 'header')}
             className="flex items-center gap-2 text-sm text-accent-500 hover:text-accent-400 transition-colors"
           >
             <Phone className="h-4 w-4" />

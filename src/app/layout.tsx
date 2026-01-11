@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { dmSans, playfair } from "@/lib/fonts";
-import { Header, Footer } from "@/components";
+import { Header, Footer, Analytics } from "@/components";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -38,11 +38,13 @@ export default function RootLayout({
         {/* Subtle noise texture overlay */}
         <div className="noise-overlay" aria-hidden="true" />
 
-        <Header />
-        <main>
-          {children}
-        </main>
-        <Footer />
+        <Analytics>
+          <Header />
+          <main>
+            {children}
+          </main>
+          <Footer />
+        </Analytics>
       </body>
     </html>
   );

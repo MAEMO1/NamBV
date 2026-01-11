@@ -4,6 +4,46 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, ArrowUpRight, MapPin, Phone, CheckCircle2, ChevronDown } from 'lucide-react';
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { trackCTAClick, trackClickToCall, CTALocation } from '@/lib/analytics';
+
+// Tracked Link component for CTA buttons
+function TrackedCTA({
+  href,
+  children,
+  className,
+  location,
+  label,
+  external = false,
+}: {
+  href: string;
+  children: React.ReactNode;
+  className?: string;
+  location: CTALocation;
+  label: string;
+  external?: boolean;
+}) {
+  const handleClick = () => {
+    if (href.startsWith('tel:')) {
+      trackClickToCall(href.replace('tel:', ''), location);
+    } else {
+      trackCTAClick(label, location, href);
+    }
+  };
+
+  if (external || href.startsWith('tel:') || href.startsWith('mailto:')) {
+    return (
+      <a href={href} className={className} onClick={handleClick}>
+        {children}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={href} className={className} onClick={handleClick}>
+      {children}
+    </Link>
+  );
+}
 
 // The 5 Core Values
 const kernwaarden = [
@@ -311,28 +351,29 @@ export default function HomePage() {
                 }`}
                 style={{ transitionDelay: '1100ms' }}
               >
-                {/* Primary CTA with sweep animation */}
-                <Link
+                {/* Primary CTA with sweep animation - SINGLE FOCUS */}
+                <TrackedCTA
                   href="/offerte"
-                  className="group relative inline-flex items-center gap-3 px-8 py-4 bg-accent-500 text-white font-medium overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-accent-500/30"
+                  location="hero"
+                  label="Gratis offerte aanvragen"
+                  className="group relative inline-flex items-center gap-3 px-10 py-5 bg-accent-600 text-white font-medium overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-accent-500/30"
                 >
                   {/* Sweep effect */}
                   <span className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-full transition-transform duration-700 skew-x-12" />
-                  <span className="relative z-10 uppercase tracking-wider text-sm">Gratis offerte</span>
-                  <ArrowRight className="relative z-10 h-4 w-4 transition-transform duration-300 group-hover:translate-x-2" />
-                </Link>
+                  <span className="relative z-10 uppercase tracking-wider text-sm">Gratis offerte aanvragen</span>
+                  <ArrowRight className="relative z-10 h-5 w-5 transition-transform duration-300 group-hover:translate-x-2" />
+                </TrackedCTA>
 
-                {/* Secondary CTA with border animation */}
-                <Link
+                {/* Secondary - subtle text link, not competing conversion */}
+                <TrackedCTA
                   href="/projecten"
-                  className="group relative inline-flex items-center gap-3 px-8 py-4 text-white font-medium overflow-hidden"
+                  location="hero"
+                  label="Bekijk projecten"
+                  className="group inline-flex items-center gap-2 px-4 py-5 text-white/70 hover:text-white font-medium transition-colors duration-300"
                 >
-                  {/* Animated border */}
-                  <span className="absolute inset-0 border border-white/30 transition-all duration-300 group-hover:border-accent-400" />
-                  <span className="absolute bottom-0 left-0 h-0.5 bg-accent-400 w-0 group-hover:w-full transition-all duration-500" />
-                  <span className="relative z-10 uppercase tracking-wider text-sm">Bekijk projecten</span>
-                  <ArrowUpRight className="relative z-10 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-                </Link>
+                  <span className="text-sm">of bekijk ons werk</span>
+                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </TrackedCTA>
               </div>
             </div>
 
@@ -711,7 +752,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ===== CTA SECTION - Bold, full-width ===== */}
+      {/* ===== CTA SECTION - Bold, full-width, SINGLE FOCUS ===== */}
       <section className="relative py-32 overflow-hidden">
         {/* Background image with overlay */}
         <div className="absolute inset-0">
@@ -731,37 +772,35 @@ export default function HomePage() {
                 Klaar om uw renovatie te starten?
               </h2>
               <p className="text-xl text-white/80 mb-12">
-                Neem vrijblijvend contact op. We bespreken graag uw plannen en mogelijkheden.
+                Vraag een vrijblijvende offerte aan. We bespreken graag uw plannen en mogelijkheden.
               </p>
 
-              {/* CTAs */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link
-                  href="/offerte"
-                  className="group relative inline-flex items-center justify-center gap-3 px-10 py-5 bg-white text-accent-700 font-medium overflow-hidden transition-all duration-500 hover:shadow-2xl"
-                >
-                  <span className="absolute inset-0 bg-noir-900 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-                  <span className="relative z-10 uppercase tracking-wider text-sm group-hover:text-white transition-colors duration-500">Offerte aanvragen</span>
-                  <ArrowUpRight className="relative z-10 h-5 w-5 transition-all duration-300 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </Link>
-                <Link
-                  href="/afspraak"
-                  className="group inline-flex items-center justify-center gap-3 px-10 py-5 border-2 border-white/30 text-white font-medium hover:bg-white/10 transition-all duration-300"
-                >
-                  <span className="uppercase tracking-wider text-sm">Gratis adviesgesprek</span>
-                  <Phone className="h-5 w-5" />
-                </Link>
-              </div>
+              {/* Single Primary CTA - No competing options */}
+              <TrackedCTA
+                href="/offerte"
+                location="cta_banner"
+                label="Offerte aanvragen"
+                className="group relative inline-flex items-center justify-center gap-3 px-12 py-6 bg-white text-accent-700 font-medium overflow-hidden transition-all duration-500 hover:shadow-2xl"
+              >
+                <span className="absolute inset-0 bg-noir-900 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                <span className="relative z-10 uppercase tracking-wider group-hover:text-white transition-colors duration-500">Gratis offerte aanvragen</span>
+                <ArrowUpRight className="relative z-10 h-5 w-5 transition-all duration-300 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </TrackedCTA>
 
-              {/* Contact info */}
-              <div className="mt-12 pt-12 border-t border-white/20">
-                <a
+              {/* Alternative contact - NOT competing conversion, just contact option */}
+              <div className="mt-12 pt-8 border-t border-white/20">
+                <p className="text-white/60 text-sm mb-4">Liever eerst bellen?</p>
+                <TrackedCTA
                   href="tel:+32493812789"
-                  className="inline-flex items-center gap-3 text-white/80 hover:text-white transition-colors text-lg"
+                  location="cta_banner"
+                  label="Bel direct"
+                  className="inline-flex items-center gap-3 text-white hover:text-accent-200 transition-colors text-lg group"
                 >
-                  <Phone className="h-5 w-5" />
+                  <div className="w-12 h-12 rounded-full border-2 border-white/30 flex items-center justify-center group-hover:border-accent-300 group-hover:bg-white/10 transition-all">
+                    <Phone className="h-5 w-5" />
+                  </div>
                   <span className="font-display">+32 493 81 27 89</span>
-                </a>
+                </TrackedCTA>
               </div>
             </div>
           </AnimatedSection>
