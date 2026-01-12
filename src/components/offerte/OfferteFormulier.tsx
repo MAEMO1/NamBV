@@ -24,6 +24,7 @@ import {
   Mail,
   User,
   MapPin,
+  Calendar,
 } from 'lucide-react'
 import {
   QuoteRequestInputSchema,
@@ -68,6 +69,15 @@ const budgetRanges = [
   { id: 'RANGE_50K_100K', label: budgetRangeLabels.RANGE_50K_100K },
   { id: 'OVER_100K', label: budgetRangeLabels.OVER_100K },
   { id: 'UNKNOWN', label: budgetRangeLabels.UNKNOWN },
+]
+
+const timingOptions = [
+  { id: 'asap', label: 'Zo snel mogelijk', icon: '🚀' },
+  { id: '1month', label: 'Binnen 1 maand', icon: '📅' },
+  { id: '3months', label: '1 - 3 maanden', icon: '📆' },
+  { id: '6months', label: '3 - 6 maanden', icon: '🗓️' },
+  { id: 'year', label: '6 - 12 maanden', icon: '📋' },
+  { id: 'flexible', label: 'Flexibel / later', icon: '🔄' },
 ]
 
 type FormData = {
@@ -504,16 +514,30 @@ export default function OfferteFormulier() {
               </div>
 
               <div className="mb-8">
-                <label className="block text-sm font-medium text-noir-700 mb-3">
+                <label className="flex items-center gap-2 text-sm font-medium text-noir-700 mb-4">
+                  <Calendar className="h-4 w-4 text-noir-400" />
                   Gewenste startdatum
                 </label>
-                <input
-                  type="text"
-                  value={formData.preferredStart}
-                  onChange={(e) => updateField('preferredStart', e.target.value)}
-                  placeholder="Bijv. 'Maart 2026' of 'Zo snel mogelijk'"
-                  className="w-full p-4 rounded-xl border-2 border-noir-200 bg-ivory-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all"
-                />
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  {timingOptions.map(option => {
+                    const isSelected = formData.preferredStart === option.id
+                    return (
+                      <button
+                        key={option.id}
+                        type="button"
+                        onClick={() => updateField('preferredStart', option.id)}
+                        className={`p-4 text-sm font-medium rounded-xl border-2 transition-all duration-300 flex items-center gap-3 ${
+                          isSelected
+                            ? 'border-accent-500 bg-accent-50 text-accent-700 shadow-md shadow-accent-500/10'
+                            : 'border-noir-200 text-noir-700 hover:border-accent-300 hover:shadow-sm'
+                        }`}
+                      >
+                        <span className="text-lg">{option.icon}</span>
+                        {option.label}
+                      </button>
+                    )
+                  })}
+                </div>
               </div>
 
               <div>
