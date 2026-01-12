@@ -14,54 +14,51 @@ export default function Logo({
   showTagline = true
 }: LogoProps) {
   // Official brand colors
-  const primaryColor = color === 'light' ? '#ffffff' : '#2d4a47';
-  const secondaryColor = color === 'light' ? 'rgba(255,255,255,0.7)' : '#5a7a6b';
+  const primaryColor = color === 'light' ? '#ffffff' : '#1e3a36';
+  const secondaryColor = color === 'light' ? 'rgba(255,255,255,0.7)' : '#5a7c6f';
 
-  // NM Symbol path - N + mirrored N
-  const symbolPath = `
-    M 0 0 L 12 0 L 12 60 L 0 60 Z
-    M 0 0 L 12 0 L 32 60 L 20 60 Z
-    M 26 0 L 38 0 L 38 60 L 26 60 Z
-    M 32 60 L 44 60 L 64 0 L 52 0 Z
-    M 52 0 L 64 0 L 64 60 L 52 60 Z
-  `;
+  // Official NM Symbol paths (from nam-symbol.svg)
+  const symbolPathN = "M0 0V72H8V18L28 72H36V0H28V54L8 0H0Z";
+  const symbolPathM = "M35 72V0H44V54L64 0H72V72H64V18L44 72H35Z";
 
   // Icon only version
   if (variant === 'icon') {
     return (
       <svg
-        viewBox="0 0 64 60"
+        viewBox="0 0 72 72"
         fill="none"
         className={className}
         aria-label="NAM Construction"
       >
-        <path d={symbolPath} fill={primaryColor} fillRule="nonzero" />
+        <path d={symbolPathN} fill={primaryColor} />
+        <path d={symbolPathM} fill={primaryColor} />
       </svg>
     );
   }
 
-  // Stacked version (like in the PDF - symbol on top, text below)
+  // Stacked version (symbol on top, text below - like in the official logo)
   if (variant === 'stacked') {
     return (
       <div className={`flex flex-col items-center ${className}`}>
         <svg
-          viewBox="0 0 64 60"
+          viewBox="0 0 72 72"
           fill="none"
-          className="w-16 h-14 mb-4"
+          className="w-16 h-16 mb-3"
           aria-label="NAM Construction"
         >
-          <path d={symbolPath} fill={primaryColor} fillRule="nonzero" />
+          <path d={symbolPathN} fill={primaryColor} />
+          <path d={symbolPathM} fill={primaryColor} />
         </svg>
         <div className="flex flex-col items-center">
           <span
             style={{ color: primaryColor }}
-            className="text-2xl font-display font-semibold tracking-[0.3em]"
+            className="text-xl font-display font-semibold tracking-[0.2em]"
           >
             NAM
           </span>
           <span
             style={{ color: secondaryColor }}
-            className="text-sm tracking-[0.25em] mt-1"
+            className="text-[9px] tracking-[0.15em] mt-0.5"
           >
             CONSTRUCTION
           </span>
@@ -72,29 +69,30 @@ export default function Logo({
 
   // Full horizontal version (default)
   return (
-    <div className={`flex items-center gap-4 ${className}`}>
+    <div className={`flex items-center gap-3 ${className}`}>
       {/* Icon mark */}
       <svg
-        viewBox="0 0 64 60"
+        viewBox="0 0 72 72"
         fill="none"
-        className="w-10 h-9 md:w-12 md:h-11 flex-shrink-0"
+        className="w-9 h-9 md:w-10 md:h-10 flex-shrink-0"
         aria-label="NAM Construction"
       >
-        <path d={symbolPath} fill={primaryColor} fillRule="nonzero" />
+        <path d={symbolPathN} fill={primaryColor} />
+        <path d={symbolPathM} fill={primaryColor} />
       </svg>
 
       {/* Text */}
       <div className="flex flex-col">
         <span
           style={{ color: primaryColor }}
-          className="text-xl md:text-2xl font-display font-semibold tracking-[0.2em]"
+          className="text-lg md:text-xl font-display font-semibold tracking-[0.2em]"
         >
           NAM
         </span>
         {showTagline && (
           <span
             style={{ color: secondaryColor }}
-            className="text-[10px] md:text-xs tracking-[0.15em]"
+            className="text-[8px] md:text-[9px] tracking-[0.15em]"
           >
             CONSTRUCTION
           </span>

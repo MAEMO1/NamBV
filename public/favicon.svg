@@ -1,13 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <rect width="32" height="32" rx="4" fill="#2d4a47"/>
-  <g transform="translate(4, 6)">
-    <!-- NM Symbol - N + mirrored N -->
-    <path d="
-      M 0 0 L 4.5 0 L 4.5 20 L 0 20 Z
-      M 0 0 L 4.5 0 L 12 20 L 7.5 20 Z
-      M 9.75 0 L 14.25 0 L 14.25 20 L 9.75 20 Z
-      M 12 20 L 16.5 20 L 24 0 L 19.5 0 Z
-      M 19.5 0 L 24 0 L 24 20 L 19.5 20 Z
-    " fill="white" fill-rule="nonzero"/>
+  <rect width="32" height="32" rx="4" fill="#1e3a36"/>
+  <g transform="translate(3, 5) scale(0.36)">
+    <path d="M0 0V72H8V18L28 72H36V0H28V54L8 0H0Z" fill="white"/>
+    <path d="M35 72V0H44V54L64 0H72V72H64V18L44 72H35Z" fill="white"/>
   </g>
 </svg>
