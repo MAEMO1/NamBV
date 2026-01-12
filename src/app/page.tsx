@@ -49,7 +49,7 @@ function TrackedCTA({
 const kernwaarden = [
   { id: 'attestering', title: 'Volledige Attestering', description: 'AREI-conforme installaties en EPB-attesten', icon: '01' },
   { id: 'circulariteit', title: 'Hergebruik & Circulariteit', description: 'Duurzaam renoveren met respect voor materialen', icon: '02' },
-  { id: 'betaling', title: 'Betalingsspreiding', description: 'Transparante 30-30-30-10 betalingsregeling', icon: '03' },
+  { id: 'betaling', title: 'Betalingsspreiding', description: 'Betaal in fasen, afgestemd op uw project', icon: '03' },
   { id: 'subsidies', title: 'Subsidie-ondersteuning', description: 'Maximaal profiteren van beschikbare premies', icon: '04' },
   { id: 'communicatie', title: 'Heldere Communicatie', description: 'Eén vast aanspreekpunt, wekelijkse updates', icon: '05' },
 ];
