@@ -27,7 +27,17 @@ import {
   Users,
   CalendarClock,
   FileCheck,
+  BarChart3,
+  FolderOpen,
+  Download,
+  Layout,
+  Image,
 } from 'lucide-react'
+import AnalyticsDashboard from './AnalyticsDashboard'
+import ProjectsManager from './ProjectsManager'
+import SettingsManager from './SettingsManager'
+import ContentManager from './ContentManager'
+import MediaLibrary from './MediaLibrary'
 import {
   statusConfig,
   budgetRangeLabels,
@@ -524,7 +534,7 @@ function AppointmentDetail({ appointment, onClose }: AppointmentDetailProps) {
 // Main Dashboard Component
 export default function AdminDashboard() {
   const router = useRouter()
-  const [currentView, setCurrentView] = useState<'dashboard' | 'quotes' | 'appointments' | 'settings'>('dashboard')
+  const [currentView, setCurrentView] = useState<'dashboard' | 'analytics' | 'quotes' | 'appointments' | 'projects' | 'content' | 'media' | 'settings'>('dashboard')
   const [selectedQuote, setSelectedQuote] = useState<Quote | null>(null)
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null)
   const [statusFilter, setStatusFilter] = useState<QuoteStatus | 'all'>('all')
@@ -598,8 +608,12 @@ export default function AdminDashboard() {
 
   const navItems = [
     { id: 'dashboard' as const, icon: <LayoutDashboard className="w-5 h-5" />, label: 'Dashboard' },
+    { id: 'analytics' as const, icon: <BarChart3 className="w-5 h-5" />, label: 'Analytics' },
     { id: 'quotes' as const, icon: <FileText className="w-5 h-5" />, label: 'Offertes', badge: newQuotes },
     { id: 'appointments' as const, icon: <Calendar className="w-5 h-5" />, label: 'Afspraken', badge: pendingAppointments },
+    { id: 'projects' as const, icon: <FolderOpen className="w-5 h-5" />, label: 'Projecten' },
+    { id: 'content' as const, icon: <Layout className="w-5 h-5" />, label: 'Content' },
+    { id: 'media' as const, icon: <Image className="w-5 h-5" />, label: 'Media' },
     { id: 'settings' as const, icon: <Settings className="w-5 h-5" />, label: 'Instellingen' },
   ]
 
@@ -686,8 +700,12 @@ export default function AdminDashboard() {
           <div>
             <h1 className="text-2xl font-display font-medium text-noir-900">
               {currentView === 'dashboard' && 'Dashboard'}
+              {currentView === 'analytics' && 'Analytics'}
               {currentView === 'quotes' && 'Offerteaanvragen'}
               {currentView === 'appointments' && 'Adviesgesprekken'}
+              {currentView === 'projects' && 'Projecten'}
+              {currentView === 'content' && 'Content Beheer'}
+              {currentView === 'media' && 'Media Bibliotheek'}
               {currentView === 'settings' && 'Instellingen'}
             </h1>
             <p className="text-sm text-noir-500 mt-1">
@@ -902,6 +920,26 @@ export default function AdminDashboard() {
             </>
           )}
 
+          {/* Analytics View */}
+          {currentView === 'analytics' && (
+            <AnalyticsDashboard />
+          )}
+
+          {/* Projects View */}
+          {currentView === 'projects' && (
+            <ProjectsManager />
+          )}
+
+          {/* Content View */}
+          {currentView === 'content' && (
+            <ContentManager />
+          )}
+
+          {/* Media View */}
+          {currentView === 'media' && (
+            <MediaLibrary />
+          )}
+
           {/* Quotes List View */}
           {currentView === 'quotes' && (
             <div className="bg-white border border-noir-100 p-6">
@@ -1014,13 +1052,7 @@ export default function AdminDashboard() {
 
           {/* Settings View */}
           {currentView === 'settings' && (
-            <div className="bg-white border border-noir-100 p-8">
-              <h3 className="text-lg font-display font-medium text-noir-900 mb-6">Instellingen</h3>
-              <div className="p-8 bg-ivory-100 text-center">
-                <Settings className="w-12 h-12 mx-auto mb-4 text-noir-300" />
-                <p className="text-noir-500">Instellingen worden binnenkort toegevoegd.</p>
-              </div>
-            </div>
+            <SettingsManager />
           )}
         </div>
       </main>

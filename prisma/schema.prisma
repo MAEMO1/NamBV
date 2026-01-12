@@ -284,3 +284,235 @@ model Appointment {
   @@index([createdAt(sort: Desc)])
   @@map("appointments")
 }
+
+// ============================================================================
+// ANALYTICS - Privacy-friendly website analytics
+// ============================================================================
+
+model PageView {
+  id          String   @id @default(cuid())
+
+  // Page info
+  path        String
+  referrer    String?
+
+  // Visitor info (no cookies, fingerprint-based)
+  visitorId   String   @map("visitor_id")
+  sessionId   String   @map("session_id")
+
+  // Device & location
+  userAgent   String?  @map("user_agent")
+  deviceType  String?  @map("device_type") // desktop, mobile, tablet
+  browser     String?
+  os          String?
+  country     String?
+  city        String?
+
+  // UTM parameters
+  utmSource   String?  @map("utm_source")
+  utmMedium   String?  @map("utm_medium")
+  utmCampaign String?  @map("utm_campaign")
+
+  // Timestamps
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([path])
+  @@index([visitorId])
+  @@index([sessionId])
+  @@index([createdAt])
+  @@index([createdAt, path])
+  @@map("page_views")
+}
+
+model AnalyticsEvent {
+  id          String   @id @default(cuid())
+
+  // Event info
+  eventType   String   @map("event_type") // click, form_submit, scroll, etc.
+  eventName   String   @map("event_name") // cta_click, quote_submit, etc.
+  eventData   Json?    @map("event_data")
+
+  // Page context
+  path        String
+
+  // Visitor info
+  visitorId   String   @map("visitor_id")
+  sessionId   String   @map("session_id")
+
+  // Timestamps
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([eventType, eventName])
+  @@index([visitorId])
+  @@index([createdAt])
+  @@map("analytics_events")
+}
+
+model DailyStats {
+  id              String   @id @default(cuid())
+  date            DateTime @unique @db.Date
+
+  // Traffic stats
+  pageViews       Int      @default(0) @map("page_views")
+  uniqueVisitors  Int      @default(0) @map("unique_visitors")
+  sessions        Int      @default(0)
+
+  // Engagement
+  avgSessionDuration Int   @default(0) @map("avg_session_duration") // in seconds
+  bounceRate      Float    @default(0) @map("bounce_rate")
+
+  // Conversions
+  quoteRequests   Int      @default(0) @map("quote_requests")
+  appointments    Int      @default(0)
+
+  // Device breakdown
+  desktopVisits   Int      @default(0) @map("desktop_visits")
+  mobileVisits    Int      @default(0) @map("mobile_visits")
+  tabletVisits    Int      @default(0) @map("tablet_visits")
+
+  // Timestamps
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@index([date])
+  @@map("daily_stats")
+}
+
+// ============================================================================
+// PROJECTS - Portfolio projects
+// ============================================================================
+
+model Project {
+  id            String   @id @default(cuid())
+
+  // Basic info
+  title         String
+  slug          String   @unique
+  description   String?  @db.Text
+  shortDescription String? @map("short_description")
+
+  // Categorization
+  category      String   // Totaalrenovatie, Renovatie, Afwerking, etc.
+  location      String
+  year          Int
+
+  // Display
+  featured      Boolean  @default(false)
+  sortOrder     Int      @default(0) @map("sort_order")
+  isPublished   Boolean  @default(true) @map("is_published")
+
+  // Images
+  mainImage     String?  @map("main_image")
+
+  // Timestamps
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  images        ProjectImage[]
+
+  @@index([isPublished, sortOrder])
+  @@index([featured])
+  @@index([category])
+  @@map("projects")
+}
+
+model ProjectImage {
+  id          String   @id @default(cuid())
+
+  // Image info
+  url         String
+  alt         String?
+  caption     String?
+  sortOrder   Int      @default(0) @map("sort_order")
+  isBefore    Boolean  @default(false) @map("is_before") // for before/after
+  isAfter     Boolean  @default(false) @map("is_after")
+
+  // Relations
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId   String   @map("project_id")
+
+  // Timestamps
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([projectId, sortOrder])
+  @@map("project_images")
+}
+
+// ============================================================================
+// SETTINGS - Site configuration
+// ============================================================================
+
+model Setting {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  value       String   @db.Text
+  type        String   @default("string") // string, number, boolean, json
+  category    String   @default("general") // general, contact, seo, notifications
+  description String?
+
+  // Timestamps
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([category])
+  @@map("settings")
+}
+
+// ============================================================================
+// CONTENT - Editable content blocks
+// ============================================================================
+
+model ContentBlock {
+  id          String   @id @default(cuid())
+
+  // Identification
+  page        String   // home, about, services, etc.
+  section     String   // hero, features, cta, etc.
+  key         String   // title, subtitle, description, etc.
+
+  // Content
+  content     String   @db.Text
+  type        String   @default("text") // text, html, markdown, image
+
+  // Timestamps
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@unique([page, section, key])
+  @@index([page])
+  @@map("content_blocks")
+}
+
+// ============================================================================
+// MEDIA - Media library
+// ============================================================================
+
+model MediaFile {
+  id          String   @id @default(cuid())
+
+  // File info
+  filename    String
+  originalName String  @map("original_name")
+  mimeType    String   @map("mime_type")
+  size        Int      // in bytes
+  url         String
+
+  // Image specific
+  width       Int?
+  height      Int?
+  alt         String?
+
+  // Organization
+  folder      String   @default("/")
+  tags        String[] @default([])
+
+  // Timestamps
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([folder])
+  @@index([mimeType])
+  @@index([createdAt])
+  @@map("media_files")
+}
