@@ -372,86 +372,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ===== SERVICES SECTION - Premium cards with hover reveal ===== */}
-      <section className="py-32 bg-ivory-100 relative overflow-hidden">
-        {/* Background texture */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(107,127,84,0.05),transparent_50%)]" />
-
-        <div className="container-wide relative">
-          {/* Header */}
-          <AnimatedSection className="mb-20">
-            <div className="grid lg:grid-cols-2 gap-12 items-end">
-              <div>
-                <span className="inline-block px-4 py-2 bg-accent-100 text-accent-700 text-xs font-medium uppercase tracking-[0.2em] rounded-full mb-6">
-                  Onze expertise
-                </span>
-                <h2 className="text-display-lg font-display font-medium text-noir-900">
-                  Van visie tot{' '}
-                  <span className="text-accent-600 italic">vakkundige</span>{' '}
-                  uitvoering
-                </h2>
-              </div>
-              <p className="text-lg text-noir-500 lg:pl-12">
-                Elke renovatie is uniek. Wij combineren traditioneel vakmanschap
-                met moderne technieken voor een resultaat dat generaties meegaat.
-              </p>
-            </div>
-          </AnimatedSection>
-
-          {/* Services grid - Tall cards with overlay */}
-          <div className="grid md:grid-cols-3 gap-8">
-            {services.map((service, index) => (
-              <AnimatedSection key={service.title} delay={index * 150}>
-                <Link href={service.href} className="group block relative">
-                  {/* Card container */}
-                  <div className="relative aspect-[3/4] overflow-hidden">
-                    {/* Image with zoom */}
-                    <Image
-                      src={service.image}
-                      alt={service.title}
-                      fill
-                      className="object-cover transition-transform duration-1000 group-hover:scale-110"
-                    />
-
-                    {/* Gradient overlay - stronger on hover */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-noir-950 via-noir-950/50 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-500" />
-
-                    {/* Content overlay */}
-                    <div className="absolute inset-0 p-8 flex flex-col justify-end">
-                      {/* Category tag */}
-                      <span className="inline-block self-start px-3 py-1 bg-accent-500 text-white text-xs uppercase tracking-wider mb-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                        {service.subtitle}
-                      </span>
-
-                      {/* Title */}
-                      <h3 className="text-3xl font-display font-medium text-white mb-3 transition-transform duration-500 group-hover:-translate-y-2">
-                        {service.title}
-                      </h3>
-
-                      {/* Description - hidden by default */}
-                      <p className="text-white/70 mb-6 max-h-0 overflow-hidden group-hover:max-h-24 transition-all duration-500">
-                        {service.description}
-                      </p>
-
-                      {/* CTA link */}
-                      <div className="flex items-center gap-2 text-accent-400 font-medium translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-100">
-                        <span className="text-sm uppercase tracking-wider">Ontdek meer</span>
-                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-2" />
-                      </div>
-                    </div>
-
-                    {/* Decorative corner */}
-                    <div className="absolute top-0 right-0 w-24 h-24 border-t-2 border-r-2 border-accent-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500 m-4" />
-                  </div>
-                </Link>
-              </AnimatedSection>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ===== WHY US SECTION - Split layout with image ===== */}
-      <section className="py-32 bg-ivory-200 relative overflow-hidden">
+      <section className="py-32 bg-ivory-100 relative overflow-hidden">
         <div className="container-wide">
           <div className="grid lg:grid-cols-2 gap-20 items-center">
             {/* Image side with decorative elements */}
@@ -526,6 +448,84 @@ export default function HomePage() {
                 </TrackedCTA>
               </AnimatedSection>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== SERVICES SECTION - Premium cards with hover reveal ===== */}
+      <section className="py-32 bg-ivory-200 relative overflow-hidden">
+        {/* Background texture */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(107,127,84,0.05),transparent_50%)]" />
+
+        <div className="container-wide relative">
+          {/* Header */}
+          <AnimatedSection className="mb-20">
+            <div className="grid lg:grid-cols-2 gap-12 items-end">
+              <div>
+                <span className="inline-block px-4 py-2 bg-accent-100 text-accent-700 text-xs font-medium uppercase tracking-[0.2em] rounded-full mb-6">
+                  Onze expertise
+                </span>
+                <h2 className="text-display-lg font-display font-medium text-noir-900">
+                  Van visie tot{' '}
+                  <span className="text-accent-600 italic">vakkundige</span>{' '}
+                  uitvoering
+                </h2>
+              </div>
+              <p className="text-lg text-noir-500 lg:pl-12">
+                Elke renovatie is uniek. Wij combineren traditioneel vakmanschap
+                met moderne technieken voor een resultaat dat generaties meegaat.
+              </p>
+            </div>
+          </AnimatedSection>
+
+          {/* Services grid - Tall cards with overlay */}
+          <div className="grid md:grid-cols-3 gap-8">
+            {services.map((service, index) => (
+              <AnimatedSection key={service.title} delay={index * 150}>
+                <Link href={service.href} className="group block relative">
+                  {/* Card container */}
+                  <div className="relative aspect-[3/4] overflow-hidden">
+                    {/* Image with zoom */}
+                    <Image
+                      src={service.image}
+                      alt={service.title}
+                      fill
+                      className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                    />
+
+                    {/* Gradient overlay - stronger on hover */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-noir-950 via-noir-950/50 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-500" />
+
+                    {/* Content overlay */}
+                    <div className="absolute inset-0 p-8 flex flex-col justify-end">
+                      {/* Category tag */}
+                      <span className="inline-block self-start px-3 py-1 bg-accent-500 text-white text-xs uppercase tracking-wider mb-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                        {service.subtitle}
+                      </span>
+
+                      {/* Title */}
+                      <h3 className="text-3xl font-display font-medium text-white mb-3 transition-transform duration-500 group-hover:-translate-y-2">
+                        {service.title}
+                      </h3>
+
+                      {/* Description - hidden by default */}
+                      <p className="text-white/70 mb-6 max-h-0 overflow-hidden group-hover:max-h-24 transition-all duration-500">
+                        {service.description}
+                      </p>
+
+                      {/* CTA link */}
+                      <div className="flex items-center gap-2 text-accent-400 font-medium translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-100">
+                        <span className="text-sm uppercase tracking-wider">Ontdek meer</span>
+                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-2" />
+                      </div>
+                    </div>
+
+                    {/* Decorative corner */}
+                    <div className="absolute top-0 right-0 w-24 h-24 border-t-2 border-r-2 border-accent-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500 m-4" />
+                  </div>
+                </Link>
+              </AnimatedSection>
+            ))}
           </div>
         </div>
       </section>
