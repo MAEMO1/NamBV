@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import {
   ArrowRight,
@@ -60,20 +60,13 @@ interface FormData {
   message: string;
 }
 
-interface BookedSlot {
-  date: string;
-  times: string[];
+interface AvailabilityData {
+  [date: string]: {
+    available: string[];
+    booked: string[];
+    isOpen: boolean;
+  };
 }
-
-// MOCK DATA
-const bookedSlots: BookedSlot[] = [
-  { date: '2025-01-06', times: ['09:00', '10:00', '14:00'] },
-  { date: '2025-01-08', times: ['all'] },
-  { date: '2025-01-10', times: ['11:00', '15:00', '16:00'] },
-  { date: '2025-01-15', times: ['all'] },
-  { date: '2025-01-17', times: ['09:00', '10:00', '11:00', '14:00', '15:00', '16:00', '17:00'] },
-  { date: '2025-01-22', times: ['14:00', '15:00'] },
-];
 
 const projectTypes = [
   { id: 'totaal', label: 'Totaalrenovatie', description: 'Complete renovatie van A tot Z', icon: Home },
@@ -164,30 +157,14 @@ function formatDateKey(year: number, month: number, day: number): string {
   return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 }
 
-function isDateBooked(dateKey: string): boolean {
-  const booking = bookedSlots.find(b => b.date === dateKey);
-  return booking?.times.includes('all') || false;
-}
-
-function isTimeBooked(dateKey: string, time: string): boolean {
-  const booking = bookedSlots.find(b => b.date === dateKey);
-  if (!booking) return false;
-  return booking.times.includes('all') || booking.times.includes(time);
-}
-
-function getAvailableTimesCount(dateKey: string): number {
-  const booking = bookedSlots.find(b => b.date === dateKey);
-  if (!booking) return allTimeSlots.length;
-  if (booking.times.includes('all')) return 0;
-  return allTimeSlots.length - booking.times.length;
-}
-
 export default function BookingFlow() {
   const [step, setStep] = useState(1);
   const [currentMonth, setCurrentMonth] = useState(() => {
     const now = new Date();
     return { year: now.getFullYear(), month: now.getMonth() };
   });
+  const [availability, setAvailability] = useState<AvailabilityData>({});
+  const [loadingAvailability, setLoadingAvailability] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     projectType: '',
     propertyType: '',
@@ -211,6 +188,50 @@ export default function BookingFlow() {
 
   const totalSteps = 5;
   const stepLabels = ['Project', 'Woning', 'Voorkeuren', 'Budget', 'Afspraak'];
+
+  // Fetch availability for current month
+  const fetchAvailability = useCallback(async (year: number, month: number) => {
+    setLoadingAvailability(true);
+    try {
+      const monthStr = `${year}-${String(month + 1).padStart(2, '0')}`;
+      const response = await fetch(`/api/availability?month=${monthStr}`);
+      if (response.ok) {
+        const data = await response.json();
+        setAvailability(prev => ({ ...prev, ...data.availability }));
+      }
+    } catch (error) {
+      console.error('Error fetching availability:', error);
+    } finally {
+      setLoadingAvailability(false);
+    }
+  }, []);
+
+  // Fetch availability when month changes or on step 5
+  useEffect(() => {
+    if (step === 5) {
+      fetchAvailability(currentMonth.year, currentMonth.month);
+    }
+  }, [step, currentMonth.year, currentMonth.month, fetchAvailability]);
+
+  // Helper functions for availability
+  const isDateOpen = (dateKey: string): boolean => {
+    const dayData = availability[dateKey];
+    return dayData?.isOpen ?? true; // Default to open if no data
+  };
+
+  const getAvailableTimesForDate = (dateKey: string): string[] => {
+    const dayData = availability[dateKey];
+    return dayData?.available ?? allTimeSlots; // Default to all slots if no data
+  };
+
+  const getAvailableTimesCount = (dateKey: string): number => {
+    return getAvailableTimesForDate(dateKey).length;
+  };
+
+  const isTimeAvailable = (dateKey: string, time: string): boolean => {
+    const availableTimes = getAvailableTimesForDate(dateKey);
+    return availableTimes.includes(time);
+  };
 
   const monthDays = useMemo(
     () => getMonthDays(currentMonth.year, currentMonth.month),
@@ -269,7 +290,8 @@ export default function BookingFlow() {
       (currentMonth.year === today.year && currentMonth.month < today.month) ||
       (currentMonth.year === today.year && currentMonth.month === today.month && day <= today.day)
     ) return false;
-    if (isDateBooked(dateKey)) return false;
+    // Check if date is closed or has no available time slots
+    if (!isDateOpen(dateKey) || getAvailableTimesCount(dateKey) === 0) return false;
     return true;
   };
 
@@ -936,21 +958,26 @@ export default function BookingFlow() {
               <div className="flex items-center justify-between mb-6">
                 <button
                   onClick={() => navigateMonth('prev')}
-                  disabled={!canNavigatePrev()}
+                  disabled={!canNavigatePrev() || loadingAvailability}
                   className={`p-3 rounded-xl transition-all ${
-                    canNavigatePrev() ? 'hover:bg-white text-noir-700 shadow-sm' : 'text-noir-300 cursor-not-allowed'
+                    canNavigatePrev() && !loadingAvailability ? 'hover:bg-white text-noir-700 shadow-sm' : 'text-noir-300 cursor-not-allowed'
                   }`}
                 >
                   <ChevronLeft className="h-5 w-5" />
                 </button>
-                <h4 className="text-lg font-display font-medium text-noir-900">
-                  {monthNames[currentMonth.month]} {currentMonth.year}
-                </h4>
+                <div className="flex items-center gap-2">
+                  <h4 className="text-lg font-display font-medium text-noir-900">
+                    {monthNames[currentMonth.month]} {currentMonth.year}
+                  </h4>
+                  {loadingAvailability && (
+                    <div className="w-4 h-4 border-2 border-accent-500 border-t-transparent rounded-full animate-spin" />
+                  )}
+                </div>
                 <button
                   onClick={() => navigateMonth('next')}
-                  disabled={!canNavigateNext()}
+                  disabled={!canNavigateNext() || loadingAvailability}
                   className={`p-3 rounded-xl transition-all ${
-                    canNavigateNext() ? 'hover:bg-white text-noir-700 shadow-sm' : 'text-noir-300 cursor-not-allowed'
+                    canNavigateNext() && !loadingAvailability ? 'hover:bg-white text-noir-700 shadow-sm' : 'text-noir-300 cursor-not-allowed'
                   }`}
                 >
                   <ChevronRight className="h-5 w-5" />
@@ -974,7 +1001,7 @@ export default function BookingFlow() {
                   const dateKey = formatDateKey(currentMonth.year, currentMonth.month, day);
                   const isSelectable = isDaySelectable(day);
                   const isSelected = formData.selectedDate === dateKey;
-                  const isFullyBooked = isDateBooked(dateKey);
+                  const isFullyBooked = !isDateOpen(dateKey) || getAvailableTimesCount(dateKey) === 0;
                   const availableTimes = getAvailableTimesCount(dateKey);
                   const date = new Date(currentMonth.year, currentMonth.month, day);
                   const isSunday = date.getDay() === 0;
@@ -1018,18 +1045,18 @@ export default function BookingFlow() {
                 </label>
                 <div className="grid grid-cols-4 sm:grid-cols-7 gap-3">
                   {allTimeSlots.map((time) => {
-                    const isBooked = isTimeBooked(formData.selectedDate, time);
+                    const isAvailable = isTimeAvailable(formData.selectedDate, time);
                     const isSelected = formData.selectedTime === time;
 
                     return (
                       <button
                         key={time}
-                        onClick={() => !isBooked && updateFormData('selectedTime', time)}
-                        disabled={isBooked}
+                        onClick={() => isAvailable && updateFormData('selectedTime', time)}
+                        disabled={!isAvailable}
                         className={`p-3 text-center rounded-xl transition-all duration-300 ${
                           isSelected
                             ? 'bg-accent-500 text-white shadow-lg shadow-accent-500/30'
-                            : isBooked
+                            : !isAvailable
                               ? 'bg-noir-100 text-noir-300 cursor-not-allowed line-through'
                               : 'border-2 border-noir-200 text-noir-700 hover:border-accent-500 hover:shadow-sm'
                         }`}

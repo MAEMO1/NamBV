@@ -38,6 +38,7 @@ import ProjectsManager from './ProjectsManager'
 import SettingsManager from './SettingsManager'
 import ContentManager from './ContentManager'
 import MediaLibrary from './MediaLibrary'
+import AvailabilityManager from './AvailabilityManager'
 import {
   statusConfig,
   budgetRangeLabels,
@@ -534,7 +535,7 @@ function AppointmentDetail({ appointment, onClose }: AppointmentDetailProps) {
 // Main Dashboard Component
 export default function AdminDashboard() {
   const router = useRouter()
-  const [currentView, setCurrentView] = useState<'dashboard' | 'analytics' | 'quotes' | 'appointments' | 'projects' | 'content' | 'media' | 'settings'>('dashboard')
+  const [currentView, setCurrentView] = useState<'dashboard' | 'analytics' | 'quotes' | 'appointments' | 'projects' | 'content' | 'media' | 'availability' | 'settings'>('dashboard')
   const [selectedQuote, setSelectedQuote] = useState<Quote | null>(null)
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null)
   const [statusFilter, setStatusFilter] = useState<QuoteStatus | 'all'>('all')
@@ -611,6 +612,7 @@ export default function AdminDashboard() {
     { id: 'analytics' as const, icon: <BarChart3 className="w-5 h-5" />, label: 'Analytics' },
     { id: 'quotes' as const, icon: <FileText className="w-5 h-5" />, label: 'Offertes', badge: newQuotes },
     { id: 'appointments' as const, icon: <Calendar className="w-5 h-5" />, label: 'Afspraken', badge: pendingAppointments },
+    { id: 'availability' as const, icon: <CalendarClock className="w-5 h-5" />, label: 'Beschikbaarheid' },
     { id: 'projects' as const, icon: <FolderOpen className="w-5 h-5" />, label: 'Projecten' },
     { id: 'content' as const, icon: <Layout className="w-5 h-5" />, label: 'Content' },
     { id: 'media' as const, icon: <Image className="w-5 h-5" />, label: 'Media' },
@@ -703,6 +705,7 @@ export default function AdminDashboard() {
               {currentView === 'analytics' && 'Analytics'}
               {currentView === 'quotes' && 'Offerteaanvragen'}
               {currentView === 'appointments' && 'Adviesgesprekken'}
+              {currentView === 'availability' && 'Beschikbaarheid'}
               {currentView === 'projects' && 'Projecten'}
               {currentView === 'content' && 'Content Beheer'}
               {currentView === 'media' && 'Media Bibliotheek'}
@@ -938,6 +941,11 @@ export default function AdminDashboard() {
           {/* Media View */}
           {currentView === 'media' && (
             <MediaLibrary />
+          )}
+
+          {/* Availability View */}
+          {currentView === 'availability' && (
+            <AvailabilityManager />
           )}
 
           {/* Quotes List View */}

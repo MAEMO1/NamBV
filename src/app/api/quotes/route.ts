@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db, generateReferenceNumber } from '@/lib/db'
-import { QuoteRequestInputSchema } from '@/lib/validations/quote'
+import { QuoteRequestInputSchema, budgetRangeLabels } from '@/lib/validations/quote'
 import { Prisma } from '@prisma/client'
+import { sendQuoteConfirmation, sendAdminNotification } from '@/lib/email'
 
 // POST /api/quotes - Submit a new quote request (public)
 export async function POST(request: NextRequest) {
@@ -56,8 +57,50 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    // TODO: Send confirmation email to customer
-    // TODO: Send notification to admin
+    // Prepare email data
+    const emailData = {
+      referenceNumber: quote.referenceNumber,
+      fullName: quote.fullName,
+      email: quote.email,
+      phone: quote.phone,
+      postalCode: quote.postalCode,
+      city: quote.city || undefined,
+      propertyType: quote.propertyType?.name,
+      services: quote.services.map(s => s.serviceType.name),
+      description: quote.description,
+      budgetRange: quote.budgetRange ? budgetRangeLabels[quote.budgetRange] : undefined,
+    }
+
+    // Send confirmation email to customer (async, don't block response)
+    sendQuoteConfirmation(emailData).catch(err => {
+      console.error('Failed to send quote confirmation email:', err)
+    })
+
+    // Check admin notification settings and send if enabled
+    try {
+      const settings = await db.setting.findMany({
+        where: {
+          key: {
+            in: ['notifications.emailOnQuote', 'notifications.recipientEmail']
+          }
+        }
+      })
+
+      const emailOnQuote = settings.find(s => s.key === 'notifications.emailOnQuote')?.value !== 'false'
+      const recipientEmail = settings.find(s => s.key === 'notifications.recipientEmail')?.value
+
+      if (emailOnQuote) {
+        sendAdminNotification('quote', emailData, recipientEmail || undefined).catch(err => {
+          console.error('Failed to send admin notification:', err)
+        })
+      }
+    } catch (settingsError) {
+      console.error('Error fetching notification settings:', settingsError)
+      // Still send notification with default email
+      sendAdminNotification('quote', emailData).catch(err => {
+        console.error('Failed to send admin notification:', err)
+      })
+    }
 
     return NextResponse.json(
       {

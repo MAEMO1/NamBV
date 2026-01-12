@@ -236,6 +236,50 @@ model QuoteStatusHistory {
 }
 
 // ============================================================================
+// APPOINTMENT AVAILABILITY - Configurable time slots
+// ============================================================================
+
+model AppointmentAvailability {
+  id          String   @id @default(cuid())
+
+  // Day of week (0 = Sunday, 1 = Monday, etc.)
+  dayOfWeek   Int      @map("day_of_week")
+
+  // Time slots for this day (e.g., ["09:00", "10:00", "14:00"])
+  timeSlots   String[] @map("time_slots")
+
+  // Whether this day is active
+  isActive    Boolean  @default(true) @map("is_active")
+
+  // Timestamps
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@unique([dayOfWeek])
+  @@map("appointment_availability")
+}
+
+model AppointmentBlockedDate {
+  id          String   @id @default(cuid())
+
+  // The blocked date
+  date        DateTime @db.Date
+
+  // Optional: specific times blocked (if empty, whole day is blocked)
+  blockedTimes String[] @default([]) @map("blocked_times")
+
+  // Reason for blocking (e.g., "Vakantie", "Feestdag")
+  reason      String?
+
+  // Timestamps
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@unique([date])
+  @@index([date])
+  @@map("appointment_blocked_dates")
+}
+
+// ============================================================================
 // APPOINTMENTS - Adviesgesprek bookings
 // ============================================================================
 
