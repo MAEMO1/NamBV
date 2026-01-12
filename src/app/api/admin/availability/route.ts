@@ -68,8 +68,9 @@ export async function GET() {
     })
   } catch (error) {
     console.error('Error fetching availability:', error)
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
     return NextResponse.json(
-      { error: 'Kon beschikbaarheid niet laden' },
+      { error: 'Kon beschikbaarheid niet laden', details: errorMessage },
       { status: 500 }
     )
   }
