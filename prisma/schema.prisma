@@ -234,3 +234,53 @@ model QuoteStatusHistory {
   @@index([quoteId, changedAt(sort: Desc)])
   @@map("quote_status_history")
 }
+
+// ============================================================================
+// APPOINTMENTS - Adviesgesprek bookings
+// ============================================================================
+
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+model Appointment {
+  id              String            @id @default(cuid())
+  referenceNumber String            @unique @map("reference_number")
+  status          AppointmentStatus @default(PENDING)
+
+  // Contact info
+  fullName        String            @map("full_name")
+  email           String
+  phone           String
+  gemeente        String
+
+  // Appointment details
+  appointmentDate DateTime          @map("appointment_date")
+  appointmentTime String            @map("appointment_time")
+
+  // Project preferences
+  projectType       String?         @map("project_type")
+  propertyType      String?         @map("property_type")
+  propertyAge       String?         @map("property_age")
+  priorities        String[]        @default([])
+  materialPreference String?        @map("material_preference")
+  budget            String?
+  timing            String?
+  subsidyInterest   Boolean         @default(false) @map("subsidy_interest")
+  paymentSpread     Boolean         @default(false) @map("payment_spread")
+  motivation        String?
+  message           String?         @db.Text
+
+  // Timestamps
+  createdAt       DateTime          @default(now()) @map("created_at")
+  updatedAt       DateTime          @updatedAt @map("updated_at")
+
+  @@index([status])
+  @@index([appointmentDate])
+  @@index([createdAt(sort: Desc)])
+  @@map("appointments")
+}

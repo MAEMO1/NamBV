@@ -294,9 +294,32 @@ export default function BookingFlow() {
     }
   };
 
-  const handleSubmit = () => {
-    console.log('Booking submitted:', formData);
-    setIsSubmitted(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    setSubmitError('');
+
+    try {
+      const response = await fetch('/api/appointments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setIsSubmitted(true);
+      } else {
+        setSubmitError(data.error || 'Er is een fout opgetreden');
+      }
+    } catch {
+      setSubmitError('Er is een fout opgetreden bij het versturen');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const formatSelectedDateDisplay = () => {
@@ -1049,33 +1072,38 @@ export default function BookingFlow() {
           </button>
         ) : <div />}
 
-        {step < totalSteps ? (
-          <button
-            onClick={() => setStep(step + 1)}
-            disabled={!canProceed()}
-            className={`inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-medium transition-all duration-300 ${
-              canProceed()
-                ? 'bg-noir-900 text-white hover:bg-accent-600 shadow-lg hover:shadow-xl hover:shadow-accent-500/20'
-                : 'bg-noir-200 text-noir-400 cursor-not-allowed'
-            }`}
-          >
-            Volgende
-            <ArrowRight className="h-4 w-4" />
-          </button>
-        ) : (
-          <button
-            onClick={handleSubmit}
-            disabled={!canProceed()}
-            className={`inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-medium transition-all duration-300 ${
-              canProceed()
-                ? 'bg-accent-500 text-white hover:bg-accent-600 shadow-lg hover:shadow-xl hover:shadow-accent-500/30'
-                : 'bg-noir-200 text-noir-400 cursor-not-allowed'
-            }`}
-          >
-            <Calendar className="h-4 w-4" />
-            Bevestig afspraak
-          </button>
-        )}
+        <div className="flex flex-col items-end gap-2">
+          {submitError && (
+            <p className="text-sm text-red-600">{submitError}</p>
+          )}
+          {step < totalSteps ? (
+            <button
+              onClick={() => setStep(step + 1)}
+              disabled={!canProceed()}
+              className={`inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-medium transition-all duration-300 ${
+                canProceed()
+                  ? 'bg-noir-900 text-white hover:bg-accent-600 shadow-lg hover:shadow-xl hover:shadow-accent-500/20'
+                  : 'bg-noir-200 text-noir-400 cursor-not-allowed'
+              }`}
+            >
+              Volgende
+              <ArrowRight className="h-4 w-4" />
+            </button>
+          ) : (
+            <button
+              onClick={handleSubmit}
+              disabled={!canProceed() || isSubmitting}
+              className={`inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-medium transition-all duration-300 ${
+                canProceed() && !isSubmitting
+                  ? 'bg-accent-500 text-white hover:bg-accent-600 shadow-lg hover:shadow-xl hover:shadow-accent-500/30'
+                  : 'bg-noir-200 text-noir-400 cursor-not-allowed'
+              }`}
+            >
+              <Calendar className="h-4 w-4" />
+              {isSubmitting ? 'Bezig...' : 'Bevestig afspraak'}
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
