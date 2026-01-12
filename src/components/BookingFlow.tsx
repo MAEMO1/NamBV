@@ -124,12 +124,10 @@ const budgetRanges = [
   { id: 'onbekend', label: 'Nog geen idee' },
 ];
 
-const timingOptions = [
-  { id: 'asap', label: 'Zo snel mogelijk', icon: '🚀' },
-  { id: '3maanden', label: 'Binnen 3 maanden', icon: '📅' },
-  { id: '6maanden', label: '3 - 6 maanden', icon: '📆' },
-  { id: 'later', label: 'Later / flexibel', icon: '🔄' },
-];
+// Current date for timing selector
+const timingCurrentYear = new Date().getFullYear();
+const timingCurrentMonth = new Date().getMonth();
+const timingAvailableYears = [timingCurrentYear, timingCurrentYear + 1, timingCurrentYear + 2, timingCurrentYear + 3];
 
 const allTimeSlots = ['09:00', '10:00', '11:00', '14:00', '15:00', '16:00', '17:00'];
 const weekDays = ['Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'];
@@ -268,7 +266,17 @@ export default function BookingFlow() {
       case 1: return formData.projectType !== '';
       case 2: return formData.propertyType !== '';
       case 3: return formData.materialPreference !== '';
-      case 4: return formData.budget !== '' && formData.timing !== '';
+      case 4: {
+        // Budget is required
+        if (formData.budget === '') return false;
+        // Timing: either 'flexible' or valid MM-YYYY format
+        if (formData.timing === 'flexible') return true;
+        if (formData.timing.includes('-')) {
+          const [month, year] = formData.timing.split('-');
+          return month !== '' && year !== '';
+        }
+        return false;
+      }
       case 5: return formData.name !== '' && formData.email !== '' && formData.phone !== '' && formData.gemeente !== '' && formData.selectedDate !== '' && formData.selectedTime !== '';
       default: return true;
     }
@@ -639,25 +647,114 @@ export default function BookingFlow() {
                 <Calendar className="h-4 w-4 text-noir-400" />
                 Wanneer wilt u starten? <span className="text-accent-500">*</span>
               </label>
-              <div className="grid grid-cols-2 gap-3">
-                {timingOptions.map((option) => {
-                  const isSelected = formData.timing === option.id;
-                  return (
-                    <button
-                      key={option.id}
-                      onClick={() => updateFormData('timing', option.id)}
-                      className={`p-4 text-sm font-medium rounded-xl border-2 transition-all duration-300 flex items-center gap-3 ${
-                        isSelected
-                          ? 'border-accent-500 bg-accent-50 text-accent-700 shadow-md shadow-accent-500/10'
-                          : 'border-noir-200 text-noir-700 hover:border-accent-300 hover:shadow-sm'
-                      }`}
+
+              {/* Option: Not yet determined */}
+              <button
+                type="button"
+                onClick={() => updateFormData('timing', formData.timing === 'flexible' ? '' : 'flexible')}
+                className={`w-full mb-4 p-4 text-sm font-medium rounded-xl border-2 transition-all duration-300 flex items-center gap-3 ${
+                  formData.timing === 'flexible'
+                    ? 'border-accent-500 bg-accent-50 text-accent-700 shadow-md shadow-accent-500/10'
+                    : 'border-noir-200 text-noir-700 hover:border-accent-300 hover:shadow-sm'
+                }`}
+              >
+                <div className={`w-5 h-5 rounded-lg border-2 flex items-center justify-center flex-shrink-0 transition-all ${
+                  formData.timing === 'flexible'
+                    ? 'bg-accent-500 border-accent-500'
+                    : 'border-noir-300'
+                }`}>
+                  {formData.timing === 'flexible' && <Check className="h-3 w-3 text-white" />}
+                </div>
+                Nog niet bepaald / Flexibel
+              </button>
+
+              {/* Month/Year selector - only show if not flexible */}
+              {formData.timing !== 'flexible' && (
+                <div className="grid grid-cols-2 gap-4">
+                  {/* Month selector */}
+                  <div>
+                    <label className="block text-xs text-noir-500 uppercase tracking-wider mb-2">Maand</label>
+                    <select
+                      value={formData.timing ? formData.timing.split('-')[0] || '' : ''}
+                      onChange={(e) => {
+                        const month = e.target.value;
+                        const year = formData.timing?.split('-')[1] || String(timingCurrentYear);
+                        if (month) {
+                          updateFormData('timing', `${month}-${year}`);
+                        } else {
+                          updateFormData('timing', '');
+                        }
+                      }}
+                      className="w-full p-4 rounded-xl border-2 border-noir-200 bg-ivory-50 text-noir-800 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all appearance-none cursor-pointer"
                     >
-                      <span className="text-lg">{option.icon}</span>
-                      {option.label}
-                    </button>
-                  );
-                })}
-              </div>
+                      <option value="">Selecteer maand</option>
+                      {monthNames.map((month, idx) => {
+                        // Don't show past months for current year
+                        const selectedYear = formData.timing?.split('-')[1];
+                        if (selectedYear === String(timingCurrentYear) && idx < timingCurrentMonth) {
+                          return null;
+                        }
+                        return (
+                          <option key={month} value={String(idx + 1).padStart(2, '0')}>
+                            {month}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+
+                  {/* Year selector */}
+                  <div>
+                    <label className="block text-xs text-noir-500 uppercase tracking-wider mb-2">Jaar</label>
+                    <select
+                      value={formData.timing ? formData.timing.split('-')[1] || '' : ''}
+                      onChange={(e) => {
+                        const year = e.target.value;
+                        const month = formData.timing?.split('-')[0] || '';
+                        if (year) {
+                          // Reset month if it's in the past for new year
+                          if (year === String(timingCurrentYear) && month && parseInt(month) <= timingCurrentMonth) {
+                            updateFormData('timing', `-${year}`);
+                          } else {
+                            updateFormData('timing', `${month}-${year}`);
+                          }
+                        } else {
+                          updateFormData('timing', month ? `${month}-` : '');
+                        }
+                      }}
+                      className="w-full p-4 rounded-xl border-2 border-noir-200 bg-ivory-50 text-noir-800 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all appearance-none cursor-pointer"
+                    >
+                      <option value="">Selecteer jaar</option>
+                      {timingAvailableYears.map(year => (
+                        <option key={year} value={String(year)}>
+                          {year}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              )}
+
+              {/* Visual preview of selected date */}
+              {formData.timing && formData.timing !== 'flexible' && formData.timing.includes('-') && (
+                <div className="mt-4 p-4 bg-accent-50 rounded-xl border border-accent-200">
+                  <p className="text-sm text-accent-700 flex items-center gap-2">
+                    <Calendar className="h-4 w-4" />
+                    <span className="font-medium">
+                      Gewenste start:{' '}
+                      {(() => {
+                        const [month, year] = formData.timing.split('-');
+                        if (month && year) {
+                          return `${monthNames[parseInt(month) - 1]} ${year}`;
+                        } else if (year) {
+                          return year;
+                        }
+                        return '';
+                      })()}
+                    </span>
+                  </p>
+                </div>
+              )}
             </div>
 
             {/* Extra options */}

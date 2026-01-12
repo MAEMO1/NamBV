@@ -71,14 +71,16 @@ const budgetRanges = [
   { id: 'UNKNOWN', label: budgetRangeLabels.UNKNOWN },
 ]
 
-const timingOptions = [
-  { id: 'asap', label: 'Zo snel mogelijk', icon: '🚀' },
-  { id: '1month', label: 'Binnen 1 maand', icon: '📅' },
-  { id: '3months', label: '1 - 3 maanden', icon: '📆' },
-  { id: '6months', label: '3 - 6 maanden', icon: '🗓️' },
-  { id: 'year', label: '6 - 12 maanden', icon: '📋' },
-  { id: 'flexible', label: 'Flexibel / later', icon: '🔄' },
+// Generate months for dropdown
+const monthNames = [
+  'Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni',
+  'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'
 ]
+
+// Generate years (current year + next 3 years)
+const currentYear = new Date().getFullYear()
+const currentMonth = new Date().getMonth()
+const availableYears = [currentYear, currentYear + 1, currentYear + 2, currentYear + 3]
 
 type FormData = {
   fullName: string
@@ -518,26 +520,114 @@ export default function OfferteFormulier() {
                   <Calendar className="h-4 w-4 text-noir-400" />
                   Gewenste startdatum
                 </label>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                  {timingOptions.map(option => {
-                    const isSelected = formData.preferredStart === option.id
-                    return (
-                      <button
-                        key={option.id}
-                        type="button"
-                        onClick={() => updateField('preferredStart', option.id)}
-                        className={`p-4 text-sm font-medium rounded-xl border-2 transition-all duration-300 flex items-center gap-3 ${
-                          isSelected
-                            ? 'border-accent-500 bg-accent-50 text-accent-700 shadow-md shadow-accent-500/10'
-                            : 'border-noir-200 text-noir-700 hover:border-accent-300 hover:shadow-sm'
-                        }`}
+
+                {/* Option: Not yet determined */}
+                <button
+                  type="button"
+                  onClick={() => updateField('preferredStart', formData.preferredStart === 'flexible' ? '' : 'flexible')}
+                  className={`w-full mb-4 p-4 text-sm font-medium rounded-xl border-2 transition-all duration-300 flex items-center gap-3 ${
+                    formData.preferredStart === 'flexible'
+                      ? 'border-accent-500 bg-accent-50 text-accent-700 shadow-md shadow-accent-500/10'
+                      : 'border-noir-200 text-noir-700 hover:border-accent-300 hover:shadow-sm'
+                  }`}
+                >
+                  <div className={`w-5 h-5 rounded-lg border-2 flex items-center justify-center flex-shrink-0 transition-all ${
+                    formData.preferredStart === 'flexible'
+                      ? 'bg-accent-500 border-accent-500'
+                      : 'border-noir-300'
+                  }`}>
+                    {formData.preferredStart === 'flexible' && <Check className="h-3 w-3 text-white" />}
+                  </div>
+                  Nog niet bepaald / Flexibel
+                </button>
+
+                {/* Month/Year selector - only show if not flexible */}
+                {formData.preferredStart !== 'flexible' && (
+                  <div className="grid grid-cols-2 gap-4">
+                    {/* Month selector */}
+                    <div>
+                      <label className="block text-xs text-noir-500 uppercase tracking-wider mb-2">Maand</label>
+                      <select
+                        value={formData.preferredStart ? formData.preferredStart.split('-')[0] || '' : ''}
+                        onChange={(e) => {
+                          const month = e.target.value
+                          const year = formData.preferredStart?.split('-')[1] || String(currentYear)
+                          if (month) {
+                            updateField('preferredStart', `${month}-${year}`)
+                          } else {
+                            updateField('preferredStart', '')
+                          }
+                        }}
+                        className="w-full p-4 rounded-xl border-2 border-noir-200 bg-ivory-50 text-noir-800 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all appearance-none cursor-pointer"
                       >
-                        <span className="text-lg">{option.icon}</span>
-                        {option.label}
-                      </button>
-                    )
-                  })}
-                </div>
+                        <option value="">Selecteer maand</option>
+                        {monthNames.map((month, idx) => {
+                          // Don't show past months for current year
+                          const selectedYear = formData.preferredStart?.split('-')[1]
+                          if (selectedYear === String(currentYear) && idx < currentMonth) {
+                            return null
+                          }
+                          return (
+                            <option key={month} value={String(idx + 1).padStart(2, '0')}>
+                              {month}
+                            </option>
+                          )
+                        })}
+                      </select>
+                    </div>
+
+                    {/* Year selector */}
+                    <div>
+                      <label className="block text-xs text-noir-500 uppercase tracking-wider mb-2">Jaar</label>
+                      <select
+                        value={formData.preferredStart ? formData.preferredStart.split('-')[1] || '' : ''}
+                        onChange={(e) => {
+                          const year = e.target.value
+                          const month = formData.preferredStart?.split('-')[0] || ''
+                          if (year) {
+                            // Reset month if it's in the past for new year
+                            if (year === String(currentYear) && month && parseInt(month) <= currentMonth) {
+                              updateField('preferredStart', `-${year}`)
+                            } else {
+                              updateField('preferredStart', `${month}-${year}`)
+                            }
+                          } else {
+                            updateField('preferredStart', month ? `${month}-` : '')
+                          }
+                        }}
+                        className="w-full p-4 rounded-xl border-2 border-noir-200 bg-ivory-50 text-noir-800 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all appearance-none cursor-pointer"
+                      >
+                        <option value="">Selecteer jaar</option>
+                        {availableYears.map(year => (
+                          <option key={year} value={String(year)}>
+                            {year}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                )}
+
+                {/* Visual preview of selected date */}
+                {formData.preferredStart && formData.preferredStart !== 'flexible' && formData.preferredStart.includes('-') && (
+                  <div className="mt-4 p-4 bg-accent-50 rounded-xl border border-accent-200">
+                    <p className="text-sm text-accent-700 flex items-center gap-2">
+                      <Calendar className="h-4 w-4" />
+                      <span className="font-medium">
+                        Gewenste start:{' '}
+                        {(() => {
+                          const [month, year] = formData.preferredStart.split('-')
+                          if (month && year) {
+                            return `${monthNames[parseInt(month) - 1]} ${year}`
+                          } else if (year) {
+                            return year
+                          }
+                          return ''
+                        })()}
+                      </span>
+                    </p>
+                  </div>
+                )}
               </div>
 
               <div>
