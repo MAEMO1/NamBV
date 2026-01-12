@@ -25,6 +25,18 @@ import {
   Target,
   Wallet,
   MessageSquare,
+  Bath,
+  UtensilsCrossed,
+  Paintbrush,
+  Zap,
+  TrendingUp,
+  Sofa,
+  Wrench,
+  Users,
+  HelpCircle,
+  TreePine,
+  Layers,
+  Settings,
 } from 'lucide-react';
 
 // Types
@@ -66,10 +78,10 @@ const bookedSlots: BookedSlot[] = [
 const projectTypes = [
   { id: 'totaal', label: 'Totaalrenovatie', description: 'Complete renovatie van A tot Z', icon: Home },
   { id: 'renovatie', label: 'Renovatie & Verbouwing', description: 'Gerichte renovatiewerken', icon: Building2 },
-  { id: 'badkamer', label: 'Badkamerrenovatie', description: 'Nieuwe badkamer', icon: Sparkles },
-  { id: 'keuken', label: 'Keukenrenovatie', description: 'Nieuwe keuken', icon: Sparkles },
-  { id: 'afwerking', label: 'Afwerking', description: 'Tegelwerk, schilderwerk, ...', icon: Sparkles },
-  { id: 'technieken', label: 'Technieken', description: 'Elektriciteit, sanitair, verwarming', icon: Sparkles },
+  { id: 'badkamer', label: 'Badkamerrenovatie', description: 'Nieuwe badkamer', icon: Bath },
+  { id: 'keuken', label: 'Keukenrenovatie', description: 'Nieuwe keuken', icon: UtensilsCrossed },
+  { id: 'afwerking', label: 'Afwerking', description: 'Tegelwerk, schilderwerk, ...', icon: Paintbrush },
+  { id: 'technieken', label: 'Technieken', description: 'Elektriciteit, sanitair, verwarming', icon: Zap },
 ];
 
 const propertyTypes = [
@@ -93,26 +105,26 @@ const propertyAges = [
 const priorities = [
   { id: 'duurzaam', label: 'Duurzame materialen', icon: Leaf },
   { id: 'hergebruik', label: 'Hergebruik materiaal', icon: Recycle },
-  { id: 'energie', label: 'Energiebesparing', icon: Sparkles },
-  { id: 'comfort', label: 'Wooncomfort', icon: Home },
+  { id: 'energie', label: 'Energiebesparing', icon: Zap },
+  { id: 'comfort', label: 'Wooncomfort', icon: Sofa },
   { id: 'design', label: 'Design & esthetiek', icon: Sparkles },
   { id: 'budget', label: 'Prijsbewust', icon: Euro },
 ];
 
 const materialPreferences = [
-  { id: 'eco', label: 'Ecologisch & duurzaam', description: 'Natuurlijke, milieuvriendelijke materialen' },
-  { id: 'hergebruik', label: 'Hergebruik waar mogelijk', description: 'Bestaande materialen behouden' },
-  { id: 'mix', label: 'Combinatie', description: 'Mix van nieuw en hergebruik' },
-  { id: 'standaard', label: 'Standaard kwaliteit', description: 'Gangbare, kwalitatieve materialen' },
+  { id: 'eco', label: 'Ecologisch & duurzaam', description: 'Natuurlijke, milieuvriendelijke materialen', icon: TreePine },
+  { id: 'hergebruik', label: 'Hergebruik waar mogelijk', description: 'Bestaande materialen behouden', icon: Recycle },
+  { id: 'mix', label: 'Combinatie', description: 'Mix van nieuw en hergebruik', icon: Layers },
+  { id: 'standaard', label: 'Standaard kwaliteit', description: 'Gangbare, kwalitatieve materialen', icon: Settings },
 ];
 
 const motivationOptions = [
-  { id: 'verkoop', label: 'Verkoop van de woning', description: 'Waarde verhogen voor verkoop' },
-  { id: 'comfort', label: 'Meer wooncomfort', description: 'Beter wonen in uw huidige woning' },
-  { id: 'energie', label: 'Energiebesparing', description: 'Lagere energiekosten en duurzaamheid' },
-  { id: 'noodzaak', label: 'Noodzakelijke reparaties', description: 'Dringende problemen oplossen' },
-  { id: 'uitbreiding', label: 'Uitbreiding gezin', description: 'Meer ruimte nodig' },
-  { id: 'anders', label: 'Anders', description: 'Andere reden' },
+  { id: 'verkoop', label: 'Verkoop van de woning', description: 'Waarde verhogen voor verkoop', icon: TrendingUp },
+  { id: 'comfort', label: 'Meer wooncomfort', description: 'Beter wonen in uw huidige woning', icon: Sofa },
+  { id: 'energie', label: 'Energiebesparing', description: 'Lagere energiekosten en duurzaamheid', icon: Zap },
+  { id: 'noodzaak', label: 'Noodzakelijke reparaties', description: 'Dringende problemen oplossen', icon: Wrench },
+  { id: 'uitbreiding', label: 'Uitbreiding gezin', description: 'Meer ruimte nodig', icon: Users },
+  { id: 'anders', label: 'Anders', description: 'Andere reden', icon: HelpCircle },
 ];
 
 const budgetRanges = [
@@ -554,20 +566,29 @@ export default function BookingFlow() {
               <div className="space-y-3">
                 {materialPreferences.map((pref) => {
                   const isSelected = formData.materialPreference === pref.id;
+                  const IconComponent = pref.icon;
                   return (
                     <button
                       key={pref.id}
                       onClick={() => updateFormData('materialPreference', pref.id)}
-                      className={`w-full p-5 text-left rounded-xl border-2 transition-all duration-300 ${
+                      className={`w-full p-5 text-left rounded-xl border-2 transition-all duration-300 flex items-center gap-4 ${
                         isSelected
                           ? 'border-accent-500 bg-accent-50 shadow-md shadow-accent-500/10'
                           : 'border-noir-200 hover:border-accent-300 hover:shadow-sm'
                       }`}
                     >
-                      <p className={`font-medium ${isSelected ? 'text-accent-700' : 'text-noir-900'}`}>
-                        {pref.label}
-                      </p>
-                      <p className="text-sm text-noir-500 mt-1">{pref.description}</p>
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors ${
+                        isSelected ? 'bg-accent-500 text-white' : 'bg-noir-100 text-noir-500'
+                      }`}>
+                        <IconComponent className="h-5 w-5" />
+                      </div>
+                      <div className="flex-1">
+                        <p className={`font-medium ${isSelected ? 'text-accent-700' : 'text-noir-900'}`}>
+                          {pref.label}
+                        </p>
+                        <p className="text-sm text-noir-500 mt-1">{pref.description}</p>
+                      </div>
+                      {isSelected && <CheckCircle2 className="h-5 w-5 text-accent-500 flex-shrink-0" />}
                     </button>
                   );
                 })}
@@ -581,20 +602,28 @@ export default function BookingFlow() {
               <div className="grid sm:grid-cols-2 gap-3">
                 {motivationOptions.map((option) => {
                   const isSelected = formData.motivation === option.id;
+                  const IconComponent = option.icon;
                   return (
                     <button
                       key={option.id}
                       onClick={() => updateFormData('motivation', option.id)}
-                      className={`p-4 text-left rounded-xl border-2 transition-all duration-300 ${
+                      className={`p-4 text-left rounded-xl border-2 transition-all duration-300 flex items-start gap-3 ${
                         isSelected
                           ? 'border-accent-500 bg-accent-50 shadow-md shadow-accent-500/10'
                           : 'border-noir-200 hover:border-accent-300 hover:shadow-sm'
                       }`}
                     >
-                      <p className={`font-medium ${isSelected ? 'text-accent-700' : 'text-noir-900'}`}>
-                        {option.label}
-                      </p>
-                      <p className="text-sm text-noir-500 mt-1">{option.description}</p>
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors ${
+                        isSelected ? 'bg-accent-500 text-white' : 'bg-noir-100 text-noir-500'
+                      }`}>
+                        <IconComponent className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <p className={`font-medium ${isSelected ? 'text-accent-700' : 'text-noir-900'}`}>
+                          {option.label}
+                        </p>
+                        <p className="text-sm text-noir-500 mt-1">{option.description}</p>
+                      </div>
                     </button>
                   );
                 })}
