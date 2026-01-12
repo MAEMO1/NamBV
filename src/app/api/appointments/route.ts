@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
-import { sendAppointmentConfirmation, sendAdminNotification } from '@/lib/email'
+import {
+  sendUserAppointmentConfirmation,
+  notifyAdminNewAppointment
+} from '@/lib/notifications'
 
 // Generate reference number for appointments
 async function generateAppointmentReference(): Promise<string> {
@@ -93,51 +96,15 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    // Prepare email data
-    const emailData = {
-      referenceNumber: appointment.referenceNumber,
-      fullName: appointment.fullName,
-      email: appointment.email,
-      phone: appointment.phone,
-      gemeente: appointment.gemeente,
-      appointmentDate: appointment.appointmentDate.toISOString(),
-      appointmentTime: appointment.appointmentTime,
-      projectType: appointment.projectType || undefined,
-      propertyType: appointment.propertyType || undefined,
-      message: appointment.message || undefined,
-    }
-
-    // Send confirmation email to customer with iCal attachment (async, don't block response)
-    sendAppointmentConfirmation(emailData).catch(err => {
-      console.error('Failed to send appointment confirmation email:', err)
+    // Send notifications (email + WhatsApp) to user and admin
+    // Don't block response - send async
+    sendUserAppointmentConfirmation(appointment).catch(err => {
+      console.error('Failed to send user notifications:', err)
     })
 
-    // Check admin notification settings and send if enabled
-    try {
-      const settings = await db.setting.findMany({
-        where: {
-          key: {
-            in: ['notifications.emailOnAppointment', 'notifications.recipientEmail']
-          }
-        }
-      })
-
-      const emailOnAppointment = settings.find(s => s.key === 'notifications.emailOnAppointment')?.value !== 'false'
-      const recipientEmail = settings.find(s => s.key === 'notifications.recipientEmail')?.value
-
-      if (emailOnAppointment) {
-        // Admin also gets iCal attachment for easy calendar sync
-        sendAdminNotification('appointment', emailData, recipientEmail || undefined).catch(err => {
-          console.error('Failed to send admin notification:', err)
-        })
-      }
-    } catch (settingsError) {
-      console.error('Error fetching notification settings:', settingsError)
-      // Still send notification with default email
-      sendAdminNotification('appointment', emailData).catch(err => {
-        console.error('Failed to send admin notification:', err)
-      })
-    }
+    notifyAdminNewAppointment(appointment).catch(err => {
+      console.error('Failed to send admin notifications:', err)
+    })
 
     return NextResponse.json({
       success: true,

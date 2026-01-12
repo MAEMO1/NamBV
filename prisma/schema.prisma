@@ -286,8 +286,10 @@ model AppointmentBlockedDate {
 enum AppointmentStatus {
   PENDING
   CONFIRMED
+  RESCHEDULED
   COMPLETED
   CANCELLED
+  REJECTED
   NO_SHOW
 }
 
@@ -306,6 +308,14 @@ model Appointment {
   appointmentDate DateTime          @map("appointment_date")
   appointmentTime String            @map("appointment_time")
 
+  // Proposed alternative (when admin suggests different time)
+  proposedDate    DateTime?         @map("proposed_date")
+  proposedTime    String?           @map("proposed_time")
+
+  // Admin notes
+  adminNotes      String?           @map("admin_notes") @db.Text
+  rejectionReason String?           @map("rejection_reason")
+
   // Project preferences
   projectType       String?         @map("project_type")
   propertyType      String?         @map("property_type")
@@ -322,6 +332,7 @@ model Appointment {
   // Timestamps
   createdAt       DateTime          @default(now()) @map("created_at")
   updatedAt       DateTime          @updatedAt @map("updated_at")
+  confirmedAt     DateTime?         @map("confirmed_at")
 
   @@index([status])
   @@index([appointmentDate])

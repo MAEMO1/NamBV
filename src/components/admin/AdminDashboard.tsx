@@ -32,6 +32,7 @@ import {
   Download,
   Layout,
   Image,
+  Check,
 } from 'lucide-react'
 import AnalyticsDashboard from './AnalyticsDashboard'
 import ProjectsManager from './ProjectsManager'
@@ -84,11 +85,13 @@ interface Appointment {
 }
 
 // Status configurations with brand colors
-const appointmentStatusConfig = {
+const appointmentStatusConfig: Record<string, { label: string; color: string; bg: string }> = {
   PENDING: { label: 'In afwachting', color: '#b45309', bg: '#fef3c7' },
   CONFIRMED: { label: 'Bevestigd', color: '#047857', bg: '#d1fae5' },
+  RESCHEDULED: { label: 'Nieuw tijdstip', color: '#d97706', bg: '#fef3c7' },
   COMPLETED: { label: 'Afgerond', color: '#4338ca', bg: '#e0e7ff' },
   CANCELLED: { label: 'Geannuleerd', color: '#dc2626', bg: '#fee2e2' },
+  REJECTED: { label: 'Geweigerd', color: '#dc2626', bg: '#fee2e2' },
   NO_SHOW: { label: 'Niet verschenen', color: '#57534e', bg: '#f5f5f4' },
 }
 
@@ -383,10 +386,18 @@ function QuoteDetail({ quote, onClose }: QuoteDetailProps) {
 interface AppointmentDetailProps {
   appointment: Appointment
   onClose: () => void
+  onUpdate: () => void
 }
 
-function AppointmentDetail({ appointment, onClose }: AppointmentDetailProps) {
+function AppointmentDetail({ appointment, onClose, onUpdate }: AppointmentDetailProps) {
   const status = appointmentStatusConfig[appointment.status]
+  const [actionLoading, setActionLoading] = useState<string | null>(null)
+  const [showReschedule, setShowReschedule] = useState(false)
+  const [showReject, setShowReject] = useState(false)
+  const [proposedDate, setProposedDate] = useState('')
+  const [proposedTime, setProposedTime] = useState('')
+  const [rejectionReason, setRejectionReason] = useState('')
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
     return date.toLocaleDateString('nl-BE', {
@@ -396,6 +407,48 @@ function AppointmentDetail({ appointment, onClose }: AppointmentDetailProps) {
       year: 'numeric'
     })
   }
+
+  const handleAction = async (action: string, data?: Record<string, unknown>) => {
+    setActionLoading(action)
+    try {
+      const response = await fetch(`/api/admin/appointments/${appointment.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action, ...data })
+      })
+
+      if (response.ok) {
+        onUpdate()
+        onClose()
+      } else {
+        const error = await response.json()
+        alert(error.error || 'Er is een fout opgetreden')
+      }
+    } catch (error) {
+      console.error('Action error:', error)
+      alert('Er is een fout opgetreden')
+    } finally {
+      setActionLoading(null)
+    }
+  }
+
+  const handleConfirm = () => handleAction('confirm')
+  const handleReject = () => {
+    if (!rejectionReason.trim()) {
+      alert('Vul een reden in')
+      return
+    }
+    handleAction('reject', { rejectionReason })
+  }
+  const handleReschedule = () => {
+    if (!proposedDate || !proposedTime) {
+      alert('Vul datum en tijd in')
+      return
+    }
+    handleAction('reschedule', { proposedDate, proposedTime })
+  }
+
+  const isPending = appointment.status === 'PENDING'
 
   return (
     <div className="fixed top-0 right-0 bottom-0 w-[480px] bg-white shadow-soft-xl z-50 overflow-auto border-l border-noir-100">
@@ -419,6 +472,113 @@ function AppointmentDetail({ appointment, onClose }: AppointmentDetailProps) {
       </div>
 
       <div className="p-6">
+        {/* Admin Actions for Pending Appointments */}
+        {isPending && (
+          <div className="bg-amber-50 border border-amber-200 p-4 mb-6">
+            <h4 className="text-sm font-display font-medium text-amber-800 mb-3">Actie vereist</h4>
+
+            {!showReschedule && !showReject && (
+              <div className="flex flex-col gap-2">
+                <button
+                  onClick={handleConfirm}
+                  disabled={actionLoading === 'confirm'}
+                  className="w-full py-3 bg-green-600 text-white font-medium text-sm hover:bg-green-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+                >
+                  <Check className="w-4 h-4" />
+                  {actionLoading === 'confirm' ? 'Bezig...' : 'Bevestigen'}
+                </button>
+                <button
+                  onClick={() => setShowReschedule(true)}
+                  className="w-full py-3 bg-amber-500 text-white font-medium text-sm hover:bg-amber-600 transition-colors flex items-center justify-center gap-2"
+                >
+                  <Calendar className="w-4 h-4" />
+                  Ander tijdstip voorstellen
+                </button>
+                <button
+                  onClick={() => setShowReject(true)}
+                  className="w-full py-3 bg-red-600 text-white font-medium text-sm hover:bg-red-700 transition-colors flex items-center justify-center gap-2"
+                >
+                  <X className="w-4 h-4" />
+                  Weigeren
+                </button>
+              </div>
+            )}
+
+            {/* Reschedule Form */}
+            {showReschedule && (
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-xs text-amber-700 mb-1">Nieuwe datum</label>
+                  <input
+                    type="date"
+                    value={proposedDate}
+                    onChange={(e) => setProposedDate(e.target.value)}
+                    className="w-full p-2 border border-amber-300 bg-white text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-amber-700 mb-1">Nieuwe tijd</label>
+                  <select
+                    value={proposedTime}
+                    onChange={(e) => setProposedTime(e.target.value)}
+                    className="w-full p-2 border border-amber-300 bg-white text-sm"
+                  >
+                    <option value="">Kies een tijd</option>
+                    {['09:00', '10:00', '11:00', '14:00', '15:00', '16:00', '17:00'].map(time => (
+                      <option key={time} value={time}>{time}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleReschedule}
+                    disabled={actionLoading === 'reschedule'}
+                    className="flex-1 py-2 bg-amber-600 text-white text-sm font-medium hover:bg-amber-700 disabled:opacity-50"
+                  >
+                    {actionLoading === 'reschedule' ? 'Bezig...' : 'Versturen'}
+                  </button>
+                  <button
+                    onClick={() => setShowReschedule(false)}
+                    className="flex-1 py-2 bg-noir-200 text-noir-700 text-sm font-medium hover:bg-noir-300"
+                  >
+                    Annuleren
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Reject Form */}
+            {showReject && (
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-xs text-red-700 mb-1">Reden voor weigering *</label>
+                  <textarea
+                    value={rejectionReason}
+                    onChange={(e) => setRejectionReason(e.target.value)}
+                    placeholder="Bijv. Dit tijdstip is niet beschikbaar..."
+                    className="w-full p-2 border border-red-300 bg-white text-sm h-24"
+                  />
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleReject}
+                    disabled={actionLoading === 'reject'}
+                    className="flex-1 py-2 bg-red-600 text-white text-sm font-medium hover:bg-red-700 disabled:opacity-50"
+                  >
+                    {actionLoading === 'reject' ? 'Bezig...' : 'Weigeren'}
+                  </button>
+                  <button
+                    onClick={() => setShowReject(false)}
+                    className="flex-1 py-2 bg-noir-200 text-noir-700 text-sm font-medium hover:bg-noir-300"
+                  >
+                    Annuleren
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Appointment Info */}
         <div className="bg-accent-50 border border-accent-100 p-6 mb-8">
           <h4 className="text-sm font-display font-medium text-accent-800 mb-3 flex items-center gap-2">
@@ -510,7 +670,7 @@ function AppointmentDetail({ appointment, onClose }: AppointmentDetailProps) {
           </div>
         )}
 
-        {/* Actions */}
+        {/* Contact Actions */}
         <div className="flex gap-3 pt-6 border-t border-noir-100">
           <a
             href={`mailto:${appointment.email}`}
@@ -518,6 +678,15 @@ function AppointmentDetail({ appointment, onClose }: AppointmentDetailProps) {
           >
             <Mail className="w-4 h-4" />
             E-mail sturen
+          </a>
+          <a
+            href={`https://wa.me/${appointment.phone.replace(/\s/g, '').replace(/^0/, '32')}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 py-4 bg-green-600 text-white font-medium text-sm text-center hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
+          >
+            <MessageSquare className="w-4 h-4" />
+            WhatsApp
           </a>
           <a
             href={`tel:${appointment.phone}`}
@@ -1089,6 +1258,7 @@ export default function AdminDashboard() {
           <AppointmentDetail
             appointment={selectedAppointment}
             onClose={() => setSelectedAppointment(null)}
+            onUpdate={fetchData}
           />
         </>
       )}
