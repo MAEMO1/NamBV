@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { cookies } from 'next/headers'
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin'
 const SESSION_COOKIE_NAME = 'nam_admin_session'
@@ -36,9 +35,14 @@ export async function POST(request: NextRequest) {
     // Generate session token
     const sessionToken = generateSessionToken()
 
-    // Set cookie
-    const cookieStore = await cookies()
-    cookieStore.set(SESSION_COOKIE_NAME, sessionToken, {
+    // Create response with cookie
+    const response = NextResponse.json({
+      success: true,
+      message: 'Succesvol ingelogd'
+    })
+
+    // Set cookie via response
+    response.cookies.set(SESSION_COOKIE_NAME, sessionToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
@@ -46,10 +50,7 @@ export async function POST(request: NextRequest) {
       path: '/'
     })
 
-    return NextResponse.json({
-      success: true,
-      message: 'Succesvol ingelogd'
-    })
+    return response
   } catch (error) {
     console.error('Login error:', error)
     return NextResponse.json(
@@ -62,13 +63,21 @@ export async function POST(request: NextRequest) {
 // DELETE /api/admin/auth - Logout
 export async function DELETE() {
   try {
-    const cookieStore = await cookies()
-    cookieStore.delete(SESSION_COOKIE_NAME)
-
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
       message: 'Succesvol uitgelogd'
     })
+
+    // Delete cookie via response
+    response.cookies.set(SESSION_COOKIE_NAME, '', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 0,
+      path: '/'
+    })
+
+    return response
   } catch (error) {
     console.error('Logout error:', error)
     return NextResponse.json(
@@ -79,10 +88,9 @@ export async function DELETE() {
 }
 
 // GET /api/admin/auth - Check session
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const cookieStore = await cookies()
-    const session = cookieStore.get(SESSION_COOKIE_NAME)
+    const session = request.cookies.get(SESSION_COOKIE_NAME)
 
     if (!session?.value) {
       return NextResponse.json(
