@@ -94,9 +94,9 @@ export default function Logo({
         {showTagline && (
           <span
             style={{ color: secondaryColor }}
-            className="text-[10px] md:text-xs tracking-[0.15em]"
+            className="text-[10px] md:text-xs tracking-[0.05em] italic"
           >
-            CONSTRUCTION
+            Kwaliteit die je blijft voelen
           </span>
         )}
       </div>
