@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import Link from 'next/link';
 import {
   ArrowRight,
   ArrowLeft,
@@ -12,7 +13,6 @@ import {
   Recycle,
   Euro,
   FileCheck,
-  HelpCircle,
   MapPin,
   User,
   Mail,
@@ -20,7 +20,11 @@ import {
   Sparkles,
   ChevronLeft,
   ChevronRight,
-  Check
+  Check,
+  Building2,
+  Target,
+  Wallet,
+  MessageSquare,
 } from 'lucide-react';
 
 // Types
@@ -34,7 +38,7 @@ interface FormData {
   timing: string;
   subsidyInterest: boolean;
   paymentSpread: boolean;
-  motivation: string; // Waarom wilt u renoveren?
+  motivation: string;
   name: string;
   email: string;
   phone: string;
@@ -60,12 +64,12 @@ const bookedSlots: BookedSlot[] = [
 ];
 
 const projectTypes = [
-  { id: 'totaal', label: 'Totaalrenovatie', description: 'Complete renovatie van A tot Z' },
-  { id: 'renovatie', label: 'Renovatie & Verbouwing', description: 'Gerichte renovatiewerken' },
-  { id: 'badkamer', label: 'Badkamerrenovatie', description: 'Nieuwe badkamer' },
-  { id: 'keuken', label: 'Keukenrenovatie', description: 'Nieuwe keuken' },
-  { id: 'afwerking', label: 'Afwerking', description: 'Tegelwerk, schilderwerk, ...' },
-  { id: 'technieken', label: 'Technieken', description: 'Elektriciteit, sanitair, verwarming' },
+  { id: 'totaal', label: 'Totaalrenovatie', description: 'Complete renovatie van A tot Z', icon: Home },
+  { id: 'renovatie', label: 'Renovatie & Verbouwing', description: 'Gerichte renovatiewerken', icon: Building2 },
+  { id: 'badkamer', label: 'Badkamerrenovatie', description: 'Nieuwe badkamer', icon: Sparkles },
+  { id: 'keuken', label: 'Keukenrenovatie', description: 'Nieuwe keuken', icon: Sparkles },
+  { id: 'afwerking', label: 'Afwerking', description: 'Tegelwerk, schilderwerk, ...', icon: Sparkles },
+  { id: 'technieken', label: 'Technieken', description: 'Elektriciteit, sanitair, verwarming', icon: Sparkles },
 ];
 
 const propertyTypes = [
@@ -102,6 +106,15 @@ const materialPreferences = [
   { id: 'standaard', label: 'Standaard kwaliteit', description: 'Gangbare, kwalitatieve materialen' },
 ];
 
+const motivationOptions = [
+  { id: 'verkoop', label: 'Verkoop van de woning', description: 'Waarde verhogen voor verkoop' },
+  { id: 'comfort', label: 'Meer wooncomfort', description: 'Beter wonen in uw huidige woning' },
+  { id: 'energie', label: 'Energiebesparing', description: 'Lagere energiekosten en duurzaamheid' },
+  { id: 'noodzaak', label: 'Noodzakelijke reparaties', description: 'Dringende problemen oplossen' },
+  { id: 'uitbreiding', label: 'Uitbreiding gezin', description: 'Meer ruimte nodig' },
+  { id: 'anders', label: 'Anders', description: 'Andere reden' },
+];
+
 const budgetRanges = [
   { id: 'klein', label: '< €25.000' },
   { id: 'medium', label: '€25.000 - €50.000' },
@@ -112,19 +125,10 @@ const budgetRanges = [
 ];
 
 const timingOptions = [
-  { id: 'asap', label: 'Zo snel mogelijk' },
-  { id: '3maanden', label: 'Binnen 3 maanden' },
-  { id: '6maanden', label: '3 - 6 maanden' },
-  { id: 'later', label: 'Later / flexibel' },
-];
-
-const motivationOptions = [
-  { id: 'verkoop', label: 'Verkoop van de woning', description: 'Waarde verhogen voor verkoop' },
-  { id: 'comfort', label: 'Meer wooncomfort', description: 'Beter wonen in uw huidige woning' },
-  { id: 'energie', label: 'Energiebesparing', description: 'Lagere energiekosten en duurzaamheid' },
-  { id: 'noodzaak', label: 'Noodzakelijke reparaties', description: 'Dringende problemen oplossen' },
-  { id: 'uitbreiding', label: 'Uitbreiding gezin', description: 'Meer ruimte nodig' },
-  { id: 'anders', label: 'Anders', description: 'Andere reden' },
+  { id: 'asap', label: 'Zo snel mogelijk', icon: '🚀' },
+  { id: '3maanden', label: 'Binnen 3 maanden', icon: '📅' },
+  { id: '6maanden', label: '3 - 6 maanden', icon: '📆' },
+  { id: 'later', label: 'Later / flexibel', icon: '🔄' },
 ];
 
 const allTimeSlots = ['09:00', '10:00', '11:00', '14:00', '15:00', '16:00', '17:00'];
@@ -282,30 +286,38 @@ export default function BookingFlow() {
     return date.toLocaleDateString('nl-BE', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
   };
 
-  // Success state
+  // Success state - Premium design
   if (isSubmitted) {
     return (
-      <div className="bg-noir-900 p-12 text-center">
-        <div className="w-20 h-20 bg-accent-500 flex items-center justify-center mx-auto mb-8">
-          <CheckCircle2 className="h-10 w-10 text-white" />
+      <div className="bg-gradient-to-br from-noir-950 via-noir-900 to-accent-900 p-8 md:p-12 text-center rounded-2xl">
+        {/* Animated success icon */}
+        <div className="relative mb-10">
+          <div className="w-24 h-24 bg-accent-500 rounded-2xl flex items-center justify-center mx-auto shadow-lg shadow-accent-500/30">
+            <CheckCircle2 className="h-12 w-12 text-white" />
+          </div>
+          <div className="absolute inset-0 bg-accent-500/30 rounded-2xl blur-xl animate-pulse" />
         </div>
+
         <h3 className="text-2xl md:text-3xl font-display font-medium text-white mb-4">
-          Uw afspraak is bevestigd
+          Uw afspraak is bevestigd!
         </h3>
-        <div className="bg-noir-800 p-6 mb-8 max-w-sm mx-auto">
-          <div className="flex items-center gap-3 mb-3 text-white">
-            <Calendar className="h-5 w-5 text-accent-500" />
+
+        <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-6 mb-8 max-w-sm mx-auto">
+          <div className="flex items-center gap-3 mb-4 text-white justify-center">
+            <Calendar className="h-5 w-5 text-accent-400" />
             <span className="font-medium">{formatSelectedDateDisplay()}</span>
           </div>
-          <div className="flex items-center gap-3 text-white">
-            <Clock className="h-5 w-5 text-accent-500" />
+          <div className="flex items-center gap-3 text-white justify-center">
+            <Clock className="h-5 w-5 text-accent-400" />
             <span className="font-medium">{formData.selectedTime}</span>
           </div>
         </div>
-        <p className="text-noir-400 mb-10 max-w-md mx-auto">
+
+        <p className="text-white/70 mb-10 max-w-md mx-auto">
           We sturen een bevestiging naar <strong className="text-white">{formData.email}</strong>.
           We kijken ernaar uit om uw project te bespreken.
         </p>
+
         <button
           onClick={() => {
             setIsSubmitted(false);
@@ -317,7 +329,7 @@ export default function BookingFlow() {
               selectedDate: '', selectedTime: '', message: '',
             });
           }}
-          className="inline-flex items-center gap-2 px-8 py-4 border border-noir-700 text-white font-medium uppercase tracking-wide hover:bg-noir-800 transition-all duration-300"
+          className="inline-flex items-center gap-3 px-8 py-4 bg-white text-noir-900 font-medium rounded-xl hover:bg-accent-100 transition-all duration-500"
         >
           <Sparkles className="h-5 w-5" />
           Nieuwe afspraak
@@ -327,39 +339,43 @@ export default function BookingFlow() {
   }
 
   return (
-    <div className="bg-white overflow-hidden shadow-soft-lg">
-      {/* Progress bar - Elegant step indicator */}
-      <div className="bg-noir-900 px-6 py-6">
-        <div className="flex justify-between items-center mb-6">
+    <div className="bg-white rounded-2xl shadow-soft-xl border border-noir-100 overflow-hidden">
+      {/* Progress bar - Premium design matching offerte */}
+      <div className="bg-noir-950 px-6 py-6">
+        <div className="flex justify-between items-center mb-4">
           {stepLabels.map((label, idx) => (
             <div key={label} className={`flex items-center gap-2 ${idx < stepLabels.length - 1 ? 'flex-1' : ''}`}>
               <div
-                className={`w-8 h-8 flex items-center justify-center text-sm font-medium transition-all duration-300 ${
+                className={`w-10 h-10 rounded-xl flex items-center justify-center text-sm font-medium transition-all duration-500 ${
                   step > idx + 1
-                    ? 'bg-accent-500 text-white'
+                    ? 'bg-accent-500 text-white shadow-lg shadow-accent-500/30'
                     : step === idx + 1
-                    ? 'bg-white text-noir-900'
+                    ? 'bg-white text-noir-900 shadow-lg'
                     : 'bg-noir-800 text-noir-500'
                 }`}
               >
-                {step > idx + 1 ? <Check className="h-4 w-4" /> : idx + 1}
+                {step > idx + 1 ? <Check className="h-5 w-5" /> : idx + 1}
               </div>
-              <span className={`hidden md:block text-sm font-medium uppercase tracking-wide ${
+              <span className={`hidden md:block text-sm font-medium transition-colors ${
                 step === idx + 1 ? 'text-white' : 'text-noir-500'
               }`}>
                 {label}
               </span>
               {idx < stepLabels.length - 1 && (
-                <div className={`hidden md:block flex-1 h-px mx-4 transition-colors duration-500 ${
-                  step > idx + 1 ? 'bg-accent-500' : 'bg-noir-800'
-                }`} />
+                <div className="hidden md:block flex-1 h-1 mx-4 rounded-full bg-noir-800 overflow-hidden">
+                  <div
+                    className={`h-full bg-accent-500 transition-all duration-700 ${
+                      step > idx + 1 ? 'w-full' : 'w-0'
+                    }`}
+                  />
+                </div>
               )}
             </div>
           ))}
         </div>
-        <div className="h-1 bg-noir-800 overflow-hidden">
+        <div className="h-1.5 bg-noir-800 rounded-full overflow-hidden">
           <div
-            className="h-full bg-accent-500 transition-all duration-700 ease-smooth"
+            className="h-full bg-gradient-to-r from-accent-600 to-accent-400 transition-all duration-700 ease-out rounded-full"
             style={{ width: `${(step / totalSteps) * 100}%` }}
           />
         </div>
@@ -369,79 +385,110 @@ export default function BookingFlow() {
       <div className="p-8 md:p-12">
         {/* Step 1: Project Type */}
         {step === 1 && (
-          <div className="space-y-8">
-            <div>
-              <h3 className="text-2xl font-display font-medium text-noir-900 mb-2">
+          <div className="animate-fade-up">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 bg-accent-100 rounded-xl flex items-center justify-center">
+                <Sparkles className="h-5 w-5 text-accent-600" />
+              </div>
+              <h3 className="text-2xl md:text-3xl font-display font-medium text-noir-900">
                 Wat voor project heeft u in gedachten?
               </h3>
-              <p className="text-noir-500">Selecteer het type renovatie</p>
             </div>
-            <div className="grid sm:grid-cols-2 gap-3">
-              {projectTypes.map((type) => (
-                <button
-                  key={type.id}
-                  onClick={() => updateFormData('projectType', type.id)}
-                  className={`p-5 text-left border transition-all duration-300 ${
-                    formData.projectType === type.id
-                      ? 'border-accent-500 bg-accent-500/5'
-                      : 'border-noir-200 hover:border-noir-400'
-                  }`}
-                >
-                  <p className={`font-medium ${formData.projectType === type.id ? 'text-accent-600' : 'text-noir-900'}`}>
-                    {type.label}
-                  </p>
-                  <p className="text-sm text-noir-500 mt-1">{type.description}</p>
-                </button>
-              ))}
+            <p className="text-noir-500 mb-10 ml-[52px]">Selecteer het type renovatie</p>
+
+            <div className="grid sm:grid-cols-2 gap-4">
+              {projectTypes.map((type) => {
+                const isSelected = formData.projectType === type.id;
+                const IconComponent = type.icon;
+                return (
+                  <button
+                    key={type.id}
+                    onClick={() => updateFormData('projectType', type.id)}
+                    className={`relative p-5 text-left rounded-xl border-2 transition-all duration-300 group ${
+                      isSelected
+                        ? 'border-accent-500 bg-accent-50 shadow-lg shadow-accent-500/10'
+                        : 'border-noir-200 hover:border-accent-300 hover:shadow-md'
+                    }`}
+                  >
+                    {isSelected && (
+                      <div className="absolute top-3 right-3">
+                        <CheckCircle2 className="h-5 w-5 text-accent-500" />
+                      </div>
+                    )}
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 transition-colors ${
+                      isSelected ? 'bg-accent-500 text-white' : 'bg-noir-100 text-noir-500 group-hover:bg-accent-100 group-hover:text-accent-600'
+                    }`}>
+                      <IconComponent className="h-5 w-5" />
+                    </div>
+                    <p className={`font-medium ${isSelected ? 'text-accent-700' : 'text-noir-900'}`}>
+                      {type.label}
+                    </p>
+                    <p className="text-sm text-noir-500 mt-1">{type.description}</p>
+                  </button>
+                );
+              })}
             </div>
           </div>
         )}
 
         {/* Step 2: Property Details */}
         {step === 2 && (
-          <div className="space-y-8">
+          <div className="animate-fade-up space-y-10">
             <div>
-              <h3 className="text-2xl font-display font-medium text-noir-900 mb-2">
-                Vertel ons over uw woning
-              </h3>
-              <p className="text-noir-500">Dit helpt ons om beter advies te geven</p>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 bg-accent-100 rounded-xl flex items-center justify-center">
+                  <Building2 className="h-5 w-5 text-accent-600" />
+                </div>
+                <h3 className="text-2xl md:text-3xl font-display font-medium text-noir-900">
+                  Vertel ons over uw woning
+                </h3>
+              </div>
+              <p className="text-noir-500 mb-10 ml-[52px]">Dit helpt ons om beter advies te geven</p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-noir-500 uppercase tracking-wider mb-4">Type woning *</label>
+              <label className="block text-sm font-medium text-noir-700 mb-4">
+                Type woning <span className="text-accent-500">*</span>
+              </label>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                {propertyTypes.map((type) => (
-                  <button
-                    key={type.id}
-                    onClick={() => updateFormData('propertyType', type.id)}
-                    className={`p-4 text-sm font-medium border transition-all duration-300 ${
-                      formData.propertyType === type.id
-                        ? 'border-accent-500 bg-accent-500/5 text-accent-600'
-                        : 'border-noir-200 text-noir-700 hover:border-noir-400'
-                    }`}
-                  >
-                    {type.label}
-                  </button>
-                ))}
+                {propertyTypes.map((type) => {
+                  const isSelected = formData.propertyType === type.id;
+                  return (
+                    <button
+                      key={type.id}
+                      onClick={() => updateFormData('propertyType', type.id)}
+                      className={`p-4 text-sm font-medium rounded-xl border-2 transition-all duration-300 ${
+                        isSelected
+                          ? 'border-accent-500 bg-accent-50 text-accent-700 shadow-md shadow-accent-500/10'
+                          : 'border-noir-200 text-noir-700 hover:border-accent-300 hover:shadow-sm'
+                      }`}
+                    >
+                      {type.label}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-noir-500 uppercase tracking-wider mb-4">Bouwjaar (optioneel)</label>
+              <label className="block text-sm font-medium text-noir-700 mb-4">Bouwjaar (optioneel)</label>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                {propertyAges.map((age) => (
-                  <button
-                    key={age.id}
-                    onClick={() => updateFormData('propertyAge', age.id)}
-                    className={`p-4 text-sm font-medium border transition-all duration-300 ${
-                      formData.propertyAge === age.id
-                        ? 'border-accent-500 bg-accent-500/5 text-accent-600'
-                        : 'border-noir-200 text-noir-700 hover:border-noir-400'
-                    }`}
-                  >
-                    {age.label}
-                  </button>
-                ))}
+                {propertyAges.map((age) => {
+                  const isSelected = formData.propertyAge === age.id;
+                  return (
+                    <button
+                      key={age.id}
+                      onClick={() => updateFormData('propertyAge', age.id)}
+                      className={`p-4 text-sm font-medium rounded-xl border-2 transition-all duration-300 ${
+                        isSelected
+                          ? 'border-accent-500 bg-accent-50 text-accent-700 shadow-md shadow-accent-500/10'
+                          : 'border-noir-200 text-noir-700 hover:border-accent-300 hover:shadow-sm'
+                      }`}
+                    >
+                      {age.label}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -449,83 +496,100 @@ export default function BookingFlow() {
 
         {/* Step 3: Priorities & Preferences */}
         {step === 3 && (
-          <div className="space-y-8">
+          <div className="animate-fade-up space-y-10">
             <div>
-              <h3 className="text-2xl font-display font-medium text-noir-900 mb-2">
-                Wat is voor u belangrijk?
-              </h3>
-              <p className="text-noir-500">Selecteer uw prioriteiten (meerdere mogelijk)</p>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 bg-accent-100 rounded-xl flex items-center justify-center">
+                  <Target className="h-5 w-5 text-accent-600" />
+                </div>
+                <h3 className="text-2xl md:text-3xl font-display font-medium text-noir-900">
+                  Wat is voor u belangrijk?
+                </h3>
+              </div>
+              <p className="text-noir-500 mb-10 ml-[52px]">Selecteer uw prioriteiten (meerdere mogelijk)</p>
             </div>
 
             <div className="grid sm:grid-cols-2 gap-3">
-              {priorities.map((priority) => (
-                <button
-                  key={priority.id}
-                  onClick={() => togglePriority(priority.id)}
-                  className={`p-4 text-left border transition-all duration-300 flex items-center gap-4 ${
-                    formData.priorities.includes(priority.id)
-                      ? 'border-accent-500 bg-accent-500/5'
-                      : 'border-noir-200 hover:border-noir-400'
-                  }`}
-                >
-                  <priority.icon className={`h-5 w-5 flex-shrink-0 ${
-                    formData.priorities.includes(priority.id) ? 'text-accent-600' : 'text-noir-400'
-                  }`} />
-                  <span className={`font-medium ${formData.priorities.includes(priority.id) ? 'text-accent-600' : 'text-noir-900'}`}>
-                    {priority.label}
-                  </span>
-                  {formData.priorities.includes(priority.id) && (
-                    <CheckCircle2 className="h-5 w-5 text-accent-500 ml-auto" />
-                  )}
-                </button>
-              ))}
+              {priorities.map((priority) => {
+                const isSelected = formData.priorities.includes(priority.id);
+                const IconComponent = priority.icon;
+                return (
+                  <button
+                    key={priority.id}
+                    onClick={() => togglePriority(priority.id)}
+                    className={`p-4 text-left rounded-xl border-2 transition-all duration-300 flex items-center gap-4 ${
+                      isSelected
+                        ? 'border-accent-500 bg-accent-50 shadow-md shadow-accent-500/10'
+                        : 'border-noir-200 hover:border-accent-300 hover:shadow-sm'
+                    }`}
+                  >
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors ${
+                      isSelected ? 'bg-accent-500 text-white' : 'bg-noir-100 text-noir-500'
+                    }`}>
+                      <IconComponent className="h-5 w-5" />
+                    </div>
+                    <span className={`font-medium ${isSelected ? 'text-accent-700' : 'text-noir-900'}`}>
+                      {priority.label}
+                    </span>
+                    {isSelected && (
+                      <CheckCircle2 className="h-5 w-5 text-accent-500 ml-auto" />
+                    )}
+                  </button>
+                );
+              })}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-noir-500 uppercase tracking-wider mb-4">
-                Voorkeur materiaalgebruik *
+              <label className="block text-sm font-medium text-noir-700 mb-4">
+                Voorkeur materiaalgebruik <span className="text-accent-500">*</span>
               </label>
               <div className="space-y-3">
-                {materialPreferences.map((pref) => (
-                  <button
-                    key={pref.id}
-                    onClick={() => updateFormData('materialPreference', pref.id)}
-                    className={`w-full p-5 text-left border transition-all duration-300 ${
-                      formData.materialPreference === pref.id
-                        ? 'border-accent-500 bg-accent-500/5'
-                        : 'border-noir-200 hover:border-noir-400'
-                    }`}
-                  >
-                    <p className={`font-medium ${formData.materialPreference === pref.id ? 'text-accent-600' : 'text-noir-900'}`}>
-                      {pref.label}
-                    </p>
-                    <p className="text-sm text-noir-500 mt-1">{pref.description}</p>
-                  </button>
-                ))}
+                {materialPreferences.map((pref) => {
+                  const isSelected = formData.materialPreference === pref.id;
+                  return (
+                    <button
+                      key={pref.id}
+                      onClick={() => updateFormData('materialPreference', pref.id)}
+                      className={`w-full p-5 text-left rounded-xl border-2 transition-all duration-300 ${
+                        isSelected
+                          ? 'border-accent-500 bg-accent-50 shadow-md shadow-accent-500/10'
+                          : 'border-noir-200 hover:border-accent-300 hover:shadow-sm'
+                      }`}
+                    >
+                      <p className={`font-medium ${isSelected ? 'text-accent-700' : 'text-noir-900'}`}>
+                        {pref.label}
+                      </p>
+                      <p className="text-sm text-noir-500 mt-1">{pref.description}</p>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-noir-500 uppercase tracking-wider mb-4">
+              <label className="block text-sm font-medium text-noir-700 mb-4">
                 Waarom wilt u renoveren?
               </label>
               <div className="grid sm:grid-cols-2 gap-3">
-                {motivationOptions.map((option) => (
-                  <button
-                    key={option.id}
-                    onClick={() => updateFormData('motivation', option.id)}
-                    className={`p-4 text-left border transition-all duration-300 ${
-                      formData.motivation === option.id
-                        ? 'border-accent-500 bg-accent-500/5'
-                        : 'border-noir-200 hover:border-noir-400'
-                    }`}
-                  >
-                    <p className={`font-medium ${formData.motivation === option.id ? 'text-accent-600' : 'text-noir-900'}`}>
-                      {option.label}
-                    </p>
-                    <p className="text-sm text-noir-500 mt-1">{option.description}</p>
-                  </button>
-                ))}
+                {motivationOptions.map((option) => {
+                  const isSelected = formData.motivation === option.id;
+                  return (
+                    <button
+                      key={option.id}
+                      onClick={() => updateFormData('motivation', option.id)}
+                      className={`p-4 text-left rounded-xl border-2 transition-all duration-300 ${
+                        isSelected
+                          ? 'border-accent-500 bg-accent-50 shadow-md shadow-accent-500/10'
+                          : 'border-noir-200 hover:border-accent-300 hover:shadow-sm'
+                      }`}
+                    >
+                      <p className={`font-medium ${isSelected ? 'text-accent-700' : 'text-noir-900'}`}>
+                        {option.label}
+                      </p>
+                      <p className="text-sm text-noir-500 mt-1">{option.description}</p>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -533,96 +597,115 @@ export default function BookingFlow() {
 
         {/* Step 4: Budget & Timing */}
         {step === 4 && (
-          <div className="space-y-8">
+          <div className="animate-fade-up space-y-10">
             <div>
-              <h3 className="text-2xl font-display font-medium text-noir-900 mb-2">
-                Budget & planning
-              </h3>
-              <p className="text-noir-500">Dit helpt ons een realistisch voorstel te maken</p>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 bg-accent-100 rounded-xl flex items-center justify-center">
+                  <Wallet className="h-5 w-5 text-accent-600" />
+                </div>
+                <h3 className="text-2xl md:text-3xl font-display font-medium text-noir-900">
+                  Budget & planning
+                </h3>
+              </div>
+              <p className="text-noir-500 mb-10 ml-[52px]">Dit helpt ons een realistisch voorstel te maken</p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-noir-500 uppercase tracking-wider mb-4">Indicatief budget *</label>
+              <label className="block text-sm font-medium text-noir-700 mb-4">
+                Indicatief budget <span className="text-accent-500">*</span>
+              </label>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                {budgetRanges.map((range) => (
-                  <button
-                    key={range.id}
-                    onClick={() => updateFormData('budget', range.id)}
-                    className={`p-4 text-sm font-medium border transition-all duration-300 ${
-                      formData.budget === range.id
-                        ? 'border-accent-500 bg-accent-500/5 text-accent-600'
-                        : 'border-noir-200 text-noir-700 hover:border-noir-400'
-                    }`}
-                  >
-                    {range.label}
-                  </button>
-                ))}
+                {budgetRanges.map((range) => {
+                  const isSelected = formData.budget === range.id;
+                  return (
+                    <button
+                      key={range.id}
+                      onClick={() => updateFormData('budget', range.id)}
+                      className={`p-4 text-sm font-medium rounded-xl border-2 transition-all duration-300 ${
+                        isSelected
+                          ? 'border-accent-500 bg-accent-50 text-accent-700 shadow-md shadow-accent-500/10'
+                          : 'border-noir-200 text-noir-700 hover:border-accent-300 hover:shadow-sm'
+                      }`}
+                    >
+                      {range.label}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-noir-500 uppercase tracking-wider mb-4">Wanneer wilt u starten? *</label>
+              <label className="flex items-center gap-2 text-sm font-medium text-noir-700 mb-4">
+                <Calendar className="h-4 w-4 text-noir-400" />
+                Wanneer wilt u starten? <span className="text-accent-500">*</span>
+              </label>
               <div className="grid grid-cols-2 gap-3">
-                {timingOptions.map((option) => (
-                  <button
-                    key={option.id}
-                    onClick={() => updateFormData('timing', option.id)}
-                    className={`p-4 text-sm font-medium border transition-all duration-300 ${
-                      formData.timing === option.id
-                        ? 'border-accent-500 bg-accent-500/5 text-accent-600'
-                        : 'border-noir-200 text-noir-700 hover:border-noir-400'
-                    }`}
-                  >
-                    {option.label}
-                  </button>
-                ))}
+                {timingOptions.map((option) => {
+                  const isSelected = formData.timing === option.id;
+                  return (
+                    <button
+                      key={option.id}
+                      onClick={() => updateFormData('timing', option.id)}
+                      className={`p-4 text-sm font-medium rounded-xl border-2 transition-all duration-300 flex items-center gap-3 ${
+                        isSelected
+                          ? 'border-accent-500 bg-accent-50 text-accent-700 shadow-md shadow-accent-500/10'
+                          : 'border-noir-200 text-noir-700 hover:border-accent-300 hover:shadow-sm'
+                      }`}
+                    >
+                      <span className="text-lg">{option.icon}</span>
+                      {option.label}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
             {/* Extra options */}
-            <div className="space-y-3 pt-6 border-t border-noir-100">
-              <p className="text-sm font-medium text-noir-500 uppercase tracking-wider">Bijkomende opties</p>
+            <div className="space-y-3 pt-8 border-t border-noir-100">
+              <p className="text-sm font-medium text-noir-700 mb-4">Bijkomende opties</p>
 
               <button
                 onClick={() => updateFormData('subsidyInterest', !formData.subsidyInterest)}
-                className={`w-full p-5 text-left border transition-all duration-300 flex items-center gap-4 ${
+                className={`w-full p-5 text-left rounded-xl border-2 transition-all duration-300 flex items-center gap-4 ${
                   formData.subsidyInterest
-                    ? 'border-accent-500 bg-accent-500/5'
-                    : 'border-noir-200 hover:border-noir-400'
+                    ? 'border-accent-500 bg-accent-50 shadow-md shadow-accent-500/10'
+                    : 'border-noir-200 hover:border-accent-300 hover:shadow-sm'
                 }`}
               >
-                <div className={`w-10 h-10 flex items-center justify-center ${
-                  formData.subsidyInterest ? 'bg-accent-500' : 'bg-noir-100'
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors ${
+                  formData.subsidyInterest ? 'bg-accent-500 text-white' : 'bg-noir-100 text-noir-500'
                 }`}>
-                  <FileCheck className={`h-5 w-5 ${formData.subsidyInterest ? 'text-white' : 'text-noir-400'}`} />
+                  <FileCheck className="h-6 w-6" />
                 </div>
                 <div className="flex-1">
-                  <p className={`font-medium ${formData.subsidyInterest ? 'text-accent-600' : 'text-noir-900'}`}>
+                  <p className={`font-medium ${formData.subsidyInterest ? 'text-accent-700' : 'text-noir-900'}`}>
                     Ondersteuning subsidies & premies
                   </p>
                   <p className="text-sm text-noir-500">We helpen bij het aanvragen van beschikbare premies</p>
                 </div>
+                {formData.subsidyInterest && <CheckCircle2 className="h-5 w-5 text-accent-500" />}
               </button>
 
               <button
                 onClick={() => updateFormData('paymentSpread', !formData.paymentSpread)}
-                className={`w-full p-5 text-left border transition-all duration-300 flex items-center gap-4 ${
+                className={`w-full p-5 text-left rounded-xl border-2 transition-all duration-300 flex items-center gap-4 ${
                   formData.paymentSpread
-                    ? 'border-accent-500 bg-accent-500/5'
-                    : 'border-noir-200 hover:border-noir-400'
+                    ? 'border-accent-500 bg-accent-50 shadow-md shadow-accent-500/10'
+                    : 'border-noir-200 hover:border-accent-300 hover:shadow-sm'
                 }`}
               >
-                <div className={`w-10 h-10 flex items-center justify-center ${
-                  formData.paymentSpread ? 'bg-accent-500' : 'bg-noir-100'
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors ${
+                  formData.paymentSpread ? 'bg-accent-500 text-white' : 'bg-noir-100 text-noir-500'
                 }`}>
-                  <Euro className={`h-5 w-5 ${formData.paymentSpread ? 'text-white' : 'text-noir-400'}`} />
+                  <Euro className="h-6 w-6" />
                 </div>
                 <div className="flex-1">
-                  <p className={`font-medium ${formData.paymentSpread ? 'text-accent-600' : 'text-noir-900'}`}>
+                  <p className={`font-medium ${formData.paymentSpread ? 'text-accent-700' : 'text-noir-900'}`}>
                     Interesse in betalingsspreiding
                   </p>
                   <p className="text-sm text-noir-500">Betaal in fasen naargelang de vordering</p>
                 </div>
+                {formData.paymentSpread && <CheckCircle2 className="h-5 w-5 text-accent-500" />}
               </button>
             </div>
           </div>
@@ -630,74 +713,83 @@ export default function BookingFlow() {
 
         {/* Step 5: Contact & Calendar */}
         {step === 5 && (
-          <div className="space-y-8">
+          <div className="animate-fade-up space-y-10">
             <div>
-              <h3 className="text-2xl font-display font-medium text-noir-900 mb-2">
-                Plan uw gratis adviesgesprek
-              </h3>
-              <p className="text-noir-500">Kies een datum en tijdstip dat u past</p>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 bg-accent-100 rounded-xl flex items-center justify-center">
+                  <Calendar className="h-5 w-5 text-accent-600" />
+                </div>
+                <h3 className="text-2xl md:text-3xl font-display font-medium text-noir-900">
+                  Plan uw gratis adviesgesprek
+                </h3>
+              </div>
+              <p className="text-noir-500 mb-10 ml-[52px]">Kies een datum en tijdstip dat u past</p>
             </div>
 
             {/* Contact details */}
-            <div className="grid sm:grid-cols-2 gap-4">
+            <div className="grid sm:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-noir-500 uppercase tracking-wider mb-3">
-                  <User className="h-4 w-4 inline mr-2" />Naam *
+                <label className="flex items-center gap-2 text-sm font-medium text-noir-700 mb-3">
+                  <User className="h-4 w-4 text-noir-400" />
+                  Naam <span className="text-accent-500">*</span>
                 </label>
                 <input
                   type="text"
                   value={formData.name}
                   onChange={(e) => updateFormData('name', e.target.value)}
-                  className="w-full p-4 border border-noir-200 bg-ivory-200 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-noir-900 transition-colors"
+                  className="w-full p-4 rounded-xl border-2 border-noir-200 bg-ivory-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all"
                   placeholder="Uw naam"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-noir-500 uppercase tracking-wider mb-3">
-                  <Mail className="h-4 w-4 inline mr-2" />Email *
+                <label className="flex items-center gap-2 text-sm font-medium text-noir-700 mb-3">
+                  <Mail className="h-4 w-4 text-noir-400" />
+                  Email <span className="text-accent-500">*</span>
                 </label>
                 <input
                   type="email"
                   value={formData.email}
                   onChange={(e) => updateFormData('email', e.target.value)}
-                  className="w-full p-4 border border-noir-200 bg-ivory-200 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-noir-900 transition-colors"
+                  className="w-full p-4 rounded-xl border-2 border-noir-200 bg-ivory-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all"
                   placeholder="uw@email.be"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-noir-500 uppercase tracking-wider mb-3">
-                  <Phone className="h-4 w-4 inline mr-2" />Telefoon *
+                <label className="flex items-center gap-2 text-sm font-medium text-noir-700 mb-3">
+                  <Phone className="h-4 w-4 text-noir-400" />
+                  Telefoon <span className="text-accent-500">*</span>
                 </label>
                 <input
                   type="tel"
                   value={formData.phone}
                   onChange={(e) => updateFormData('phone', e.target.value)}
-                  className="w-full p-4 border border-noir-200 bg-ivory-200 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-noir-900 transition-colors"
+                  className="w-full p-4 rounded-xl border-2 border-noir-200 bg-ivory-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all"
                   placeholder="+32 ..."
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-noir-500 uppercase tracking-wider mb-3">
-                  <MapPin className="h-4 w-4 inline mr-2" />Gemeente *
+                <label className="flex items-center gap-2 text-sm font-medium text-noir-700 mb-3">
+                  <MapPin className="h-4 w-4 text-noir-400" />
+                  Gemeente <span className="text-accent-500">*</span>
                 </label>
                 <input
                   type="text"
                   value={formData.gemeente}
                   onChange={(e) => updateFormData('gemeente', e.target.value)}
-                  className="w-full p-4 border border-noir-200 bg-ivory-200 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-noir-900 transition-colors"
+                  className="w-full p-4 rounded-xl border-2 border-noir-200 bg-ivory-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all"
                   placeholder="Gent, Mariakerke, ..."
                 />
               </div>
             </div>
 
             {/* Calendar */}
-            <div className="bg-ivory-200 p-6 border border-noir-100">
+            <div className="bg-gradient-to-br from-ivory-100 to-ivory-50 rounded-2xl p-6 border border-noir-100">
               <div className="flex items-center justify-between mb-6">
                 <button
                   onClick={() => navigateMonth('prev')}
                   disabled={!canNavigatePrev()}
-                  className={`p-2 transition-all ${
-                    canNavigatePrev() ? 'hover:bg-noir-100 text-noir-700' : 'text-noir-300 cursor-not-allowed'
+                  className={`p-3 rounded-xl transition-all ${
+                    canNavigatePrev() ? 'hover:bg-white text-noir-700 shadow-sm' : 'text-noir-300 cursor-not-allowed'
                   }`}
                 >
                   <ChevronLeft className="h-5 w-5" />
@@ -708,8 +800,8 @@ export default function BookingFlow() {
                 <button
                   onClick={() => navigateMonth('next')}
                   disabled={!canNavigateNext()}
-                  className={`p-2 transition-all ${
-                    canNavigateNext() ? 'hover:bg-noir-100 text-noir-700' : 'text-noir-300 cursor-not-allowed'
+                  className={`p-3 rounded-xl transition-all ${
+                    canNavigateNext() ? 'hover:bg-white text-noir-700 shadow-sm' : 'text-noir-300 cursor-not-allowed'
                   }`}
                 >
                   <ChevronRight className="h-5 w-5" />
@@ -747,14 +839,14 @@ export default function BookingFlow() {
                       key={day}
                       onClick={() => isSelectable && handleDateSelect(day)}
                       disabled={!isSelectable}
-                      className={`aspect-square flex flex-col items-center justify-center text-sm transition-all duration-200 relative ${
+                      className={`aspect-square flex flex-col items-center justify-center text-sm rounded-xl transition-all duration-200 relative ${
                         isSelected
-                          ? 'bg-accent-500 text-white'
+                          ? 'bg-accent-500 text-white shadow-lg shadow-accent-500/30'
                           : isFullyBooked
                             ? 'bg-noir-100 text-noir-300 cursor-not-allowed'
                             : isPast || isSunday
                               ? 'text-noir-300 cursor-not-allowed'
-                              : 'hover:bg-accent-500/10 text-noir-700 cursor-pointer'
+                              : 'hover:bg-white hover:shadow-md text-noir-700 cursor-pointer'
                       }`}
                     >
                       <span className="font-medium">{day}</span>
@@ -771,11 +863,11 @@ export default function BookingFlow() {
             {/* Time selection */}
             {formData.selectedDate && (
               <div>
-                <label className="block text-sm font-medium text-noir-500 uppercase tracking-wider mb-4">
-                  <Clock className="h-4 w-4 inline mr-2" />
-                  Kies een tijdstip *
+                <label className="flex items-center gap-2 text-sm font-medium text-noir-700 mb-4">
+                  <Clock className="h-4 w-4 text-noir-400" />
+                  Kies een tijdstip <span className="text-accent-500">*</span>
                 </label>
-                <div className="grid grid-cols-4 sm:grid-cols-7 gap-2">
+                <div className="grid grid-cols-4 sm:grid-cols-7 gap-3">
                   {allTimeSlots.map((time) => {
                     const isBooked = isTimeBooked(formData.selectedDate, time);
                     const isSelected = formData.selectedTime === time;
@@ -785,12 +877,12 @@ export default function BookingFlow() {
                         key={time}
                         onClick={() => !isBooked && updateFormData('selectedTime', time)}
                         disabled={isBooked}
-                        className={`p-3 text-center transition-all duration-300 ${
+                        className={`p-3 text-center rounded-xl transition-all duration-300 ${
                           isSelected
-                            ? 'bg-accent-500 text-white'
+                            ? 'bg-accent-500 text-white shadow-lg shadow-accent-500/30'
                             : isBooked
                               ? 'bg-noir-100 text-noir-300 cursor-not-allowed line-through'
-                              : 'border border-noir-200 text-noir-700 hover:border-accent-500'
+                              : 'border-2 border-noir-200 text-noir-700 hover:border-accent-500 hover:shadow-sm'
                         }`}
                       >
                         <p className="font-medium text-sm">{time}</p>
@@ -803,14 +895,15 @@ export default function BookingFlow() {
 
             {/* Message */}
             <div>
-              <label className="block text-sm font-medium text-noir-500 uppercase tracking-wider mb-3">
-                <HelpCircle className="h-4 w-4 inline mr-2" />Extra informatie (optioneel)
+              <label className="flex items-center gap-2 text-sm font-medium text-noir-700 mb-3">
+                <MessageSquare className="h-4 w-4 text-noir-400" />
+                Extra informatie (optioneel)
               </label>
               <textarea
                 value={formData.message}
                 onChange={(e) => updateFormData('message', e.target.value)}
                 rows={3}
-                className="w-full p-4 border border-noir-200 bg-ivory-200 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-noir-900 transition-colors resize-none"
+                className="w-full p-4 rounded-xl border-2 border-noir-200 bg-ivory-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all resize-none"
                 placeholder="Speciale wensen of vragen?"
               />
             </div>
@@ -818,12 +911,12 @@ export default function BookingFlow() {
         )}
       </div>
 
-      {/* Navigation */}
-      <div className="px-8 md:px-12 py-6 bg-ivory-200 border-t border-noir-100 flex justify-between">
+      {/* Navigation - Premium design */}
+      <div className="px-8 md:px-12 py-6 bg-gradient-to-br from-ivory-100 to-ivory-50 border-t border-noir-100 flex justify-between">
         {step > 1 ? (
           <button
             onClick={() => setStep(step - 1)}
-            className="inline-flex items-center gap-2 px-6 py-3 border border-noir-300 text-noir-700 font-medium hover:bg-white transition-all duration-300"
+            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border-2 border-noir-200 text-noir-700 font-medium hover:bg-white hover:border-noir-300 transition-all"
           >
             <ArrowLeft className="h-4 w-4" />
             Vorige
@@ -834,9 +927,9 @@ export default function BookingFlow() {
           <button
             onClick={() => setStep(step + 1)}
             disabled={!canProceed()}
-            className={`inline-flex items-center gap-2 px-8 py-3 font-medium transition-all duration-300 ${
+            className={`inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-medium transition-all duration-300 ${
               canProceed()
-                ? 'bg-noir-900 text-white hover:bg-accent-500'
+                ? 'bg-noir-900 text-white hover:bg-accent-600 shadow-lg hover:shadow-xl hover:shadow-accent-500/20'
                 : 'bg-noir-200 text-noir-400 cursor-not-allowed'
             }`}
           >
@@ -847,9 +940,9 @@ export default function BookingFlow() {
           <button
             onClick={handleSubmit}
             disabled={!canProceed()}
-            className={`inline-flex items-center gap-2 px-8 py-3 font-medium transition-all duration-300 ${
+            className={`inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-medium transition-all duration-300 ${
               canProceed()
-                ? 'bg-accent-500 text-white hover:bg-accent-600'
+                ? 'bg-accent-500 text-white hover:bg-accent-600 shadow-lg hover:shadow-xl hover:shadow-accent-500/30'
                 : 'bg-noir-200 text-noir-400 cursor-not-allowed'
             }`}
           >
