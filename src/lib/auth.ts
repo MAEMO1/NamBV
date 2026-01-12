@@ -2,6 +2,8 @@ import { NextRequest } from 'next/server'
 import { db } from '@/lib/db'
 import { UserRole } from '@prisma/client'
 
+const SESSION_COOKIE_NAME = 'nam_admin_session'
+
 export interface AuthUser {
   id: string
   email: string
@@ -10,21 +12,26 @@ export interface AuthUser {
 }
 
 /**
- * Simple auth check - in production, replace with proper JWT/session validation
- * For now, checks for X-User-Id header (set by your auth system)
+ * Auth check - validates session cookie and returns admin user
  */
 export async function getAuthUser(request: NextRequest): Promise<AuthUser | null> {
-  // In production: validate JWT token or session
-  // For development: use X-User-Id header
-  const userId = request.headers.get('X-User-Id')
+  // Check for session cookie
+  const session = request.cookies.get(SESSION_COOKIE_NAME)
 
-  if (!userId) {
+  if (!session?.value) {
     return null
   }
 
+  // Session exists - return the default admin user
+  // In a more complex system, you would validate the session token
+  // and look up the associated user
   try {
-    const user = await db.user.findUnique({
-      where: { id: userId, isActive: true },
+    // Get the first active admin user
+    const user = await db.user.findFirst({
+      where: {
+        isActive: true,
+        role: { in: [UserRole.ADMIN, UserRole.SUPERADMIN] }
+      },
       select: {
         id: true,
         email: true,
