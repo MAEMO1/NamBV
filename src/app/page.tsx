@@ -293,19 +293,6 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-12 gap-8 items-center min-h-[70vh]">
             {/* Left content */}
             <div className="lg:col-span-7">
-              {/* Label */}
-              <div
-                className={`flex items-center gap-4 mb-8 transition-all duration-1000 ${
-                  heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                }`}
-                style={{ transitionDelay: '300ms' }}
-              >
-                <div className="w-16 h-px bg-accent-400" />
-                <span className="text-sm font-medium text-accent-400 uppercase tracking-[0.3em]">
-                  Renovatie & Afwerking
-                </span>
-              </div>
-
               {/* Main headline - Character animation (Bouw-ID inspired) */}
               <h1 className="mb-8">
                 <span
