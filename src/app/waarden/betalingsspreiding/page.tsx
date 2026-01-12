@@ -19,10 +19,10 @@ export const metadata: Metadata = {
 };
 
 const paymentPhases = [
-  { phase: 'Voorschot', percent: '30%', desc: 'Bij ondertekening overeenkomst', detail: 'Start van de samenwerking' },
-  { phase: 'Ruwbouw', percent: '30%', desc: 'Na afronding structurele werken', detail: 'Wanneer de basis staat' },
-  { phase: 'Afwerking', percent: '30%', desc: 'Na afronding afwerkingen', detail: 'Tegelwerk, pleisterwerk, schilderwerk' },
-  { phase: 'Oplevering', percent: '10%', desc: 'Na finale oplevering en goedkeuring', detail: 'Wanneer u volledig tevreden bent' }
+  { phase: 'Voorschot', icon: '1', desc: 'Bij ondertekening overeenkomst', detail: 'Start van de samenwerking' },
+  { phase: 'Ruwbouw', icon: '2', desc: 'Na afronding structurele werken', detail: 'Wanneer de basis staat' },
+  { phase: 'Afwerking', icon: '3', desc: 'Na afronding afwerkingen', detail: 'Tegelwerk, pleisterwerk, schilderwerk' },
+  { phase: 'Oplevering', icon: '4', desc: 'Na finale oplevering en goedkeuring', detail: 'Wanneer u volledig tevreden bent' }
 ];
 
 const benefits = [
@@ -115,7 +115,7 @@ export default function BetalingsspreidingPage() {
                 )}
 
                 <div className="w-16 h-16 bg-noir-900 flex items-center justify-center mb-4">
-                  <span className="text-xl font-display font-medium text-white">{item.percent}</span>
+                  <span className="text-xl font-display font-medium text-white">{item.icon}</span>
                 </div>
                 <h3 className="text-xl font-display font-medium text-noir-900 mb-2">{item.phase}</h3>
                 <p className="text-noir-600 mb-2">{item.desc}</p>
@@ -124,25 +124,21 @@ export default function BetalingsspreidingPage() {
             ))}
           </div>
 
-          {/* Visual timeline */}
-          <div className="mt-16 bg-ivory-100 p-8 border border-ivory-200">
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-sm font-medium text-noir-600 uppercase tracking-wide">Start project</span>
-              <span className="text-sm font-medium text-noir-600 uppercase tracking-wide">Oplevering</span>
-            </div>
-            <div className="h-3 bg-noir-200 overflow-hidden">
-              <div className="h-full flex">
-                <div className="w-[30%] bg-noir-500" />
-                <div className="w-[30%] bg-noir-600" />
-                <div className="w-[30%] bg-noir-700" />
-                <div className="w-[10%] bg-accent-500" />
+          {/* Info box */}
+          <div className="mt-16 bg-accent-50 p-8 border border-accent-200">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 bg-accent-500 flex items-center justify-center flex-shrink-0">
+                <Calendar className="h-6 w-6 text-white" />
               </div>
-            </div>
-            <div className="flex justify-between mt-2 text-xs text-noir-400">
-              <span>30%</span>
-              <span>60%</span>
-              <span>90%</span>
-              <span>100%</span>
+              <div>
+                <h3 className="text-lg font-display font-medium text-noir-900 mb-2">
+                  Spreiding op maat van uw project
+                </h3>
+                <p className="text-noir-600">
+                  De exacte verdeling bespreken we samen en stemmen we af op de aard en omvang van uw project.
+                  Zo zorgen we voor een betalingsplan dat past bij uw situatie en budget.
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -185,13 +181,13 @@ export default function BetalingsspreidingPage() {
               <div className="bg-noir-800 p-6">
                 <div className="flex items-center gap-3 mb-4">
                   <PiggyBank className="h-8 w-8 text-accent-500" />
-                  <span className="font-medium">Voorbeeld renovatie €40.000</span>
+                  <span className="font-medium">Hoe werkt het?</span>
                 </div>
                 <div className="space-y-2 text-noir-300 text-sm">
-                  <p>Voorschot: €12.000</p>
-                  <p>Na ruwbouw: €12.000</p>
-                  <p>Na afwerking: €12.000</p>
-                  <p>Bij oplevering: €4.000</p>
+                  <p>• Spreiding over meerdere mijlpalen</p>
+                  <p>• Verdeling afgestemd op uw project</p>
+                  <p>• Betaling pas na afronding fase</p>
+                  <p>• Altijd vooraf duidelijk afgesproken</p>
                 </div>
               </div>
             </div>
