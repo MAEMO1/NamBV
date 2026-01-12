@@ -34,6 +34,7 @@ interface FormData {
   timing: string;
   subsidyInterest: boolean;
   paymentSpread: boolean;
+  motivation: string; // Waarom wilt u renoveren?
   name: string;
   email: string;
   phone: string;
@@ -117,6 +118,15 @@ const timingOptions = [
   { id: 'later', label: 'Later / flexibel' },
 ];
 
+const motivationOptions = [
+  { id: 'verkoop', label: 'Verkoop van de woning', description: 'Waarde verhogen voor verkoop' },
+  { id: 'comfort', label: 'Meer wooncomfort', description: 'Beter wonen in uw huidige woning' },
+  { id: 'energie', label: 'Energiebesparing', description: 'Lagere energiekosten en duurzaamheid' },
+  { id: 'noodzaak', label: 'Noodzakelijke reparaties', description: 'Dringende problemen oplossen' },
+  { id: 'uitbreiding', label: 'Uitbreiding gezin', description: 'Meer ruimte nodig' },
+  { id: 'anders', label: 'Anders', description: 'Andere reden' },
+];
+
 const allTimeSlots = ['09:00', '10:00', '11:00', '14:00', '15:00', '16:00', '17:00'];
 const weekDays = ['Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'];
 const monthNames = [
@@ -174,6 +184,7 @@ export default function BookingFlow() {
     timing: '',
     subsidyInterest: false,
     paymentSpread: false,
+    motivation: '',
     name: '',
     email: '',
     phone: '',
@@ -302,7 +313,7 @@ export default function BookingFlow() {
             setFormData({
               projectType: '', propertyType: '', propertyAge: '', priorities: [],
               materialPreference: '', budget: '', timing: '', subsidyInterest: false,
-              paymentSpread: false, name: '', email: '', phone: '', gemeente: '',
+              paymentSpread: false, motivation: '', name: '', email: '', phone: '', gemeente: '',
               selectedDate: '', selectedTime: '', message: '',
             });
           }}
@@ -489,6 +500,30 @@ export default function BookingFlow() {
                       {pref.label}
                     </p>
                     <p className="text-sm text-noir-500 mt-1">{pref.description}</p>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-noir-500 uppercase tracking-wider mb-4">
+                Waarom wilt u renoveren?
+              </label>
+              <div className="grid sm:grid-cols-2 gap-3">
+                {motivationOptions.map((option) => (
+                  <button
+                    key={option.id}
+                    onClick={() => updateFormData('motivation', option.id)}
+                    className={`p-4 text-left border transition-all duration-300 ${
+                      formData.motivation === option.id
+                        ? 'border-accent-500 bg-accent-500/5'
+                        : 'border-noir-200 hover:border-noir-400'
+                    }`}
+                  >
+                    <p className={`font-medium ${formData.motivation === option.id ? 'text-accent-600' : 'text-noir-900'}`}>
+                      {option.label}
+                    </p>
+                    <p className="text-sm text-noir-500 mt-1">{option.description}</p>
                   </button>
                 ))}
               </div>
