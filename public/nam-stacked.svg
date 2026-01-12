@@ -1,7 +1,7 @@
 <svg width="120" height="140" viewBox="0 0 120 140" fill="none" xmlns="http://www.w3.org/2000/svg">
   <g transform="translate(24, 10)">
-    <path d="M0 0V72H8V18L28 72H36V0H28V54L8 0H0Z" fill="#1e3a36"/>
-    <path d="M35 72V0H44V54L64 0H72V72H64V18L44 72H35Z" fill="#1e3a36"/>
+    <path d="M0 0V72H10V22L30 72H40V0H30V50L10 0H0Z" fill="#1e3a36"/>
+    <path d="M32 72V0H42V50L62 0H72V72H62V22L42 72H32Z" fill="#1e3a36"/>
   </g>
   <text x="60" y="105" font-family="DM Sans, sans-serif" font-size="20" font-weight="600" letter-spacing="0.2em" fill="#1e3a36" text-anchor="middle">NAM</text>
   <text x="60" y="125" font-family="Inter, sans-serif" font-size="9" letter-spacing="0.15em" fill="#5a7c6f" text-anchor="middle">CONSTRUCTION</text>

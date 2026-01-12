@@ -17,9 +17,10 @@ export default function Logo({
   const primaryColor = color === 'light' ? '#ffffff' : '#1e3a36';
   const secondaryColor = color === 'light' ? 'rgba(255,255,255,0.7)' : '#5a7c6f';
 
-  // Official NM Symbol paths (from nam-symbol.svg)
-  const symbolPathN = "M0 0V72H8V18L28 72H36V0H28V54L8 0H0Z";
-  const symbolPathM = "M35 72V0H44V54L64 0H72V72H64V18L44 72H35Z";
+  // Optimized NM Symbol paths - bolder strokes for better rendering at small sizes
+  // Based on official logo but with 10px stroke width instead of 8px
+  const symbolPathN = "M0 0V72H10V22L30 72H40V0H30V50L10 0H0Z";
+  const symbolPathM = "M32 72V0H42V50L62 0H72V72H62V22L42 72H32Z";
 
   // Icon only version
   if (variant === 'icon') {
@@ -43,7 +44,7 @@ export default function Logo({
         <svg
           viewBox="0 0 72 72"
           fill="none"
-          className="w-16 h-16 mb-3"
+          className="w-18 h-18 mb-3"
           aria-label="NAM Construction"
         >
           <path d={symbolPathN} fill={primaryColor} />
@@ -70,11 +71,11 @@ export default function Logo({
   // Full horizontal version (default)
   return (
     <div className={`flex items-center gap-3 ${className}`}>
-      {/* Icon mark */}
+      {/* Icon mark - larger for better visibility */}
       <svg
         viewBox="0 0 72 72"
         fill="none"
-        className="w-9 h-9 md:w-10 md:h-10 flex-shrink-0"
+        className="w-10 h-10 md:w-11 md:h-11 flex-shrink-0"
         aria-label="NAM Construction"
       >
         <path d={symbolPathN} fill={primaryColor} />
