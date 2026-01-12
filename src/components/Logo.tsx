@@ -17,10 +17,9 @@ export default function Logo({
   const primaryColor = color === 'light' ? '#ffffff' : '#1e3a36';
   const secondaryColor = color === 'light' ? 'rgba(255,255,255,0.7)' : '#5a7c6f';
 
-  // Optimized NM Symbol paths - bolder strokes for better rendering at small sizes
-  // Based on official logo but with 10px stroke width instead of 8px
-  const symbolPathN = "M0 0V72H10V22L30 72H40V0H30V50L10 0H0Z";
-  const symbolPathM = "M32 72V0H42V50L62 0H72V72H62V22L42 72H32Z";
+  // Optimized NM Symbol paths - bolder strokes for crisp rendering
+  const symbolPathN = "M0 0V72H12V24L32 72H44V0H32V48L12 0H0Z";
+  const symbolPathM = "M28 72V0H40V48L60 0H72V72H60V24L40 72H28Z";
 
   // Icon only version
   if (variant === 'icon') {
@@ -44,7 +43,7 @@ export default function Logo({
         <svg
           viewBox="0 0 72 72"
           fill="none"
-          className="w-18 h-18 mb-3"
+          className="w-20 h-20 mb-4"
           aria-label="NAM Construction"
         >
           <path d={symbolPathN} fill={primaryColor} />
@@ -53,13 +52,13 @@ export default function Logo({
         <div className="flex flex-col items-center">
           <span
             style={{ color: primaryColor }}
-            className="text-xl font-display font-semibold tracking-[0.2em]"
+            className="text-2xl font-display font-semibold tracking-[0.2em]"
           >
             NAM
           </span>
           <span
             style={{ color: secondaryColor }}
-            className="text-[9px] tracking-[0.15em] mt-0.5"
+            className="text-[10px] tracking-[0.15em] mt-1"
           >
             CONSTRUCTION
           </span>
@@ -70,12 +69,12 @@ export default function Logo({
 
   // Full horizontal version (default)
   return (
-    <div className={`flex items-center gap-3 ${className}`}>
-      {/* Icon mark - larger for better visibility */}
+    <div className={`flex items-center gap-4 ${className}`}>
+      {/* Icon mark - larger for professional appearance */}
       <svg
         viewBox="0 0 72 72"
         fill="none"
-        className="w-10 h-10 md:w-11 md:h-11 flex-shrink-0"
+        className="w-12 h-12 md:w-14 md:h-14 flex-shrink-0"
         aria-label="NAM Construction"
       >
         <path d={symbolPathN} fill={primaryColor} />
@@ -86,14 +85,14 @@ export default function Logo({
       <div className="flex flex-col">
         <span
           style={{ color: primaryColor }}
-          className="text-lg md:text-xl font-display font-semibold tracking-[0.2em]"
+          className="text-xl md:text-2xl font-display font-semibold tracking-[0.2em]"
         >
           NAM
         </span>
         {showTagline && (
           <span
             style={{ color: secondaryColor }}
-            className="text-[8px] md:text-[9px] tracking-[0.15em]"
+            className="text-[9px] md:text-[10px] tracking-[0.15em]"
           >
             CONSTRUCTION
           </span>
