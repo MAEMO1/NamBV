@@ -5,9 +5,21 @@ import Link from 'next/link';
 import { MapPin, ArrowRight, ArrowUpRight } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
-const projects = [
+interface Project {
+  id: string;
+  title: string;
+  category: string;
+  location: string;
+  year: string;
+  description: string;
+  image: string;
+  featured?: boolean;
+}
+
+// Fallback projects for when database is empty
+const fallbackProjects: Project[] = [
   {
-    id: 1,
+    id: '1',
     title: 'Herenhuis Gent-centrum',
     category: 'Totaalrenovatie',
     location: 'Gent',
@@ -17,7 +29,7 @@ const projects = [
     featured: true
   },
   {
-    id: 2,
+    id: '2',
     title: 'Rijwoning Mariakerke',
     category: 'Renovatie & Afwerking',
     location: 'Mariakerke',
@@ -26,7 +38,7 @@ const projects = [
     image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&h=600&fit=crop'
   },
   {
-    id: 3,
+    id: '3',
     title: 'Appartement Ledeberg',
     category: 'Badkamerrenovatie',
     location: 'Ledeberg',
@@ -35,7 +47,7 @@ const projects = [
     image: 'https://images.unsplash.com/photo-1600566753051-f0b89df2dd90?w=800&h=600&fit=crop'
   },
   {
-    id: 4,
+    id: '4',
     title: 'Villa Sint-Martens-Latem',
     category: 'Totaalrenovatie',
     location: 'Sint-Martens-Latem',
@@ -44,7 +56,7 @@ const projects = [
     image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=600&fit=crop'
   },
   {
-    id: 5,
+    id: '5',
     title: 'Koppelwoning Drongen',
     category: 'Keukenrenovatie',
     location: 'Drongen',
@@ -53,7 +65,7 @@ const projects = [
     image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=600&fit=crop'
   },
   {
-    id: 6,
+    id: '6',
     title: 'Stadswoning Muide',
     category: 'Renovatie & Technieken',
     location: 'Gent',
@@ -63,7 +75,7 @@ const projects = [
   }
 ];
 
-const categories = ['Alle', 'Totaalrenovatie', 'Renovatie & Afwerking', 'Badkamerrenovatie', 'Keukenrenovatie'];
+const fallbackCategories = ['Alle', 'Totaalrenovatie', 'Renovatie & Afwerking', 'Badkamerrenovatie', 'Keukenrenovatie'];
 
 const stats = [
   { value: '150+', label: 'Projecten voltooid' },
@@ -111,12 +123,44 @@ export default function ProjectenPage() {
   const [heroLoaded, setHeroLoaded] = useState(false);
   const [activeCategory, setActiveCategory] = useState('Alle');
   const [scrollY, setScrollY] = useState(0);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [categories, setCategories] = useState<string[]>(fallbackCategories);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setHeroLoaded(true);
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Fetch projects from API
+  useEffect(() => {
+    async function fetchProjects() {
+      try {
+        const response = await fetch('/api/projects');
+        if (response.ok) {
+          const data = await response.json();
+          // Use fetched projects if available, otherwise use fallback
+          if (data.projects && data.projects.length > 0) {
+            setProjects(data.projects);
+            setCategories(data.categories || fallbackCategories);
+          } else {
+            setProjects(fallbackProjects);
+            setCategories(fallbackCategories);
+          }
+        } else {
+          setProjects(fallbackProjects);
+        }
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+        setProjects(fallbackProjects);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchProjects();
   }, []);
 
   const filteredProjects = activeCategory === 'Alle'
@@ -207,73 +251,85 @@ export default function ProjectenPage() {
       {/* Projects Grid */}
       <section className="py-20 md:py-28 bg-ivory-100">
         <div className="container-wide">
-          {/* Editorial grid layout */}
-          <div className="grid md:grid-cols-12 gap-8">
-            {filteredProjects.map((project, index) => {
-              // Determine grid span based on index for visual variety
-              const isLarge = index === 0 || index === 3;
-              const gridSpan = isLarge ? 'md:col-span-7' : 'md:col-span-5';
+          {loading ? (
+            <div className="grid md:grid-cols-12 gap-8">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className={i === 1 || i === 4 ? 'md:col-span-7' : 'md:col-span-5'}>
+                  <div className="aspect-[4/3] bg-noir-100 animate-pulse" />
+                </div>
+              ))}
+            </div>
+          ) : filteredProjects.length === 0 ? (
+            <div className="text-center py-20">
+              <p className="text-noir-500 text-lg">Geen projecten gevonden in deze categorie.</p>
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-12 gap-8">
+              {filteredProjects.map((project, index) => {
+                const isLarge = index === 0 || index === 3;
+                const gridSpan = isLarge ? 'md:col-span-7' : 'md:col-span-5';
 
-              return (
-                <AnimatedSection
-                  key={project.id}
-                  delay={index * 100}
-                  className={gridSpan}
-                >
-                  <article className="group relative h-full">
-                    <div className={`relative overflow-hidden ${isLarge ? 'aspect-[4/3]' : 'aspect-square'}`}>
-                      <Image
-                        src={project.image}
-                        alt={project.title}
-                        fill
-                        className="object-cover transition-transform duration-1000 group-hover:scale-110"
-                      />
+                return (
+                  <AnimatedSection
+                    key={project.id}
+                    delay={index * 100}
+                    className={gridSpan}
+                  >
+                    <article className="group relative h-full">
+                      <div className={`relative overflow-hidden ${isLarge ? 'aspect-[4/3]' : 'aspect-square'}`}>
+                        <Image
+                          src={project.image}
+                          alt={project.title}
+                          fill
+                          className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                        />
 
-                      {/* Overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-noir-950/90 via-noir-950/40 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-500" />
+                        {/* Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-noir-950/90 via-noir-950/40 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-500" />
 
-                      {/* Category tag */}
-                      <div className="absolute top-6 left-6">
-                        <span className="px-4 py-2 bg-accent-500 text-white text-xs font-medium uppercase tracking-wider">
-                          {project.category}
-                        </span>
-                      </div>
+                        {/* Category tag */}
+                        <div className="absolute top-6 left-6">
+                          <span className="px-4 py-2 bg-accent-500 text-white text-xs font-medium uppercase tracking-wider">
+                            {project.category}
+                          </span>
+                        </div>
 
-                      {/* Hover border */}
-                      <div className="absolute inset-4 border-2 border-accent-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                        {/* Hover border */}
+                        <div className="absolute inset-4 border-2 border-accent-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-                      {/* Content overlay */}
-                      <div className="absolute bottom-0 left-0 right-0 p-8">
-                        <h3 className="text-2xl md:text-3xl font-display font-medium text-white mb-3 group-hover:-translate-y-2 transition-transform duration-500">
-                          {project.title}
-                        </h3>
+                        {/* Content overlay */}
+                        <div className="absolute bottom-0 left-0 right-0 p-8">
+                          <h3 className="text-2xl md:text-3xl font-display font-medium text-white mb-3 group-hover:-translate-y-2 transition-transform duration-500">
+                            {project.title}
+                          </h3>
 
-                        <div className="flex items-center gap-4 text-white/60 text-sm mb-4">
-                          <div className="flex items-center gap-2">
-                            <MapPin className="h-4 w-4" />
-                            {project.location}
+                          <div className="flex items-center gap-4 text-white/60 text-sm mb-4">
+                            <div className="flex items-center gap-2">
+                              <MapPin className="h-4 w-4" />
+                              {project.location}
+                            </div>
+                            <span>|</span>
+                            <span>{project.year}</span>
                           </div>
-                          <span>|</span>
-                          <span>{project.year}</span>
-                        </div>
 
-                        {/* Description - visible on hover */}
-                        <p className="text-white/70 text-sm mb-4 max-h-0 overflow-hidden group-hover:max-h-20 transition-all duration-500">
-                          {project.description}
-                        </p>
+                          {/* Description - visible on hover */}
+                          <p className="text-white/70 text-sm mb-4 max-h-0 overflow-hidden group-hover:max-h-20 transition-all duration-500">
+                            {project.description}
+                          </p>
 
-                        {/* CTA */}
-                        <div className="flex items-center gap-2 text-accent-400 font-medium opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
-                          <span className="text-sm uppercase tracking-wider">Bekijk project</span>
-                          <ArrowRight className="h-4 w-4" />
+                          {/* CTA */}
+                          <div className="flex items-center gap-2 text-accent-400 font-medium opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
+                            <span className="text-sm uppercase tracking-wider">Bekijk project</span>
+                            <ArrowRight className="h-4 w-4" />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </article>
-                </AnimatedSection>
-              );
-            })}
-          </div>
+                    </article>
+                  </AnimatedSection>
+                );
+              })}
+            </div>
+          )}
         </div>
       </section>
 
@@ -289,7 +345,7 @@ export default function ProjectenPage() {
         <div className="container-wide relative">
           <AnimatedSection>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-              {stats.map((stat, index) => (
+              {stats.map((stat) => (
                 <div key={stat.label} className="group">
                   <p className="text-5xl md:text-6xl font-display font-medium text-white mb-2 group-hover:text-accent-400 transition-colors">
                     {stat.value}
