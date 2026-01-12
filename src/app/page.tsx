@@ -314,7 +314,7 @@ export default function HomePage() {
                   }`}
                   style={{ transitionDelay: '500ms' }}
                 >
-                  De kunst van
+                  Kwaliteit die je
                 </span>
                 <span
                   className={`block text-[clamp(3.5rem,10vw,7rem)] font-display font-medium leading-[0.9] tracking-[-0.03em] transition-all duration-1000 ${
@@ -322,7 +322,7 @@ export default function HomePage() {
                   }`}
                   style={{ transitionDelay: '700ms' }}
                 >
-                  <span className="text-accent-400">het (ver)bouwen</span>
+                  <span className="text-accent-400">blijft voelen</span>
                 </span>
               </h1>
 
