@@ -1,7 +1,17 @@
 import { Resend } from 'resend'
 
-// Initialize Resend with API key
-const resend = new Resend(process.env.RESEND_API_KEY)
+// Lazy-initialize Resend to prevent build errors when API key is not set
+let resendClient: Resend | null = null
+
+function getResend(): Resend {
+  if (!resendClient) {
+    if (!process.env.RESEND_API_KEY) {
+      throw new Error('RESEND_API_KEY environment variable is not set')
+    }
+    resendClient = new Resend(process.env.RESEND_API_KEY)
+  }
+  return resendClient
+}
 
 // Email configuration
 const FROM_EMAIL = process.env.FROM_EMAIL || 'NAM Construction <noreply@namconstruction.be>'
@@ -466,7 +476,7 @@ END:VCALENDAR`
 
 export async function sendQuoteConfirmation(data: QuoteEmailData): Promise<{ success: boolean; error?: string }> {
   try {
-    const { error } = await resend.emails.send({
+    const { error } = await getResend().emails.send({
       from: FROM_EMAIL,
       to: data.email,
       subject: `Bevestiging offerteaanvraag ${data.referenceNumber} - NAM Construction`,
@@ -505,7 +515,7 @@ export async function sendAppointmentConfirmation(data: AppointmentEmailData): P
       attendeeName: data.fullName,
     })
 
-    const { error } = await resend.emails.send({
+    const { error } = await getResend().emails.send({
       from: FROM_EMAIL,
       to: data.email,
       subject: `Bevestiging adviesgesprek ${data.appointmentTime} - NAM Construction`,
@@ -572,7 +582,7 @@ export async function sendAdminNotification(
       ]
     }
 
-    const { error } = await resend.emails.send({
+    const { error } = await getResend().emails.send({
       from: FROM_EMAIL,
       to,
       subject,
