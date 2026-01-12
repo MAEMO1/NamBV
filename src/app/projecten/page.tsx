@@ -77,13 +77,6 @@ const fallbackProjects: Project[] = [
 
 const fallbackCategories = ['Alle', 'Totaalrenovatie', 'Renovatie & Afwerking', 'Badkamerrenovatie', 'Keukenrenovatie'];
 
-const stats = [
-  { value: '150+', label: 'Projecten voltooid' },
-  { value: '12', label: 'Jaar ervaring' },
-  { value: '98%', label: 'Tevreden klanten' },
-  { value: 'Gent', label: 'En omstreken' }
-];
-
 // Scroll animation hook
 function useScrollAnimation() {
   const ref = useRef<HTMLDivElement>(null);
@@ -330,31 +323,6 @@ export default function ProjectenPage() {
               })}
             </div>
           )}
-        </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="py-20 md:py-28 bg-noir-900 relative overflow-hidden">
-        {/* Background pattern */}
-        <div className="absolute inset-0">
-          <div className="absolute top-0 left-1/4 w-px h-full bg-white/5" />
-          <div className="absolute top-0 left-2/4 w-px h-full bg-white/5" />
-          <div className="absolute top-0 left-3/4 w-px h-full bg-white/5" />
-        </div>
-
-        <div className="container-wide relative">
-          <AnimatedSection>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-              {stats.map((stat) => (
-                <div key={stat.label} className="group">
-                  <p className="text-5xl md:text-6xl font-display font-medium text-white mb-2 group-hover:text-accent-400 transition-colors">
-                    {stat.value}
-                  </p>
-                  <p className="text-white/50 uppercase tracking-wider text-sm">{stat.label}</p>
-                </div>
-              ))}
-            </div>
-          </AnimatedSection>
         </div>
       </section>
 
