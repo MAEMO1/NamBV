@@ -82,8 +82,8 @@ const whyUs = [
   },
   {
     number: '03',
-    title: 'Lokaal verankerd',
-    description: 'We werken met betrouwbare lokale vakmensen en leveranciers uit Gent en omstreken.'
+    title: 'Spreidingsplan',
+    description: 'Flexibele betalingsregeling met transparante 30-30-30-10 spreiding over de projectfases.'
   }
 ];
 

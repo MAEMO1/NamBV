@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, ArrowUpRight, MapPin, Phone, CheckCircle2, ChevronDown } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, MapPin, Phone, ChevronDown } from 'lucide-react';
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { trackCTAClick, trackClickToCall, CTALocation } from '@/lib/analytics';
 
@@ -100,13 +100,6 @@ const projects = [
     year: '2023',
     image: 'https://images.unsplash.com/photo-1600566753051-f0b89df2dd90?w=800&h=600&fit=crop',
   },
-];
-
-const processSteps = [
-  { number: '01', title: 'Kennismaking', description: 'Gratis adviesgesprek bij u thuis' },
-  { number: '02', title: 'Ontwerp', description: 'Gedetailleerd plan en offerte' },
-  { number: '03', title: 'Uitvoering', description: 'Vakkundige realisatie' },
-  { number: '04', title: 'Oplevering', description: 'Perfecte afwerking' },
 ];
 
 // Text reveal animation - character by character (Bouw-ID inspired)
@@ -377,36 +370,6 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Right side - Stats cards */}
-            <div className="lg:col-span-5 lg:pl-12">
-              <div
-                className={`grid grid-cols-2 gap-4 transition-all duration-1000 ${
-                  heroLoaded ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-16'
-                }`}
-                style={{ transitionDelay: '1300ms' }}
-              >
-                {/* Stat cards with glass effect */}
-                <div className="bg-white/10 backdrop-blur-md border border-white/10 p-6 group hover:bg-white/15 transition-all duration-500">
-                  <div className="text-5xl font-display font-medium text-white mb-2">150<span className="text-accent-400">+</span></div>
-                  <div className="text-sm text-white/60 uppercase tracking-wider">Projecten</div>
-                </div>
-                <div className="bg-white/10 backdrop-blur-md border border-white/10 p-6 group hover:bg-white/15 transition-all duration-500">
-                  <div className="text-5xl font-display font-medium text-white mb-2">12</div>
-                  <div className="text-sm text-white/60 uppercase tracking-wider">Jaar ervaring</div>
-                </div>
-                <div className="col-span-2 bg-white/10 backdrop-blur-md border border-white/10 p-6 group hover:bg-white/15 transition-all duration-500">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="text-3xl font-display font-medium text-white mb-1">98%</div>
-                      <div className="text-sm text-white/60 uppercase tracking-wider">Tevreden klanten</div>
-                    </div>
-                    <div className="w-16 h-16 rounded-full border-2 border-accent-400 flex items-center justify-center">
-                      <CheckCircle2 className="h-8 w-8 text-accent-400" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -419,20 +382,6 @@ export default function HomePage() {
         >
           <span className="text-xs text-white/50 uppercase tracking-[0.3em]">Scroll</span>
           <ChevronDown className="h-5 w-5 text-white/50 animate-bounce" />
-        </div>
-      </section>
-
-      {/* ===== TRUST STRIP - Compact kernwaarden ===== */}
-      <section className="py-6 bg-noir-900 border-y border-white/10">
-        <div className="container-wide">
-          <div className="flex flex-wrap justify-between items-center gap-6">
-            {kernwaarden.map((waarde) => (
-              <div key={waarde.id} className="flex items-center gap-3 group">
-                <span className="text-accent-400 font-display text-lg">{waarde.icon}</span>
-                <span className="text-white/70 text-sm group-hover:text-white transition-colors">{waarde.title}</span>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -514,62 +463,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ===== PROCESS SECTION - Step by step (Bouw-ID inspired) ===== */}
-      <section className="py-32 bg-white relative overflow-hidden">
-        <div className="container-wide">
-          <AnimatedSection className="text-center mb-20">
-            <span className="inline-block px-4 py-2 bg-noir-100 text-noir-600 text-xs font-medium uppercase tracking-[0.2em] rounded-full mb-6">
-              Onze aanpak
-            </span>
-            <h2 className="text-display-lg font-display font-medium text-noir-900 max-w-2xl mx-auto">
-              Van eerste gesprek tot perfecte oplevering
-            </h2>
-          </AnimatedSection>
-
-          {/* Process steps with connecting line */}
-          <div className="relative">
-            {/* Connecting line */}
-            <div className="absolute top-24 left-0 right-0 h-px bg-noir-200 hidden lg:block" />
-
-            <div className="grid md:grid-cols-4 gap-8">
-              {processSteps.map((step, index) => (
-                <AnimatedSection key={step.number} delay={index * 150} className="relative">
-                  <div className="text-center group">
-                    {/* Step number with circle */}
-                    <div className="relative inline-flex items-center justify-center w-20 h-20 rounded-full bg-ivory-100 border-2 border-noir-200 mb-8 group-hover:border-accent-500 group-hover:bg-accent-50 transition-all duration-500">
-                      <span className="text-2xl font-display font-medium text-noir-400 group-hover:text-accent-600 transition-colors">
-                        {step.number}
-                      </span>
-                      {/* Active dot on line */}
-                      <div className="absolute -bottom-[2.5rem] w-3 h-3 rounded-full bg-accent-500 hidden lg:block opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </div>
-
-                    <h3 className="text-xl font-display font-medium text-noir-900 mb-3">
-                      {step.title}
-                    </h3>
-                    <p className="text-noir-500">
-                      {step.description}
-                    </p>
-                  </div>
-                </AnimatedSection>
-              ))}
-            </div>
-          </div>
-
-          {/* CTA */}
-          <AnimatedSection className="text-center mt-16" delay={600}>
-            <Link
-              href="/afspraak"
-              className="group relative inline-flex items-center gap-3 px-8 py-4 bg-noir-900 text-white font-medium overflow-hidden transition-all duration-500 hover:shadow-xl"
-            >
-              <span className="absolute inset-0 bg-accent-600 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-              <span className="relative z-10 uppercase tracking-wider text-sm">Start uw project</span>
-              <ArrowRight className="relative z-10 h-4 w-4 transition-transform duration-300 group-hover:translate-x-2" />
-            </Link>
-          </AnimatedSection>
-        </div>
-      </section>
-
       {/* ===== WHY US SECTION - Split layout with image ===== */}
       <section className="py-32 bg-ivory-200 relative overflow-hidden">
         <div className="container-wide">
@@ -591,15 +484,6 @@ export default function HomePage() {
 
                 {/* Decorative frame */}
                 <div className="absolute -top-8 -left-8 w-full h-full border-2 border-accent-400 -z-10" />
-
-                {/* Floating stat card */}
-                <div className="absolute -right-8 bottom-12 bg-white shadow-soft-xl p-8">
-                  <div className="text-5xl font-display font-medium text-accent-600 mb-2">12+</div>
-                  <div className="text-sm text-noir-500 uppercase tracking-wider">Jaar ervaring</div>
-                  <div className="mt-4 pt-4 border-t border-noir-100">
-                    <div className="text-xs text-noir-400">Sinds 2012 actief in Oost-Vlaanderen</div>
-                  </div>
-                </div>
               </div>
             </AnimatedSection>
 
@@ -640,6 +524,20 @@ export default function HomePage() {
                   </AnimatedSection>
                 ))}
               </div>
+
+              {/* CTA */}
+              <AnimatedSection delay={600} className="mt-10">
+                <TrackedCTA
+                  href="/afspraak"
+                  location="services"
+                  label="Boek een gratis adviesgesprek"
+                  className="group relative inline-flex items-center gap-3 px-8 py-4 bg-accent-600 text-white font-medium overflow-hidden transition-all duration-500 hover:shadow-xl hover:shadow-accent-500/20"
+                >
+                  <span className="absolute inset-0 bg-accent-700 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                  <span className="relative z-10 uppercase tracking-wider text-sm">Boek een gratis adviesgesprek</span>
+                  <ArrowRight className="relative z-10 h-4 w-4 transition-transform duration-300 group-hover:translate-x-2" />
+                </TrackedCTA>
+              </AnimatedSection>
             </div>
           </div>
         </div>
