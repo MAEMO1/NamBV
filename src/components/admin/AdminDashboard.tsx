@@ -779,21 +779,49 @@ export default function AdminDashboard() {
       <main className="flex-1 overflow-auto">
         {/* Header */}
         <header className="bg-white border-b border-gray-100 px-6 py-4 flex justify-between items-center sticky top-0 z-10">
-          <div>
-            <h1 className="text-lg font-semibold text-gray-900">
-              {currentView === 'dashboard' && 'Dashboard'}
-              {currentView === 'analytics' && 'Analytics'}
-              {currentView === 'quotes' && 'Offerteaanvragen'}
-              {currentView === 'appointments' && 'Adviesgesprekken'}
-              {currentView === 'availability' && 'Beschikbaarheid'}
-              {currentView === 'projects' && 'Projecten'}
-              {currentView === 'content' && 'Content'}
-              {currentView === 'media' && 'Media'}
-              {currentView === 'settings' && 'Instellingen'}
-            </h1>
-            <p className="text-xs text-gray-400 mt-0.5">
-              {new Date().toLocaleDateString('nl-BE', { weekday: 'long', day: 'numeric', month: 'long' })}
-            </p>
+          <div className="flex items-center gap-3">
+            {currentView !== 'dashboard' && (
+              <button
+                onClick={() => {
+                  setCurrentView('dashboard')
+                  setStatusFilter('all')
+                  setAppointmentStatusFilter('all')
+                }}
+                className="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors"
+                title="Terug naar dashboard"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+            )}
+            <div>
+              <div className="flex items-center gap-2">
+                {currentView !== 'dashboard' && (
+                  <button
+                    onClick={() => setCurrentView('dashboard')}
+                    className="text-xs text-gray-400 hover:text-accent-600 transition-colors"
+                  >
+                    Dashboard
+                  </button>
+                )}
+                {currentView !== 'dashboard' && (
+                  <span className="text-xs text-gray-300">/</span>
+                )}
+                <h1 className="text-lg font-semibold text-gray-900">
+                  {currentView === 'dashboard' && 'Dashboard'}
+                  {currentView === 'analytics' && 'Analytics'}
+                  {currentView === 'quotes' && 'Offerteaanvragen'}
+                  {currentView === 'appointments' && 'Adviesgesprekken'}
+                  {currentView === 'availability' && 'Beschikbaarheid'}
+                  {currentView === 'projects' && 'Projecten'}
+                  {currentView === 'content' && 'Content'}
+                  {currentView === 'media' && 'Media'}
+                  {currentView === 'settings' && 'Instellingen'}
+                </h1>
+              </div>
+              <p className="text-xs text-gray-400 mt-0.5">
+                {new Date().toLocaleDateString('nl-BE', { weekday: 'long', day: 'numeric', month: 'long' })}
+              </p>
+            </div>
           </div>
           <div className="flex items-center gap-2">
             <button
