@@ -22,6 +22,11 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
+  // Don't render header on admin pages
+  if (pathname.startsWith('/admin')) {
+    return null;
+  }
+
   // Check if current page has a dark hero
   const hasDarkHero = darkHeroPages.includes(pathname);
 

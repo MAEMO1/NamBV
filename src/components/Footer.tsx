@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Phone, Mail, MapPin, ArrowUpRight, Instagram } from 'lucide-react';
 import Logo from './Logo';
 
@@ -17,6 +20,13 @@ const navigation = {
 };
 
 export default function Footer() {
+  const pathname = usePathname();
+
+  // Don't render footer on admin pages
+  if (pathname.startsWith('/admin')) {
+    return null;
+  }
+
   return (
     <footer className="bg-noir-950 text-white">
       {/* Main Footer */}
