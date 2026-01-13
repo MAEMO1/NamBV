@@ -35,6 +35,9 @@ function getSessionId(): string {
 
 // Track a page view to our internal analytics
 async function trackInternalPageView(path: string, referrer: string | null, params: URLSearchParams | null) {
+  // Skip tracking for admin pages
+  if (path.startsWith('/admin')) return
+
   try {
     const sessionId = getSessionId()
 
@@ -63,9 +66,13 @@ export async function trackInternalEvent(
   eventType: string = 'custom',
   eventData?: Record<string, unknown>
 ) {
+  const path = typeof window !== 'undefined' ? window.location.pathname : ''
+
+  // Skip tracking for admin pages
+  if (path.startsWith('/admin')) return
+
   try {
     const sessionId = getSessionId()
-    const path = typeof window !== 'undefined' ? window.location.pathname : ''
 
     await fetch('/api/analytics/track', {
       method: 'POST',
@@ -198,9 +205,9 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
     initDataLayer();
   }, []);
 
-  // Track page views on route change (GTM)
+  // Track page views on route change (GTM) - skip admin pages
   useEffect(() => {
-    if (pathname) {
+    if (pathname && !pathname.startsWith('/admin')) {
       const timer = setTimeout(() => {
         gtmTrackPageView(pathname, document.title);
       }, 100);
