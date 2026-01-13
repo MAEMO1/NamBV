@@ -608,6 +608,7 @@ export default function AdminDashboard() {
   const [statusFilter, setStatusFilter] = useState<QuoteStatus | 'all'>('all')
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const [showNotifications, setShowNotifications] = useState(false)
 
   const [quotes, setQuotes] = useState<Quote[]>([])
   const [appointments, setAppointments] = useState<Appointment[]>([])
@@ -794,14 +795,92 @@ export default function AdminDashboard() {
             >
               <RefreshCw className="w-4 h-4" />
             </button>
-            <button className="w-9 h-9 rounded-lg border border-gray-200 hover:bg-gray-50 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors relative">
-              <Bell className="w-4 h-4" />
-              {(newQuotes + pendingAppointments) > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-accent-600 rounded-full flex items-center justify-center">
-                  <span className="text-[10px] font-bold text-white">{newQuotes + pendingAppointments}</span>
-                </span>
+            <div className="relative">
+              <button
+                onClick={() => setShowNotifications(!showNotifications)}
+                className="w-9 h-9 rounded-lg border border-gray-200 hover:bg-gray-50 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors relative"
+              >
+                <Bell className="w-4 h-4" />
+                {(newQuotes + pendingAppointments) > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-accent-600 rounded-full flex items-center justify-center">
+                    <span className="text-[10px] font-bold text-white">{newQuotes + pendingAppointments}</span>
+                  </span>
+                )}
+              </button>
+
+              {/* Notifications Dropdown */}
+              {showNotifications && (
+                <>
+                  <div
+                    className="fixed inset-0 z-20"
+                    onClick={() => setShowNotifications(false)}
+                  />
+                  <div className="absolute right-0 top-11 w-80 bg-white rounded-xl border border-gray-200 shadow-lg z-30 overflow-hidden">
+                    <div className="px-4 py-3 border-b border-gray-100 flex justify-between items-center">
+                      <h3 className="text-sm font-semibold text-gray-900">Notificaties</h3>
+                      <span className="text-xs text-gray-400">{newQuotes + pendingAppointments} nieuw</span>
+                    </div>
+                    <div className="max-h-80 overflow-y-auto">
+                      {newQuotes > 0 && quotes.filter(q => q.status === 'NEW').slice(0, 3).map(quote => (
+                        <button
+                          key={quote.id}
+                          onClick={() => {
+                            setSelectedQuote(quote)
+                            setShowNotifications(false)
+                          }}
+                          className="w-full px-4 py-3 hover:bg-gray-50 flex items-start gap-3 text-left border-b border-gray-50"
+                        >
+                          <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <FileText className="w-4 h-4 text-blue-600" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-gray-900 truncate">{quote.fullName}</p>
+                            <p className="text-xs text-gray-500">Nieuwe offerte aanvraag</p>
+                          </div>
+                        </button>
+                      ))}
+                      {pendingAppointments > 0 && appointments.filter(a => a.status === 'PENDING').slice(0, 3).map(apt => (
+                        <button
+                          key={apt.id}
+                          onClick={() => {
+                            setSelectedAppointment(apt)
+                            setShowNotifications(false)
+                          }}
+                          className="w-full px-4 py-3 hover:bg-gray-50 flex items-start gap-3 text-left border-b border-gray-50"
+                        >
+                          <div className="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <Calendar className="w-4 h-4 text-amber-600" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-gray-900 truncate">{apt.fullName}</p>
+                            <p className="text-xs text-gray-500">Afspraak wacht op bevestiging</p>
+                          </div>
+                        </button>
+                      ))}
+                      {(newQuotes + pendingAppointments) === 0 && (
+                        <div className="px-4 py-8 text-center">
+                          <Bell className="w-8 h-8 mx-auto text-gray-200 mb-2" />
+                          <p className="text-sm text-gray-400">Geen nieuwe notificaties</p>
+                        </div>
+                      )}
+                    </div>
+                    {(newQuotes + pendingAppointments) > 0 && (
+                      <div className="px-4 py-3 border-t border-gray-100 bg-gray-50">
+                        <button
+                          onClick={() => {
+                            setCurrentView(newQuotes > 0 ? 'quotes' : 'appointments')
+                            setShowNotifications(false)
+                          }}
+                          className="w-full text-center text-xs font-medium text-accent-600 hover:text-accent-700"
+                        >
+                          Bekijk alle
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </>
               )}
-            </button>
+            </div>
             <div className="w-px h-6 bg-gray-200 mx-1" />
             <a
               href="/"
