@@ -3,6 +3,7 @@ import { db } from '@/lib/db'
 import { getAuthUser, unauthorizedResponse } from '@/lib/auth'
 import { QuoteQuerySchema } from '@/lib/validations/quote'
 import { Prisma } from '@prisma/client'
+import { getCache, setCache } from '@/lib/cache'
 
 // GET /api/admin/quotes - List all quotes with filters
 export async function GET(request: NextRequest) {
@@ -35,6 +36,17 @@ export async function GET(request: NextRequest) {
 
     const query = validationResult.data
     const skip = (query.page - 1) * query.limit
+
+    // Generate cache key based on query params
+    const cacheKey = `quotes:${JSON.stringify(query)}`
+
+    // Check cache first (only for default queries without search)
+    if (!query.search) {
+      const cached = getCache<{ quotes: unknown[], pagination: unknown }>(cacheKey)
+      if (cached) {
+        return NextResponse.json(cached)
+      }
+    }
 
     // Build where clause
     const where: Prisma.QuoteRequestWhereInput = {}
@@ -111,7 +123,7 @@ export async function GET(request: NextRequest) {
       updatedAt: quote.updatedAt
     }))
 
-    return NextResponse.json({
+    const response = {
       quotes: transformedQuotes,
       pagination: {
         page: query.page,
@@ -119,7 +131,14 @@ export async function GET(request: NextRequest) {
         total,
         totalPages: Math.ceil(total / query.limit)
       }
-    })
+    }
+
+    // Cache the response (skip if search query)
+    if (!query.search) {
+      setCache(cacheKey, response)
+    }
+
+    return NextResponse.json(response)
   } catch (error) {
     console.error('Error fetching quotes:', error)
     return NextResponse.json(

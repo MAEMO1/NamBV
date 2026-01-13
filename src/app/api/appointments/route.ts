@@ -4,6 +4,7 @@ import {
   sendUserAppointmentConfirmation,
   notifyAdminNewAppointment
 } from '@/lib/notifications'
+import { getCache, setCache, invalidateAppointmentsCache } from '@/lib/cache'
 
 // Generate reference number for appointments
 async function generateAppointmentReference(): Promise<string> {
@@ -96,6 +97,9 @@ export async function POST(request: NextRequest) {
       }
     })
 
+    // Invalidate appointments cache
+    invalidateAppointmentsCache()
+
     // Send notifications (email + WhatsApp) to user and admin
     // Don't block response - send async
     sendUserAppointmentConfirmation(appointment).catch(err => {
@@ -129,6 +133,15 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '20')
     const skip = (page - 1) * limit
 
+    // Cache key
+    const cacheKey = `appointments:${status || 'all'}:${page}:${limit}`
+
+    // Check cache first
+    const cached = getCache<{ appointments: unknown[], pagination: unknown }>(cacheKey)
+    if (cached) {
+      return NextResponse.json(cached)
+    }
+
     const where: Record<string, unknown> = {}
     if (status && status !== 'all') {
       where.status = status
@@ -144,7 +157,7 @@ export async function GET(request: NextRequest) {
       db.appointment.count({ where })
     ])
 
-    return NextResponse.json({
+    const response = {
       appointments,
       pagination: {
         page,
@@ -152,7 +165,12 @@ export async function GET(request: NextRequest) {
         total,
         totalPages: Math.ceil(total / limit)
       }
-    })
+    }
+
+    // Cache the response
+    setCache(cacheKey, response)
+
+    return NextResponse.json(response)
   } catch (error) {
     console.error('Error fetching appointments:', error)
     return NextResponse.json(
