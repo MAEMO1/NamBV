@@ -48,6 +48,7 @@ import {
 // Types
 type QuoteStatus = keyof typeof statusConfig
 type BudgetRange = keyof typeof budgetRangeLabels
+type AppointmentStatus = 'PENDING' | 'CONFIRMED' | 'RESCHEDULED' | 'COMPLETED' | 'CANCELLED' | 'REJECTED' | 'NO_SHOW'
 
 interface Quote {
   id: string
@@ -69,7 +70,7 @@ interface Quote {
 interface Appointment {
   id: string
   referenceNumber: string
-  status: 'PENDING' | 'CONFIRMED' | 'COMPLETED' | 'CANCELLED' | 'NO_SHOW'
+  status: AppointmentStatus
   fullName: string
   email: string
   phone: string
@@ -84,7 +85,7 @@ interface Appointment {
 }
 
 // Clean status colors
-const appointmentStatusConfig: Record<string, { label: string; color: string; bg: string }> = {
+const appointmentStatusConfig: Record<AppointmentStatus, { label: string; color: string; bg: string }> = {
   PENDING: { label: 'In afwachting', color: '#ca8a04', bg: '#fef9c3' },
   CONFIRMED: { label: 'Bevestigd', color: '#16a34a', bg: '#dcfce7' },
   RESCHEDULED: { label: 'Nieuw tijdstip', color: '#ea580c', bg: '#fed7aa' },
@@ -102,15 +103,20 @@ interface StatCardProps {
   icon: React.ReactNode
   loading?: boolean
   highlight?: boolean
+  onClick?: () => void
 }
 
-function StatCard({ title, value, subtitle, icon, loading, highlight }: StatCardProps) {
+function StatCard({ title, value, subtitle, icon, loading, highlight, onClick }: StatCardProps) {
   return (
-    <div className={`p-5 rounded-xl transition-all duration-200 ${
-      highlight
-        ? 'bg-accent-600 text-white'
-        : 'bg-white border border-gray-100 hover:border-gray-200 hover:shadow-sm'
-    }`}>
+    <div
+      onClick={onClick}
+      className={`p-5 rounded-xl transition-all duration-200 ${
+        onClick ? 'cursor-pointer' : ''
+      } ${
+        highlight
+          ? 'bg-accent-600 text-white hover:bg-accent-700'
+          : 'bg-white border border-gray-100 hover:border-gray-200 hover:shadow-sm'
+      }`}>
       <div className="flex items-start justify-between">
         <div>
           <p className={`text-xs font-medium mb-2 ${highlight ? 'text-white/70' : 'text-gray-500'}`}>
@@ -606,6 +612,7 @@ export default function AdminDashboard() {
   const [selectedQuote, setSelectedQuote] = useState<Quote | null>(null)
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null)
   const [statusFilter, setStatusFilter] = useState<QuoteStatus | 'all'>('all')
+  const [appointmentStatusFilter, setAppointmentStatusFilter] = useState<AppointmentStatus | 'all'>('all')
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [showNotifications, setShowNotifications] = useState(false)
@@ -912,6 +919,7 @@ export default function AdminDashboard() {
                   subtitle="Alle aanvragen"
                   icon={<FileText className="w-5 h-5" />}
                   loading={loading}
+                  onClick={() => setCurrentView('quotes')}
                 />
                 <StatCard
                   title="Nieuwe aanvragen"
@@ -920,6 +928,7 @@ export default function AdminDashboard() {
                   icon={<BarChart3 className="w-5 h-5" />}
                   loading={loading}
                   highlight
+                  onClick={() => { setStatusFilter('NEW'); setCurrentView('quotes'); }}
                 />
                 <StatCard
                   title="Afspraken"
@@ -927,6 +936,7 @@ export default function AdminDashboard() {
                   subtitle="Totaal ingepland"
                   icon={<Calendar className="w-5 h-5" />}
                   loading={loading}
+                  onClick={() => setCurrentView('appointments')}
                 />
                 <StatCard
                   title="Te bevestigen"
@@ -935,35 +945,9 @@ export default function AdminDashboard() {
                   icon={<Users className="w-5 h-5" />}
                   loading={loading}
                   highlight
+                  onClick={() => { setAppointmentStatusFilter('PENDING'); setCurrentView('appointments'); }}
                 />
               </div>
-
-              {/* Status Overview */}
-              {quotes.length > 0 && (
-                <div className="bg-white rounded-xl border border-gray-100 p-5">
-                  <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-sm font-medium text-gray-900">Status overzicht</h3>
-                    <span className="text-xs text-gray-400">Klik om te filteren</span>
-                  </div>
-                  <div className="grid grid-cols-3 lg:grid-cols-6 gap-3">
-                    {(Object.entries(statusConfig) as [QuoteStatus, typeof statusConfig[QuoteStatus]][]).map(([key, config]) => (
-                      <button
-                        key={key}
-                        onClick={() => { setStatusFilter(key); setCurrentView('quotes') }}
-                        className="p-3 rounded-lg transition-all hover:scale-[1.02]"
-                        style={{ background: config.bg }}
-                      >
-                        <p className="text-2xl font-semibold" style={{ color: config.color }}>
-                          {quotesByStatus[key] || 0}
-                        </p>
-                        <p className="text-xs font-medium mt-1" style={{ color: config.color }}>
-                          {config.label}
-                        </p>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
 
               {/* Recent Items */}
               <div className="grid lg:grid-cols-2 gap-6">
@@ -1148,40 +1132,74 @@ export default function AdminDashboard() {
 
           {/* Appointments List */}
           {currentView === 'appointments' && (
-            <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-              <div className="px-5 py-4 border-b border-gray-100">
-                <h3 className="text-sm font-medium text-gray-900">Alle adviesgesprekken</h3>
+            <div className="space-y-4">
+              {/* Filter Bar */}
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => setAppointmentStatusFilter('all')}
+                  className={`px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
+                    appointmentStatusFilter === 'all' ? 'bg-accent-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
+                >
+                  Alle ({appointments.length})
+                </button>
+                {(Object.entries(appointmentStatusConfig) as [AppointmentStatus, typeof appointmentStatusConfig[AppointmentStatus]][]).map(([key, config]) => (
+                  <button
+                    key={key}
+                    onClick={() => setAppointmentStatusFilter(key)}
+                    className="px-3 py-1.5 text-xs font-medium rounded-full transition-colors"
+                    style={{
+                      background: appointmentStatusFilter === key ? config.color : config.bg,
+                      color: appointmentStatusFilter === key ? 'white' : config.color
+                    }}
+                  >
+                    {config.label} ({appointments.filter(a => a.status === key).length})
+                  </button>
+                ))}
               </div>
 
-              {loading ? (
-                <div className="p-4 space-y-3">
-                  {[1, 2, 3, 4, 5].map(i => <div key={i} className="h-14 bg-gray-50 rounded animate-pulse" />)}
+              <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
+                <div className="px-5 py-4 border-b border-gray-100">
+                  <h3 className="text-sm font-medium text-gray-900">
+                    {appointmentStatusFilter === 'all' ? 'Alle adviesgesprekken' : `${appointmentStatusConfig[appointmentStatusFilter]?.label || ''} adviesgesprekken`}
+                  </h3>
                 </div>
-              ) : appointments.length > 0 ? (
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead className="bg-gray-50">
-                      <tr>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">Ref</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">Klant</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">Datum</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">Status</th>
-                        <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wide">Project</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {appointments.map(apt => (
-                        <AppointmentRow key={apt.id} appointment={apt} onSelect={setSelectedAppointment} />
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              ) : (
-                <div className="p-12 text-center">
-                  <Calendar className="w-10 h-10 mx-auto text-gray-200 mb-3" />
-                  <p className="text-gray-400">Nog geen afspraken</p>
-                </div>
-              )}
+
+                {loading ? (
+                  <div className="p-4 space-y-3">
+                    {[1, 2, 3, 4, 5].map(i => <div key={i} className="h-14 bg-gray-50 rounded animate-pulse" />)}
+                  </div>
+                ) : (() => {
+                  const filteredAppointments = appointmentStatusFilter === 'all'
+                    ? appointments
+                    : appointments.filter(a => a.status === appointmentStatusFilter);
+                  return filteredAppointments.length > 0 ? (
+                    <div className="overflow-x-auto">
+                      <table className="w-full">
+                        <thead className="bg-gray-50">
+                          <tr>
+                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">Ref</th>
+                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">Klant</th>
+                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">Datum</th>
+                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">Status</th>
+                            <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wide">Project</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {filteredAppointments.map(apt => (
+                            <AppointmentRow key={apt.id} appointment={apt} onSelect={setSelectedAppointment} />
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : (
+                    <div className="p-12 text-center">
+                      <Calendar className="w-10 h-10 mx-auto text-gray-200 mb-3" />
+                      <p className="text-gray-400">Geen afspraken met deze status</p>
+                    </div>
+                  );
+                })()}
+              </div>
             </div>
           )}
 
