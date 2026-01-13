@@ -803,13 +803,15 @@ export default function AdminDashboard() {
               )}
             </button>
             <div className="w-px h-6 bg-gray-200 mx-1" />
-            <Link
+            <a
               href="/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-gray-500 hover:text-accent-600 transition-colors"
             >
               <ExternalLink className="w-3.5 h-3.5" />
               <span>Website</span>
-            </Link>
+            </a>
           </div>
         </header>
 
