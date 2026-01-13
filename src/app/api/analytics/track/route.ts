@@ -48,6 +48,11 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { type, path, referrer, sessionId, utmSource, utmMedium, utmCampaign, eventName, eventData } = body
 
+    // Skip tracking for admin pages (server-side check)
+    if (path && path.startsWith('/admin')) {
+      return NextResponse.json({ success: true, skipped: true })
+    }
+
     const headersList = await headers()
     const userAgent = headersList.get('user-agent') || ''
     const ip = headersList.get('x-forwarded-for')?.split(',')[0] ||
