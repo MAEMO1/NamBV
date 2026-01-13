@@ -636,9 +636,17 @@ export default function AdminDashboard() {
         fetch('/api/appointments')
       ])
 
+      // Check for authentication error
+      if (quotesRes.status === 401) {
+        router.push('/admin/login')
+        return
+      }
+
       if (quotesRes.ok) {
         const quotesData = await quotesRes.json()
         setQuotes(quotesData.quotes || [])
+      } else {
+        console.error('Quotes API error:', quotesRes.status)
       }
 
       if (appointmentsRes.ok) {
@@ -651,7 +659,7 @@ export default function AdminDashboard() {
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [router])
 
   useEffect(() => {
     fetchData()
