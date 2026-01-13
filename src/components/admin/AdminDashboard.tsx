@@ -95,7 +95,7 @@ const appointmentStatusConfig: Record<string, { label: string; color: string; bg
   NO_SHOW: { label: 'Niet verschenen', color: '#57534e', bg: '#f5f5f4' },
 }
 
-// Stat Card Component
+// Stat Card Component - Professional design with subtle animations
 interface StatCardProps {
   title: string
   value: string | number
@@ -103,25 +103,56 @@ interface StatCardProps {
   icon: React.ReactNode
   loading?: boolean
   accent?: boolean
+  trend?: { value: number; positive: boolean }
 }
 
-function StatCard({ title, value, subtitle, icon, loading, accent }: StatCardProps) {
+function StatCard({ title, value, subtitle, icon, loading, accent, trend }: StatCardProps) {
   return (
-    <div className={`bg-white border transition-all duration-300 hover:shadow-soft p-6 ${accent ? 'border-accent-200' : 'border-noir-100'}`}>
-      <div className="flex justify-between items-start">
-        <div>
-          <p className="text-xs text-noir-500 mb-2 uppercase tracking-wider font-medium">{title}</p>
-          {loading ? (
-            <div className="h-9 w-16 bg-noir-100 animate-pulse" />
-          ) : (
-            <p className="text-3xl font-display font-medium text-noir-900 mb-1">{value}</p>
-          )}
-          {subtitle && <p className="text-xs text-noir-400">{subtitle}</p>}
-        </div>
-        <div className={`w-12 h-12 flex items-center justify-center ${accent ? 'bg-accent-50 text-accent-600' : 'bg-noir-50 text-noir-600'}`}>
-          {icon}
+    <div
+      className={`
+        group relative overflow-hidden bg-white border transition-all duration-500
+        hover:shadow-lg hover:-translate-y-0.5
+        ${accent ? 'border-accent-200 bg-gradient-to-br from-white to-accent-50/30' : 'border-noir-100'}
+      `}
+    >
+      {/* Subtle gradient overlay on hover */}
+      <div className="absolute inset-0 bg-gradient-to-br from-accent-500/0 to-accent-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+      <div className="relative p-6">
+        <div className="flex justify-between items-start">
+          <div className="flex-1">
+            <p className="text-[11px] text-noir-400 mb-3 uppercase tracking-[0.15em] font-medium">{title}</p>
+            {loading ? (
+              <div className="h-10 w-20 bg-noir-100 animate-pulse rounded" />
+            ) : (
+              <div className="flex items-baseline gap-3">
+                <p className="text-4xl font-display font-semibold text-noir-900 tracking-tight">{value}</p>
+                {trend && (
+                  <span className={`text-xs font-medium px-1.5 py-0.5 ${trend.positive ? 'text-green-700 bg-green-100' : 'text-red-700 bg-red-100'}`}>
+                    {trend.positive ? '+' : ''}{trend.value}%
+                  </span>
+                )}
+              </div>
+            )}
+            {subtitle && <p className="text-xs text-noir-400 mt-2">{subtitle}</p>}
+          </div>
+          <div
+            className={`
+              w-14 h-14 flex items-center justify-center transition-all duration-300
+              group-hover:scale-110 group-hover:rotate-3
+              ${accent
+                ? 'bg-gradient-to-br from-accent-500 to-accent-600 text-white shadow-lg shadow-accent-500/25'
+                : 'bg-noir-900 text-white'
+              }
+            `}
+          >
+            {icon}
+          </div>
         </div>
       </div>
+
+      {/* Bottom accent line */}
+      <div className={`h-1 w-0 group-hover:w-full transition-all duration-500 ${accent ? 'bg-accent-500' : 'bg-noir-900'}`} />
     </div>
   )
 }
@@ -789,61 +820,80 @@ export default function AdminDashboard() {
   ]
 
   return (
-    <div className="flex min-h-screen bg-ivory-100">
-      {/* Sidebar */}
+    <div className="flex min-h-screen bg-gradient-to-br from-ivory-50 to-ivory-100">
+      {/* Sidebar - Modern dark design */}
       <aside
-        className="bg-accent-800 text-white flex flex-col transition-all duration-300 ease-smooth"
+        className="bg-noir-950 text-white flex flex-col transition-all duration-500 ease-out relative overflow-hidden"
         style={{ width: sidebarOpen ? '280px' : '80px' }}
       >
+        {/* Background texture */}
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0wIDBoNDBWNDBIMHoiLz48cGF0aCBkPSJNMCAwaDFWMUgweiIgZmlsbD0iI2ZmZiIgZmlsbC1vcGFjaXR5PSIuMDIiLz48L2c+PC9zdmc+')] opacity-50" />
+
         {/* Logo Area */}
-        <div className="p-6 border-b border-accent-700/50">
+        <div className="relative p-6 border-b border-white/5">
           <div className="flex items-center gap-4">
-            <div className="w-10 h-10 bg-white/10 flex items-center justify-center flex-shrink-0">
+            <div className="w-11 h-11 bg-accent-500 flex items-center justify-center flex-shrink-0 shadow-lg shadow-accent-500/30">
               <Logo variant="icon" className="w-6 h-6" color="light" />
             </div>
             {sidebarOpen && (
               <div className="overflow-hidden">
-                <div className="font-display font-medium text-sm tracking-wider">NAM</div>
-                <div className="text-xs text-accent-300 tracking-wider">Admin Portal</div>
+                <div className="font-display font-semibold text-sm tracking-[0.15em] text-white">NAM</div>
+                <div className="text-[10px] text-white/40 tracking-[0.2em] uppercase mt-0.5">Admin Portal</div>
               </div>
             )}
           </div>
         </div>
 
         {/* Navigation */}
-        <nav className="p-4 flex-1">
-          {navItems.map(item => (
-            <button
-              key={item.id}
-              onClick={() => setCurrentView(item.id)}
-              className={`w-full flex items-center gap-3 mb-2 text-sm font-medium transition-all duration-200 ${
-                currentView === item.id
-                  ? 'bg-accent-600 text-white'
-                  : 'text-accent-200 hover:bg-accent-700/50 hover:text-white'
-              }`}
-              style={{
-                padding: sidebarOpen ? '14px 16px' : '14px',
-                justifyContent: sidebarOpen ? 'flex-start' : 'center'
-              }}
-            >
-              {item.icon}
-              {sidebarOpen && <span>{item.label}</span>}
-              {item.badge && item.badge > 0 && sidebarOpen && (
-                <span className="ml-auto bg-white text-accent-800 text-xs font-semibold px-2 py-0.5">
-                  {item.badge}
-                </span>
-              )}
-            </button>
-          ))}
+        <nav className="relative p-3 flex-1 overflow-y-auto">
+          <div className="space-y-1">
+            {navItems.map(item => {
+              const isActive = currentView === item.id
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => setCurrentView(item.id)}
+                  className={`
+                    w-full flex items-center gap-3 text-sm font-medium transition-all duration-300 relative group
+                    ${isActive
+                      ? 'bg-white/10 text-white'
+                      : 'text-white/50 hover:bg-white/5 hover:text-white/90'
+                    }
+                  `}
+                  style={{
+                    padding: sidebarOpen ? '14px 16px' : '14px',
+                    justifyContent: sidebarOpen ? 'flex-start' : 'center'
+                  }}
+                >
+                  {/* Active indicator */}
+                  {isActive && (
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-accent-500 rounded-r" />
+                  )}
+                  <span className={`transition-transform duration-300 ${isActive ? 'text-accent-400' : 'group-hover:scale-110'}`}>
+                    {item.icon}
+                  </span>
+                  {sidebarOpen && <span className="tracking-wide">{item.label}</span>}
+                  {item.badge && item.badge > 0 && sidebarOpen && (
+                    <span className="ml-auto bg-accent-500 text-white text-[10px] font-bold px-2 py-1 rounded-sm">
+                      {item.badge}
+                    </span>
+                  )}
+                  {item.badge && item.badge > 0 && !sidebarOpen && (
+                    <span className="absolute top-2 right-2 w-2 h-2 bg-accent-500 rounded-full" />
+                  )}
+                </button>
+              )
+            })}
+          </div>
         </nav>
 
         {/* Footer Actions */}
-        <div className="p-4 border-t border-accent-700/50">
+        <div className="relative p-4 border-t border-white/5">
           <button
             onClick={handleLogout}
-            className="w-full p-3 text-accent-300 hover:bg-accent-700/50 hover:text-white transition-colors text-sm flex items-center gap-3 justify-center"
+            className="w-full p-3 text-white/40 hover:bg-red-500/10 hover:text-red-400 transition-all duration-300 text-sm flex items-center gap-3 justify-center group"
           >
-            <LogOut className="w-4 h-4" />
+            <LogOut className="w-4 h-4 group-hover:scale-110 transition-transform" />
             {sidebarOpen && <span>Uitloggen</span>}
           </button>
         </div>
@@ -851,12 +901,12 @@ export default function AdminDashboard() {
         {/* Collapse Toggle */}
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="m-4 p-3 border border-accent-600 text-accent-300 hover:bg-accent-700/50 hover:text-white transition-colors flex items-center justify-center gap-2"
+          className="relative m-4 p-3 border border-white/10 text-white/40 hover:bg-white/5 hover:text-white/80 transition-all duration-300 flex items-center justify-center gap-2"
         >
           {sidebarOpen ? (
             <>
               <ChevronLeft className="w-4 h-4" />
-              <span className="text-xs">Inklappen</span>
+              <span className="text-[10px] uppercase tracking-wider">Inklappen</span>
             </>
           ) : (
             <ChevronRight className="w-4 h-4" />
@@ -866,21 +916,28 @@ export default function AdminDashboard() {
 
       {/* Main Content */}
       <main className="flex-1 overflow-auto">
-        {/* Header */}
-        <header className="bg-white px-8 py-6 border-b border-noir-100 flex justify-between items-center sticky top-0 z-10">
+        {/* Header - Clean, modern design */}
+        <header className="bg-white/80 backdrop-blur-sm px-8 py-5 border-b border-noir-100/50 flex justify-between items-center sticky top-0 z-10">
           <div>
-            <h1 className="text-2xl font-display font-medium text-noir-900">
-              {currentView === 'dashboard' && 'Dashboard'}
-              {currentView === 'analytics' && 'Analytics'}
-              {currentView === 'quotes' && 'Offerteaanvragen'}
-              {currentView === 'appointments' && 'Adviesgesprekken'}
-              {currentView === 'availability' && 'Beschikbaarheid'}
-              {currentView === 'projects' && 'Projecten'}
-              {currentView === 'content' && 'Content Beheer'}
-              {currentView === 'media' && 'Media Bibliotheek'}
-              {currentView === 'settings' && 'Instellingen'}
-            </h1>
-            <p className="text-sm text-noir-500 mt-1">
+            <div className="flex items-center gap-3">
+              <h1 className="text-xl font-display font-semibold text-noir-900 tracking-tight">
+                {currentView === 'dashboard' && 'Dashboard'}
+                {currentView === 'analytics' && 'Analytics'}
+                {currentView === 'quotes' && 'Offerteaanvragen'}
+                {currentView === 'appointments' && 'Adviesgesprekken'}
+                {currentView === 'availability' && 'Beschikbaarheid'}
+                {currentView === 'projects' && 'Projecten'}
+                {currentView === 'content' && 'Content Beheer'}
+                {currentView === 'media' && 'Media Bibliotheek'}
+                {currentView === 'settings' && 'Instellingen'}
+              </h1>
+              {(newQuotes + pendingAppointments) > 0 && (
+                <span className="px-2 py-0.5 bg-accent-500 text-white text-[10px] font-bold rounded-full animate-pulse">
+                  {newQuotes + pendingAppointments} nieuw
+                </span>
+              )}
+            </div>
+            <p className="text-xs text-noir-400 mt-1 tracking-wide">
               {new Date().toLocaleDateString('nl-BE', {
                 weekday: 'long',
                 day: 'numeric',
@@ -889,29 +946,28 @@ export default function AdminDashboard() {
               })}
             </p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <button
               onClick={fetchData}
-              className="w-10 h-10 border border-noir-200 bg-white hover:bg-noir-50 transition-colors flex items-center justify-center text-noir-600"
+              className="w-9 h-9 border border-noir-200/50 bg-white hover:bg-noir-50 hover:border-noir-300 transition-all duration-300 flex items-center justify-center text-noir-500 hover:text-noir-700 rounded-sm group"
               title="Vernieuwen"
             >
-              <RefreshCw className="w-4 h-4" />
+              <RefreshCw className="w-4 h-4 group-hover:rotate-180 transition-transform duration-500" />
             </button>
-            <div className="relative">
+            <button className="w-9 h-9 border border-noir-200/50 bg-white hover:bg-noir-50 hover:border-noir-300 transition-all duration-300 flex items-center justify-center text-noir-500 hover:text-noir-700 rounded-sm relative">
+              <Bell className="w-4 h-4" />
               {(newQuotes + pendingAppointments) > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-accent-600 text-white text-xs font-semibold flex items-center justify-center">
-                  {newQuotes + pendingAppointments}
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-accent-500 rounded-full flex items-center justify-center">
+                  <span className="text-[9px] font-bold text-white">{newQuotes + pendingAppointments}</span>
                 </span>
               )}
-              <button className="w-10 h-10 border border-noir-200 bg-white hover:bg-noir-50 transition-colors flex items-center justify-center text-noir-600">
-                <Bell className="w-4 h-4" />
-              </button>
-            </div>
+            </button>
+            <div className="w-px h-6 bg-noir-200 mx-2" />
             <Link
               href="/"
-              className="flex items-center gap-2 px-4 py-2 text-sm text-noir-600 hover:text-accent-600 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 text-xs font-medium text-noir-500 hover:text-accent-600 transition-colors uppercase tracking-wider"
             >
-              <ArrowUpRight className="w-4 h-4" />
+              <ArrowUpRight className="w-3 h-3" />
               Website
             </Link>
           </div>
@@ -928,19 +984,29 @@ export default function AdminDashboard() {
           {/* Dashboard View */}
           {currentView === 'dashboard' && (
             <>
+              {/* Welcome Section */}
+              <div className="mb-8">
+                <h2 className="text-2xl font-display font-semibold text-noir-900 tracking-tight">
+                  Welkom terug
+                </h2>
+                <p className="text-noir-400 text-sm mt-1">
+                  Hier is een overzicht van uw bedrijfsactiviteiten
+                </p>
+              </div>
+
               {/* Stats Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
                 <StatCard
                   title="Offerteaanvragen"
                   value={totalQuotes}
-                  subtitle="Totaal"
+                  subtitle="Totaal ontvangen"
                   icon={<FileText className="w-5 h-5" />}
                   loading={loading}
                 />
                 <StatCard
                   title="Nieuwe aanvragen"
                   value={newQuotes}
-                  subtitle="Wacht op reactie"
+                  subtitle="Wachten op reactie"
                   icon={<TrendingUp className="w-5 h-5" />}
                   loading={loading}
                   accent
@@ -953,9 +1019,9 @@ export default function AdminDashboard() {
                   loading={loading}
                 />
                 <StatCard
-                  title="In afwachting"
+                  title="Te bevestigen"
                   value={pendingAppointments}
-                  subtitle="Te bevestigen"
+                  subtitle="Actie vereist"
                   icon={<Users className="w-5 h-5" />}
                   loading={loading}
                   accent
@@ -964,20 +1030,23 @@ export default function AdminDashboard() {
 
               {/* Status Overview */}
               {quotes.length > 0 && (
-                <div className="bg-white border border-noir-100 p-6 mb-10">
-                  <h3 className="text-base font-display font-medium text-noir-900 mb-6">Status overzicht offertes</h3>
-                  <div className="flex gap-4 flex-wrap">
+                <div className="bg-white border border-noir-100 p-6 mb-10 group hover:shadow-md transition-shadow duration-300">
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-sm font-display font-semibold text-noir-900 uppercase tracking-wider">Status overzicht</h3>
+                    <span className="text-xs text-noir-400">Klik om te filteren</span>
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
                     {(Object.entries(statusConfig) as [QuoteStatus, typeof statusConfig[QuoteStatus]][]).map(([key, config]) => (
                       <button
                         key={key}
                         onClick={() => { setStatusFilter(key); setCurrentView('quotes') }}
-                        className="p-4 px-6 transition-all duration-200 hover:scale-105"
+                        className="p-4 transition-all duration-300 hover:scale-[1.02] hover:shadow-md text-center group/item"
                         style={{ background: config.bg }}
                       >
-                        <div className="text-2xl font-display font-medium" style={{ color: config.color }}>
+                        <div className="text-3xl font-display font-bold transition-transform duration-300 group-hover/item:scale-110" style={{ color: config.color }}>
                           {quotesByStatus[key] || 0}
                         </div>
-                        <div className="text-xs font-medium mt-1" style={{ color: config.color }}>
+                        <div className="text-[10px] font-semibold mt-2 uppercase tracking-wider" style={{ color: config.color }}>
                           {config.label}
                         </div>
                       </button>
@@ -987,40 +1056,46 @@ export default function AdminDashboard() {
               )}
 
               {/* Recent Items Grid */}
-              <div className="grid lg:grid-cols-2 gap-8">
+              <div className="grid lg:grid-cols-2 gap-6">
                 {/* Recent Quotes */}
-                <div className="bg-white border border-noir-100 p-6">
-                  <div className="flex justify-between items-center mb-6">
-                    <h3 className="text-base font-display font-medium text-noir-900">Recente offertes</h3>
+                <div className="bg-white border border-noir-100 overflow-hidden group hover:shadow-md transition-all duration-300">
+                  <div className="flex justify-between items-center p-5 border-b border-noir-100/50 bg-noir-50/30">
+                    <h3 className="text-sm font-display font-semibold text-noir-900 uppercase tracking-wider">Recente offertes</h3>
                     <button
                       onClick={() => setCurrentView('quotes')}
-                      className="px-4 py-2 bg-accent-50 text-accent-700 text-xs font-medium hover:bg-accent-100 transition-colors flex items-center gap-2"
+                      className="px-3 py-1.5 text-accent-600 text-xs font-semibold hover:bg-accent-50 transition-colors flex items-center gap-1.5 rounded-sm"
                     >
-                      Alles bekijken
+                      Bekijk alle
                       <ArrowUpRight className="w-3 h-3" />
                     </button>
                   </div>
-                  {loading ? (
-                    <div className="space-y-3">
-                      {[1, 2, 3].map(i => (
-                        <div key={i} className="h-16 bg-noir-50 animate-pulse" />
-                      ))}
-                    </div>
-                  ) : quotes.length > 0 ? (
-                    <div className="space-y-2">
-                      {quotes.slice(0, 5).map(quote => (
-                        <div
-                          key={quote.id}
-                          onClick={() => setSelectedQuote(quote)}
-                          className="p-4 hover:bg-ivory-100 cursor-pointer transition-colors border border-transparent hover:border-noir-100"
-                        >
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <p className="font-medium text-noir-900 text-sm">{quote.fullName}</p>
-                              <p className="text-xs text-noir-500 mt-0.5">{quote.referenceNumber}</p>
+                  <div className="p-2">
+                    {loading ? (
+                      <div className="space-y-2 p-3">
+                        {[1, 2, 3].map(i => (
+                          <div key={i} className="h-14 bg-noir-50 animate-pulse rounded" />
+                        ))}
+                      </div>
+                    ) : quotes.length > 0 ? (
+                      <div className="divide-y divide-noir-100/50">
+                        {quotes.slice(0, 5).map((quote, index) => (
+                          <div
+                            key={quote.id}
+                            onClick={() => setSelectedQuote(quote)}
+                            className="p-4 hover:bg-accent-50/30 cursor-pointer transition-all duration-200 flex items-center justify-between group/item"
+                            style={{ animationDelay: `${index * 50}ms` }}
+                          >
+                            <div className="flex items-center gap-4">
+                              <div className="w-10 h-10 bg-noir-100 flex items-center justify-center text-noir-500 font-display font-semibold text-sm group-hover/item:bg-accent-500 group-hover/item:text-white transition-colors">
+                                {quote.fullName.charAt(0)}
+                              </div>
+                              <div>
+                                <p className="font-medium text-noir-900 text-sm group-hover/item:text-accent-700 transition-colors">{quote.fullName}</p>
+                                <p className="text-[11px] text-noir-400 mt-0.5 font-mono">{quote.referenceNumber}</p>
+                              </div>
                             </div>
                             <span
-                              className="px-2 py-1 text-xs font-medium"
+                              className="px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider"
                               style={{
                                 background: statusConfig[quote.status]?.bg,
                                 color: statusConfig[quote.status]?.color
@@ -1029,50 +1104,59 @@ export default function AdminDashboard() {
                               {statusConfig[quote.status]?.label}
                             </span>
                           </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-noir-400 text-center py-12 text-sm">Nog geen offertes</p>
-                  )}
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-12">
+                        <FileText className="w-10 h-10 mx-auto text-noir-200 mb-3" />
+                        <p className="text-noir-400 text-sm">Nog geen offertes</p>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 {/* Recent Appointments */}
-                <div className="bg-white border border-noir-100 p-6">
-                  <div className="flex justify-between items-center mb-6">
-                    <h3 className="text-base font-display font-medium text-noir-900">Recente afspraken</h3>
+                <div className="bg-white border border-noir-100 overflow-hidden group hover:shadow-md transition-all duration-300">
+                  <div className="flex justify-between items-center p-5 border-b border-noir-100/50 bg-noir-50/30">
+                    <h3 className="text-sm font-display font-semibold text-noir-900 uppercase tracking-wider">Recente afspraken</h3>
                     <button
                       onClick={() => setCurrentView('appointments')}
-                      className="px-4 py-2 bg-accent-50 text-accent-700 text-xs font-medium hover:bg-accent-100 transition-colors flex items-center gap-2"
+                      className="px-3 py-1.5 text-accent-600 text-xs font-semibold hover:bg-accent-50 transition-colors flex items-center gap-1.5 rounded-sm"
                     >
-                      Alles bekijken
+                      Bekijk alle
                       <ArrowUpRight className="w-3 h-3" />
                     </button>
                   </div>
-                  {loading ? (
-                    <div className="space-y-3">
-                      {[1, 2, 3].map(i => (
-                        <div key={i} className="h-16 bg-noir-50 animate-pulse" />
-                      ))}
-                    </div>
-                  ) : appointments.length > 0 ? (
-                    <div className="space-y-2">
-                      {appointments.slice(0, 5).map(appointment => (
-                        <div
-                          key={appointment.id}
-                          onClick={() => setSelectedAppointment(appointment)}
-                          className="p-4 hover:bg-ivory-100 cursor-pointer transition-colors border border-transparent hover:border-noir-100"
-                        >
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <p className="font-medium text-noir-900 text-sm">{appointment.fullName}</p>
-                              <p className="text-xs text-noir-500 mt-0.5 flex items-center gap-1">
-                                <Calendar className="w-3 h-3" />
-                                {new Date(appointment.appointmentDate).toLocaleDateString('nl-BE')} om {appointment.appointmentTime}
-                              </p>
+                  <div className="p-2">
+                    {loading ? (
+                      <div className="space-y-2 p-3">
+                        {[1, 2, 3].map(i => (
+                          <div key={i} className="h-14 bg-noir-50 animate-pulse rounded" />
+                        ))}
+                      </div>
+                    ) : appointments.length > 0 ? (
+                      <div className="divide-y divide-noir-100/50">
+                        {appointments.slice(0, 5).map((appointment, index) => (
+                          <div
+                            key={appointment.id}
+                            onClick={() => setSelectedAppointment(appointment)}
+                            className="p-4 hover:bg-accent-50/30 cursor-pointer transition-all duration-200 flex items-center justify-between group/item"
+                            style={{ animationDelay: `${index * 50}ms` }}
+                          >
+                            <div className="flex items-center gap-4">
+                              <div className="w-10 h-10 bg-accent-100 flex items-center justify-center text-accent-600 group-hover/item:bg-accent-500 group-hover/item:text-white transition-colors">
+                                <Calendar className="w-4 h-4" />
+                              </div>
+                              <div>
+                                <p className="font-medium text-noir-900 text-sm group-hover/item:text-accent-700 transition-colors">{appointment.fullName}</p>
+                                <p className="text-[11px] text-noir-400 mt-0.5 flex items-center gap-1">
+                                  <Clock className="w-3 h-3" />
+                                  {new Date(appointment.appointmentDate).toLocaleDateString('nl-BE', { day: 'numeric', month: 'short' })} • {appointment.appointmentTime}
+                                </p>
+                              </div>
                             </div>
                             <span
-                              className="px-2 py-1 text-xs font-medium"
+                              className="px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider"
                               style={{
                                 background: appointmentStatusConfig[appointment.status].bg,
                                 color: appointmentStatusConfig[appointment.status].color
@@ -1081,12 +1165,15 @@ export default function AdminDashboard() {
                               {appointmentStatusConfig[appointment.status].label}
                             </span>
                           </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-noir-400 text-center py-12 text-sm">Nog geen afspraken</p>
-                  )}
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-12">
+                        <Calendar className="w-10 h-10 mx-auto text-noir-200 mb-3" />
+                        <p className="text-noir-400 text-sm">Nog geen afspraken</p>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </>
