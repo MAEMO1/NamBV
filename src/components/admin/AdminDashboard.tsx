@@ -607,11 +607,16 @@ export default function AdminDashboard() {
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null)
   const [statusFilter, setStatusFilter] = useState<QuoteStatus | 'all'>('all')
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const [mounted, setMounted] = useState(false)
 
   const [quotes, setQuotes] = useState<Quote[]>([])
   const [appointments, setAppointments] = useState<Appointment[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const fetchData = useCallback(async () => {
     setLoading(true)
@@ -683,7 +688,7 @@ export default function AdminDashboard() {
   ]
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className={`flex min-h-screen bg-gray-50 transition-opacity duration-500 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
       {/* Sidebar */}
       <aside className={`bg-white border-r border-gray-100 flex flex-col transition-all duration-300 ${
         sidebarCollapsed ? 'w-16' : 'w-60'

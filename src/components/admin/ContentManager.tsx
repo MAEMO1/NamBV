@@ -21,7 +21,6 @@ interface ContentBlock {
   type: string
 }
 
-// Default content structure for reference
 const contentStructure: Record<string, Record<string, string[]>> = {
   home: {
     hero: ['title', 'subtitle', 'cta_text'],
@@ -122,22 +121,11 @@ export default function ContentManager() {
   const pages = Object.keys(contentStructure)
   const sections = contentStructure[activePage] || {}
 
-  const getTypeIcon = (type: string) => {
-    switch (type) {
-      case 'html':
-        return <FileText className="w-4 h-4" />
-      case 'image':
-        return <Image className="w-4 h-4" />
-      default:
-        return <Type className="w-4 h-4" />
-    }
-  }
-
   if (loading) {
     return (
       <div className="space-y-4">
         {[1, 2, 3, 4].map(i => (
-          <div key={i} className="h-20 bg-noir-50 animate-pulse" />
+          <div key={i} className="h-20 bg-gray-50 rounded-xl animate-pulse" />
         ))}
       </div>
     )
@@ -146,7 +134,7 @@ export default function ContentManager() {
   return (
     <div className="space-y-6">
       {/* Page Tabs */}
-      <div className="flex gap-2 border-b border-noir-100 pb-4">
+      <div className="flex gap-2 pb-4 border-b border-gray-100">
         {pages.map(page => (
           <button
             key={page}
@@ -154,10 +142,10 @@ export default function ContentManager() {
               setActivePage(page)
               setActiveSection(null)
             }}
-            className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors capitalize ${
+            className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-lg capitalize transition-colors ${
               activePage === page
                 ? 'bg-accent-600 text-white'
-                : 'text-noir-600 hover:bg-noir-50'
+                : 'text-gray-600 hover:bg-gray-100'
             }`}
           >
             <Layout className="w-4 h-4" />
@@ -169,8 +157,8 @@ export default function ContentManager() {
       <div className="grid lg:grid-cols-4 gap-6">
         {/* Sections Sidebar */}
         <div className="lg:col-span-1">
-          <div className="bg-white border border-noir-100 p-4">
-            <h3 className="text-xs text-noir-500 uppercase tracking-wider mb-4 font-medium">
+          <div className="bg-white rounded-xl border border-gray-100 p-4">
+            <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">
               Secties
             </h3>
             <div className="space-y-1">
@@ -178,10 +166,10 @@ export default function ContentManager() {
                 <button
                   key={section}
                   onClick={() => setActiveSection(section)}
-                  className={`w-full flex items-center justify-between px-3 py-2 text-sm text-left transition-colors capitalize ${
+                  className={`w-full flex items-center justify-between px-3 py-2 text-sm text-left rounded-lg capitalize transition-colors ${
                     activeSection === section
                       ? 'bg-accent-50 text-accent-700 font-medium'
-                      : 'text-noir-600 hover:bg-noir-50'
+                      : 'text-gray-600 hover:bg-gray-50'
                   }`}
                 >
                   {section.replace('_', ' ')}
@@ -194,16 +182,16 @@ export default function ContentManager() {
 
         {/* Content Editor */}
         <div className="lg:col-span-3">
-          <div className="bg-white border border-noir-100 p-6">
+          <div className="bg-white rounded-xl border border-gray-100 p-5">
             {activeSection ? (
-              <div className="space-y-6">
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-lg font-display font-medium text-noir-900 capitalize">
+              <div className="space-y-5">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900 capitalize">
                     {activeSection.replace('_', ' ')}
                   </h3>
                   <button
                     onClick={fetchContent}
-                    className="p-2 text-noir-400 hover:text-noir-600 transition-colors"
+                    className="w-9 h-9 rounded-lg border border-gray-200 hover:bg-gray-50 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors"
                     title="Vernieuwen"
                   >
                     <RefreshCw className="w-4 h-4" />
@@ -212,7 +200,7 @@ export default function ContentManager() {
 
                 {sections[activeSection]?.map(key => (
                   <div key={key}>
-                    <label className="block text-xs text-noir-500 uppercase tracking-wider mb-2 font-medium">
+                    <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
                       {key.replace('_', ' ')}
                     </label>
                     {key.includes('content') || key.includes('description') ? (
@@ -221,7 +209,7 @@ export default function ContentManager() {
                         onChange={e =>
                           updateContent(activePage, activeSection, key, e.target.value)
                         }
-                        className="w-full px-4 py-3 border border-noir-200 focus:border-accent-500 focus:outline-none resize-none"
+                        className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-accent-500 focus:ring-1 focus:ring-accent-500 outline-none resize-none transition-colors"
                         rows={4}
                         placeholder={`Voer ${key.replace('_', ' ')} in...`}
                       />
@@ -232,7 +220,7 @@ export default function ContentManager() {
                         onChange={e =>
                           updateContent(activePage, activeSection, key, e.target.value)
                         }
-                        className="w-full px-4 py-3 border border-noir-200 focus:border-accent-500 focus:outline-none"
+                        className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-accent-500 focus:ring-1 focus:ring-accent-500 outline-none transition-colors"
                         placeholder={`Voer ${key.replace('_', ' ')} in...`}
                       />
                     )}
@@ -240,8 +228,8 @@ export default function ContentManager() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-12 text-noir-400">
-                <Layout className="w-12 h-12 mx-auto mb-4 text-noir-300" />
+              <div className="text-center py-12 text-gray-400">
+                <Layout className="w-12 h-12 mx-auto mb-4 text-gray-300" />
                 <p>Selecteer een sectie om te bewerken</p>
               </div>
             )}
@@ -254,7 +242,7 @@ export default function ContentManager() {
         <button
           onClick={handleSave}
           disabled={saving}
-          className={`flex items-center gap-2 px-6 py-3 font-medium transition-colors ${
+          className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${
             saved
               ? 'bg-green-500 text-white'
               : 'bg-accent-600 text-white hover:bg-accent-700'
@@ -268,17 +256,16 @@ export default function ContentManager() {
           ) : (
             <>
               <Save className="w-4 h-4" />
-              {saving ? 'Opslaan...' : 'Wijzigingen opslaan'}
+              {saving ? 'Opslaan...' : 'Opslaan'}
             </>
           )}
         </button>
       </div>
 
       {/* Help text */}
-      <div className="bg-ivory-100 p-4 text-sm text-noir-600">
+      <div className="bg-gray-50 rounded-xl p-4 text-sm text-gray-600">
         <p>
-          <strong>Tip:</strong> Wijzigingen worden pas zichtbaar op de website na
-          opslaan. Gebruik de &quot;Vernieuwen&quot; knop om de nieuwste content te laden.
+          <strong>Tip:</strong> Wijzigingen worden pas zichtbaar op de website na opslaan.
         </p>
       </div>
     </div>

@@ -41,7 +41,6 @@ export default function AvailabilityManager() {
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState('')
 
-  // New blocked date form
   const [newBlockedDate, setNewBlockedDate] = useState('')
   const [newBlockedReason, setNewBlockedReason] = useState('')
   const [addingBlocked, setAddingBlocked] = useState(false)
@@ -130,7 +129,7 @@ export default function AvailabilityManager() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           date: newBlockedDate,
-          blockedTimes: [], // Empty means whole day
+          blockedTimes: [],
           reason: newBlockedReason || null
         })
       })
@@ -172,41 +171,43 @@ export default function AvailabilityManager() {
     return (
       <div className="space-y-4">
         {[1, 2, 3, 4].map(i => (
-          <div key={i} className="h-20 bg-noir-50 animate-pulse" />
+          <div key={i} className="h-20 bg-gray-50 rounded-xl animate-pulse" />
         ))}
       </div>
     )
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Error Message */}
       {error && (
-        <div className="p-4 bg-red-50 border border-red-200 text-red-700 text-sm flex items-center gap-2">
+        <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl flex items-center gap-2">
           <AlertCircle className="w-4 h-4" />
           {error}
         </div>
       )}
 
       {/* Weekly Schedule */}
-      <div className="bg-white border border-noir-100 p-6">
-        <div className="flex items-center gap-3 mb-6">
-          <Calendar className="w-5 h-5 text-accent-600" />
-          <h3 className="text-lg font-display font-medium text-noir-900">
+      <div className="bg-white rounded-xl border border-gray-100 p-5">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 bg-accent-50 rounded-lg flex items-center justify-center">
+            <Calendar className="w-5 h-5 text-accent-600" />
+          </div>
+          <h3 className="text-lg font-semibold text-gray-900">
             Weekschema
           </h3>
         </div>
 
-        <p className="text-sm text-noir-500 mb-6">
+        <p className="text-sm text-gray-500 mb-5">
           Selecteer de dagen en tijden waarop adviesgesprekken kunnen worden ingepland.
         </p>
 
-        <div className="space-y-4">
+        <div className="space-y-3">
           {availability.map(day => (
             <div
               key={day.dayOfWeek}
-              className={`border p-4 transition-colors ${
-                day.isActive ? 'border-accent-200 bg-accent-50/30' : 'border-noir-100 bg-noir-50/30'
+              className={`rounded-xl border p-4 transition-colors ${
+                day.isActive ? 'border-accent-200 bg-accent-50/30' : 'border-gray-100 bg-gray-50/30'
               }`}
             >
               <div className="flex items-center justify-between mb-3">
@@ -215,9 +216,9 @@ export default function AvailabilityManager() {
                     type="checkbox"
                     checked={day.isActive}
                     onChange={() => handleDayToggle(day.dayOfWeek)}
-                    className="w-5 h-5 accent-accent-600"
+                    className="w-5 h-5 accent-accent-600 rounded"
                   />
-                  <span className={`font-medium ${day.isActive ? 'text-noir-900' : 'text-noir-400'}`}>
+                  <span className={`font-medium ${day.isActive ? 'text-gray-900' : 'text-gray-400'}`}>
                     {dayNames[day.dayOfWeek]}
                   </span>
                 </label>
@@ -229,17 +230,17 @@ export default function AvailabilityManager() {
               </div>
 
               {day.isActive && (
-                <div className="flex flex-wrap gap-2 mt-3 pt-3 border-t border-noir-100">
+                <div className="flex flex-wrap gap-2 mt-3 pt-3 border-t border-gray-100">
                   {allTimeSlots.map(time => {
                     const isSelected = day.timeSlots.includes(time)
                     return (
                       <button
                         key={time}
                         onClick={() => handleSlotToggle(day.dayOfWeek, time)}
-                        className={`px-3 py-1.5 text-xs font-medium transition-colors ${
+                        className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${
                           isSelected
                             ? 'bg-accent-600 text-white'
-                            : 'bg-white border border-noir-200 text-noir-600 hover:border-accent-300'
+                            : 'bg-white border border-gray-200 text-gray-600 hover:border-accent-300'
                         }`}
                       >
                         {time}
@@ -253,11 +254,11 @@ export default function AvailabilityManager() {
         </div>
 
         {/* Save Button */}
-        <div className="flex justify-end mt-6">
+        <div className="flex justify-end mt-5">
           <button
             onClick={handleSave}
             disabled={saving}
-            className={`flex items-center gap-2 px-6 py-3 font-medium transition-colors ${
+            className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${
               saved
                 ? 'bg-green-500 text-white'
                 : 'bg-accent-600 text-white hover:bg-accent-700'
@@ -271,7 +272,7 @@ export default function AvailabilityManager() {
             ) : (
               <>
                 <Save className="w-4 h-4" />
-                {saving ? 'Opslaan...' : 'Schema opslaan'}
+                {saving ? 'Opslaan...' : 'Opslaan'}
               </>
             )}
           </button>
@@ -279,38 +280,40 @@ export default function AvailabilityManager() {
       </div>
 
       {/* Blocked Dates */}
-      <div className="bg-white border border-noir-100 p-6">
-        <div className="flex items-center gap-3 mb-6">
-          <Clock className="w-5 h-5 text-accent-600" />
-          <h3 className="text-lg font-display font-medium text-noir-900">
+      <div className="bg-white rounded-xl border border-gray-100 p-5">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 bg-accent-50 rounded-lg flex items-center justify-center">
+            <Clock className="w-5 h-5 text-accent-600" />
+          </div>
+          <h3 className="text-lg font-semibold text-gray-900">
             Geblokkeerde dagen
           </h3>
         </div>
 
-        <p className="text-sm text-noir-500 mb-6">
-          Voeg specifieke dagen toe waarop geen afspraken kunnen worden ingepland (bijv. vakantie, feestdagen).
+        <p className="text-sm text-gray-500 mb-5">
+          Voeg specifieke dagen toe waarop geen afspraken kunnen worden ingepland.
         </p>
 
         {/* Add Blocked Date Form */}
-        <div className="flex flex-wrap gap-3 mb-6 p-4 bg-ivory-100">
+        <div className="flex flex-wrap gap-3 mb-5 p-4 bg-gray-50 rounded-xl">
           <input
             type="date"
             value={newBlockedDate}
             onChange={e => setNewBlockedDate(e.target.value)}
             min={new Date().toISOString().split('T')[0]}
-            className="px-4 py-2 border border-noir-200 focus:border-accent-500 focus:outline-none"
+            className="px-3 py-2 text-sm border border-gray-200 rounded-lg focus:border-accent-500 focus:ring-1 focus:ring-accent-500 outline-none transition-colors"
           />
           <input
             type="text"
             value={newBlockedReason}
             onChange={e => setNewBlockedReason(e.target.value)}
             placeholder="Reden (optioneel)"
-            className="flex-1 min-w-[200px] px-4 py-2 border border-noir-200 focus:border-accent-500 focus:outline-none"
+            className="flex-1 min-w-[200px] px-3 py-2 text-sm border border-gray-200 rounded-lg focus:border-accent-500 focus:ring-1 focus:ring-accent-500 outline-none transition-colors"
           />
           <button
             onClick={handleAddBlockedDate}
             disabled={!newBlockedDate || addingBlocked}
-            className="flex items-center gap-2 px-4 py-2 bg-accent-600 text-white font-medium hover:bg-accent-700 disabled:opacity-50 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-accent-600 text-white text-sm font-medium rounded-lg hover:bg-accent-700 disabled:opacity-50 transition-colors"
           >
             <Plus className="w-4 h-4" />
             {addingBlocked ? 'Toevoegen...' : 'Toevoegen'}
@@ -323,12 +326,12 @@ export default function AvailabilityManager() {
             {blockedDates.map(blocked => (
               <div
                 key={blocked.id || blocked.date}
-                className="flex items-center justify-between p-3 bg-red-50 border border-red-100"
+                className="flex items-center justify-between p-3 bg-red-50 rounded-xl border border-red-100"
               >
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-2 text-red-700">
                     <X className="w-4 h-4" />
-                    <span className="font-medium">
+                    <span className="font-medium text-sm">
                       {new Date(blocked.date).toLocaleDateString('nl-BE', {
                         weekday: 'long',
                         day: 'numeric',
@@ -343,7 +346,7 @@ export default function AvailabilityManager() {
                 </div>
                 <button
                   onClick={() => blocked.id && handleRemoveBlockedDate(blocked.id)}
-                  className="p-2 text-red-600 hover:bg-red-100 transition-colors"
+                  className="p-2 rounded-lg text-red-600 hover:bg-red-100 transition-colors"
                   title="Verwijderen"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -352,18 +355,17 @@ export default function AvailabilityManager() {
             ))}
           </div>
         ) : (
-          <p className="text-center py-8 text-noir-400">
+          <p className="text-center py-8 text-gray-400">
             Geen geblokkeerde dagen
           </p>
         )}
       </div>
 
       {/* Info Box */}
-      <div className="bg-ivory-100 p-4 text-sm text-noir-600">
+      <div className="bg-gray-50 rounded-xl p-4 text-sm text-gray-600">
         <p>
           <strong>Tip:</strong> Het weekschema bepaalt de standaard beschikbaarheid.
-          Geblokkeerde dagen worden altijd gerespecteerd, ongeacht het weekschema.
-          Reeds geboekte afspraken blijven behouden.
+          Geblokkeerde dagen worden altijd gerespecteerd.
         </p>
       </div>
     </div>

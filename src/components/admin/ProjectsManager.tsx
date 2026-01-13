@@ -166,7 +166,7 @@ export default function ProjectsManager() {
     return (
       <div className="space-y-4">
         {[1, 2, 3].map(i => (
-          <div key={i} className="h-24 bg-noir-50 animate-pulse" />
+          <div key={i} className="h-24 bg-gray-50 rounded-xl animate-pulse" />
         ))}
       </div>
     )
@@ -176,12 +176,12 @@ export default function ProjectsManager() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex justify-between items-center">
-        <p className="text-noir-500">
+        <p className="text-gray-500 text-sm">
           {projects.length} project{projects.length !== 1 ? 'en' : ''}
         </p>
         <button
           onClick={handleCreate}
-          className="flex items-center gap-2 px-4 py-2 bg-accent-600 text-white text-sm font-medium hover:bg-accent-700"
+          className="flex items-center gap-2 px-4 py-2.5 bg-accent-600 text-white text-sm font-medium rounded-lg hover:bg-accent-700 transition-colors"
         >
           <Plus className="w-4 h-4" />
           Nieuw project
@@ -189,16 +189,16 @@ export default function ProjectsManager() {
       </div>
 
       {/* Projects List */}
-      <div className="space-y-4">
+      <div className="space-y-3">
         {projects.map(project => (
           <div
             key={project.id}
-            className="bg-white border border-noir-100 p-4 flex items-center gap-4"
+            className="bg-white rounded-xl border border-gray-100 p-4 flex items-center gap-4 hover:border-gray-200 transition-colors"
           >
-            <GripVertical className="w-5 h-5 text-noir-300 cursor-grab" />
+            <GripVertical className="w-5 h-5 text-gray-300 cursor-grab" />
 
             {/* Thumbnail */}
-            <div className="w-20 h-16 bg-noir-100 flex-shrink-0 overflow-hidden">
+            <div className="w-20 h-16 bg-gray-100 rounded-lg flex-shrink-0 overflow-hidden">
               {project.mainImage ? (
                 <img
                   src={project.mainImage}
@@ -206,7 +206,7 @@ export default function ProjectsManager() {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-noir-300">
+                <div className="w-full h-full flex items-center justify-center text-gray-300">
                   <ImageIcon className="w-6 h-6" />
                 </div>
               )}
@@ -215,25 +215,25 @@ export default function ProjectsManager() {
             {/* Info */}
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
-                <h3 className="font-medium text-noir-900 truncate">{project.title}</h3>
+                <h3 className="font-medium text-gray-900 truncate">{project.title}</h3>
                 {project.featured && (
                   <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
                 )}
                 {!project.isPublished && (
-                  <span className="px-2 py-0.5 bg-noir-100 text-noir-500 text-xs">Verborgen</span>
+                  <span className="px-2 py-0.5 bg-gray-100 text-gray-500 text-xs rounded">Verborgen</span>
                 )}
               </div>
-              <p className="text-sm text-noir-500">
+              <p className="text-sm text-gray-500">
                 {project.category} • {project.location} • {project.year}
               </p>
             </div>
 
             {/* Actions */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
               <button
                 onClick={() => handleToggleFeatured(project)}
-                className={`p-2 transition-colors ${
-                  project.featured ? 'text-amber-500' : 'text-noir-300 hover:text-amber-500'
+                className={`p-2 rounded-lg transition-colors ${
+                  project.featured ? 'text-amber-500' : 'text-gray-300 hover:text-amber-500 hover:bg-amber-50'
                 }`}
                 title={project.featured ? 'Verwijder uitgelicht' : 'Markeer als uitgelicht'}
               >
@@ -241,8 +241,8 @@ export default function ProjectsManager() {
               </button>
               <button
                 onClick={() => handleTogglePublished(project)}
-                className={`p-2 transition-colors ${
-                  project.isPublished ? 'text-green-500' : 'text-noir-300 hover:text-green-500'
+                className={`p-2 rounded-lg transition-colors ${
+                  project.isPublished ? 'text-green-500' : 'text-gray-300 hover:text-green-500 hover:bg-green-50'
                 }`}
                 title={project.isPublished ? 'Verberg project' : 'Publiceer project'}
               >
@@ -250,13 +250,13 @@ export default function ProjectsManager() {
               </button>
               <button
                 onClick={() => handleEdit(project)}
-                className="p-2 text-noir-400 hover:text-accent-600 transition-colors"
+                className="p-2 rounded-lg text-gray-400 hover:text-accent-600 hover:bg-accent-50 transition-colors"
               >
                 <Pencil className="w-4 h-4" />
               </button>
               <button
                 onClick={() => handleDelete(project.id)}
-                className="p-2 text-noir-400 hover:text-red-500 transition-colors"
+                className="p-2 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors"
               >
                 <Trash2 className="w-4 h-4" />
               </button>
@@ -265,12 +265,12 @@ export default function ProjectsManager() {
         ))}
 
         {projects.length === 0 && (
-          <div className="bg-white border border-noir-100 p-12 text-center">
-            <ImageIcon className="w-12 h-12 text-noir-300 mx-auto mb-4" />
-            <p className="text-noir-500 mb-4">Nog geen projecten toegevoegd</p>
+          <div className="bg-white rounded-xl border border-gray-100 p-12 text-center">
+            <ImageIcon className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+            <p className="text-gray-500 mb-4">Nog geen projecten toegevoegd</p>
             <button
               onClick={handleCreate}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-accent-600 text-white text-sm font-medium hover:bg-accent-700"
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-accent-600 text-white text-sm font-medium rounded-lg hover:bg-accent-700 transition-colors"
             >
               <Plus className="w-4 h-4" />
               Voeg eerste project toe
@@ -281,31 +281,31 @@ export default function ProjectsManager() {
 
       {/* Edit Modal */}
       {editingProject && (
-        <div className="fixed inset-0 bg-noir-900/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white w-full max-w-2xl max-h-[90vh] overflow-auto">
-            <div className="p-6 border-b border-noir-100 flex justify-between items-center sticky top-0 bg-white">
-              <h2 className="text-lg font-display font-medium text-noir-900">
+        <div className="fixed inset-0 bg-black/30 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] overflow-auto shadow-xl">
+            <div className="p-5 border-b border-gray-100 flex justify-between items-center sticky top-0 bg-white rounded-t-xl">
+              <h2 className="text-lg font-semibold text-gray-900">
                 {isCreating ? 'Nieuw project' : 'Project bewerken'}
               </h2>
               <button
                 onClick={() => setEditingProject(null)}
-                className="p-2 text-noir-400 hover:text-noir-600"
+                className="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="p-6 space-y-6">
+            <div className="p-5 space-y-5">
               {/* Title */}
               <div>
-                <label className="block text-xs text-noir-500 uppercase tracking-wider mb-2 font-medium">
+                <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
                   Titel *
                 </label>
                 <input
                   type="text"
                   value={editingProject.title || ''}
                   onChange={e => setEditingProject({ ...editingProject, title: e.target.value })}
-                  className="w-full px-4 py-3 border border-noir-200 focus:border-accent-500 focus:outline-none"
+                  className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-accent-500 focus:ring-1 focus:ring-accent-500 outline-none transition-colors"
                   placeholder="Bijv. Herenhuis Centrum"
                 />
               </div>
@@ -313,13 +313,13 @@ export default function ProjectsManager() {
               {/* Category & Location */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs text-noir-500 uppercase tracking-wider mb-2 font-medium">
+                  <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
                     Categorie *
                   </label>
                   <select
                     value={editingProject.category || ''}
                     onChange={e => setEditingProject({ ...editingProject, category: e.target.value })}
-                    className="w-full px-4 py-3 border border-noir-200 focus:border-accent-500 focus:outline-none bg-white"
+                    className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-accent-500 focus:ring-1 focus:ring-accent-500 outline-none bg-white transition-colors"
                   >
                     {categories.map(cat => (
                       <option key={cat} value={cat}>{cat}</option>
@@ -327,14 +327,14 @@ export default function ProjectsManager() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs text-noir-500 uppercase tracking-wider mb-2 font-medium">
+                  <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
                     Locatie *
                   </label>
                   <input
                     type="text"
                     value={editingProject.location || ''}
                     onChange={e => setEditingProject({ ...editingProject, location: e.target.value })}
-                    className="w-full px-4 py-3 border border-noir-200 focus:border-accent-500 focus:outline-none"
+                    className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-accent-500 focus:ring-1 focus:ring-accent-500 outline-none transition-colors"
                     placeholder="Bijv. Gent"
                   />
                 </div>
@@ -342,14 +342,14 @@ export default function ProjectsManager() {
 
               {/* Year */}
               <div>
-                <label className="block text-xs text-noir-500 uppercase tracking-wider mb-2 font-medium">
+                <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
                   Jaar *
                 </label>
                 <input
                   type="number"
                   value={editingProject.year || new Date().getFullYear()}
                   onChange={e => setEditingProject({ ...editingProject, year: parseInt(e.target.value) })}
-                  className="w-full px-4 py-3 border border-noir-200 focus:border-accent-500 focus:outline-none"
+                  className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-accent-500 focus:ring-1 focus:ring-accent-500 outline-none transition-colors"
                   min="2000"
                   max={new Date().getFullYear() + 1}
                 />
@@ -357,27 +357,27 @@ export default function ProjectsManager() {
 
               {/* Short Description */}
               <div>
-                <label className="block text-xs text-noir-500 uppercase tracking-wider mb-2 font-medium">
+                <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
                   Korte beschrijving
                 </label>
                 <input
                   type="text"
                   value={editingProject.shortDescription || ''}
                   onChange={e => setEditingProject({ ...editingProject, shortDescription: e.target.value })}
-                  className="w-full px-4 py-3 border border-noir-200 focus:border-accent-500 focus:outline-none"
+                  className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-accent-500 focus:ring-1 focus:ring-accent-500 outline-none transition-colors"
                   placeholder="Korte samenvatting voor overzichtspagina"
                 />
               </div>
 
               {/* Description */}
               <div>
-                <label className="block text-xs text-noir-500 uppercase tracking-wider mb-2 font-medium">
+                <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
                   Uitgebreide beschrijving
                 </label>
                 <textarea
                   value={editingProject.description || ''}
                   onChange={e => setEditingProject({ ...editingProject, description: e.target.value })}
-                  className="w-full px-4 py-3 border border-noir-200 focus:border-accent-500 focus:outline-none resize-none"
+                  className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-accent-500 focus:ring-1 focus:ring-accent-500 outline-none resize-none transition-colors"
                   rows={4}
                   placeholder="Gedetailleerde beschrijving van het project"
                 />
@@ -385,18 +385,18 @@ export default function ProjectsManager() {
 
               {/* Main Image URL */}
               <div>
-                <label className="block text-xs text-noir-500 uppercase tracking-wider mb-2 font-medium">
+                <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
                   Hoofdafbeelding URL
                 </label>
                 <input
                   type="url"
                   value={editingProject.mainImage || ''}
                   onChange={e => setEditingProject({ ...editingProject, mainImage: e.target.value })}
-                  className="w-full px-4 py-3 border border-noir-200 focus:border-accent-500 focus:outline-none"
+                  className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-accent-500 focus:ring-1 focus:ring-accent-500 outline-none transition-colors"
                   placeholder="https://..."
                 />
                 {editingProject.mainImage && (
-                  <div className="mt-2 aspect-video bg-noir-100 overflow-hidden">
+                  <div className="mt-2 aspect-video bg-gray-100 rounded-lg overflow-hidden">
                     <img
                       src={editingProject.mainImage}
                       alt="Preview"
@@ -414,33 +414,33 @@ export default function ProjectsManager() {
                     type="checkbox"
                     checked={editingProject.featured || false}
                     onChange={e => setEditingProject({ ...editingProject, featured: e.target.checked })}
-                    className="w-4 h-4 accent-accent-600"
+                    className="w-4 h-4 accent-accent-600 rounded"
                   />
-                  <span className="text-sm text-noir-700">Uitgelicht op homepage</span>
+                  <span className="text-sm text-gray-700">Uitgelicht op homepage</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={editingProject.isPublished !== false}
                     onChange={e => setEditingProject({ ...editingProject, isPublished: e.target.checked })}
-                    className="w-4 h-4 accent-accent-600"
+                    className="w-4 h-4 accent-accent-600 rounded"
                   />
-                  <span className="text-sm text-noir-700">Gepubliceerd</span>
+                  <span className="text-sm text-gray-700">Gepubliceerd</span>
                 </label>
               </div>
             </div>
 
             {/* Footer */}
-            <div className="p-6 border-t border-noir-100 flex justify-end gap-3">
+            <div className="p-5 border-t border-gray-100 flex justify-end gap-3 sticky bottom-0 bg-white rounded-b-xl">
               <button
                 onClick={() => setEditingProject(null)}
-                className="px-6 py-3 border border-noir-200 text-noir-600 font-medium hover:bg-noir-50"
+                className="px-4 py-2.5 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
               >
                 Annuleren
               </button>
               <button
                 onClick={handleSave}
-                className="flex items-center gap-2 px-6 py-3 bg-accent-600 text-white font-medium hover:bg-accent-700"
+                className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-accent-600 rounded-lg hover:bg-accent-700 transition-colors"
               >
                 <Save className="w-4 h-4" />
                 Opslaan

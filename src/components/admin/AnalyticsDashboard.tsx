@@ -51,17 +51,25 @@ interface StatCardProps {
   subtitle?: string
   icon: React.ReactNode
   trend?: { value: number; isPositive: boolean }
-  accent?: boolean
+  highlight?: boolean
 }
 
-function StatCard({ title, value, subtitle, icon, trend, accent }: StatCardProps) {
+function StatCard({ title, value, subtitle, icon, trend, highlight }: StatCardProps) {
   return (
-    <div className={`bg-white border p-6 ${accent ? 'border-accent-200' : 'border-noir-100'}`}>
+    <div className={`p-5 rounded-xl transition-all duration-200 ${
+      highlight
+        ? 'bg-accent-600 text-white'
+        : 'bg-white border border-gray-100 hover:border-gray-200 hover:shadow-sm'
+    }`}>
       <div className="flex justify-between items-start">
         <div>
-          <p className="text-xs text-noir-500 uppercase tracking-wider font-medium mb-2">{title}</p>
-          <p className="text-3xl font-display font-medium text-noir-900">{value}</p>
-          {subtitle && <p className="text-xs text-noir-400 mt-1">{subtitle}</p>}
+          <p className={`text-xs font-medium mb-2 ${highlight ? 'text-white/70' : 'text-gray-500'}`}>
+            {title}
+          </p>
+          <p className={`text-2xl font-semibold tracking-tight ${highlight ? 'text-white' : 'text-gray-900'}`}>
+            {value}
+          </p>
+          {subtitle && <p className={`text-xs mt-1 ${highlight ? 'text-white/60' : 'text-gray-400'}`}>{subtitle}</p>}
           {trend && (
             <p className={`text-xs mt-2 flex items-center gap-1 ${trend.isPositive ? 'text-green-600' : 'text-red-600'}`}>
               {trend.isPositive ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
@@ -69,8 +77,12 @@ function StatCard({ title, value, subtitle, icon, trend, accent }: StatCardProps
             </p>
           )}
         </div>
-        <div className={`w-12 h-12 flex items-center justify-center ${accent ? 'bg-accent-50 text-accent-600' : 'bg-noir-50 text-noir-600'}`}>
-          {icon}
+        <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+          highlight ? 'bg-white/10' : 'bg-gray-50'
+        }`}>
+          <span className={highlight ? 'text-white/80' : 'text-gray-400'}>
+            {icon}
+          </span>
         </div>
       </div>
     </div>
@@ -109,7 +121,7 @@ export default function AnalyticsDashboard() {
     return (
       <div className="space-y-6">
         {[1, 2, 3].map(i => (
-          <div key={i} className="h-32 bg-noir-50 animate-pulse" />
+          <div key={i} className="h-32 bg-gray-50 rounded-xl animate-pulse" />
         ))}
       </div>
     )
@@ -125,7 +137,7 @@ export default function AnalyticsDashboard() {
   const totalDeviceVisits = data?.deviceBreakdown.reduce((acc, d) => acc + d.count, 0) || 1
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Header with period selector */}
       <div className="flex justify-between items-center">
         <div className="flex gap-2">
@@ -133,38 +145,38 @@ export default function AnalyticsDashboard() {
             <button
               key={p}
               onClick={() => setPeriod(p)}
-              className={`px-4 py-2 text-xs font-medium transition-colors ${
+              className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${
                 period === p
                   ? 'bg-accent-600 text-white'
-                  : 'border border-noir-200 text-noir-600 hover:bg-noir-50'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
             >
-              {p === '7d' && 'Laatste 7 dagen'}
-              {p === '30d' && 'Laatste 30 dagen'}
-              {p === '90d' && 'Laatste 90 dagen'}
-              {p === '12m' && 'Laatste 12 maanden'}
+              {p === '7d' && '7 dagen'}
+              {p === '30d' && '30 dagen'}
+              {p === '90d' && '90 dagen'}
+              {p === '12m' && '12 maanden'}
             </button>
           ))}
         </div>
         <div className="flex gap-2">
           <button
             onClick={fetchAnalytics}
-            className="p-2 border border-noir-200 text-noir-600 hover:bg-noir-50"
+            className="w-9 h-9 rounded-lg border border-gray-200 hover:bg-gray-50 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors"
           >
             <RefreshCw className="w-4 h-4" />
           </button>
           <button
             onClick={handleExport}
-            className="flex items-center gap-2 px-4 py-2 bg-accent-600 text-white text-sm font-medium hover:bg-accent-700"
+            className="flex items-center gap-2 px-3 py-1.5 bg-accent-600 text-white text-sm font-medium rounded-lg hover:bg-accent-700 transition-colors"
           >
             <Download className="w-4 h-4" />
-            Exporteer CSV
+            Export
           </button>
         </div>
       </div>
 
       {/* Overview Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
           title="Paginaweergaves"
           value={data?.overview.totalPageViews.toLocaleString() || 0}
@@ -176,7 +188,7 @@ export default function AnalyticsDashboard() {
           value={data?.overview.uniqueVisitors.toLocaleString() || 0}
           subtitle={`${data?.overview.todayUniqueVisitors || 0} vandaag`}
           icon={<Users className="w-5 h-5" />}
-          accent
+          highlight
         />
         <StatCard
           title="Conversies"
@@ -189,24 +201,24 @@ export default function AnalyticsDashboard() {
           value={`${data?.overview.conversionRate || 0}%`}
           subtitle="Bezoekers → leads"
           icon={<MousePointer className="w-5 h-5" />}
-          accent
+          highlight
         />
       </div>
 
       {/* Charts and Details */}
-      <div className="grid lg:grid-cols-2 gap-8">
+      <div className="grid lg:grid-cols-2 gap-6">
         {/* Top Pages */}
-        <div className="bg-white border border-noir-100 p-6">
-          <h3 className="text-base font-display font-medium text-noir-900 mb-6">
-            Populaire pagina's
+        <div className="bg-white rounded-xl border border-gray-100 p-5">
+          <h3 className="text-sm font-medium text-gray-900 mb-4">
+            Populaire pagina&apos;s
           </h3>
           {data?.topPages && data.topPages.length > 0 ? (
             <div className="space-y-3">
               {data.topPages.map((page, index) => (
                 <div key={page.path} className="flex items-center gap-4">
-                  <span className="text-xs text-noir-400 w-6">{index + 1}.</span>
+                  <span className="text-xs text-gray-400 w-6">{index + 1}.</span>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-noir-900 truncate">{page.path}</p>
+                    <p className="text-sm font-medium text-gray-900 truncate">{page.path}</p>
                   </div>
                   <span className="text-sm font-medium text-accent-600">
                     {page.views.toLocaleString()}
@@ -215,13 +227,13 @@ export default function AnalyticsDashboard() {
               ))}
             </div>
           ) : (
-            <p className="text-noir-400 text-sm">Nog geen data beschikbaar</p>
+            <p className="text-gray-400 text-sm">Nog geen data beschikbaar</p>
           )}
         </div>
 
         {/* Device Breakdown */}
-        <div className="bg-white border border-noir-100 p-6">
-          <h3 className="text-base font-display font-medium text-noir-900 mb-6">
+        <div className="bg-white rounded-xl border border-gray-100 p-5">
+          <h3 className="text-sm font-medium text-gray-900 mb-4">
             Apparaten
           </h3>
           {data?.deviceBreakdown && data.deviceBreakdown.length > 0 ? (
@@ -233,17 +245,17 @@ export default function AnalyticsDashboard() {
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
                         {deviceIcons[device.device] || deviceIcons.unknown}
-                        <span className="text-sm font-medium text-noir-700 capitalize">
+                        <span className="text-sm font-medium text-gray-700 capitalize">
                           {device.device}
                         </span>
                       </div>
-                      <span className="text-sm text-noir-500">
+                      <span className="text-sm text-gray-500">
                         {percentage}% ({device.count.toLocaleString()})
                       </span>
                     </div>
-                    <div className="h-2 bg-noir-100 overflow-hidden">
+                    <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-accent-500 transition-all duration-500"
+                        className="h-full bg-accent-500 rounded-full transition-all duration-500"
                         style={{ width: `${percentage}%` }}
                       />
                     </div>
@@ -252,22 +264,22 @@ export default function AnalyticsDashboard() {
               })}
             </div>
           ) : (
-            <p className="text-noir-400 text-sm">Nog geen data beschikbaar</p>
+            <p className="text-gray-400 text-sm">Nog geen data beschikbaar</p>
           )}
         </div>
 
         {/* Traffic Sources */}
-        <div className="bg-white border border-noir-100 p-6">
-          <h3 className="text-base font-display font-medium text-noir-900 mb-6">
+        <div className="bg-white rounded-xl border border-gray-100 p-5">
+          <h3 className="text-sm font-medium text-gray-900 mb-4">
             Verkeersbronnen
           </h3>
           {data?.trafficSources && data.trafficSources.length > 0 ? (
             <div className="space-y-3">
               {data.trafficSources.map((source, index) => (
                 <div key={source.source} className="flex items-center gap-4">
-                  <span className="text-xs text-noir-400 w-6">{index + 1}.</span>
+                  <span className="text-xs text-gray-400 w-6">{index + 1}.</span>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-noir-900 truncate">{source.source}</p>
+                    <p className="text-sm font-medium text-gray-900 truncate">{source.source}</p>
                   </div>
                   <span className="text-sm font-medium text-accent-600">
                     {source.visits.toLocaleString()}
@@ -276,22 +288,22 @@ export default function AnalyticsDashboard() {
               ))}
             </div>
           ) : (
-            <p className="text-noir-400 text-sm">Meeste bezoekers komen direct</p>
+            <p className="text-gray-400 text-sm">Meeste bezoekers komen direct</p>
           )}
         </div>
 
         {/* Browser Breakdown */}
-        <div className="bg-white border border-noir-100 p-6">
-          <h3 className="text-base font-display font-medium text-noir-900 mb-6">
+        <div className="bg-white rounded-xl border border-gray-100 p-5">
+          <h3 className="text-sm font-medium text-gray-900 mb-4">
             Browsers
           </h3>
           {data?.browserBreakdown && data.browserBreakdown.length > 0 ? (
             <div className="space-y-3">
               {data.browserBreakdown.map((browser, index) => (
                 <div key={browser.browser} className="flex items-center gap-4">
-                  <span className="text-xs text-noir-400 w-6">{index + 1}.</span>
+                  <span className="text-xs text-gray-400 w-6">{index + 1}.</span>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-noir-900">{browser.browser}</p>
+                    <p className="text-sm font-medium text-gray-900">{browser.browser}</p>
                   </div>
                   <span className="text-sm font-medium text-accent-600">
                     {browser.count.toLocaleString()}
@@ -300,29 +312,29 @@ export default function AnalyticsDashboard() {
               ))}
             </div>
           ) : (
-            <p className="text-noir-400 text-sm">Nog geen data beschikbaar</p>
+            <p className="text-gray-400 text-sm">Nog geen data beschikbaar</p>
           )}
         </div>
       </div>
 
       {/* Recent Conversions */}
       {data?.recentConversions && data.recentConversions.length > 0 && (
-        <div className="bg-white border border-noir-100 p-6">
-          <h3 className="text-base font-display font-medium text-noir-900 mb-6">
+        <div className="bg-white rounded-xl border border-gray-100 p-5">
+          <h3 className="text-sm font-medium text-gray-900 mb-4">
             Recente conversies
           </h3>
           <div className="space-y-3">
             {data.recentConversions.map(conversion => (
-              <div key={conversion.id} className="flex items-center gap-4 p-3 bg-ivory-100">
-                <div className={`px-2 py-1 text-xs font-medium ${
+              <div key={conversion.id} className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg">
+                <div className={`px-2 py-1 text-xs font-medium rounded ${
                   conversion.type === 'quote_submit'
                     ? 'bg-accent-100 text-accent-700'
                     : 'bg-amber-100 text-amber-700'
                 }`}>
                   {conversion.type === 'quote_submit' ? 'Offerte' : 'Afspraak'}
                 </div>
-                <span className="text-sm text-noir-600">{conversion.path}</span>
-                <span className="text-xs text-noir-400 ml-auto">
+                <span className="text-sm text-gray-600">{conversion.path}</span>
+                <span className="text-xs text-gray-400 ml-auto">
                   {new Date(conversion.createdAt).toLocaleString('nl-BE')}
                 </span>
               </div>

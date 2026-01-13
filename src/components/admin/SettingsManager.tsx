@@ -85,9 +85,9 @@ export default function SettingsManager() {
             type="checkbox"
             checked={setting.value === 'true'}
             onChange={e => updateSetting(setting.key, e.target.checked ? 'true' : 'false')}
-            className="w-5 h-5 accent-accent-600"
+            className="w-5 h-5 accent-accent-600 rounded"
           />
-          <span className="text-sm text-noir-700">{setting.description}</span>
+          <span className="text-sm text-gray-700">{setting.description}</span>
         </label>
       )
     }
@@ -98,7 +98,7 @@ export default function SettingsManager() {
           type="number"
           value={setting.value}
           onChange={e => updateSetting(setting.key, e.target.value)}
-          className="w-full px-4 py-3 border border-noir-200 focus:border-accent-500 focus:outline-none"
+          className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-accent-500 focus:ring-1 focus:ring-accent-500 outline-none transition-colors"
         />
       )
     }
@@ -108,7 +108,7 @@ export default function SettingsManager() {
         <textarea
           value={setting.value}
           onChange={e => updateSetting(setting.key, e.target.value)}
-          className="w-full px-4 py-3 border border-noir-200 focus:border-accent-500 focus:outline-none resize-none"
+          className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-accent-500 focus:ring-1 focus:ring-accent-500 outline-none resize-none transition-colors"
           rows={3}
         />
       )
@@ -119,15 +119,15 @@ export default function SettingsManager() {
         type={setting.key.includes('email') ? 'email' : setting.key.includes('url') ? 'url' : 'text'}
         value={setting.value}
         onChange={e => updateSetting(setting.key, e.target.value)}
-        className="w-full px-4 py-3 border border-noir-200 focus:border-accent-500 focus:outline-none"
+        className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-accent-500 focus:ring-1 focus:ring-accent-500 outline-none transition-colors"
       />
     )
   }
 
   const tabs = [
-    { id: 'contact', label: 'Contactgegevens', icon: <Phone className="w-4 h-4" /> },
+    { id: 'contact', label: 'Contact', icon: <Phone className="w-4 h-4" /> },
     { id: 'general', label: 'Algemeen', icon: <Building2 className="w-4 h-4" /> },
-    { id: 'social', label: 'Social Media', icon: <Globe className="w-4 h-4" /> },
+    { id: 'social', label: 'Social', icon: <Globe className="w-4 h-4" /> },
     { id: 'notifications', label: 'Notificaties', icon: <Bell className="w-4 h-4" /> },
     { id: 'seo', label: 'SEO', icon: <Search className="w-4 h-4" /> },
   ]
@@ -136,7 +136,7 @@ export default function SettingsManager() {
     return (
       <div className="space-y-4">
         {[1, 2, 3, 4].map(i => (
-          <div key={i} className="h-16 bg-noir-50 animate-pulse" />
+          <div key={i} className="h-16 bg-gray-50 rounded-xl animate-pulse" />
         ))}
       </div>
     )
@@ -145,15 +145,15 @@ export default function SettingsManager() {
   return (
     <div className="space-y-6">
       {/* Tabs */}
-      <div className="flex gap-2 border-b border-noir-100 pb-4">
+      <div className="flex gap-2 pb-4 border-b border-gray-100">
         {tabs.map(tab => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors ${
+            className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${
               activeTab === tab.id
                 ? 'bg-accent-600 text-white'
-                : 'text-noir-600 hover:bg-noir-50'
+                : 'text-gray-600 hover:bg-gray-100'
             }`}
           >
             {tab.icon}
@@ -163,12 +163,12 @@ export default function SettingsManager() {
       </div>
 
       {/* Settings Form */}
-      <div className="bg-white border border-noir-100 p-6">
-        <div className="space-y-6">
+      <div className="bg-white rounded-xl border border-gray-100 p-5">
+        <div className="space-y-5">
           {getSettingsByCategory(activeTab).map(setting => (
             <div key={setting.key}>
               {setting.type !== 'boolean' && (
-                <label className="block text-xs text-noir-500 uppercase tracking-wider mb-2 font-medium">
+                <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
                   {setting.description}
                 </label>
               )}
@@ -177,7 +177,7 @@ export default function SettingsManager() {
           ))}
 
           {getSettingsByCategory(activeTab).length === 0 && (
-            <p className="text-noir-400 text-center py-8">
+            <p className="text-gray-400 text-center py-8">
               Geen instellingen voor deze categorie
             </p>
           )}
@@ -189,7 +189,7 @@ export default function SettingsManager() {
         <button
           onClick={handleSave}
           disabled={saving}
-          className={`flex items-center gap-2 px-6 py-3 font-medium transition-colors ${
+          className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${
             saved
               ? 'bg-green-500 text-white'
               : 'bg-accent-600 text-white hover:bg-accent-700'
@@ -203,14 +203,14 @@ export default function SettingsManager() {
           ) : (
             <>
               <Save className="w-4 h-4" />
-              {saving ? 'Opslaan...' : 'Instellingen opslaan'}
+              {saving ? 'Opslaan...' : 'Opslaan'}
             </>
           )}
         </button>
       </div>
 
       {/* Help text per category */}
-      <div className="bg-ivory-100 p-4 text-sm text-noir-600">
+      <div className="bg-gray-50 rounded-xl p-4 text-sm text-gray-600">
         {activeTab === 'contact' && (
           <p>
             <strong>Contactgegevens:</strong> Deze informatie wordt getoond op de website en in automatische emails.
@@ -233,7 +233,7 @@ export default function SettingsManager() {
         )}
         {activeTab === 'seo' && (
           <p>
-            <strong>SEO:</strong> Standaard meta tags voor zoekmachines. Individuele pagina's kunnen deze overschrijven.
+            <strong>SEO:</strong> Standaard meta tags voor zoekmachines.
           </p>
         )}
       </div>
