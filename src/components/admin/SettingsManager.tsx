@@ -10,7 +10,6 @@ import {
   Search,
   Check,
   FileText,
-  Languages,
 } from 'lucide-react'
 
 interface Setting {
@@ -22,9 +21,9 @@ interface Setting {
 }
 
 const LANGUAGES = [
-  { code: 'nl', label: 'Nederlands', flag: '🇳🇱' },
-  { code: 'fr', label: 'Français', flag: '🇫🇷' },
-  { code: 'en', label: 'English', flag: '🇬🇧' },
+  { code: 'nl', label: 'Nederlands', shortLabel: 'NL' },
+  { code: 'fr', label: 'Français', shortLabel: 'FR' },
+  { code: 'en', label: 'English', shortLabel: 'EN' },
 ]
 
 export default function SettingsManager() {
@@ -189,25 +188,52 @@ export default function SettingsManager() {
         ))}
       </div>
 
-      {/* Language Tabs for Legal */}
+      {/* Language Selector for Legal - Professional Segmented Control */}
       {activeTab === 'legal' && (
-        <div className="flex items-center gap-2 mb-4">
-          <Languages className="w-4 h-4 text-gray-400" />
-          <span className="text-sm text-gray-500 mr-2">Taal:</span>
-          {LANGUAGES.map(lang => (
-            <button
-              key={lang.code}
-              onClick={() => setActiveLegalLang(lang.code)}
-              className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${
-                activeLegalLang === lang.code
-                  ? 'bg-noir-900 text-white'
-                  : 'text-gray-600 hover:bg-gray-100 border border-gray-200'
-              }`}
-            >
-              <span>{lang.flag}</span>
-              {lang.label}
-            </button>
-          ))}
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h3 className="text-sm font-semibold text-gray-900 tracking-tight">
+                Taalversie
+              </h3>
+              <p className="text-xs text-gray-500 mt-0.5">
+                Selecteer de taal om de juridische content te bewerken
+              </p>
+            </div>
+
+            {/* Segmented Control */}
+            <div className="inline-flex p-1 bg-gray-100 rounded-lg">
+              {LANGUAGES.map((lang, index) => (
+                <button
+                  key={lang.code}
+                  onClick={() => setActiveLegalLang(lang.code)}
+                  className={`relative px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                    activeLegalLang === lang.code
+                      ? 'text-gray-900'
+                      : 'text-gray-500 hover:text-gray-700'
+                  } ${index === 0 ? 'rounded-l-md' : ''} ${index === LANGUAGES.length - 1 ? 'rounded-r-md' : ''}`}
+                >
+                  {activeLegalLang === lang.code && (
+                    <span className="absolute inset-0 bg-white rounded-md shadow-sm" />
+                  )}
+                  <span className="relative flex items-center gap-2">
+                    <span className="font-semibold tracking-wide">{lang.shortLabel}</span>
+                    <span className="hidden sm:inline text-gray-400 font-normal">
+                      {lang.label}
+                    </span>
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Current Language Indicator */}
+          <div className="flex items-center gap-2 px-3 py-2 bg-gray-50 border border-gray-100 rounded-lg">
+            <div className="w-2 h-2 bg-accent-500 rounded-full" />
+            <span className="text-xs text-gray-600">
+              Nu bewerken: <span className="font-medium text-gray-900">{LANGUAGES.find(l => l.code === activeLegalLang)?.label}</span>
+            </span>
+          </div>
         </div>
       )}
 
