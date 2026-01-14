@@ -42,6 +42,7 @@ import SettingsManager from './SettingsManager'
 import ContentManager from './ContentManager'
 import MediaLibrary from './MediaLibrary'
 import AvailabilityManager from './AvailabilityManager'
+import Logo from '@/components/Logo'
 import {
   statusConfig,
   budgetRangeLabels,
@@ -969,9 +970,7 @@ export default function AdminDashboard() {
         {/* Logo */}
         <div className="p-4 border-b border-gray-100">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-accent-600 rounded-lg flex items-center justify-center flex-shrink-0">
-              <span className="text-white font-bold text-sm">N</span>
-            </div>
+            <Logo variant="icon" color="dark" className="w-9 h-9 flex-shrink-0" />
             {!sidebarCollapsed && (
               <div>
                 <p className="text-sm font-semibold text-gray-900">NAM</p>
