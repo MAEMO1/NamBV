@@ -1,0 +1,306 @@
+{
+  "metadata": {
+    "title": "Nam Construction | Vakkundige Renovatie in Gent",
+    "description": "Vakkundige renovatie in Gent met oog voor detail en duurzaamheid."
+  },
+  "navigation": {
+    "home": "Home",
+    "services": "Diensten",
+    "projects": "Projecten",
+    "approach": "Aanpak",
+    "appointment": "Afspraak",
+    "quote": "Offerte",
+    "contact": "Contact"
+  },
+  "header": {
+    "ctaButton": "Offerte aanvragen",
+    "menuOpen": "Menu openen",
+    "menuClose": "Menu sluiten"
+  },
+  "footer": {
+    "tagline": "Vakkundige renovatie in Gent met oog voor detail en respect voor uw woning. Van totaalrenovatie tot afwerking.",
+    "ctaButton": "Offerte aanvragen",
+    "servicesTitle": "Diensten",
+    "companyTitle": "Bedrijf",
+    "contactTitle": "Contact",
+    "termsLink": "Algemene Voorwaarden",
+    "privacyLink": "Privacy",
+    "services": {
+      "fullRenovation": "Totaalrenovatie",
+      "renovation": "Renovatie & Verbouwing",
+      "finishing": "Afwerking",
+      "technical": "Technieken"
+    },
+    "company": {
+      "projects": "Projecten",
+      "contact": "Contact",
+      "quote": "Offerte aanvragen"
+    }
+  },
+  "home": {
+    "hero": {
+      "title1": "Kwaliteit die je",
+      "title2": "blijft voelen",
+      "subtitle": "Vakmanschap met respect voor elk detail. Van concept tot oplevering, wij realiseren uw droomwoning.",
+      "ctaPrimary": "Gratis offerte aanvragen",
+      "ctaSecondary": "of bekijk ons werk",
+      "scroll": "Scroll"
+    },
+    "whyUs": {
+      "badge": "Waarom NAM Construction",
+      "titlePrefix": "Gebouwd op",
+      "titleHighlight": "5 pijlers",
+      "description": "Elke renovatie rust op een fundament van waarden. Dit is waar wij voor staan.",
+      "cta": "Boek een gratis adviesgesprek"
+    },
+    "values": {
+      "attestering": {
+        "title": "Attestering",
+        "description": "Profiteer van BTW-voordelen met onze erkende attesten."
+      },
+      "circulariteit": {
+        "title": "Circulariteit",
+        "description": "Duurzaam renoveren met respect voor bestaande materialen."
+      },
+      "betaling": {
+        "title": "Betalingsspreiding",
+        "description": "Flexibele betalingsmogelijkheden voor uw renovatieproject."
+      },
+      "subsidies": {
+        "title": "Subsidies",
+        "description": "Wij helpen u bij het aanvragen van beschikbare subsidies."
+      },
+      "communicatie": {
+        "title": "Communicatie",
+        "description": "Transparante communicatie gedurende het hele project."
+      }
+    },
+    "services": {
+      "badge": "Onze expertise",
+      "titlePrefix": "Van concept tot",
+      "titleHighlight": "afwerking",
+      "titleSuffix": "",
+      "description": "Elk project verdient vakmanschap. Ontdek onze diensten.",
+      "viewAll": "Alle diensten",
+      "items": {
+        "fullRenovation": {
+          "title": "Totaalrenovatie",
+          "subtitle": "Volledige transformatie",
+          "description": "Complete transformatie van uw woning. Wij begeleiden u van ontwerp tot sleutel-op-de-deur."
+        },
+        "renovation": {
+          "title": "Renovatie & Verbouwing",
+          "subtitle": "Gerichte vernieuwing",
+          "description": "Gerichte renovatie en verbouwingswerken die uw woning nieuw leven inblazen."
+        },
+        "finishing": {
+          "title": "Afwerking",
+          "subtitle": "Perfecte details",
+          "description": "Perfecte afwerking van pleisterwerk tot schilderwerk. Het verschil zit in de details."
+        },
+        "technical": {
+          "title": "Technieken",
+          "subtitle": "Professionele installaties",
+          "description": "Professionele installatie van elektriciteit, sanitair en verwarming."
+        }
+      }
+    },
+    "projects": {
+      "badge": "Recent werk",
+      "titlePrefix": "Realisaties die",
+      "titleHighlight": "inspireren",
+      "description": "Ontdek onze recente projecten en laat u inspireren voor uw eigen renovatie.",
+      "viewAll": "Alle projecten",
+      "viewProject": "Bekijk project",
+      "items": {
+        "0": {
+          "title": "Herenhuis Renovatie",
+          "category": "Totaalrenovatie",
+          "location": "Gent"
+        },
+        "1": {
+          "title": "Moderne Keuken",
+          "category": "Renovatie",
+          "location": "Ledeberg"
+        },
+        "2": {
+          "title": "Badkamer Vernieuwing",
+          "category": "Afwerking",
+          "location": "Sint-Amandsberg"
+        }
+      }
+    },
+    "cta": {
+      "title": "Klaar om te beginnen?",
+      "description": "Neem contact op voor een vrijblijvend adviesgesprek. Wij denken graag met u mee.",
+      "button": "Start uw project",
+      "phoneLabel": "Of bel ons direct"
+    }
+  },
+  "services": {
+    "hero": {
+      "badge": "Onze expertise",
+      "title": "Diensten voor elke {highlight}",
+      "highlight": "renovatie",
+      "description": "Van totaalrenovatie tot vakkundige afwerking. Ontdek hoe wij uw woning kunnen transformeren."
+    },
+    "whyUs": {
+      "title": "Waarom kiezen voor NAM Construction",
+      "items": {
+        "quality": {
+          "title": "Kwaliteitsgarantie",
+          "description": "Wij garanderen vakkundige afwerking met hoogwaardige materialen."
+        },
+        "transparent": {
+          "title": "Transparante prijzen",
+          "description": "Geen verrassingen. Duidelijke offertes en eerlijke communicatie."
+        },
+        "personal": {
+          "title": "Persoonlijke aanpak",
+          "description": "Eén aanspreekpunt van start tot oplevering."
+        }
+      }
+    }
+  },
+  "contact": {
+    "hero": {
+      "badge": "Contact",
+      "title": "Laten we {highlight}",
+      "highlight": "praten",
+      "description": "Heeft u vragen of wilt u uw project bespreken? Neem gerust contact met ons op."
+    },
+    "form": {
+      "title": "Stuur ons een bericht",
+      "nameLabel": "Naam",
+      "namePlaceholder": "Uw volledige naam",
+      "emailLabel": "Email",
+      "emailPlaceholder": "uw@email.com",
+      "phoneLabel": "Telefoon",
+      "phonePlaceholder": "+32 XXX XX XX XX",
+      "messageLabel": "Bericht",
+      "messagePlaceholder": "Vertel ons over uw project...",
+      "submitButton": "Verstuur bericht",
+      "sending": "Versturen...",
+      "success": "Bericht verstuurd! We nemen zo snel mogelijk contact met u op.",
+      "error": "Er ging iets mis. Probeer het opnieuw."
+    },
+    "info": {
+      "title": "Contactgegevens",
+      "phone": "Telefoon",
+      "email": "Email",
+      "address": "Adres",
+      "whatsapp": "WhatsApp"
+    }
+  },
+  "quote": {
+    "hero": {
+      "badge": "Offerte aanvragen",
+      "title": "Vraag een gratis {highlight} aan",
+      "highlight": "offerte",
+      "description": "Vertel ons over uw project en ontvang een vrijblijvende offerte."
+    },
+    "steps": {
+      "property": "Uw woning",
+      "services": "Diensten",
+      "details": "Details",
+      "contact": "Contact"
+    },
+    "form": {
+      "propertyType": "Type woning",
+      "postalCode": "Postcode",
+      "city": "Stad",
+      "selectServices": "Welke diensten heeft u nodig?",
+      "budget": "Budget indicatie",
+      "description": "Omschrijf uw project",
+      "fullName": "Volledige naam",
+      "email": "E-mailadres",
+      "phone": "Telefoonnummer",
+      "gdprConsent": "Ik ga akkoord met de verwerking van mijn gegevens",
+      "previous": "Vorige",
+      "next": "Volgende",
+      "submit": "Offerte aanvragen",
+      "sending": "Versturen..."
+    },
+    "propertyTypes": {
+      "rijwoning": "Rijwoning",
+      "herenhuis": "Herenhuis",
+      "appartement": "Appartement",
+      "villa": "Villa",
+      "anders": "Anders"
+    },
+    "budgetRanges": {
+      "tot-25k": "Tot €25.000",
+      "25k-50k": "€25.000 - €50.000",
+      "50k-100k": "€50.000 - €100.000",
+      "100k-200k": "€100.000 - €200.000",
+      "200k-plus": "Meer dan €200.000"
+    }
+  },
+  "appointment": {
+    "hero": {
+      "badge": "Afspraak maken",
+      "title": "Boek een gratis {highlight}",
+      "highlight": "adviesgesprek",
+      "description": "Kies een moment dat u past en we bespreken uw renovatieplannen."
+    },
+    "calendar": {
+      "selectDate": "Kies een datum",
+      "selectTime": "Kies een tijdstip",
+      "yourDetails": "Uw gegevens",
+      "confirm": "Afspraak bevestigen"
+    }
+  },
+  "projects": {
+    "hero": {
+      "badge": "Portfolio",
+      "title": "Onze {highlight}",
+      "highlight": "realisaties",
+      "description": "Ontdek de projecten waar wij trots op zijn. Elke renovatie vertelt een verhaal."
+    },
+    "filter": {
+      "all": "Alle projecten",
+      "fullRenovation": "Totaalrenovatie",
+      "renovation": "Renovatie",
+      "finishing": "Afwerking"
+    },
+    "viewProject": "Bekijk project"
+  },
+  "values": {
+    "certification": {
+      "title": "Attestering",
+      "description": "Profiteer van BTW-voordelen met onze erkende attesten."
+    },
+    "reuse": {
+      "title": "Hergebruik",
+      "description": "Duurzaam renoveren met respect voor bestaande materialen."
+    },
+    "payment": {
+      "title": "Betalingsspreiding",
+      "description": "Flexibele betalingsmogelijkheden voor uw renovatieproject."
+    },
+    "communication": {
+      "title": "Communicatie",
+      "description": "Transparante communicatie gedurende het hele project."
+    },
+    "subsidies": {
+      "title": "Subsidies",
+      "description": "Wij helpen u bij het aanvragen van beschikbare subsidies."
+    }
+  },
+  "common": {
+    "learnMore": "Meer info",
+    "viewAll": "Bekijk alles",
+    "callUs": "Bel ons",
+    "contactUs": "Contacteer ons",
+    "getQuote": "Vraag offerte aan",
+    "loading": "Laden...",
+    "error": "Er ging iets mis",
+    "success": "Succesvol",
+    "required": "Verplicht",
+    "optional": "Optioneel"
+  },
+  "legal": {
+    "terms": "Algemene Voorwaarden",
+    "privacy": "Privacybeleid"
+  }
+}

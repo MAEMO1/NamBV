@@ -1,34 +1,46 @@
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import createMiddleware from 'next-intl/middleware';
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { routing } from './src/i18n/routing';
 
-const SESSION_COOKIE_NAME = 'nam_admin_session'
+const SESSION_COOKIE_NAME = 'nam_admin_session';
+
+// Create next-intl middleware
+const intlMiddleware = createMiddleware(routing);
 
 export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl
+  const { pathname } = request.nextUrl;
 
-  // Only protect /admin routes (except /admin/login)
-  if (pathname.startsWith('/admin') && pathname !== '/admin/login') {
-    const session = request.cookies.get(SESSION_COOKIE_NAME)
-
-    // If no session, redirect to login
-    if (!session?.value) {
-      const loginUrl = new URL('/admin/login', request.url)
-      return NextResponse.redirect(loginUrl)
+  // === ADMIN ROUTES: Skip i18n, apply auth ===
+  if (pathname.startsWith('/admin')) {
+    // Auth check for admin (except login page)
+    if (pathname !== '/admin/login') {
+      const session = request.cookies.get(SESSION_COOKIE_NAME);
+      if (!session?.value) {
+        return NextResponse.redirect(new URL('/admin/login', request.url));
+      }
     }
+
+    // Redirect logged-in users from login to dashboard
+    if (pathname === '/admin/login') {
+      const session = request.cookies.get(SESSION_COOKIE_NAME);
+      if (session?.value) {
+        return NextResponse.redirect(new URL('/admin', request.url));
+      }
+    }
+
+    return NextResponse.next();
   }
 
-  // If logged in and trying to access login page, redirect to dashboard
-  if (pathname === '/admin/login') {
-    const session = request.cookies.get(SESSION_COOKIE_NAME)
-    if (session?.value) {
-      const adminUrl = new URL('/admin', request.url)
-      return NextResponse.redirect(adminUrl)
-    }
+  // === API ROUTES: Skip i18n ===
+  if (pathname.startsWith('/api')) {
+    return NextResponse.next();
   }
 
-  return NextResponse.next()
+  // === PUBLIC ROUTES: Apply i18n middleware ===
+  return intlMiddleware(request);
 }
 
 export const config = {
-  matcher: ['/admin/:path*']
-}
+  matcher: ['/((?!api|_next|admin|.*\\..*).*)'],
+};

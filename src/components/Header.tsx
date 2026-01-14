@@ -1,18 +1,11 @@
 'use client';
 
-import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { Link, usePathname } from '@/i18n/routing';
 import { ArrowUpRight } from 'lucide-react';
 import Logo from './Logo';
-
-const navigation = [
-  { name: 'Home', href: '/' },
-  { name: 'Diensten', href: '/diensten' },
-  { name: 'Projecten', href: '/projecten' },
-  { name: 'Afspraak', href: '/afspraak' },
-  { name: 'Contact', href: '/contact' },
-];
+import LanguageSwitcher from './LanguageSwitcher';
 
 // Pages with dark hero backgrounds where transparent header with white text works
 const darkHeroPages: string[] = ['/', '/projecten'];
@@ -21,6 +14,16 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const t = useTranslations('navigation');
+  const tHeader = useTranslations('header');
+
+  const navigation = [
+    { name: t('home'), href: '/' as const },
+    { name: t('services'), href: '/diensten' as const },
+    { name: t('projects'), href: '/projecten' as const },
+    { name: t('appointment'), href: '/afspraak' as const },
+    { name: t('contact'), href: '/contact' as const },
+  ];
 
   // Don't render header on admin pages
   if (pathname.startsWith('/admin')) {
@@ -97,8 +100,9 @@ export default function Header() {
               })}
             </div>
 
-            {/* CTA Button - Desktop */}
-            <div className="hidden lg:flex lg:items-center lg:gap-6">
+            {/* CTA Button & Language Switcher - Desktop */}
+            <div className="hidden lg:flex lg:items-center lg:gap-4">
+              <LanguageSwitcher variant={useDarkText ? 'dark' : 'light'} />
               <Link
                 href="/offerte"
                 className={`group relative inline-flex items-center gap-2 px-6 py-3 text-sm font-medium uppercase tracking-wide overflow-hidden transition-all duration-500 ${
@@ -108,7 +112,7 @@ export default function Header() {
                 }`}
               >
                 <span className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-full transition-transform duration-700 skew-x-12" />
-                <span className="relative z-10">Offerte aanvragen</span>
+                <span className="relative z-10">{tHeader('ctaButton')}</span>
                 <ArrowUpRight className="relative z-10 h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
             </div>
@@ -122,7 +126,7 @@ export default function Header() {
                   : 'text-white'
               }`}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label={mobileMenuOpen ? 'Menu sluiten' : 'Menu openen'}
+              aria-label={mobileMenuOpen ? tHeader('menuClose') : tHeader('menuOpen')}
             >
               <div className="relative w-6 h-6">
                 <span
@@ -206,8 +210,20 @@ export default function Header() {
               onClick={() => setMobileMenuOpen(false)}
               className="block w-full py-5 text-center text-lg font-medium uppercase tracking-wide bg-accent-500 text-white hover:bg-accent-600 transition-colors duration-300"
             >
-              Offerte aanvragen
+              {tHeader('ctaButton')}
             </Link>
+          </div>
+
+          {/* Language Switcher - Mobile */}
+          <div
+            className={`mt-4 flex justify-center transition-all duration-500 ${
+              mobileMenuOpen
+                ? 'opacity-100 translate-y-0'
+                : 'opacity-0 translate-y-8'
+            }`}
+            style={{ transitionDelay: mobileMenuOpen ? '550ms' : '0ms' }}
+          >
+            <LanguageSwitcher variant="dark" />
           </div>
 
           {/* Contact Info */}

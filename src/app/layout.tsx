@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { dmSans, playfair } from "@/lib/fonts";
-import { Header, Footer, Analytics } from "@/components";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -17,14 +16,6 @@ export const metadata: Metadata = {
     ],
     apple: "/favicon.svg",
   },
-  openGraph: {
-    type: "website",
-    locale: "nl_BE",
-    url: "https://namconstruction.be",
-    siteName: "Nam Construction",
-    title: "Nam Construction | Vakkundige Renovatie in Gent",
-    description: "Vakkundige renovatie in Gent met oog voor detail en duurzaamheid. Van totaalrenovatie tot afwerking.",
-  },
 };
 
 export default function RootLayout({
@@ -33,18 +24,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="nl" className={`${dmSans.variable} ${playfair.variable}`}>
+    <html className={`${dmSans.variable} ${playfair.variable}`}>
       <body className="font-sans">
-        {/* Subtle noise texture overlay */}
-        <div className="noise-overlay" aria-hidden="true" />
-
-        <Analytics>
-          <Header />
-          <main>
-            {children}
-          </main>
-          <Footer />
-        </Analytics>
+        {children}
       </body>
     </html>
   );

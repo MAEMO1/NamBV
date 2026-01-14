@@ -1,26 +1,27 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { Link, usePathname } from '@/i18n/routing';
 import { Phone, Mail, MapPin, ArrowUpRight, Instagram } from 'lucide-react';
 import Logo from './Logo';
 
-const navigation = {
-  diensten: [
-    { name: 'Totaalrenovatie', href: '/diensten/totaalrenovatie' },
-    { name: 'Renovatie & Verbouwing', href: '/diensten/renovatie' },
-    { name: 'Afwerking', href: '/diensten/afwerking' },
-    { name: 'Technieken', href: '/diensten/technieken' },
-  ],
-  bedrijf: [
-    { name: 'Projecten', href: '/projecten' },
-    { name: 'Contact', href: '/contact' },
-    { name: 'Offerte aanvragen', href: '/offerte' },
-  ],
-};
-
 export default function Footer() {
   const pathname = usePathname();
+  const t = useTranslations('footer');
+
+  const navigation = {
+    diensten: [
+      { name: t('services.fullRenovation'), href: '/diensten/totaalrenovatie' as const },
+      { name: t('services.renovation'), href: '/diensten/renovatie' as const },
+      { name: t('services.finishing'), href: '/diensten/afwerking' as const },
+      { name: t('services.technical'), href: '/diensten/technieken' as const },
+    ],
+    bedrijf: [
+      { name: t('company.projects'), href: '/projecten' as const },
+      { name: t('company.contact'), href: '/contact' as const },
+      { name: t('company.quote'), href: '/offerte' as const },
+    ],
+  };
 
   // Don't render footer on admin pages
   if (pathname.startsWith('/admin')) {
@@ -40,8 +41,7 @@ export default function Footer() {
             </Link>
 
             <p className="text-noir-400 mb-8 max-w-sm leading-relaxed">
-              Vakkundige renovatie in Gent met oog voor detail en respect voor uw woning.
-              Van totaalrenovatie tot afwerking.
+              {t('tagline')}
             </p>
 
             {/* CTA Button */}
@@ -49,7 +49,7 @@ export default function Footer() {
               href="/offerte"
               className="group inline-flex items-center gap-3 px-8 py-4 bg-accent-500 text-white font-medium uppercase tracking-wide hover:bg-accent-400 transition-all duration-500"
             >
-              Offerte aanvragen
+              {t('ctaButton')}
               <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </Link>
           </div>
@@ -57,7 +57,7 @@ export default function Footer() {
           {/* Navigation */}
           <div className="lg:col-span-2">
             <h3 className="text-sm font-medium text-white uppercase tracking-wider mb-6">
-              Diensten
+              {t('servicesTitle')}
             </h3>
             <ul className="space-y-4">
               {navigation.diensten.map((item) => (
@@ -75,7 +75,7 @@ export default function Footer() {
 
           <div className="lg:col-span-2">
             <h3 className="text-sm font-medium text-white uppercase tracking-wider mb-6">
-              Bedrijf
+              {t('companyTitle')}
             </h3>
             <ul className="space-y-4">
               {navigation.bedrijf.map((item) => (
@@ -94,7 +94,7 @@ export default function Footer() {
           {/* Contact */}
           <div className="lg:col-span-3">
             <h3 className="text-sm font-medium text-white uppercase tracking-wider mb-6">
-              Contact
+              {t('contactTitle')}
             </h3>
             <div className="space-y-4">
               <a
@@ -163,10 +163,10 @@ export default function Footer() {
             </div>
             <div className="flex items-center gap-6">
               <Link href="/algemene-voorwaarden" className="hover:text-white transition-colors">
-                Algemene Voorwaarden
+                {t('termsLink')}
               </Link>
               <Link href="/privacy" className="hover:text-white transition-colors">
-                Privacy
+                {t('privacyLink')}
               </Link>
             </div>
           </div>

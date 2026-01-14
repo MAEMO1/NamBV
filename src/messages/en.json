@@ -1,0 +1,306 @@
+{
+  "metadata": {
+    "title": "Nam Construction | Expert Renovation in Ghent",
+    "description": "Expert renovation in Ghent with attention to detail and sustainability."
+  },
+  "navigation": {
+    "home": "Home",
+    "services": "Services",
+    "projects": "Projects",
+    "approach": "Approach",
+    "appointment": "Appointment",
+    "quote": "Quote",
+    "contact": "Contact"
+  },
+  "header": {
+    "ctaButton": "Get a quote",
+    "menuOpen": "Open menu",
+    "menuClose": "Close menu"
+  },
+  "footer": {
+    "tagline": "Expert renovation in Ghent with attention to detail and respect for your home. From full renovation to finishing.",
+    "ctaButton": "Get a quote",
+    "servicesTitle": "Services",
+    "companyTitle": "Company",
+    "contactTitle": "Contact",
+    "termsLink": "Terms & Conditions",
+    "privacyLink": "Privacy",
+    "services": {
+      "fullRenovation": "Full Renovation",
+      "renovation": "Renovation & Remodeling",
+      "finishing": "Finishing",
+      "technical": "Technical"
+    },
+    "company": {
+      "projects": "Projects",
+      "contact": "Contact",
+      "quote": "Get a quote"
+    }
+  },
+  "home": {
+    "hero": {
+      "title1": "Quality you",
+      "title2": "can feel",
+      "subtitle": "Craftsmanship with respect for every detail. From concept to delivery, we realize your dream home.",
+      "ctaPrimary": "Get a free quote",
+      "ctaSecondary": "or view our work",
+      "scroll": "Scroll"
+    },
+    "whyUs": {
+      "badge": "Why NAM Construction",
+      "titlePrefix": "Built on",
+      "titleHighlight": "5 pillars",
+      "description": "Every renovation rests on a foundation of values. This is what we stand for.",
+      "cta": "Book a free consultation"
+    },
+    "values": {
+      "attestering": {
+        "title": "Certification",
+        "description": "Benefit from VAT advantages with our recognized certificates."
+      },
+      "circulariteit": {
+        "title": "Circularity",
+        "description": "Sustainable renovation with respect for existing materials."
+      },
+      "betaling": {
+        "title": "Payment Spreading",
+        "description": "Flexible payment options for your renovation project."
+      },
+      "subsidies": {
+        "title": "Subsidies",
+        "description": "We help you apply for available subsidies."
+      },
+      "communicatie": {
+        "title": "Communication",
+        "description": "Transparent communication throughout the entire project."
+      }
+    },
+    "services": {
+      "badge": "Our expertise",
+      "titlePrefix": "From concept to",
+      "titleHighlight": "finish",
+      "titleSuffix": "",
+      "description": "Every project deserves craftsmanship. Discover our services.",
+      "viewAll": "All services",
+      "items": {
+        "fullRenovation": {
+          "title": "Full Renovation",
+          "subtitle": "Complete transformation",
+          "description": "Complete transformation of your home. We guide you from design to key handover."
+        },
+        "renovation": {
+          "title": "Renovation & Remodeling",
+          "subtitle": "Targeted renewal",
+          "description": "Targeted renovation and remodeling work that breathe new life into your home."
+        },
+        "finishing": {
+          "title": "Finishing",
+          "subtitle": "Perfect details",
+          "description": "Perfect finishing from plastering to painting. The difference is in the details."
+        },
+        "technical": {
+          "title": "Technical",
+          "subtitle": "Professional installations",
+          "description": "Professional installation of electricity, plumbing and heating."
+        }
+      }
+    },
+    "projects": {
+      "badge": "Recent work",
+      "titlePrefix": "Realizations that",
+      "titleHighlight": "inspire",
+      "description": "Discover our recent projects and get inspired for your own renovation.",
+      "viewAll": "All projects",
+      "viewProject": "View project",
+      "items": {
+        "0": {
+          "title": "Townhouse Renovation",
+          "category": "Full Renovation",
+          "location": "Ghent"
+        },
+        "1": {
+          "title": "Modern Kitchen",
+          "category": "Renovation",
+          "location": "Ledeberg"
+        },
+        "2": {
+          "title": "Bathroom Renewal",
+          "category": "Finishing",
+          "location": "Sint-Amandsberg"
+        }
+      }
+    },
+    "cta": {
+      "title": "Ready to start?",
+      "description": "Contact us for a free consultation. We're happy to think along with you.",
+      "button": "Start your project",
+      "phoneLabel": "Or call us directly"
+    }
+  },
+  "services": {
+    "hero": {
+      "badge": "Our expertise",
+      "title": "Services for every {highlight}",
+      "highlight": "renovation",
+      "description": "From full renovation to expert finishing. Discover how we can transform your home."
+    },
+    "whyUs": {
+      "title": "Why choose NAM Construction",
+      "items": {
+        "quality": {
+          "title": "Quality guarantee",
+          "description": "We guarantee expert finishing with high-quality materials."
+        },
+        "transparent": {
+          "title": "Transparent pricing",
+          "description": "No surprises. Clear quotes and honest communication."
+        },
+        "personal": {
+          "title": "Personal approach",
+          "description": "One point of contact from start to delivery."
+        }
+      }
+    }
+  },
+  "contact": {
+    "hero": {
+      "badge": "Contact",
+      "title": "Let's {highlight}",
+      "highlight": "talk",
+      "description": "Have questions or want to discuss your project? Feel free to contact us."
+    },
+    "form": {
+      "title": "Send us a message",
+      "nameLabel": "Name",
+      "namePlaceholder": "Your full name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "your@email.com",
+      "phoneLabel": "Phone",
+      "phonePlaceholder": "+32 XXX XX XX XX",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Tell us about your project...",
+      "submitButton": "Send message",
+      "sending": "Sending...",
+      "success": "Message sent! We'll contact you as soon as possible.",
+      "error": "Something went wrong. Please try again."
+    },
+    "info": {
+      "title": "Contact details",
+      "phone": "Phone",
+      "email": "Email",
+      "address": "Address",
+      "whatsapp": "WhatsApp"
+    }
+  },
+  "quote": {
+    "hero": {
+      "badge": "Quote request",
+      "title": "Request a free {highlight}",
+      "highlight": "quote",
+      "description": "Tell us about your project and receive a no-obligation quote."
+    },
+    "steps": {
+      "property": "Your property",
+      "services": "Services",
+      "details": "Details",
+      "contact": "Contact"
+    },
+    "form": {
+      "propertyType": "Property type",
+      "postalCode": "Postal code",
+      "city": "City",
+      "selectServices": "Which services do you need?",
+      "budget": "Budget indication",
+      "description": "Describe your project",
+      "fullName": "Full name",
+      "email": "Email address",
+      "phone": "Phone number",
+      "gdprConsent": "I agree to the processing of my data",
+      "previous": "Previous",
+      "next": "Next",
+      "submit": "Request quote",
+      "sending": "Sending..."
+    },
+    "propertyTypes": {
+      "rijwoning": "Row house",
+      "herenhuis": "Townhouse",
+      "appartement": "Apartment",
+      "villa": "Villa",
+      "anders": "Other"
+    },
+    "budgetRanges": {
+      "tot-25k": "Up to €25,000",
+      "25k-50k": "€25,000 - €50,000",
+      "50k-100k": "€50,000 - €100,000",
+      "100k-200k": "€100,000 - €200,000",
+      "200k-plus": "More than €200,000"
+    }
+  },
+  "appointment": {
+    "hero": {
+      "badge": "Make an appointment",
+      "title": "Book a free {highlight}",
+      "highlight": "consultation",
+      "description": "Choose a time that suits you and we'll discuss your renovation plans."
+    },
+    "calendar": {
+      "selectDate": "Select a date",
+      "selectTime": "Select a time",
+      "yourDetails": "Your details",
+      "confirm": "Confirm appointment"
+    }
+  },
+  "projects": {
+    "hero": {
+      "badge": "Portfolio",
+      "title": "Our {highlight}",
+      "highlight": "realizations",
+      "description": "Discover the projects we're proud of. Every renovation tells a story."
+    },
+    "filter": {
+      "all": "All projects",
+      "fullRenovation": "Full renovation",
+      "renovation": "Renovation",
+      "finishing": "Finishing"
+    },
+    "viewProject": "View project"
+  },
+  "values": {
+    "certification": {
+      "title": "Certification",
+      "description": "Benefit from VAT advantages with our recognized certificates."
+    },
+    "reuse": {
+      "title": "Reuse",
+      "description": "Sustainable renovation with respect for existing materials."
+    },
+    "payment": {
+      "title": "Payment spreading",
+      "description": "Flexible payment options for your renovation project."
+    },
+    "communication": {
+      "title": "Communication",
+      "description": "Transparent communication throughout the entire project."
+    },
+    "subsidies": {
+      "title": "Subsidies",
+      "description": "We help you apply for available subsidies."
+    }
+  },
+  "common": {
+    "learnMore": "Learn more",
+    "viewAll": "View all",
+    "callUs": "Call us",
+    "contactUs": "Contact us",
+    "getQuote": "Get a quote",
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "success": "Success",
+    "required": "Required",
+    "optional": "Optional"
+  },
+  "legal": {
+    "terms": "Terms & Conditions",
+    "privacy": "Privacy Policy"
+  }
+}

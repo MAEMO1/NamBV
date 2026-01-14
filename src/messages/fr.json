@@ -1,0 +1,306 @@
+{
+  "metadata": {
+    "title": "Nam Construction | Rénovation Experte à Gand",
+    "description": "Rénovation experte à Gand avec attention aux détails et durabilité."
+  },
+  "navigation": {
+    "home": "Accueil",
+    "services": "Services",
+    "projects": "Projets",
+    "approach": "Approche",
+    "appointment": "Rendez-vous",
+    "quote": "Devis",
+    "contact": "Contact"
+  },
+  "header": {
+    "ctaButton": "Demander un devis",
+    "menuOpen": "Ouvrir le menu",
+    "menuClose": "Fermer le menu"
+  },
+  "footer": {
+    "tagline": "Rénovation experte à Gand avec attention aux détails et respect de votre maison. De la rénovation complète aux finitions.",
+    "ctaButton": "Demander un devis",
+    "servicesTitle": "Services",
+    "companyTitle": "Entreprise",
+    "contactTitle": "Contact",
+    "termsLink": "Conditions Générales",
+    "privacyLink": "Confidentialité",
+    "services": {
+      "fullRenovation": "Rénovation complète",
+      "renovation": "Rénovation & Transformation",
+      "finishing": "Finitions",
+      "technical": "Techniques"
+    },
+    "company": {
+      "projects": "Projets",
+      "contact": "Contact",
+      "quote": "Demander un devis"
+    }
+  },
+  "home": {
+    "hero": {
+      "title1": "La qualité que vous",
+      "title2": "ressentez",
+      "subtitle": "Artisanat avec respect pour chaque détail. Du concept à la livraison, nous réalisons la maison de vos rêves.",
+      "ctaPrimary": "Demander un devis gratuit",
+      "ctaSecondary": "ou découvrez nos réalisations",
+      "scroll": "Défiler"
+    },
+    "whyUs": {
+      "badge": "Pourquoi NAM Construction",
+      "titlePrefix": "Construit sur",
+      "titleHighlight": "5 piliers",
+      "description": "Chaque rénovation repose sur un fondement de valeurs. Voici ce que nous défendons.",
+      "cta": "Réservez une consultation gratuite"
+    },
+    "values": {
+      "attestering": {
+        "title": "Certification",
+        "description": "Profitez des avantages TVA avec nos certificats reconnus."
+      },
+      "circulariteit": {
+        "title": "Circularité",
+        "description": "Rénovation durable avec respect des matériaux existants."
+      },
+      "betaling": {
+        "title": "Échelonnement des paiements",
+        "description": "Options de paiement flexibles pour votre projet de rénovation."
+      },
+      "subsidies": {
+        "title": "Subventions",
+        "description": "Nous vous aidons à demander les subventions disponibles."
+      },
+      "communicatie": {
+        "title": "Communication",
+        "description": "Communication transparente tout au long du projet."
+      }
+    },
+    "services": {
+      "badge": "Notre expertise",
+      "titlePrefix": "Du concept à la",
+      "titleHighlight": "finition",
+      "titleSuffix": "",
+      "description": "Chaque projet mérite un savoir-faire. Découvrez nos services.",
+      "viewAll": "Tous les services",
+      "items": {
+        "fullRenovation": {
+          "title": "Rénovation complète",
+          "subtitle": "Transformation complète",
+          "description": "Transformation complète de votre maison. Nous vous accompagnons du design à la remise des clés."
+        },
+        "renovation": {
+          "title": "Rénovation & Transformation",
+          "subtitle": "Renouvellement ciblé",
+          "description": "Rénovation et travaux de transformation ciblés qui donnent une nouvelle vie à votre maison."
+        },
+        "finishing": {
+          "title": "Finitions",
+          "subtitle": "Détails parfaits",
+          "description": "Finitions parfaites du plâtrage à la peinture. La différence est dans les détails."
+        },
+        "technical": {
+          "title": "Techniques",
+          "subtitle": "Installations professionnelles",
+          "description": "Installation professionnelle d'électricité, plomberie et chauffage."
+        }
+      }
+    },
+    "projects": {
+      "badge": "Travaux récents",
+      "titlePrefix": "Des réalisations qui",
+      "titleHighlight": "inspirent",
+      "description": "Découvrez nos projets récents et laissez-vous inspirer pour votre propre rénovation.",
+      "viewAll": "Tous les projets",
+      "viewProject": "Voir le projet",
+      "items": {
+        "0": {
+          "title": "Rénovation Maison de Maître",
+          "category": "Rénovation complète",
+          "location": "Gand"
+        },
+        "1": {
+          "title": "Cuisine Moderne",
+          "category": "Rénovation",
+          "location": "Ledeberg"
+        },
+        "2": {
+          "title": "Salle de Bain Renouvelée",
+          "category": "Finitions",
+          "location": "Sint-Amandsberg"
+        }
+      }
+    },
+    "cta": {
+      "title": "Prêt à commencer?",
+      "description": "Contactez-nous pour une consultation gratuite. Nous réfléchissons avec vous.",
+      "button": "Lancez votre projet",
+      "phoneLabel": "Ou appelez-nous directement"
+    }
+  },
+  "services": {
+    "hero": {
+      "badge": "Notre expertise",
+      "title": "Services pour chaque {highlight}",
+      "highlight": "rénovation",
+      "description": "De la rénovation complète aux finitions expertes. Découvrez comment nous pouvons transformer votre maison."
+    },
+    "whyUs": {
+      "title": "Pourquoi choisir NAM Construction",
+      "items": {
+        "quality": {
+          "title": "Garantie de qualité",
+          "description": "Nous garantissons des finitions expertes avec des matériaux de haute qualité."
+        },
+        "transparent": {
+          "title": "Prix transparents",
+          "description": "Pas de surprises. Devis clairs et communication honnête."
+        },
+        "personal": {
+          "title": "Approche personnelle",
+          "description": "Un seul point de contact du début à la livraison."
+        }
+      }
+    }
+  },
+  "contact": {
+    "hero": {
+      "badge": "Contact",
+      "title": "Discutons {highlight}",
+      "highlight": "ensemble",
+      "description": "Vous avez des questions ou souhaitez discuter de votre projet? N'hésitez pas à nous contacter."
+    },
+    "form": {
+      "title": "Envoyez-nous un message",
+      "nameLabel": "Nom",
+      "namePlaceholder": "Votre nom complet",
+      "emailLabel": "Email",
+      "emailPlaceholder": "votre@email.com",
+      "phoneLabel": "Téléphone",
+      "phonePlaceholder": "+32 XXX XX XX XX",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Parlez-nous de votre projet...",
+      "submitButton": "Envoyer le message",
+      "sending": "Envoi en cours...",
+      "success": "Message envoyé! Nous vous contacterons dès que possible.",
+      "error": "Une erreur s'est produite. Veuillez réessayer."
+    },
+    "info": {
+      "title": "Coordonnées",
+      "phone": "Téléphone",
+      "email": "Email",
+      "address": "Adresse",
+      "whatsapp": "WhatsApp"
+    }
+  },
+  "quote": {
+    "hero": {
+      "badge": "Demande de devis",
+      "title": "Demandez un {highlight} gratuit",
+      "highlight": "devis",
+      "description": "Parlez-nous de votre projet et recevez un devis sans engagement."
+    },
+    "steps": {
+      "property": "Votre propriété",
+      "services": "Services",
+      "details": "Détails",
+      "contact": "Contact"
+    },
+    "form": {
+      "propertyType": "Type de propriété",
+      "postalCode": "Code postal",
+      "city": "Ville",
+      "selectServices": "De quels services avez-vous besoin?",
+      "budget": "Indication budgétaire",
+      "description": "Décrivez votre projet",
+      "fullName": "Nom complet",
+      "email": "Adresse email",
+      "phone": "Numéro de téléphone",
+      "gdprConsent": "J'accepte le traitement de mes données",
+      "previous": "Précédent",
+      "next": "Suivant",
+      "submit": "Demander un devis",
+      "sending": "Envoi en cours..."
+    },
+    "propertyTypes": {
+      "rijwoning": "Maison mitoyenne",
+      "herenhuis": "Maison de maître",
+      "appartement": "Appartement",
+      "villa": "Villa",
+      "anders": "Autre"
+    },
+    "budgetRanges": {
+      "tot-25k": "Jusqu'à 25.000€",
+      "25k-50k": "25.000€ - 50.000€",
+      "50k-100k": "50.000€ - 100.000€",
+      "100k-200k": "100.000€ - 200.000€",
+      "200k-plus": "Plus de 200.000€"
+    }
+  },
+  "appointment": {
+    "hero": {
+      "badge": "Prendre rendez-vous",
+      "title": "Réservez une {highlight} gratuite",
+      "highlight": "consultation",
+      "description": "Choisissez un moment qui vous convient et nous discuterons de vos plans de rénovation."
+    },
+    "calendar": {
+      "selectDate": "Choisissez une date",
+      "selectTime": "Choisissez une heure",
+      "yourDetails": "Vos coordonnées",
+      "confirm": "Confirmer le rendez-vous"
+    }
+  },
+  "projects": {
+    "hero": {
+      "badge": "Portfolio",
+      "title": "Nos {highlight}",
+      "highlight": "réalisations",
+      "description": "Découvrez les projets dont nous sommes fiers. Chaque rénovation raconte une histoire."
+    },
+    "filter": {
+      "all": "Tous les projets",
+      "fullRenovation": "Rénovation complète",
+      "renovation": "Rénovation",
+      "finishing": "Finitions"
+    },
+    "viewProject": "Voir le projet"
+  },
+  "values": {
+    "certification": {
+      "title": "Certification",
+      "description": "Profitez des avantages TVA avec nos certificats reconnus."
+    },
+    "reuse": {
+      "title": "Réutilisation",
+      "description": "Rénovation durable avec respect des matériaux existants."
+    },
+    "payment": {
+      "title": "Échelonnement des paiements",
+      "description": "Options de paiement flexibles pour votre projet de rénovation."
+    },
+    "communication": {
+      "title": "Communication",
+      "description": "Communication transparente tout au long du projet."
+    },
+    "subsidies": {
+      "title": "Subventions",
+      "description": "Nous vous aidons à demander les subventions disponibles."
+    }
+  },
+  "common": {
+    "learnMore": "En savoir plus",
+    "viewAll": "Voir tout",
+    "callUs": "Appelez-nous",
+    "contactUs": "Contactez-nous",
+    "getQuote": "Demander un devis",
+    "loading": "Chargement...",
+    "error": "Une erreur s'est produite",
+    "success": "Succès",
+    "required": "Obligatoire",
+    "optional": "Optionnel"
+  },
+  "legal": {
+    "terms": "Conditions Générales",
+    "privacy": "Politique de confidentialité"
+  }
+}
