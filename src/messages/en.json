@@ -699,11 +699,15 @@
     },
     "propertyTypes": {
       "appartement": "Apartment",
-      "rijwoning": "Terraced house",
+      "tussenwoning": "Terraced house",
+      "hoekwoning": "Corner house",
+      "rijwoning": "Row house",
       "halfopen": "Semi-detached house",
       "vrijstaand": "Detached house",
+      "herenhuis": "Townhouse",
       "studio": "Studio",
-      "handelspand": "Commercial property"
+      "handelspand": "Commercial property",
+      "bedrijfspand": "Business premises"
     }
   },
   "waardenAttestering": {

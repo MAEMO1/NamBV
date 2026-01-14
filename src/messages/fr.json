@@ -699,11 +699,15 @@
     },
     "propertyTypes": {
       "appartement": "Appartement",
-      "rijwoning": "Maison mitoyenne",
+      "tussenwoning": "Maison mitoyenne",
+      "hoekwoning": "Maison d'angle",
+      "rijwoning": "Maison en rangée",
       "halfopen": "Maison semi-mitoyenne",
       "vrijstaand": "Maison individuelle",
+      "herenhuis": "Maison de maître",
       "studio": "Studio",
-      "handelspand": "Local commercial"
+      "handelspand": "Local commercial",
+      "bedrijfspand": "Immeuble commercial"
     }
   },
   "waardenAttestering": {

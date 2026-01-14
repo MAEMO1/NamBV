@@ -699,11 +699,15 @@
     },
     "propertyTypes": {
       "appartement": "Appartement",
+      "tussenwoning": "Tussenwoning",
+      "hoekwoning": "Hoekwoning",
       "rijwoning": "Rijwoning",
       "halfopen": "Halfopen bebouwing",
       "vrijstaand": "Vrijstaande woning",
+      "herenhuis": "Herenhuis",
       "studio": "Studio",
-      "handelspand": "Handelspand"
+      "handelspand": "Handelspand",
+      "bedrijfspand": "Bedrijfspand"
     }
   },
   "waardenAttestering": {
