@@ -170,34 +170,30 @@ export default function SettingsManager() {
 
   return (
     <div className="space-y-4 sm:space-y-6">
-      <div className="grid lg:grid-cols-4 gap-4 sm:gap-6">
-        {/* Navigation Sidebar */}
-        <div className="lg:col-span-1">
-          <nav className="bg-white rounded-xl border border-gray-100 p-2 sm:p-3">
-            {/* Mobile: horizontal scroll, Desktop: vertical list */}
-            <div className="flex lg:flex-col gap-1 overflow-x-auto lg:overflow-x-visible scrollbar-hide -mx-1 px-1 lg:mx-0 lg:px-0">
-              {tabs.map(tab => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-all whitespace-nowrap flex-shrink-0 lg:flex-shrink lg:w-full ${
-                    activeTab === tab.id
-                      ? 'bg-accent-50 text-accent-700 border border-accent-200'
-                      : 'text-gray-600 hover:bg-gray-50 bg-gray-50 lg:bg-transparent'
-                  }`}
-                >
-                  <span className={activeTab === tab.id ? 'text-accent-600' : 'text-gray-400'}>
-                    {tab.icon}
-                  </span>
-                  <span>{tab.label}</span>
-                </button>
-              ))}
-            </div>
-          </nav>
+      {/* Tab Navigation - Clean horizontal scroll on mobile */}
+      <div className="bg-white rounded-xl border border-gray-100 p-1.5 sm:p-2">
+        <div className="flex gap-1 overflow-x-auto scrollbar-hide pb-0.5">
+          {tabs.map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 text-sm font-medium rounded-lg transition-all whitespace-nowrap flex-shrink-0 ${
+                activeTab === tab.id
+                  ? 'bg-accent-600 text-white shadow-sm'
+                  : 'text-gray-600 hover:bg-gray-100 active:bg-gray-200'
+              }`}
+            >
+              <span className={activeTab === tab.id ? 'text-white' : 'text-gray-400'}>
+                {tab.icon}
+              </span>
+              <span className="hidden sm:inline">{tab.label}</span>
+            </button>
+          ))}
         </div>
+      </div>
 
-        {/* Settings Content */}
-        <div className="lg:col-span-3 space-y-4">
+      {/* Settings Content */}
+      <div className="space-y-4">
           {/* Language Selector for Legal */}
           {activeTab === 'legal' && (
             <div className="bg-white rounded-xl border border-gray-100 p-4 sm:p-5">
@@ -319,7 +315,6 @@ export default function SettingsManager() {
               </p>
             )}
           </div>
-        </div>
       </div>
     </div>
   )

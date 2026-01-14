@@ -133,55 +133,48 @@ export default function ContentManager() {
 
   return (
     <div className="space-y-4 sm:space-y-6">
-      {/* Page Tabs */}
-      <div className="flex gap-2 pb-3 sm:pb-4 border-b border-gray-100 overflow-x-auto scrollbar-hide -mx-3 px-3 sm:mx-0 sm:px-0">
-        {pages.map(page => (
+      {/* Page Tabs - Clean tab bar */}
+      <div className="bg-white rounded-xl border border-gray-100 p-1.5 sm:p-2">
+        <div className="flex gap-1 overflow-x-auto scrollbar-hide pb-0.5">
+          {pages.map(page => (
+            <button
+              key={page}
+              onClick={() => {
+                setActivePage(page)
+                setActiveSection(null)
+              }}
+              className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 text-sm font-medium rounded-lg capitalize transition-colors whitespace-nowrap flex-shrink-0 ${
+                activePage === page
+                  ? 'bg-accent-600 text-white shadow-sm'
+                  : 'text-gray-600 hover:bg-gray-100 active:bg-gray-200'
+              }`}
+            >
+              <Layout className="w-4 h-4" />
+              {page}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Section Pills */}
+      <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-1">
+        {Object.keys(sections).map(section => (
           <button
-            key={page}
-            onClick={() => {
-              setActivePage(page)
-              setActiveSection(null)
-            }}
-            className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-lg capitalize transition-colors whitespace-nowrap flex-shrink-0 ${
-              activePage === page
-                ? 'bg-accent-600 text-white'
-                : 'text-gray-600 hover:bg-gray-100'
+            key={section}
+            onClick={() => setActiveSection(section)}
+            className={`flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-full capitalize transition-colors whitespace-nowrap flex-shrink-0 ${
+              activeSection === section
+                ? 'bg-accent-100 text-accent-700 ring-1 ring-accent-200'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200 active:bg-gray-300'
             }`}
           >
-            <Layout className="w-4 h-4" />
-            {page}
+            {section.replace('_', ' ')}
           </button>
         ))}
       </div>
 
-      <div className="grid lg:grid-cols-4 gap-4 sm:gap-6">
-        {/* Sections - Horizontal scroll on mobile, sidebar on desktop */}
-        <div className="lg:col-span-1">
-          <div className="bg-white rounded-xl border border-gray-100 p-3 sm:p-4">
-            <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 sm:mb-3">
-              Secties
-            </h3>
-            <div className="flex lg:flex-col gap-2 lg:gap-1 overflow-x-auto lg:overflow-x-visible scrollbar-hide -mx-1 px-1 lg:mx-0 lg:px-0 pb-1 lg:pb-0">
-              {Object.keys(sections).map(section => (
-                <button
-                  key={section}
-                  onClick={() => setActiveSection(section)}
-                  className={`flex items-center justify-between px-3 py-2 text-sm text-left rounded-lg capitalize transition-colors whitespace-nowrap flex-shrink-0 lg:flex-shrink lg:w-full ${
-                    activeSection === section
-                      ? 'bg-accent-50 text-accent-700 font-medium'
-                      : 'text-gray-600 hover:bg-gray-50 bg-gray-50 lg:bg-transparent'
-                  }`}
-                >
-                  {section.replace('_', ' ')}
-                  <ChevronRight className="w-4 h-4 hidden lg:block" />
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Content Editor */}
-        <div className="lg:col-span-3">
+      {/* Content Editor */}
+      <div>
           <div className="bg-white rounded-xl border border-gray-100 p-4 sm:p-5">
             {activeSection ? (
               <div className="space-y-4 sm:space-y-5">
@@ -234,7 +227,6 @@ export default function ContentManager() {
               </div>
             )}
           </div>
-        </div>
       </div>
 
       {/* Save Button */}
