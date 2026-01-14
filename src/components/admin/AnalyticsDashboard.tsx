@@ -56,31 +56,32 @@ interface StatCardProps {
 
 function StatCard({ title, value, subtitle, icon, trend, highlight }: StatCardProps) {
   return (
-    <div className={`p-5 rounded-xl transition-all duration-200 ${
+    <div className={`p-3 sm:p-5 rounded-xl transition-all duration-200 ${
       highlight
         ? 'bg-accent-600 text-white'
         : 'bg-white border border-gray-100 hover:border-gray-200 hover:shadow-sm'
     }`}>
-      <div className="flex justify-between items-start">
-        <div>
-          <p className={`text-xs font-medium mb-2 ${highlight ? 'text-white/70' : 'text-gray-500'}`}>
+      <div className="flex justify-between items-start gap-2">
+        <div className="min-w-0 flex-1">
+          <p className={`text-[10px] sm:text-xs font-medium mb-1 sm:mb-2 truncate ${highlight ? 'text-white/70' : 'text-gray-500'}`}>
             {title}
           </p>
-          <p className={`text-2xl font-semibold tracking-tight ${highlight ? 'text-white' : 'text-gray-900'}`}>
+          <p className={`text-lg sm:text-2xl font-semibold tracking-tight ${highlight ? 'text-white' : 'text-gray-900'}`}>
             {value}
           </p>
-          {subtitle && <p className={`text-xs mt-1 ${highlight ? 'text-white/60' : 'text-gray-400'}`}>{subtitle}</p>}
+          {subtitle && <p className={`text-[10px] sm:text-xs mt-0.5 sm:mt-1 truncate ${highlight ? 'text-white/60' : 'text-gray-400'}`}>{subtitle}</p>}
           {trend && (
-            <p className={`text-xs mt-2 flex items-center gap-1 ${trend.isPositive ? 'text-green-600' : 'text-red-600'}`}>
+            <p className={`text-[10px] sm:text-xs mt-1 sm:mt-2 flex items-center gap-1 ${trend.isPositive ? 'text-green-600' : 'text-red-600'}`}>
               {trend.isPositive ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
-              {trend.value}% vs vorige periode
+              <span className="hidden sm:inline">{trend.value}% vs vorige periode</span>
+              <span className="sm:hidden">{trend.value}%</span>
             </p>
           )}
         </div>
-        <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+        <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
           highlight ? 'bg-white/10' : 'bg-gray-50'
         }`}>
-          <span className={highlight ? 'text-white/80' : 'text-gray-400'}>
+          <span className={`${highlight ? 'text-white/80' : 'text-gray-400'} [&>svg]:w-4 [&>svg]:h-4 sm:[&>svg]:w-5 sm:[&>svg]:h-5`}>
             {icon}
           </span>
         </div>
@@ -137,15 +138,15 @@ export default function AnalyticsDashboard() {
   const totalDeviceVisits = data?.deviceBreakdown.reduce((acc, d) => acc + d.count, 0) || 1
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header with period selector */}
-      <div className="flex justify-between items-center">
-        <div className="flex gap-2">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+        <div className="flex gap-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-hide">
           {['7d', '30d', '90d', '12m'].map(p => (
             <button
               key={p}
               onClick={() => setPeriod(p)}
-              className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${
+              className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors whitespace-nowrap flex-shrink-0 ${
                 period === p
                   ? 'bg-accent-600 text-white'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -158,7 +159,7 @@ export default function AnalyticsDashboard() {
             </button>
           ))}
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-shrink-0">
           <button
             onClick={fetchAnalytics}
             className="w-9 h-9 rounded-lg border border-gray-200 hover:bg-gray-50 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors"
@@ -170,13 +171,13 @@ export default function AnalyticsDashboard() {
             className="flex items-center gap-2 px-3 py-1.5 bg-accent-600 text-white text-sm font-medium rounded-lg hover:bg-accent-700 transition-colors"
           >
             <Download className="w-4 h-4" />
-            Export
+            <span className="hidden sm:inline">Export</span>
           </button>
         </div>
       </div>
 
       {/* Overview Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
         <StatCard
           title="Paginaweergaves"
           value={data?.overview.totalPageViews.toLocaleString() || 0}
@@ -206,10 +207,10 @@ export default function AnalyticsDashboard() {
       </div>
 
       {/* Charts and Details */}
-      <div className="grid lg:grid-cols-2 gap-6">
+      <div className="grid lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Top Pages */}
-        <div className="bg-white rounded-xl border border-gray-100 p-5">
-          <h3 className="text-sm font-medium text-gray-900 mb-4">
+        <div className="bg-white rounded-xl border border-gray-100 p-4 sm:p-5">
+          <h3 className="text-sm font-medium text-gray-900 mb-3 sm:mb-4">
             Populaire pagina&apos;s
           </h3>
           {data?.topPages && data.topPages.length > 0 ? (
@@ -232,8 +233,8 @@ export default function AnalyticsDashboard() {
         </div>
 
         {/* Device Breakdown */}
-        <div className="bg-white rounded-xl border border-gray-100 p-5">
-          <h3 className="text-sm font-medium text-gray-900 mb-4">
+        <div className="bg-white rounded-xl border border-gray-100 p-4 sm:p-5">
+          <h3 className="text-sm font-medium text-gray-900 mb-3 sm:mb-4">
             Apparaten
           </h3>
           {data?.deviceBreakdown && data.deviceBreakdown.length > 0 ? (
@@ -269,8 +270,8 @@ export default function AnalyticsDashboard() {
         </div>
 
         {/* Traffic Sources */}
-        <div className="bg-white rounded-xl border border-gray-100 p-5">
-          <h3 className="text-sm font-medium text-gray-900 mb-4">
+        <div className="bg-white rounded-xl border border-gray-100 p-4 sm:p-5">
+          <h3 className="text-sm font-medium text-gray-900 mb-3 sm:mb-4">
             Verkeersbronnen
           </h3>
           {data?.trafficSources && data.trafficSources.length > 0 ? (
@@ -293,8 +294,8 @@ export default function AnalyticsDashboard() {
         </div>
 
         {/* Browser Breakdown */}
-        <div className="bg-white rounded-xl border border-gray-100 p-5">
-          <h3 className="text-sm font-medium text-gray-900 mb-4">
+        <div className="bg-white rounded-xl border border-gray-100 p-4 sm:p-5">
+          <h3 className="text-sm font-medium text-gray-900 mb-3 sm:mb-4">
             Browsers
           </h3>
           {data?.browserBreakdown && data.browserBreakdown.length > 0 ? (
