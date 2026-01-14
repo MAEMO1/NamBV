@@ -13,22 +13,37 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   }
 }
 
-async function getTermsContent() {
+async function getTermsContent(locale: string) {
+  // Try to get locale-specific content first
+  const localeKey = `legal.termsConditions.${locale}`
+
   try {
     const setting = await db.setting.findUnique({
-      where: { key: 'legal.termsConditions' },
+      where: { key: localeKey },
       select: { value: true }
     })
 
     if (setting?.value) {
       return setting.value
     }
+
+    // Fallback to Dutch if locale-specific content not found
+    if (locale !== 'nl') {
+      const nlSetting = await db.setting.findUnique({
+        where: { key: 'legal.termsConditions.nl' },
+        select: { value: true }
+      })
+      if (nlSetting?.value) {
+        return nlSetting.value
+      }
+    }
   } catch (error) {
     console.error('Error fetching terms content:', error)
   }
 
-  // Fallback content
-  return `# Algemene Voorwaarden
+  // Fallback content based on locale
+  const fallbackContent: Record<string, string> = {
+    nl: `# Algemene Voorwaarden
 
 ## Algemeen
 
@@ -36,38 +51,46 @@ Deze algemene voorwaarden zijn van toepassing op alle offertes, overeenkomsten e
 
 ## Offertes
 
-Alle offertes zijn vrijblijvend en geldig gedurende 30 dagen. Prijzen zijn exclusief BTW tenzij anders vermeld. Wijzigingen in het werk kunnen leiden tot prijsaanpassingen.
-
-## Uitvoering van werkzaamheden
-
-Wij streven ernaar alle werkzaamheden binnen de afgesproken termijn uit te voeren. Vertragingen door overmacht of door de klant gevraagde wijzigingen kunnen leiden tot aangepaste termijnen. De klant zorgt voor vrije toegang tot de werkplek.
-
-## Betaling
-
-- Facturen dienen binnen 14 dagen na factuurdatum te worden voldaan
-- Bij niet-tijdige betaling zijn wij gerechtigd de wettelijke rente in rekening te brengen
-- Bij grote projecten kan een betalingsregeling worden afgesproken
-
-## Garantie
-
-Wij bieden garantie op ons vakmanschap conform de wettelijke bepalingen. De garantie is niet van toepassing bij oneigenlijk gebruik of wijzigingen door derden.
-
-## Aansprakelijkheid
-
-Onze aansprakelijkheid is beperkt tot het bedrag dat door onze verzekering wordt gedekt. Wij zijn niet aansprakelijk voor gevolgschade.
-
-## Geschillen
-
-Op deze voorwaarden is Belgisch recht van toepassing. Geschillen worden voorgelegd aan de bevoegde rechtbank in Gent.
+Alle offertes zijn vrijblijvend en geldig gedurende 30 dagen. Prijzen zijn exclusief BTW tenzij anders vermeld.
 
 ## Contact
 
-Voor vragen over deze voorwaarden kunt u contact opnemen via info@namconstruction.be of +32 493 81 27 89.`
+Voor vragen over deze voorwaarden kunt u contact opnemen via info@namconstruction.be of +32 493 81 27 89.`,
+    fr: `# Conditions Générales
+
+## Généralités
+
+Ces conditions générales s'appliquent à tous les devis, contrats et travaux de NAM BV (TVA BE0792.212.559).
+
+## Devis
+
+Tous les devis sont sans engagement et valables 30 jours. Les prix sont hors TVA sauf indication contraire.
+
+## Contact
+
+Pour toute question, contactez-nous via info@namconstruction.be ou +32 493 81 27 89.`,
+    en: `# Terms and Conditions
+
+## General
+
+These terms and conditions apply to all quotes, contracts and work by NAM BV (VAT BE0792.212.559).
+
+## Quotes
+
+All quotes are non-binding and valid for 30 days. Prices are exclusive of VAT unless otherwise stated.
+
+## Contact
+
+For questions about these terms, contact us via info@namconstruction.be or +32 493 81 27 89.`
+  }
+
+  return fallbackContent[locale] || fallbackContent['nl']
 }
 
-export default async function TermsPage() {
+export default async function TermsPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
   const t = await getTranslations('termsPage')
-  const content = await getTermsContent()
+  const content = await getTermsContent(locale)
 
   return (
     <LegalPageLayout

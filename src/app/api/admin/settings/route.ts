@@ -39,8 +39,8 @@ const defaultSettings: Record<string, { value: string; type: string; category: s
   'seo.defaultDescription': { value: 'NAM Construction is uw partner voor totaalrenovatie, renovatie en afwerking in Gent en omgeving. Vraag een gratis offerte aan.', type: 'string', category: 'seo', description: 'Standaard meta beschrijving' },
   'seo.ogImage': { value: '/og-image.jpg', type: 'string', category: 'seo', description: 'Open Graph afbeelding' },
 
-  // Legal
-  'legal.privacyPolicy': { value: `# Privacybeleid
+  // Legal - Dutch (NL)
+  'legal.privacyPolicy.nl': { value: `# Privacybeleid
 
 **Laatst bijgewerkt: januari 2025**
 
@@ -80,9 +80,9 @@ Voor vragen over dit privacybeleid kunt u contact opnemen via:
 - Telefoon: +32 493 81 27 89
 
 NAM BV
-BTW: BE0792.212.559`, type: 'text', category: 'legal', description: 'Privacybeleid' },
+BTW: BE0792.212.559`, type: 'text', category: 'legal', description: 'Privacybeleid (Nederlands)' },
 
-  'legal.termsConditions': { value: `# Algemene Voorwaarden
+  'legal.termsConditions.nl': { value: `# Algemene Voorwaarden
 
 **NAM BV - BTW BE0792.212.559**
 
@@ -128,7 +128,189 @@ NAM BV
 Zwijnaardsesteenweg 683
 9000 Gent
 info@namconstruction.be
-+32 493 81 27 89`, type: 'text', category: 'legal', description: 'Algemene Voorwaarden' },
++32 493 81 27 89`, type: 'text', category: 'legal', description: 'Algemene Voorwaarden (Nederlands)' },
+
+  // Legal - French (FR)
+  'legal.privacyPolicy.fr': { value: `# Politique de Confidentialité
+
+**Dernière mise à jour : janvier 2025**
+
+NAM BV (ci-après "nous" ou "NAM Construction") respecte votre vie privée et s'engage à protéger vos données personnelles.
+
+## 1. Quelles données collectons-nous ?
+
+Nous collectons les données suivantes :
+- Coordonnées (nom, e-mail, numéro de téléphone, adresse)
+- Informations sur le projet que vous partagez avec nous
+- Données techniques (adresse IP, type de navigateur) pour l'optimisation du site web
+
+## 2. Pourquoi collectons-nous ces données ?
+
+Nous utilisons vos données pour :
+- Établir et envoyer des devis
+- Planifier des rendez-vous
+- Communiquer sur votre projet
+- Améliorer nos services
+
+## 3. Combien de temps conservons-nous vos données ?
+
+Nous ne conservons pas vos données plus longtemps que nécessaire aux fins pour lesquelles elles ont été collectées, en tenant compte des délais de conservation légaux.
+
+## 4. Vos droits
+
+Vous avez le droit de :
+- Consulter vos données
+- Faire corriger vos données
+- Faire supprimer vos données
+- Vous opposer au traitement
+
+## 5. Contact
+
+Pour toute question concernant cette politique de confidentialité, vous pouvez nous contacter via :
+- E-mail : info@namconstruction.be
+- Téléphone : +32 493 81 27 89
+
+NAM BV
+TVA : BE0792.212.559`, type: 'text', category: 'legal', description: 'Politique de Confidentialité (Français)' },
+
+  'legal.termsConditions.fr': { value: `# Conditions Générales
+
+**NAM BV - TVA BE0792.212.559**
+
+## 1. Généralités
+
+Ces conditions générales s'appliquent à tous les devis, contrats et travaux de NAM BV.
+
+## 2. Devis
+
+- Tous les devis sont sans engagement et valables 30 jours
+- Les prix sont hors TVA sauf indication contraire
+- Les modifications des travaux peuvent entraîner des ajustements de prix
+
+## 3. Exécution des travaux
+
+- Nous nous efforçons d'effectuer tous les travaux dans les délais convenus
+- Les retards dus à des cas de force majeure ou à des modifications demandées par le client peuvent entraîner des délais ajustés
+- Le client assure le libre accès au chantier
+
+## 4. Paiement
+
+- Les factures doivent être réglées dans les 14 jours suivant la date de facturation
+- En cas de retard de paiement, nous sommes en droit de facturer les intérêts légaux
+- Pour les grands projets, un plan de paiement peut être convenu
+
+## 5. Garantie
+
+- Nous offrons une garantie sur notre travail conformément aux dispositions légales
+- La garantie ne s'applique pas en cas d'utilisation abusive ou de modifications par des tiers
+
+## 6. Responsabilité
+
+- Notre responsabilité est limitée au montant couvert par notre assurance
+- Nous ne sommes pas responsables des dommages indirects
+
+## 7. Litiges
+
+Ces conditions sont soumises au droit belge. Les litiges seront soumis au tribunal compétent de Gand.
+
+## Contact
+
+NAM BV
+Zwijnaardsesteenweg 683
+9000 Gand
+info@namconstruction.be
++32 493 81 27 89`, type: 'text', category: 'legal', description: 'Conditions Générales (Français)' },
+
+  // Legal - English (EN)
+  'legal.privacyPolicy.en': { value: `# Privacy Policy
+
+**Last updated: January 2025**
+
+NAM BV (hereinafter "we", "us" or "NAM Construction") respects your privacy and is committed to protecting your personal data.
+
+## 1. What data do we collect?
+
+We collect the following data:
+- Contact details (name, email, phone number, address)
+- Project information you share with us
+- Technical data (IP address, browser type) for website optimization
+
+## 2. Why do we collect this data?
+
+We use your data for:
+- Preparing and sending quotes
+- Scheduling appointments
+- Communication about your project
+- Improving our services
+
+## 3. How long do we keep your data?
+
+We do not keep your data longer than necessary for the purposes for which it was collected, taking into account legal retention periods.
+
+## 4. Your rights
+
+You have the right to:
+- Access your data
+- Have your data corrected
+- Have your data deleted
+- Object to processing
+
+## 5. Contact
+
+For questions about this privacy policy, you can contact us via:
+- Email: info@namconstruction.be
+- Phone: +32 493 81 27 89
+
+NAM BV
+VAT: BE0792.212.559`, type: 'text', category: 'legal', description: 'Privacy Policy (English)' },
+
+  'legal.termsConditions.en': { value: `# Terms and Conditions
+
+**NAM BV - VAT BE0792.212.559**
+
+## 1. General
+
+These terms and conditions apply to all quotes, contracts and work by NAM BV.
+
+## 2. Quotes
+
+- All quotes are non-binding and valid for 30 days
+- Prices are exclusive of VAT unless otherwise stated
+- Changes to the work may result in price adjustments
+
+## 3. Execution of work
+
+- We strive to complete all work within the agreed timeframe
+- Delays due to force majeure or client-requested changes may result in adjusted deadlines
+- The client ensures free access to the work site
+
+## 4. Payment
+
+- Invoices must be paid within 14 days of the invoice date
+- In case of late payment, we are entitled to charge statutory interest
+- For large projects, a payment plan can be agreed upon
+
+## 5. Warranty
+
+- We offer warranty on our workmanship in accordance with legal provisions
+- The warranty does not apply in case of improper use or modifications by third parties
+
+## 6. Liability
+
+- Our liability is limited to the amount covered by our insurance
+- We are not liable for consequential damages
+
+## 7. Disputes
+
+These conditions are subject to Belgian law. Disputes will be submitted to the competent court in Ghent.
+
+## Contact
+
+NAM BV
+Zwijnaardsesteenweg 683
+9000 Ghent
+info@namconstruction.be
++32 493 81 27 89`, type: 'text', category: 'legal', description: 'Terms and Conditions (English)' },
 }
 
 // GET - Get all settings or by category

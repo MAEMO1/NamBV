@@ -10,6 +10,7 @@ import {
   Search,
   Check,
   FileText,
+  Languages,
 } from 'lucide-react'
 
 interface Setting {
@@ -20,12 +21,19 @@ interface Setting {
   description: string
 }
 
+const LANGUAGES = [
+  { code: 'nl', label: 'Nederlands', flag: '🇳🇱' },
+  { code: 'fr', label: 'Français', flag: '🇫🇷' },
+  { code: 'en', label: 'English', flag: '🇬🇧' },
+]
+
 export default function SettingsManager() {
   const [settings, setSettings] = useState<Setting[]>([])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [activeTab, setActiveTab] = useState('contact')
+  const [activeLegalLang, setActiveLegalLang] = useState('nl')
 
   const fetchSettings = async () => {
     setLoading(true)
@@ -73,8 +81,15 @@ export default function SettingsManager() {
     }
   }
 
-  const getSettingsByCategory = (category: string) =>
-    settings.filter(s => s.category === category)
+  const getSettingsByCategory = (category: string) => {
+    if (category === 'legal') {
+      // Filter legal settings by selected language
+      return settings.filter(s =>
+        s.category === category && s.key.endsWith(`.${activeLegalLang}`)
+      )
+    }
+    return settings.filter(s => s.category === category)
+  }
 
   const renderInput = (setting: Setting) => {
     if (setting.type === 'boolean') {
@@ -174,6 +189,28 @@ export default function SettingsManager() {
         ))}
       </div>
 
+      {/* Language Tabs for Legal */}
+      {activeTab === 'legal' && (
+        <div className="flex items-center gap-2 mb-4">
+          <Languages className="w-4 h-4 text-gray-400" />
+          <span className="text-sm text-gray-500 mr-2">Taal:</span>
+          {LANGUAGES.map(lang => (
+            <button
+              key={lang.code}
+              onClick={() => setActiveLegalLang(lang.code)}
+              className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${
+                activeLegalLang === lang.code
+                  ? 'bg-noir-900 text-white'
+                  : 'text-gray-600 hover:bg-gray-100 border border-gray-200'
+              }`}
+            >
+              <span>{lang.flag}</span>
+              {lang.label}
+            </button>
+          ))}
+        </div>
+      )}
+
       {/* Settings Form */}
       <div className="bg-white rounded-xl border border-gray-100 p-5">
         <div className="space-y-5">
@@ -250,7 +287,7 @@ export default function SettingsManager() {
         )}
         {activeTab === 'legal' && (
           <p>
-            <strong>Juridisch:</strong> Bewerk hier uw privacybeleid en algemene voorwaarden. Gebruik Markdown voor opmaak (# voor titels, **tekst** voor vet). Wijzigingen worden direct op de website getoond.
+            <strong>Juridisch:</strong> Bewerk hier uw privacybeleid en algemene voorwaarden per taal. Selecteer bovenaan de gewenste taal en pas de content aan. Gebruik Markdown voor opmaak (# voor titels, **tekst** voor vet). Wijzigingen worden direct op de website getoond in de bijbehorende taal.
           </p>
         )}
       </div>
