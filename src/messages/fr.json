@@ -684,17 +684,18 @@
       "UNKNOWN": "Je ne sais pas encore"
     },
     "serviceTypes": {
+      "totaalrenovatie": "Rénovation complète",
       "badkamer": "Salle de bain",
       "keuken": "Cuisine",
       "woonkamer": "Salon",
       "slaapkamer": "Chambre",
       "toilet": "Toilettes",
-      "uitbreiding": "Extension",
+      "uitbouw-zolder": "Extension/Combles",
       "elektriciteit": "Électricité",
       "sanitair": "Sanitaire",
       "vloeren": "Sols",
       "schilderwerk": "Peinture",
-      "andere": "Autre"
+      "anders": "Autre"
     },
     "propertyTypes": {
       "appartement": "Appartement",
