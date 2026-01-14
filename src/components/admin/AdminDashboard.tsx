@@ -1004,7 +1004,7 @@ export default function AdminDashboard() {
       <aside className={`
         fixed lg:relative inset-y-0 left-0 z-50
         bg-white border-r border-gray-100 flex flex-col
-        transition-all duration-300 ease-in-out
+        transition-all duration-300 ease-in-out overflow-hidden
         ${sidebarCollapsed ? 'lg:w-16' : 'lg:w-60'}
         w-72 lg:w-auto
         ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
@@ -1045,7 +1045,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 p-2 space-y-0.5 overflow-y-auto">
+        <nav className="flex-1 p-2 space-y-0.5 overflow-y-auto scrollbar-hide">
           {navItems.map(item => {
             const Icon = item.icon
             const isActive = currentView === item.id
