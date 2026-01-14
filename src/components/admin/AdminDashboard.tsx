@@ -30,6 +30,7 @@ import {
   Layout,
   Image,
   Check,
+  PieChart,
   ChevronDown,
   ExternalLink,
   MoreHorizontal,
@@ -45,6 +46,7 @@ import SettingsManager from './SettingsManager'
 import ContentManager from './ContentManager'
 import MediaLibrary from './MediaLibrary'
 import AvailabilityManager from './AvailabilityManager'
+import InsightsManager from './InsightsManager'
 import Logo from '@/components/Logo'
 import {
   statusConfig,
@@ -797,7 +799,7 @@ function AppointmentDetail({ appointment, onClose, onUpdate }: AppointmentDetail
 // Main Dashboard
 export default function AdminDashboard() {
   const router = useRouter()
-  const [currentView, setCurrentView] = useState<'dashboard' | 'analytics' | 'quotes' | 'appointments' | 'projects' | 'content' | 'media' | 'availability' | 'settings'>('dashboard')
+  const [currentView, setCurrentView] = useState<'dashboard' | 'analytics' | 'insights' | 'quotes' | 'appointments' | 'projects' | 'content' | 'media' | 'availability' | 'settings'>('dashboard')
   const [selectedQuote, setSelectedQuote] = useState<Quote | null>(null)
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null)
   const [statusFilter, setStatusFilter] = useState<QuoteStatus | 'all'>('all')
@@ -972,6 +974,7 @@ export default function AdminDashboard() {
   const navItems = [
     { id: 'dashboard' as const, icon: LayoutDashboard, label: 'Dashboard' },
     { id: 'analytics' as const, icon: BarChart3, label: 'Analytics' },
+    { id: 'insights' as const, icon: PieChart, label: 'Inzichten' },
     { id: 'quotes' as const, icon: FileText, label: 'Offertes', badge: newQuotes },
     { id: 'appointments' as const, icon: Calendar, label: 'Afspraken', badge: pendingAppointments },
     { id: 'availability' as const, icon: CalendarClock, label: 'Beschikbaarheid' },
@@ -1150,6 +1153,7 @@ export default function AdminDashboard() {
                 <h1 className="text-base sm:text-lg font-semibold text-gray-900 truncate">
                   {currentView === 'dashboard' && 'Dashboard'}
                   {currentView === 'analytics' && 'Analytics'}
+                  {currentView === 'insights' && 'Inzichten'}
                   {currentView === 'quotes' && 'Offertes'}
                   {currentView === 'appointments' && 'Afspraken'}
                   {currentView === 'availability' && 'Beschikbaarheid'}
@@ -1435,6 +1439,9 @@ export default function AdminDashboard() {
 
           {/* Analytics View */}
           {currentView === 'analytics' && <AnalyticsDashboard />}
+
+          {/* Insights View */}
+          {currentView === 'insights' && <InsightsManager />}
 
           {/* Projects View */}
           {currentView === 'projects' && <ProjectsManager />}
