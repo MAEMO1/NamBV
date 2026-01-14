@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { db, softDeleteQuote } from '@/lib/db'
-import { getAuthUser, unauthorizedResponse, forbiddenResponse, isSuperAdmin } from '@/lib/auth'
+import { db } from '@/lib/db'
+import { getAuthUser, unauthorizedResponse } from '@/lib/auth'
 import { QuoteUpdateSchema, StatusChangeSchema } from '@/lib/validations/quote'
 
 interface RouteParams {
@@ -162,16 +162,11 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
   }
 }
 
-// DELETE /api/admin/quotes/[id] - Soft delete quote (superadmin only)
+// DELETE /api/admin/quotes/[id] - Delete quote permanently
 export async function DELETE(request: NextRequest, { params }: RouteParams) {
   const user = await getAuthUser(request)
   if (!user) {
     return unauthorizedResponse()
-  }
-
-  // Only superadmins can delete
-  if (!isSuperAdmin(user)) {
-    return forbiddenResponse()
   }
 
   const { id } = await params
@@ -179,7 +174,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
   try {
     const quote = await db.quoteRequest.findUnique({
       where: { id },
-      select: { id: true, deletedAt: true }
+      select: { id: true }
     })
 
     if (!quote) {
@@ -189,14 +184,19 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       )
     }
 
-    if (quote.deletedAt) {
-      return NextResponse.json(
-        { error: 'Aanvraag is al verwijderd' },
-        { status: 400 }
-      )
-    }
-
-    await softDeleteQuote(id)
+    // Delete related records first, then the quote
+    await db.$transaction(async (tx) => {
+      // Delete related notes
+      await tx.quoteNote.deleteMany({ where: { quoteId: id } })
+      // Delete related status history
+      await tx.quoteStatusHistory.deleteMany({ where: { quoteId: id } })
+      // Delete related services
+      await tx.quoteServiceSelection.deleteMany({ where: { quoteId: id } })
+      // Delete related photos
+      await tx.quotePhoto.deleteMany({ where: { quoteId: id } })
+      // Delete the quote itself
+      await tx.quoteRequest.delete({ where: { id } })
+    })
 
     return NextResponse.json({
       success: true,
