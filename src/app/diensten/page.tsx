@@ -72,27 +72,18 @@ const services = [
 const whyUs = [
   {
     number: '01',
-    title: 'Duurzame keuzes',
-    description: 'We kiezen bewust voor materialen met een lange levensduur en gezonde eigenschappen.',
-    icon: '🌿'
+    title: 'Duurzame materialen',
+    description: 'We kiezen bewust voor materialen met een lange levensduur en gezonde eigenschappen voor u en het milieu.'
   },
   {
     number: '02',
     title: 'Premie-proof dossier',
-    description: 'Correcte offerte, factuur en attesten zodat uw premieaanvraag vlot verloopt.',
-    icon: '📋'
+    description: 'Correcte offerte, factuur en attesten zodat uw premieaanvraag bij de overheid vlot verloopt.'
   },
   {
     number: '03',
-    title: 'Gefaseerde betaling',
-    description: 'Flexibele betalingsregeling gekoppeld aan concrete mijlpalen in uw project.',
-    icon: '💳'
-  },
-  {
-    number: '04',
-    title: 'Eén aanspreekpunt',
-    description: 'Directe communicatie met uw projectleider. Geen gedoe met tussenpersonen.',
-    icon: '👤'
+    title: 'Eén vast aanspreekpunt',
+    description: 'Directe communicatie met uw projectleider van start tot oplevering. Geen gedoe met tussenpersonen.'
   }
 ];
 
@@ -254,45 +245,66 @@ export default function DienstenPage() {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-20 md:py-28 bg-ivory-100 relative overflow-hidden">
+      <section className="py-24 md:py-32 bg-noir-950 relative overflow-hidden">
+        {/* Architectural grid lines */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 left-[25%] w-px h-full bg-white/[0.03]" />
+          <div className="absolute top-0 left-[50%] w-px h-full bg-white/[0.03]" />
+          <div className="absolute top-0 left-[75%] w-px h-full bg-white/[0.03]" />
+          <div className="absolute top-[33%] left-0 w-full h-px bg-white/[0.03]" />
+          <div className="absolute top-[66%] left-0 w-full h-px bg-white/[0.03]" />
+        </div>
+
+        {/* Accent gradient */}
+        <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-bl from-accent-600/10 to-transparent" />
+
         <div className="container-wide relative">
-          <AnimatedSection className="mb-16">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-px bg-accent-500" />
-              <span className="text-sm font-medium text-accent-600 uppercase tracking-[0.2em]">
+          {/* Section header */}
+          <AnimatedSection className="mb-20">
+            <div className="max-w-xl">
+              <span className="text-accent-400 text-sm font-medium uppercase tracking-[0.3em] mb-4 block">
                 Onze aanpak
               </span>
+              <h2 className="text-display-lg font-display text-white mb-6">
+                Waarom NAM Construction?
+              </h2>
+              <p className="text-noir-400 text-lg leading-relaxed">
+                Wat ons onderscheidt van andere aannemers in de regio Gent.
+              </p>
             </div>
-            <h2 className="text-display-lg font-display font-medium text-noir-900 mb-4">
-              Waarom{' '}
-              <span className="text-accent-600 italic">NAM Construction</span>?
-            </h2>
-            <p className="text-lg text-noir-500 max-w-2xl">
-              Wat ons onderscheidt van andere aannemers in de regio.
-            </p>
           </AnimatedSection>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Cards */}
+          <div className="grid md:grid-cols-3 gap-px bg-white/[0.05]">
             {whyUs.map((item, index) => (
-              <AnimatedSection key={item.title} delay={index * 100}>
-                <div className="group relative bg-white p-8 border border-noir-100 hover:border-accent-500 transition-all duration-500 h-full">
-                  {/* Accent corner */}
-                  <div className="absolute top-0 left-0 w-0 h-0 border-l-[3px] border-t-[3px] border-accent-500 opacity-0 group-hover:w-8 group-hover:h-8 group-hover:opacity-100 transition-all duration-500" />
-
-                  {/* Icon */}
-                  <span className="text-3xl mb-4 block">{item.icon}</span>
-
-                  {/* Number tag */}
-                  <span className="inline-block px-2 py-1 bg-accent-50 text-accent-600 text-xs font-medium tracking-wider mb-4">
+              <AnimatedSection key={item.title} delay={index * 150}>
+                <div className="group relative bg-noir-950 p-10 md:p-12 h-full hover:bg-noir-900 transition-colors duration-500">
+                  {/* Large number */}
+                  <span className="absolute top-8 right-8 text-[120px] font-display font-medium leading-none text-white/[0.03] group-hover:text-accent-500/10 transition-colors duration-500 select-none">
                     {item.number}
                   </span>
 
-                  <h3 className="text-lg font-display font-medium text-noir-900 mb-3 group-hover:text-accent-600 transition-colors">
-                    {item.title}
-                  </h3>
-                  <p className="text-noir-500 text-sm leading-relaxed">
-                    {item.description}
-                  </p>
+                  {/* Content */}
+                  <div className="relative">
+                    {/* Number indicator */}
+                    <div className="flex items-center gap-4 mb-8">
+                      <span className="text-accent-400 font-display text-sm tracking-wider">
+                        {item.number}
+                      </span>
+                      <div className="flex-1 h-px bg-gradient-to-r from-accent-500/50 to-transparent" />
+                    </div>
+
+                    <h3 className="text-2xl font-display text-white mb-4 group-hover:text-accent-300 transition-colors duration-300">
+                      {item.title}
+                    </h3>
+
+                    <p className="text-noir-400 leading-relaxed group-hover:text-noir-300 transition-colors duration-300">
+                      {item.description}
+                    </p>
+                  </div>
+
+                  {/* Bottom accent line */}
+                  <div className="absolute bottom-0 left-0 w-0 h-[2px] bg-accent-500 group-hover:w-full transition-all duration-700" />
                 </div>
               </AnimatedSection>
             ))}
