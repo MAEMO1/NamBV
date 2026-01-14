@@ -5,6 +5,7 @@ import {
   sendAppointmentStatusEmail,
   sendWhatsAppNotification
 } from '@/lib/notifications'
+import { invalidateAppointmentsCache } from '@/lib/cache'
 
 const SESSION_COOKIE_NAME = 'nam_admin_session'
 
@@ -143,6 +144,9 @@ export async function PUT(
       data: updateData
     })
 
+    // Invalidate the appointments cache so the list refreshes
+    invalidateAppointmentsCache()
+
     // Send notifications to user (email + WhatsApp)
     if (['confirm', 'reject', 'reschedule'].includes(action)) {
       try {
@@ -204,6 +208,9 @@ export async function DELETE(
     await db.appointment.delete({
       where: { id }
     })
+
+    // Invalidate the appointments cache so the list refreshes
+    invalidateAppointmentsCache()
 
     return NextResponse.json({
       success: true,
