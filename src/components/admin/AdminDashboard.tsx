@@ -153,9 +153,12 @@ function StatCard({ title, value, subtitle, icon, loading, highlight, onClick }:
 interface QuoteRowProps {
   quote: Quote
   onSelect: (quote: Quote) => void
+  isSelected?: boolean
+  onToggleSelect?: (id: string) => void
+  selectionMode?: boolean
 }
 
-function QuoteRow({ quote, onSelect }: QuoteRowProps) {
+function QuoteRow({ quote, onSelect, isSelected, onToggleSelect, selectionMode }: QuoteRowProps) {
   const status = statusConfig[quote.status]
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
@@ -164,9 +167,20 @@ function QuoteRow({ quote, onSelect }: QuoteRowProps) {
 
   return (
     <tr
-      onClick={() => onSelect(quote)}
-      className="cursor-pointer hover:bg-gray-50/50 transition-colors group"
+      onClick={() => selectionMode && onToggleSelect ? onToggleSelect(quote.id) : onSelect(quote)}
+      className={`cursor-pointer hover:bg-gray-50/50 transition-colors group ${isSelected ? 'bg-accent-50' : ''}`}
     >
+      {selectionMode && (
+        <td className="px-4 py-3.5 border-b border-gray-100 w-12">
+          <input
+            type="checkbox"
+            checked={isSelected}
+            onChange={() => onToggleSelect?.(quote.id)}
+            onClick={(e) => e.stopPropagation()}
+            className="w-4 h-4 rounded border-gray-300 text-accent-600 focus:ring-accent-500"
+          />
+        </td>
+      )}
       <td className="px-4 py-3.5 border-b border-gray-100">
         <span className="text-sm font-medium text-accent-600">{quote.referenceNumber}</span>
       </td>
@@ -197,9 +211,12 @@ function QuoteRow({ quote, onSelect }: QuoteRowProps) {
 interface AppointmentRowProps {
   appointment: Appointment
   onSelect: (appointment: Appointment) => void
+  isSelected?: boolean
+  onToggleSelect?: (id: string) => void
+  selectionMode?: boolean
 }
 
-function AppointmentRow({ appointment, onSelect }: AppointmentRowProps) {
+function AppointmentRow({ appointment, onSelect, isSelected, onToggleSelect, selectionMode }: AppointmentRowProps) {
   const status = appointmentStatusConfig[appointment.status]
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
@@ -208,9 +225,20 @@ function AppointmentRow({ appointment, onSelect }: AppointmentRowProps) {
 
   return (
     <tr
-      onClick={() => onSelect(appointment)}
-      className="cursor-pointer hover:bg-gray-50/50 transition-colors"
+      onClick={() => selectionMode && onToggleSelect ? onToggleSelect(appointment.id) : onSelect(appointment)}
+      className={`cursor-pointer hover:bg-gray-50/50 transition-colors ${isSelected ? 'bg-accent-50' : ''}`}
     >
+      {selectionMode && (
+        <td className="px-4 py-3.5 border-b border-gray-100 w-12">
+          <input
+            type="checkbox"
+            checked={isSelected}
+            onChange={() => onToggleSelect?.(appointment.id)}
+            onClick={(e) => e.stopPropagation()}
+            className="w-4 h-4 rounded border-gray-300 text-accent-600 focus:ring-accent-500"
+          />
+        </td>
+      )}
       <td className="px-4 py-3.5 border-b border-gray-100">
         <span className="text-sm font-medium text-accent-600">{appointment.referenceNumber}</span>
       </td>
@@ -763,6 +791,14 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
+  // Bulk selection state
+  const [selectedQuoteIds, setSelectedQuoteIds] = useState<Set<string>>(new Set())
+  const [selectedAppointmentIds, setSelectedAppointmentIds] = useState<Set<string>>(new Set())
+  const [quoteSelectionMode, setQuoteSelectionMode] = useState(false)
+  const [appointmentSelectionMode, setAppointmentSelectionMode] = useState(false)
+  const [showBulkDeleteConfirm, setShowBulkDeleteConfirm] = useState<'quotes' | 'appointments' | null>(null)
+  const [bulkDeleteLoading, setBulkDeleteLoading] = useState(false)
+
   useEffect(() => {
     setMounted(true)
   }, [])
@@ -813,6 +849,86 @@ export default function AdminDashboard() {
       router.refresh()
     } catch (err) {
       console.error('Logout error:', err)
+    }
+  }
+
+  // Toggle selection functions
+  const toggleQuoteSelection = (id: string) => {
+    setSelectedQuoteIds(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(id)) {
+        newSet.delete(id)
+      } else {
+        newSet.add(id)
+      }
+      return newSet
+    })
+  }
+
+  const toggleAppointmentSelection = (id: string) => {
+    setSelectedAppointmentIds(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(id)) {
+        newSet.delete(id)
+      } else {
+        newSet.add(id)
+      }
+      return newSet
+    })
+  }
+
+  const selectAllQuotes = (quotes: Quote[]) => {
+    setSelectedQuoteIds(new Set(quotes.map(q => q.id)))
+  }
+
+  const selectAllAppointments = (appointments: Appointment[]) => {
+    setSelectedAppointmentIds(new Set(appointments.map(a => a.id)))
+  }
+
+  const clearQuoteSelection = () => {
+    setSelectedQuoteIds(new Set())
+    setQuoteSelectionMode(false)
+  }
+
+  const clearAppointmentSelection = () => {
+    setSelectedAppointmentIds(new Set())
+    setAppointmentSelectionMode(false)
+  }
+
+  // Bulk delete functions
+  const handleBulkDeleteQuotes = async () => {
+    setBulkDeleteLoading(true)
+    try {
+      const deletePromises = Array.from(selectedQuoteIds).map(id =>
+        fetch(`/api/admin/quotes/${id}`, { method: 'DELETE' })
+      )
+      await Promise.all(deletePromises)
+      await fetchData()
+      clearQuoteSelection()
+    } catch (error) {
+      console.error('Bulk delete error:', error)
+      alert('Er is een fout opgetreden bij het verwijderen')
+    } finally {
+      setBulkDeleteLoading(false)
+      setShowBulkDeleteConfirm(null)
+    }
+  }
+
+  const handleBulkDeleteAppointments = async () => {
+    setBulkDeleteLoading(true)
+    try {
+      const deletePromises = Array.from(selectedAppointmentIds).map(id =>
+        fetch(`/api/admin/appointments/${id}`, { method: 'DELETE' })
+      )
+      await Promise.all(deletePromises)
+      await fetchData()
+      clearAppointmentSelection()
+    } catch (error) {
+      console.error('Bulk delete error:', error)
+      alert('Er is een fout opgetreden bij het verwijderen')
+    } finally {
+      setBulkDeleteLoading(false)
+      setShowBulkDeleteConfirm(null)
     }
   }
 
@@ -1248,8 +1364,9 @@ export default function AdminDashboard() {
 
           {/* Quotes List */}
           {currentView === 'quotes' && (
-            <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-              <div className="px-5 py-4 border-b border-gray-100">
+            <div className="space-y-4">
+              {/* Action Bar */}
+              <div className="flex items-center justify-between">
                 <div className="flex flex-wrap gap-2">
                   <button
                     onClick={() => setStatusFilter('all')}
@@ -1273,67 +1390,183 @@ export default function AdminDashboard() {
                     </button>
                   ))}
                 </div>
+                <button
+                  onClick={() => {
+                    setQuoteSelectionMode(!quoteSelectionMode)
+                    if (quoteSelectionMode) clearQuoteSelection()
+                  }}
+                  className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center gap-1.5 ${
+                    quoteSelectionMode ? 'bg-accent-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
+                >
+                  <Check className="w-3.5 h-3.5" />
+                  {quoteSelectionMode ? 'Selectie uit' : 'Selecteren'}
+                </button>
               </div>
 
-              {loading ? (
-                <div className="p-4 space-y-3">
-                  {[1, 2, 3, 4, 5].map(i => <div key={i} className="h-14 bg-gray-50 rounded animate-pulse" />)}
-                </div>
-              ) : filteredQuotes.length > 0 ? (
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead className="bg-gray-50">
-                      <tr>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">Ref</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">Klant</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">Project</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">Status</th>
-                        <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wide">Datum</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredQuotes.map(quote => (
-                        <QuoteRow key={quote.id} quote={quote} onSelect={setSelectedQuote} />
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              ) : (
-                <div className="p-12 text-center">
-                  <FileCheck className="w-10 h-10 mx-auto text-gray-200 mb-3" />
-                  <p className="text-gray-400">Geen aanvragen gevonden</p>
+              {/* Selection Action Bar */}
+              {quoteSelectionMode && selectedQuoteIds.size > 0 && (
+                <div className="bg-accent-50 border border-accent-200 rounded-lg px-4 py-3 flex items-center justify-between">
+                  <span className="text-sm font-medium text-accent-800">
+                    {selectedQuoteIds.size} offerte{selectedQuoteIds.size > 1 ? 's' : ''} geselecteerd
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => selectAllQuotes(filteredQuotes)}
+                      className="px-3 py-1.5 text-xs font-medium text-accent-700 hover:text-accent-800 transition-colors"
+                    >
+                      Selecteer alles
+                    </button>
+                    <button
+                      onClick={clearQuoteSelection}
+                      className="px-3 py-1.5 text-xs font-medium text-gray-600 hover:text-gray-800 transition-colors"
+                    >
+                      Deselecteer
+                    </button>
+                    <button
+                      onClick={() => setShowBulkDeleteConfirm('quotes')}
+                      className="px-3 py-1.5 text-xs font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors flex items-center gap-1.5"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                      Verwijderen
+                    </button>
+                  </div>
                 </div>
               )}
+
+              <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
+                {loading ? (
+                  <div className="p-4 space-y-3">
+                    {[1, 2, 3, 4, 5].map(i => <div key={i} className="h-14 bg-gray-50 rounded animate-pulse" />)}
+                  </div>
+                ) : filteredQuotes.length > 0 ? (
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead className="bg-gray-50">
+                        <tr>
+                          {quoteSelectionMode && (
+                            <th className="px-4 py-3 w-12">
+                              <input
+                                type="checkbox"
+                                checked={selectedQuoteIds.size === filteredQuotes.length && filteredQuotes.length > 0}
+                                onChange={() => {
+                                  if (selectedQuoteIds.size === filteredQuotes.length) {
+                                    setSelectedQuoteIds(new Set())
+                                  } else {
+                                    selectAllQuotes(filteredQuotes)
+                                  }
+                                }}
+                                className="w-4 h-4 rounded border-gray-300 text-accent-600 focus:ring-accent-500"
+                              />
+                            </th>
+                          )}
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">Ref</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">Klant</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">Project</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">Status</th>
+                          <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wide">Datum</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filteredQuotes.map(quote => (
+                          <QuoteRow
+                            key={quote.id}
+                            quote={quote}
+                            onSelect={setSelectedQuote}
+                            isSelected={selectedQuoteIds.has(quote.id)}
+                            onToggleSelect={toggleQuoteSelection}
+                            selectionMode={quoteSelectionMode}
+                          />
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  <div className="p-12 text-center">
+                    <FileCheck className="w-10 h-10 mx-auto text-gray-200 mb-3" />
+                    <p className="text-gray-400">Geen aanvragen gevonden</p>
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
           {/* Appointments List */}
           {currentView === 'appointments' && (
             <div className="space-y-4">
-              {/* Filter Bar */}
-              <div className="flex flex-wrap gap-2">
+              {/* Action Bar */}
+              <div className="flex items-center justify-between">
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={() => setAppointmentStatusFilter('all')}
+                    className={`px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
+                      appointmentStatusFilter === 'all' ? 'bg-accent-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    }`}
+                  >
+                    Alle ({appointments.length})
+                  </button>
+                  {(Object.entries(appointmentStatusConfig) as [AppointmentStatus, typeof appointmentStatusConfig[AppointmentStatus]][]).map(([key, config]) => (
+                    <button
+                      key={key}
+                      onClick={() => setAppointmentStatusFilter(key)}
+                      className="px-3 py-1.5 text-xs font-medium rounded-full transition-colors"
+                      style={{
+                        background: appointmentStatusFilter === key ? config.color : config.bg,
+                        color: appointmentStatusFilter === key ? 'white' : config.color
+                      }}
+                    >
+                      {config.label} ({appointments.filter(a => a.status === key).length})
+                    </button>
+                  ))}
+                </div>
                 <button
-                  onClick={() => setAppointmentStatusFilter('all')}
-                  className={`px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
-                    appointmentStatusFilter === 'all' ? 'bg-accent-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  onClick={() => {
+                    setAppointmentSelectionMode(!appointmentSelectionMode)
+                    if (appointmentSelectionMode) clearAppointmentSelection()
+                  }}
+                  className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center gap-1.5 ${
+                    appointmentSelectionMode ? 'bg-accent-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
                 >
-                  Alle ({appointments.length})
+                  <Check className="w-3.5 h-3.5" />
+                  {appointmentSelectionMode ? 'Selectie uit' : 'Selecteren'}
                 </button>
-                {(Object.entries(appointmentStatusConfig) as [AppointmentStatus, typeof appointmentStatusConfig[AppointmentStatus]][]).map(([key, config]) => (
-                  <button
-                    key={key}
-                    onClick={() => setAppointmentStatusFilter(key)}
-                    className="px-3 py-1.5 text-xs font-medium rounded-full transition-colors"
-                    style={{
-                      background: appointmentStatusFilter === key ? config.color : config.bg,
-                      color: appointmentStatusFilter === key ? 'white' : config.color
-                    }}
-                  >
-                    {config.label} ({appointments.filter(a => a.status === key).length})
-                  </button>
-                ))}
               </div>
+
+              {/* Selection Action Bar */}
+              {appointmentSelectionMode && selectedAppointmentIds.size > 0 && (
+                <div className="bg-accent-50 border border-accent-200 rounded-lg px-4 py-3 flex items-center justify-between">
+                  <span className="text-sm font-medium text-accent-800">
+                    {selectedAppointmentIds.size} afspra{selectedAppointmentIds.size > 1 ? 'ken' : 'ak'} geselecteerd
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => {
+                        const filteredAppointments = appointmentStatusFilter === 'all'
+                          ? appointments
+                          : appointments.filter(a => a.status === appointmentStatusFilter)
+                        selectAllAppointments(filteredAppointments)
+                      }}
+                      className="px-3 py-1.5 text-xs font-medium text-accent-700 hover:text-accent-800 transition-colors"
+                    >
+                      Selecteer alles
+                    </button>
+                    <button
+                      onClick={clearAppointmentSelection}
+                      className="px-3 py-1.5 text-xs font-medium text-gray-600 hover:text-gray-800 transition-colors"
+                    >
+                      Deselecteer
+                    </button>
+                    <button
+                      onClick={() => setShowBulkDeleteConfirm('appointments')}
+                      className="px-3 py-1.5 text-xs font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors flex items-center gap-1.5"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                      Verwijderen
+                    </button>
+                  </div>
+                </div>
+              )}
 
               <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
                 <div className="px-5 py-4 border-b border-gray-100">
@@ -1355,6 +1588,22 @@ export default function AdminDashboard() {
                       <table className="w-full">
                         <thead className="bg-gray-50">
                           <tr>
+                            {appointmentSelectionMode && (
+                              <th className="px-4 py-3 w-12">
+                                <input
+                                  type="checkbox"
+                                  checked={selectedAppointmentIds.size === filteredAppointments.length && filteredAppointments.length > 0}
+                                  onChange={() => {
+                                    if (selectedAppointmentIds.size === filteredAppointments.length) {
+                                      setSelectedAppointmentIds(new Set())
+                                    } else {
+                                      selectAllAppointments(filteredAppointments)
+                                    }
+                                  }}
+                                  className="w-4 h-4 rounded border-gray-300 text-accent-600 focus:ring-accent-500"
+                                />
+                              </th>
+                            )}
                             <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">Ref</th>
                             <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">Klant</th>
                             <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wide">Datum</th>
@@ -1364,7 +1613,14 @@ export default function AdminDashboard() {
                         </thead>
                         <tbody>
                           {filteredAppointments.map(apt => (
-                            <AppointmentRow key={apt.id} appointment={apt} onSelect={setSelectedAppointment} />
+                            <AppointmentRow
+                              key={apt.id}
+                              appointment={apt}
+                              onSelect={setSelectedAppointment}
+                              isSelected={selectedAppointmentIds.has(apt.id)}
+                              onToggleSelect={toggleAppointmentSelection}
+                              selectionMode={appointmentSelectionMode}
+                            />
                           ))}
                         </tbody>
                       </table>
@@ -1402,6 +1658,49 @@ export default function AdminDashboard() {
             onUpdate={fetchData}
           />
         </>
+      )}
+
+      {/* Bulk Delete Confirmation Modal */}
+      {showBulkDeleteConfirm && (
+        <div className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl p-6 max-w-sm w-full shadow-xl">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                <AlertTriangle className="w-5 h-5 text-red-600" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                {showBulkDeleteConfirm === 'quotes' ? 'Offertes' : 'Afspraken'} verwijderen?
+              </h3>
+            </div>
+            <p className="text-sm text-gray-600 mb-6">
+              Weet je zeker dat je{' '}
+              <span className="font-medium">
+                {showBulkDeleteConfirm === 'quotes' ? selectedQuoteIds.size : selectedAppointmentIds.size}
+              </span>{' '}
+              {showBulkDeleteConfirm === 'quotes'
+                ? `offerte${selectedQuoteIds.size > 1 ? 's' : ''}`
+                : `afspra${selectedAppointmentIds.size > 1 ? 'ken' : 'ak'}`
+              }{' '}
+              wilt verwijderen? Dit kan niet ongedaan worden gemaakt.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowBulkDeleteConfirm(null)}
+                disabled={bulkDeleteLoading}
+                className="flex-1 py-2.5 px-4 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                Annuleren
+              </button>
+              <button
+                onClick={showBulkDeleteConfirm === 'quotes' ? handleBulkDeleteQuotes : handleBulkDeleteAppointments}
+                disabled={bulkDeleteLoading}
+                className="flex-1 py-2.5 px-4 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50"
+              >
+                {bulkDeleteLoading ? 'Bezig...' : 'Verwijderen'}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )
