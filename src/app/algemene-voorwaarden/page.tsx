@@ -1,51 +1,12 @@
 import { Metadata } from 'next'
 import { db } from '@/lib/db'
+import LegalPageLayout from '@/components/LegalPageLayout'
 
-// Force dynamic rendering to always get fresh content from database
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Algemene Voorwaarden | NAM Construction',
   description: 'Algemene voorwaarden van NAM Construction voor onze diensten en werkzaamheden.',
-}
-
-// Simple markdown to HTML converter
-function markdownToHtml(markdown: string): string {
-  const lines = markdown.split('\n')
-  let html = ''
-  let inList = false
-
-  for (const line of lines) {
-    const trimmedLine = line.trim()
-
-    if (trimmedLine.startsWith('# ')) {
-      if (inList) { html += '</ul>'; inList = false }
-      html += `<h1 class="text-2xl font-display font-semibold text-noir-900 mt-12 mb-6 first:mt-0">${trimmedLine.slice(2)}</h1>`
-    } else if (trimmedLine.startsWith('## ')) {
-      if (inList) { html += '</ul>'; inList = false }
-      html += `<h2 class="text-xl font-semibold text-noir-900 mt-10 mb-4">${trimmedLine.slice(3)}</h2>`
-    } else if (trimmedLine.startsWith('### ')) {
-      if (inList) { html += '</ul>'; inList = false }
-      html += `<h3 class="text-lg font-semibold text-noir-900 mt-8 mb-3">${trimmedLine.slice(4)}</h3>`
-    } else if (trimmedLine.startsWith('- ')) {
-      if (!inList) { html += '<ul class="list-disc pl-6 mb-4 text-noir-600">'; inList = true }
-      html += `<li class="mb-2">${formatInline(trimmedLine.slice(2))}</li>`
-    } else if (trimmedLine === '') {
-      if (inList) { html += '</ul>'; inList = false }
-    } else {
-      if (inList) { html += '</ul>'; inList = false }
-      html += `<p class="text-noir-600 mb-4 leading-relaxed">${formatInline(trimmedLine)}</p>`
-    }
-  }
-
-  if (inList) html += '</ul>'
-  return `<div class="prose-custom">${html}</div>`
-}
-
-function formatInline(text: string): string {
-  return text
-    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')
-    .replace(/\*(.*?)\*/g, '<em>$1</em>')
 }
 
 async function getTermsContent() {
@@ -65,38 +26,51 @@ async function getTermsContent() {
   // Fallback content
   return `# Algemene Voorwaarden
 
-**NAM BV - BTW BE0792.212.559**
+## Algemeen
 
-Deze algemene voorwaarden zijn van toepassing op alle offertes, overeenkomsten en werkzaamheden van NAM BV.
+Deze algemene voorwaarden zijn van toepassing op alle offertes, overeenkomsten en werkzaamheden van NAM BV (BTW BE0792.212.559).
 
-Voor vragen kunt u contact opnemen via info@namconstruction.be`
+## Offertes
+
+Alle offertes zijn vrijblijvend en geldig gedurende 30 dagen. Prijzen zijn exclusief BTW tenzij anders vermeld. Wijzigingen in het werk kunnen leiden tot prijsaanpassingen.
+
+## Uitvoering van werkzaamheden
+
+Wij streven ernaar alle werkzaamheden binnen de afgesproken termijn uit te voeren. Vertragingen door overmacht of door de klant gevraagde wijzigingen kunnen leiden tot aangepaste termijnen. De klant zorgt voor vrije toegang tot de werkplek.
+
+## Betaling
+
+- Facturen dienen binnen 14 dagen na factuurdatum te worden voldaan
+- Bij niet-tijdige betaling zijn wij gerechtigd de wettelijke rente in rekening te brengen
+- Bij grote projecten kan een betalingsregeling worden afgesproken
+
+## Garantie
+
+Wij bieden garantie op ons vakmanschap conform de wettelijke bepalingen. De garantie is niet van toepassing bij oneigenlijk gebruik of wijzigingen door derden.
+
+## Aansprakelijkheid
+
+Onze aansprakelijkheid is beperkt tot het bedrag dat door onze verzekering wordt gedekt. Wij zijn niet aansprakelijk voor gevolgschade.
+
+## Geschillen
+
+Op deze voorwaarden is Belgisch recht van toepassing. Geschillen worden voorgelegd aan de bevoegde rechtbank in Gent.
+
+## Contact
+
+Voor vragen over deze voorwaarden kunt u contact opnemen via info@namconstruction.be of +32 493 81 27 89.`
 }
 
 export default async function TermsPage() {
   const content = await getTermsContent()
-  const htmlContent = markdownToHtml(content)
 
   return (
-    <main className="min-h-screen bg-ivory-50">
-      {/* Header */}
-      <div className="bg-noir-950 text-white py-20">
-        <div className="container-wide">
-          <h1 className="text-display-lg font-display">Algemene Voorwaarden</h1>
-          <p className="text-noir-400 mt-4">
-            Voorwaarden voor onze diensten en werkzaamheden
-          </p>
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="container-wide py-16 md:py-24">
-        <div className="max-w-3xl">
-          <div
-            className="bg-white rounded-2xl shadow-soft p-8 md:p-12"
-            dangerouslySetInnerHTML={{ __html: htmlContent }}
-          />
-        </div>
-      </div>
-    </main>
+    <LegalPageLayout
+      title="Algemene Voorwaarden"
+      subtitle="De voorwaarden die van toepassing zijn op onze diensten en werkzaamheden"
+      lastUpdated="Januari 2025"
+      content={content}
+      icon="terms"
+    />
   )
 }

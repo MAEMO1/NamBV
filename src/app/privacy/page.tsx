@@ -1,51 +1,12 @@
 import { Metadata } from 'next'
 import { db } from '@/lib/db'
+import LegalPageLayout from '@/components/LegalPageLayout'
 
-// Force dynamic rendering to always get fresh content from database
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Privacybeleid | NAM Construction',
   description: 'Privacybeleid van NAM Construction - Hoe wij omgaan met uw persoonsgegevens.',
-}
-
-// Simple markdown to HTML converter
-function markdownToHtml(markdown: string): string {
-  const lines = markdown.split('\n')
-  let html = ''
-  let inList = false
-
-  for (const line of lines) {
-    const trimmedLine = line.trim()
-
-    if (trimmedLine.startsWith('# ')) {
-      if (inList) { html += '</ul>'; inList = false }
-      html += `<h1 class="text-2xl font-display font-semibold text-noir-900 mt-12 mb-6 first:mt-0">${trimmedLine.slice(2)}</h1>`
-    } else if (trimmedLine.startsWith('## ')) {
-      if (inList) { html += '</ul>'; inList = false }
-      html += `<h2 class="text-xl font-semibold text-noir-900 mt-10 mb-4">${trimmedLine.slice(3)}</h2>`
-    } else if (trimmedLine.startsWith('### ')) {
-      if (inList) { html += '</ul>'; inList = false }
-      html += `<h3 class="text-lg font-semibold text-noir-900 mt-8 mb-3">${trimmedLine.slice(4)}</h3>`
-    } else if (trimmedLine.startsWith('- ')) {
-      if (!inList) { html += '<ul class="list-disc pl-6 mb-4 text-noir-600">'; inList = true }
-      html += `<li class="mb-2">${formatInline(trimmedLine.slice(2))}</li>`
-    } else if (trimmedLine === '') {
-      if (inList) { html += '</ul>'; inList = false }
-    } else {
-      if (inList) { html += '</ul>'; inList = false }
-      html += `<p class="text-noir-600 mb-4 leading-relaxed">${formatInline(trimmedLine)}</p>`
-    }
-  }
-
-  if (inList) html += '</ul>'
-  return `<div class="prose-custom">${html}</div>`
-}
-
-function formatInline(text: string): string {
-  return text
-    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')
-    .replace(/\*(.*?)\*/g, '<em>$1</em>')
 }
 
 async function getPrivacyContent() {
@@ -65,38 +26,55 @@ async function getPrivacyContent() {
   // Fallback content
   return `# Privacybeleid
 
-**Laatst bijgewerkt: januari 2025**
+## Inleiding
 
-NAM BV respecteert uw privacy en zet zich in voor de bescherming van uw persoonlijke gegevens.
+NAM BV (hierna "wij", "ons" of "NAM Construction") respecteert uw privacy en zet zich in voor de bescherming van uw persoonlijke gegevens. Dit privacybeleid informeert u over hoe wij omgaan met uw persoonsgegevens.
 
-Voor vragen kunt u contact opnemen via info@namconstruction.be`
+## Welke gegevens verzamelen wij?
+
+Wij verzamelen de volgende gegevens:
+
+- Contactgegevens (naam, e-mail, telefoonnummer, adres)
+- Projectinformatie die u met ons deelt
+- Technische gegevens (IP-adres, browsertype) voor websiteoptimalisatie
+
+## Waarom verzamelen wij deze gegevens?
+
+Wij gebruiken uw gegevens voor:
+
+- Het opstellen en versturen van offertes
+- Het inplannen van afspraken
+- Communicatie over uw project
+- Het verbeteren van onze dienstverlening
+
+## Bewaartermijn
+
+Wij bewaren uw gegevens niet langer dan noodzakelijk voor de doeleinden waarvoor ze zijn verzameld, met inachtneming van wettelijke bewaartermijnen.
+
+## Uw rechten
+
+U heeft het recht om:
+
+- Uw gegevens in te zien
+- Uw gegevens te laten corrigeren
+- Uw gegevens te laten verwijderen
+- Bezwaar te maken tegen de verwerking
+
+## Contact
+
+Voor vragen over dit privacybeleid kunt u contact opnemen via info@namconstruction.be of +32 493 81 27 89.`
 }
 
 export default async function PrivacyPage() {
   const content = await getPrivacyContent()
-  const htmlContent = markdownToHtml(content)
 
   return (
-    <main className="min-h-screen bg-ivory-50">
-      {/* Header */}
-      <div className="bg-noir-950 text-white py-20">
-        <div className="container-wide">
-          <h1 className="text-display-lg font-display">Privacybeleid</h1>
-          <p className="text-noir-400 mt-4">
-            Hoe NAM Construction omgaat met uw persoonsgegevens
-          </p>
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="container-wide py-16 md:py-24">
-        <div className="max-w-3xl">
-          <div
-            className="bg-white rounded-2xl shadow-soft p-8 md:p-12"
-            dangerouslySetInnerHTML={{ __html: htmlContent }}
-          />
-        </div>
-      </div>
-    </main>
+    <LegalPageLayout
+      title="Privacybeleid"
+      subtitle="Hoe NAM Construction omgaat met uw persoonsgegevens en uw privacy beschermt"
+      lastUpdated="Januari 2025"
+      content={content}
+      icon="privacy"
+    />
   )
 }
