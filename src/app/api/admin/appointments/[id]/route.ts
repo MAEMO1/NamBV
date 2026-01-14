@@ -180,3 +180,40 @@ export async function PUT(
     )
   }
 }
+
+// DELETE /api/admin/appointments/[id] - Delete appointment
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  if (!await isAuthenticated()) {
+    return NextResponse.json({ error: 'Niet geautoriseerd' }, { status: 401 })
+  }
+
+  try {
+    const { id } = await params
+
+    const appointment = await db.appointment.findUnique({
+      where: { id }
+    })
+
+    if (!appointment) {
+      return NextResponse.json({ error: 'Afspraak niet gevonden' }, { status: 404 })
+    }
+
+    await db.appointment.delete({
+      where: { id }
+    })
+
+    return NextResponse.json({
+      success: true,
+      message: 'Afspraak verwijderd'
+    })
+  } catch (error) {
+    console.error('Error deleting appointment:', error)
+    return NextResponse.json(
+      { error: 'Kon afspraak niet verwijderen' },
+      { status: 500 }
+    )
+  }
+}

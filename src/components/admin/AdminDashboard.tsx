@@ -33,6 +33,8 @@ import {
   ChevronDown,
   ExternalLink,
   MoreHorizontal,
+  Trash2,
+  AlertTriangle,
 } from 'lucide-react'
 import AnalyticsDashboard from './AnalyticsDashboard'
 import ProjectsManager from './ProjectsManager'
@@ -239,11 +241,37 @@ function AppointmentRow({ appointment, onSelect }: AppointmentRowProps) {
 interface QuoteDetailProps {
   quote: Quote
   onClose: () => void
+  onDelete: () => void
 }
 
-function QuoteDetail({ quote, onClose }: QuoteDetailProps) {
+function QuoteDetail({ quote, onClose, onDelete }: QuoteDetailProps) {
   const status = statusConfig[quote.status]
   const [currentStatus, setCurrentStatus] = useState(quote.status)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [deleteLoading, setDeleteLoading] = useState(false)
+
+  const handleDelete = async () => {
+    setDeleteLoading(true)
+    try {
+      const response = await fetch(`/api/admin/quotes/${quote.id}`, {
+        method: 'DELETE'
+      })
+
+      if (response.ok) {
+        onDelete()
+        onClose()
+      } else {
+        const error = await response.json()
+        alert(error.error || 'Kon offerte niet verwijderen')
+      }
+    } catch (error) {
+      console.error('Delete error:', error)
+      alert('Er is een fout opgetreden')
+    } finally {
+      setDeleteLoading(false)
+      setShowDeleteConfirm(false)
+    }
+  }
 
   return (
     <div className="fixed top-0 right-0 bottom-0 w-[440px] bg-white shadow-2xl z-50 overflow-auto">
@@ -350,6 +378,50 @@ function QuoteDetail({ quote, onClose }: QuoteDetailProps) {
             Bellen
           </a>
         </div>
+
+        {/* Delete Button */}
+        <div className="pt-4 border-t border-gray-100">
+          <button
+            onClick={() => setShowDeleteConfirm(true)}
+            className="w-full py-2.5 px-4 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors flex items-center justify-center gap-2"
+          >
+            <Trash2 className="w-4 h-4" />
+            Offerte verwijderen
+          </button>
+        </div>
+
+        {/* Delete Confirmation Modal */}
+        {showDeleteConfirm && (
+          <div className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-4">
+            <div className="bg-white rounded-xl p-6 max-w-sm w-full shadow-xl">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                  <AlertTriangle className="w-5 h-5 text-red-600" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900">Offerte verwijderen?</h3>
+              </div>
+              <p className="text-sm text-gray-600 mb-6">
+                Weet je zeker dat je offerte <span className="font-medium">{quote.referenceNumber}</span> wilt verwijderen? Dit kan niet ongedaan worden gemaakt.
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowDeleteConfirm(false)}
+                  disabled={deleteLoading}
+                  className="flex-1 py-2.5 px-4 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                >
+                  Annuleren
+                </button>
+                <button
+                  onClick={handleDelete}
+                  disabled={deleteLoading}
+                  className="flex-1 py-2.5 px-4 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50"
+                >
+                  {deleteLoading ? 'Bezig...' : 'Verwijderen'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
@@ -370,6 +442,31 @@ function AppointmentDetail({ appointment, onClose, onUpdate }: AppointmentDetail
   const [proposedDate, setProposedDate] = useState('')
   const [proposedTime, setProposedTime] = useState('')
   const [rejectionReason, setRejectionReason] = useState('')
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [deleteLoading, setDeleteLoading] = useState(false)
+
+  const handleDelete = async () => {
+    setDeleteLoading(true)
+    try {
+      const response = await fetch(`/api/admin/appointments/${appointment.id}`, {
+        method: 'DELETE'
+      })
+
+      if (response.ok) {
+        onUpdate()
+        onClose()
+      } else {
+        const error = await response.json()
+        alert(error.error || 'Kon afspraak niet verwijderen')
+      }
+    } catch (error) {
+      console.error('Delete error:', error)
+      alert('Er is een fout opgetreden')
+    } finally {
+      setDeleteLoading(false)
+      setShowDeleteConfirm(false)
+    }
+  }
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
@@ -600,6 +697,50 @@ function AppointmentDetail({ appointment, onClose, onUpdate }: AppointmentDetail
             Bellen
           </a>
         </div>
+
+        {/* Delete Button */}
+        <div className="pt-4 border-t border-gray-100">
+          <button
+            onClick={() => setShowDeleteConfirm(true)}
+            className="w-full py-2.5 px-4 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors flex items-center justify-center gap-2"
+          >
+            <Trash2 className="w-4 h-4" />
+            Afspraak verwijderen
+          </button>
+        </div>
+
+        {/* Delete Confirmation Modal */}
+        {showDeleteConfirm && (
+          <div className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-4">
+            <div className="bg-white rounded-xl p-6 max-w-sm w-full shadow-xl">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                  <AlertTriangle className="w-5 h-5 text-red-600" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900">Afspraak verwijderen?</h3>
+              </div>
+              <p className="text-sm text-gray-600 mb-6">
+                Weet je zeker dat je afspraak <span className="font-medium">{appointment.referenceNumber}</span> wilt verwijderen? Dit kan niet ongedaan worden gemaakt.
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowDeleteConfirm(false)}
+                  disabled={deleteLoading}
+                  className="flex-1 py-2.5 px-4 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                >
+                  Annuleren
+                </button>
+                <button
+                  onClick={handleDelete}
+                  disabled={deleteLoading}
+                  className="flex-1 py-2.5 px-4 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50"
+                >
+                  {deleteLoading ? 'Bezig...' : 'Verwijderen'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
@@ -1248,7 +1389,7 @@ export default function AdminDashboard() {
       {selectedQuote && (
         <>
           <div onClick={() => setSelectedQuote(null)} className="fixed inset-0 bg-black/20 z-40" />
-          <QuoteDetail quote={selectedQuote} onClose={() => setSelectedQuote(null)} />
+          <QuoteDetail quote={selectedQuote} onClose={() => setSelectedQuote(null)} onDelete={fetchData} />
         </>
       )}
 
