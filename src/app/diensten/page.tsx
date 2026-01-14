@@ -73,17 +73,26 @@ const whyUs = [
   {
     number: '01',
     title: 'Duurzame keuzes',
-    description: 'We kiezen bewust voor materialen met een lange levensduur en gezonde eigenschappen.'
+    description: 'We kiezen bewust voor materialen met een lange levensduur en gezonde eigenschappen.',
+    icon: '🌿'
   },
   {
     number: '02',
     title: 'Premie-proof dossier',
-    description: 'Correcte offerte, factuur en attesten zodat uw premieaanvraag vlot verloopt.'
+    description: 'Correcte offerte, factuur en attesten zodat uw premieaanvraag vlot verloopt.',
+    icon: '📋'
   },
   {
     number: '03',
-    title: 'Spreidingsplan',
-    description: 'Flexibele betalingsregeling met transparante 30-30-30-10 spreiding over de projectfases.'
+    title: 'Gefaseerde betaling',
+    description: 'Flexibele betalingsregeling gekoppeld aan concrete mijlpalen in uw project.',
+    icon: '💳'
+  },
+  {
+    number: '04',
+    title: 'Eén aanspreekpunt',
+    description: 'Directe communicatie met uw projectleider. Geen gedoe met tussenpersonen.',
+    icon: '👤'
   }
 ];
 
@@ -245,40 +254,43 @@ export default function DienstenPage() {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-20 md:py-28 bg-noir-900 relative overflow-hidden">
-        {/* Background pattern */}
-        <div className="absolute inset-0">
-          <div className="absolute top-0 left-1/4 w-px h-full bg-white/5" />
-          <div className="absolute top-0 left-2/4 w-px h-full bg-white/5" />
-          <div className="absolute top-0 left-3/4 w-px h-full bg-white/5" />
-        </div>
-
+      <section className="py-20 md:py-28 bg-ivory-100 relative overflow-hidden">
         <div className="container-wide relative">
-          <AnimatedSection className="text-center mb-16">
-            <span className="inline-block px-4 py-2 bg-white/10 text-accent-400 text-xs font-medium uppercase tracking-[0.2em] rounded-full mb-6">
-              Onze aanpak
-            </span>
-            <h2 className="text-display-lg font-display font-medium text-white mb-4">
+          <AnimatedSection className="mb-16">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-12 h-px bg-accent-500" />
+              <span className="text-sm font-medium text-accent-600 uppercase tracking-[0.2em]">
+                Onze aanpak
+              </span>
+            </div>
+            <h2 className="text-display-lg font-display font-medium text-noir-900 mb-4">
               Waarom{' '}
-              <span className="text-accent-400 italic">NAM Construction</span>?
+              <span className="text-accent-600 italic">NAM Construction</span>?
             </h2>
-            <p className="text-lg text-white/60 max-w-2xl mx-auto">
+            <p className="text-lg text-noir-500 max-w-2xl">
               Wat ons onderscheidt van andere aannemers in de regio.
             </p>
           </AnimatedSection>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {whyUs.map((item, index) => (
-              <AnimatedSection key={item.title} delay={index * 150}>
-                <div className="group p-8 border border-white/10 hover:border-accent-500/50 bg-white/5 hover:bg-white/10 transition-all duration-500">
-                  {/* Number */}
-                  <span className="text-5xl font-display font-medium text-accent-400/30 group-hover:text-accent-400/50 transition-colors mb-6 block">
+              <AnimatedSection key={item.title} delay={index * 100}>
+                <div className="group relative bg-white p-8 border border-noir-100 hover:border-accent-500 transition-all duration-500 h-full">
+                  {/* Accent corner */}
+                  <div className="absolute top-0 left-0 w-0 h-0 border-l-[3px] border-t-[3px] border-accent-500 opacity-0 group-hover:w-8 group-hover:h-8 group-hover:opacity-100 transition-all duration-500" />
+
+                  {/* Icon */}
+                  <span className="text-3xl mb-4 block">{item.icon}</span>
+
+                  {/* Number tag */}
+                  <span className="inline-block px-2 py-1 bg-accent-50 text-accent-600 text-xs font-medium tracking-wider mb-4">
                     {item.number}
                   </span>
-                  <h3 className="text-xl font-display font-medium text-white mb-3">
+
+                  <h3 className="text-lg font-display font-medium text-noir-900 mb-3 group-hover:text-accent-600 transition-colors">
                     {item.title}
                   </h3>
-                  <p className="text-white/60">
+                  <p className="text-noir-500 text-sm leading-relaxed">
                     {item.description}
                   </p>
                 </div>
