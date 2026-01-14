@@ -1,6 +1,6 @@
-import Link from 'next/link';
+'use client';
+
 import Image from 'next/image';
-import { Metadata } from 'next';
 import {
   FileCheck,
   Shield,
@@ -12,52 +12,24 @@ import {
   FileText,
   ArrowUpRight
 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
 import { CTABanner } from '@/components';
 
-export const metadata: Metadata = {
-  title: 'Volledige Attestering | Nam Construction',
-  description: 'AREI-conforme installaties, EPB-attesten en alle nodige certificaten. Premie-proof en zonder zorgen.',
-};
-
-const certifications = [
-  {
-    icon: Shield,
-    title: 'AREI-conformiteit',
-    description: 'Elektrische installaties volgens het Algemeen Reglement op de Elektrische Installaties. Veilig en gekeurd.',
-  },
-  {
-    icon: FileText,
-    title: 'EPB-attesten',
-    description: 'Energie Prestatie en Binnenklimaat documentatie voor uw renovatieproject.',
-  },
-  {
-    icon: Award,
-    title: 'Aannemersattesten',
-    description: 'Alle nodige attesten voor uw premieaanvragen, correct ingevuld en ondertekend.',
-  },
-  {
-    icon: FileCheck,
-    title: 'Keuringsrapporten',
-    description: 'Coördinatie van alle nodige keuringen via onze erkende partners.',
-  }
-];
-
-const whatWeDo = [
-  'Premie-proof offerte en factuur (correct opgesplitst per categorie)',
-  'Aannemersattesten ingevuld en ondertekend',
-  'Coördinatie van keuringen via erkende partners',
-  'Advies over welke werken in aanmerking komen',
-  'Documentatie voor BTW-attest bij renovatie'
-];
-
-const whatYouGet = [
-  'Alle documenten voor premieaanvraag',
-  'AREI-keuringsattest',
-  'Facturen conform premievereisten',
-  'Ondersteuning bij het indienen'
-];
+const certificationIcons = [Shield, FileText, Award, FileCheck];
 
 export default function AttesteringPage() {
+  const t = useTranslations('waardenAttestering');
+
+  const certifications = certificationIcons.map((icon, index) => ({
+    icon,
+    title: t(`certifications.${index}.title`),
+    description: t(`certifications.${index}.description`),
+  }));
+
+  const whatWeDo = Array.from({ length: 5 }, (_, i) => t(`whatWeDo.items.${i}`));
+  const whatYouGet = Array.from({ length: 4 }, (_, i) => t(`whatYouGet.items.${i}`));
+  const withoutItems = Array.from({ length: 3 }, (_, i) => t(`whyImportant.withoutItems.${i}`));
   return (
     <>
       {/* Hero */}
@@ -68,9 +40,9 @@ export default function AttesteringPage() {
 
         <div className="container-wide relative">
           {/* Breadcrumb */}
-          <Link href="/#waarden" className="inline-flex items-center gap-2 text-noir-500 hover:text-accent-500 transition-colors mb-8 text-sm uppercase tracking-wide">
+          <Link href="/" className="inline-flex items-center gap-2 text-noir-500 hover:text-accent-500 transition-colors mb-8 text-sm uppercase tracking-wide">
             <ArrowLeft className="h-4 w-4" />
-            <span>Terug naar onze waarden</span>
+            <span>{t('backToValues')}</span>
           </Link>
 
           <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -78,21 +50,20 @@ export default function AttesteringPage() {
               {/* Badge */}
               <span className="inline-flex items-center gap-2 px-4 py-2 border border-noir-200 text-sm font-medium text-noir-600 mb-6 uppercase tracking-wide">
                 <FileCheck className="h-4 w-4" />
-                Onze waarden
+                {t('badge')}
               </span>
 
               <h1 className="text-display-lg font-display font-medium text-noir-900 mb-6">
-                Volledige Attestering
+                {t('title')}
               </h1>
               <p className="text-xl text-noir-500 leading-relaxed mb-10">
-                AREI-conforme installaties, EPB-attesten en alle nodige certificaten.
-                Premie-proof en zonder zorgen.
+                {t('description')}
               </p>
               <Link
                 href="/afspraak"
                 className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-noir-900 text-white font-medium uppercase tracking-wide hover:bg-accent-500 transition-all duration-500"
               >
-                Plan een adviesgesprek
+                {t('cta')}
                 <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
             </div>
@@ -102,7 +73,7 @@ export default function AttesteringPage() {
               <div className="relative h-80 lg:h-[500px] overflow-hidden">
                 <Image
                   src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&h=600&fit=crop"
-                  alt="Attestering en documenten"
+                  alt={t('imageAlt')}
                   fill
                   className="object-cover"
                   priority
@@ -118,13 +89,13 @@ export default function AttesteringPage() {
         <div className="container-wide">
           <div className="max-w-2xl mb-16">
             <span className="text-sm font-medium text-accent-500 uppercase tracking-[0.2em] mb-4 block">
-              Certificaten
+              {t('certificatesSection.badge')}
             </span>
             <h2 className="text-display-md font-display font-medium text-noir-900 mb-6">
-              Alle documenten in orde
+              {t('certificatesSection.title')}
             </h2>
             <p className="text-xl text-noir-500">
-              Wij zorgen voor alle nodige attesten en certificaten zodat u zich geen zorgen hoeft te maken.
+              {t('certificatesSection.subtitle')}
             </p>
           </div>
 
@@ -149,7 +120,7 @@ export default function AttesteringPage() {
             {/* What we do */}
             <div className="bg-white p-10 border border-ivory-200">
               <h3 className="text-2xl font-display font-medium text-noir-900 mb-6">
-                Wat wij doen
+                {t('whatWeDo.title')}
               </h3>
               <div className="space-y-4">
                 {whatWeDo.map((item) => (
@@ -164,7 +135,7 @@ export default function AttesteringPage() {
             {/* What you get */}
             <div className="bg-noir-900 p-10 text-white">
               <h3 className="text-2xl font-display font-medium mb-6">
-                Wat u krijgt
+                {t('whatYouGet.title')}
               </h3>
               <div className="space-y-4">
                 {whatYouGet.map((item) => (
@@ -179,8 +150,7 @@ export default function AttesteringPage() {
 
               <div className="mt-8 pt-8 border-t border-noir-800">
                 <p className="text-noir-400 text-sm">
-                  Al onze werken worden uitgevoerd volgens de geldende normen en regelgeving.
-                  U ontvangt alle nodige documenten voor uw premieaanvragen.
+                  {t('whatYouGet.footer')}
                 </p>
               </div>
             </div>
@@ -195,7 +165,7 @@ export default function AttesteringPage() {
             <div className="relative h-96 overflow-hidden">
               <Image
                 src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&h=600&fit=crop"
-                alt="Documenten en certificaten"
+                alt={t('imageAlt')}
                 fill
                 className="object-cover"
               />
@@ -203,32 +173,24 @@ export default function AttesteringPage() {
 
             <div>
               <span className="text-sm font-medium text-accent-500 uppercase tracking-[0.2em] mb-4 block">
-                Waarom belangrijk
+                {t('whyImportant.badge')}
               </span>
               <h2 className="text-display-md font-display font-medium text-noir-900 mb-6">
-                Premie-proof renoveren
+                {t('whyImportant.title')}
               </h2>
               <p className="text-lg text-noir-500 mb-8">
-                Veel renovatiepremies vereisen specifieke documenten en attesten.
-                Wij zorgen ervoor dat al uw paperassen in orde zijn, zodat u maximaal
-                kunt profiteren van beschikbare subsidies.
+                {t('whyImportant.description')}
               </p>
 
               <div className="bg-ivory-100 p-6 border border-ivory-200">
-                <h4 className="font-medium text-noir-900 mb-3">Zonder correcte attestering:</h4>
+                <h4 className="font-medium text-noir-900 mb-3">{t('whyImportant.withoutTitle')}</h4>
                 <ul className="space-y-2 text-noir-500">
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 bg-noir-400 rounded-full" />
-                    Geen toegang tot premies
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 bg-noir-400 rounded-full" />
-                    Problemen bij verkoop woning
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 bg-noir-400 rounded-full" />
-                    Risico op boetes bij keuring
-                  </li>
+                  {withoutItems.map((item, index) => (
+                    <li key={index} className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 bg-noir-400 rounded-full" />
+                      {item}
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -238,8 +200,8 @@ export default function AttesteringPage() {
 
       {/* CTA */}
       <CTABanner
-        title="Zekerheid over uw documenten?"
-        subtitle="Wij zorgen voor alle nodige attesten en certificaten bij uw renovatieproject."
+        title={t('ctaBanner.title')}
+        subtitle={t('ctaBanner.subtitle')}
       />
     </>
   );

@@ -1,6 +1,6 @@
-import Link from 'next/link';
+'use client';
+
 import Image from 'next/image';
-import { Metadata } from 'next';
 import {
   CreditCard,
   ArrowRight,
@@ -11,30 +11,26 @@ import {
   PiggyBank,
   ArrowUpRight
 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
 import { CTABanner } from '@/components';
 
-export const metadata: Metadata = {
-  title: 'Betalingsspreiding | Nam Construction',
-  description: 'Betaal in fasen per afgeronde mijlpaal. Transparant, eerlijk en overzichtelijk voor uw budget.',
-};
-
-const paymentPhases = [
-  { phase: 'Voorschot', icon: '1', desc: 'Bij ondertekening overeenkomst', detail: 'Start van de samenwerking' },
-  { phase: 'Ruwbouw', icon: '2', desc: 'Na afronding structurele werken', detail: 'Wanneer de basis staat' },
-  { phase: 'Afwerking', icon: '3', desc: 'Na afronding afwerkingen', detail: 'Tegelwerk, pleisterwerk, schilderwerk' },
-  { phase: 'Oplevering', icon: '4', desc: 'Na finale oplevering en goedkeuring', detail: 'Wanneer u volledig tevreden bent' }
-];
-
-const benefits = [
-  'Geen grote eenmalige betaling',
-  'Betaling gekoppeld aan voortgang',
-  'Duidelijke mijlpalen vooraf afgesproken',
-  'Transparante facturatie per fase',
-  'Geen verrassingen achteraf',
-  'Budget overzichtelijk spreiden'
-];
-
 export default function BetalingsspreidingPage() {
+  const t = useTranslations('waardenBetalingsspreiding');
+
+  const paymentPhases = Array.from({ length: 4 }, (_, i) => ({
+    phase: t(`phases.${i}.phase`),
+    icon: String(i + 1),
+    desc: t(`phases.${i}.desc`),
+    detail: t(`phases.${i}.detail`)
+  }));
+
+  const benefits = Array.from({ length: 6 }, (_, i) => t(`benefits.items.${i}`));
+  const howItWorksItems = Array.from({ length: 4 }, (_, i) => t(`budgetFriendly.howItWorksItems.${i}`));
+  const transparencySteps = Array.from({ length: 3 }, (_, i) => ({
+    title: t(`transparency.steps.${i}.title`),
+    description: t(`transparency.steps.${i}.description`)
+  }));
   return (
     <>
       {/* Hero */}
@@ -45,9 +41,9 @@ export default function BetalingsspreidingPage() {
 
         <div className="container-wide relative">
           {/* Breadcrumb */}
-          <Link href="/#waarden" className="inline-flex items-center gap-2 text-noir-500 hover:text-accent-500 transition-colors mb-8 text-sm uppercase tracking-wide">
+          <Link href="/" className="inline-flex items-center gap-2 text-noir-500 hover:text-accent-500 transition-colors mb-8 text-sm uppercase tracking-wide">
             <ArrowLeft className="h-4 w-4" />
-            <span>Terug naar onze waarden</span>
+            <span>{t('backToValues')}</span>
           </Link>
 
           <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -55,21 +51,20 @@ export default function BetalingsspreidingPage() {
               {/* Badge */}
               <span className="inline-flex items-center gap-2 px-4 py-2 border border-noir-200 text-sm font-medium text-noir-600 mb-6 uppercase tracking-wide">
                 <CreditCard className="h-4 w-4" />
-                Onze waarden
+                {t('badge')}
               </span>
 
               <h1 className="text-display-lg font-display font-medium text-noir-900 mb-6">
-                Betalingsspreiding
+                {t('title')}
               </h1>
               <p className="text-xl text-noir-500 leading-relaxed mb-10">
-                Betaal in fasen per afgeronde mijlpaal.
-                Transparant, eerlijk en overzichtelijk voor uw budget.
+                {t('description')}
               </p>
               <Link
                 href="/afspraak"
                 className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-noir-900 text-white font-medium uppercase tracking-wide hover:bg-accent-500 transition-all duration-500"
               >
-                Plan een adviesgesprek
+                {t('cta')}
                 <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
             </div>
@@ -79,7 +74,7 @@ export default function BetalingsspreidingPage() {
               <div className="relative h-80 lg:h-[500px] overflow-hidden">
                 <Image
                   src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&h=600&fit=crop"
-                  alt="Betalingsspreiding"
+                  alt={t('imageAlt')}
                   fill
                   className="object-cover"
                   priority
@@ -95,14 +90,13 @@ export default function BetalingsspreidingPage() {
         <div className="container-wide">
           <div className="max-w-2xl mb-16">
             <span className="text-sm font-medium text-accent-500 uppercase tracking-[0.2em] mb-4 block">
-              Betalingsplan
+              {t('paymentPlan.badge')}
             </span>
             <h2 className="text-display-md font-display font-medium text-noir-900 mb-6">
-              Hoe werkt de betaling?
+              {t('paymentPlan.title')}
             </h2>
             <p className="text-xl text-noir-500">
-              We werken met een gefaseerd betalingsplan dat gekoppeld is aan concrete mijlpalen
-              in uw project. Zo betaalt u pas voor werk dat effectief is uitgevoerd.
+              {t('paymentPlan.subtitle')}
             </p>
           </div>
 
@@ -132,11 +126,10 @@ export default function BetalingsspreidingPage() {
               </div>
               <div>
                 <h3 className="text-lg font-display font-medium text-noir-900 mb-2">
-                  Spreiding op maat van uw project
+                  {t('infoBox.title')}
                 </h3>
                 <p className="text-noir-600">
-                  De exacte verdeling bespreken we samen en stemmen we af op de aard en omvang van uw project.
-                  Zo zorgen we voor een betalingsplan dat past bij uw situatie en budget.
+                  {t('infoBox.description')}
                 </p>
               </div>
             </div>
@@ -150,14 +143,13 @@ export default function BetalingsspreidingPage() {
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
               <span className="text-sm font-medium text-accent-500 uppercase tracking-[0.2em] mb-4 block">
-                Voordelen
+                {t('benefits.badge')}
               </span>
               <h2 className="text-display-md font-display font-medium text-noir-900 mb-6">
-                Waarom gefaseerd betalen?
+                {t('benefits.title')}
               </h2>
               <p className="text-xl text-noir-500 mb-8">
-                Een renovatie is een grote investering. Met ons betalingsplan houdt u het overzicht
-                en betaalt u enkel voor afgerond werk.
+                {t('benefits.subtitle')}
               </p>
 
               <div className="grid sm:grid-cols-2 gap-4">
@@ -172,22 +164,20 @@ export default function BetalingsspreidingPage() {
 
             <div className="bg-noir-900 p-10 text-white">
               <Wallet className="h-12 w-12 text-accent-500 mb-6" />
-              <h3 className="text-2xl font-display font-medium mb-4">Budgetvriendelijk</h3>
+              <h3 className="text-2xl font-display font-medium mb-4">{t('budgetFriendly.title')}</h3>
               <p className="text-noir-400 mb-6">
-                Door de spreiding over meerdere fasen hoeft u niet in één keer een groot bedrag
-                te betalen. Ideaal voor uw cashflow en budgetplanning.
+                {t('budgetFriendly.description')}
               </p>
 
               <div className="bg-noir-800 p-6">
                 <div className="flex items-center gap-3 mb-4">
                   <PiggyBank className="h-8 w-8 text-accent-500" />
-                  <span className="font-medium">Hoe werkt het?</span>
+                  <span className="font-medium">{t('budgetFriendly.howItWorks')}</span>
                 </div>
                 <div className="space-y-2 text-noir-300 text-sm">
-                  <p>• Spreiding over meerdere mijlpalen</p>
-                  <p>• Verdeling afgestemd op uw project</p>
-                  <p>• Betaling pas na afronding fase</p>
-                  <p>• Altijd vooraf duidelijk afgesproken</p>
+                  {howItWorksItems.map((item, index) => (
+                    <p key={index}>• {item}</p>
+                  ))}
                 </div>
               </div>
             </div>
@@ -200,38 +190,29 @@ export default function BetalingsspreidingPage() {
         <div className="container-wide">
           <div className="max-w-3xl mx-auto text-center">
             <span className="text-sm font-medium text-accent-500 uppercase tracking-[0.2em] mb-4 block">
-              Transparantie
+              {t('transparency.badge')}
             </span>
             <h2 className="text-display-md font-display font-medium text-noir-900 mb-6">
-              Geen verrassingen
+              {t('transparency.title')}
             </h2>
             <p className="text-xl text-noir-500 mb-12">
-              Alle betalingsmomenten worden vooraf afgesproken en vastgelegd in de overeenkomst.
-              Meerwerk wordt altijd vooraf besproken en goedgekeurd.
+              {t('transparency.subtitle')}
             </p>
 
             <div className="grid md:grid-cols-3 gap-8">
-              <div className="bg-ivory-100 p-8 border border-ivory-200">
-                <div className="w-14 h-14 bg-noir-900 flex items-center justify-center mb-4 mx-auto">
-                  <span className="text-2xl">1</span>
+              {transparencySteps.map((step, index) => (
+                <div key={index} className="bg-ivory-100 p-8 border border-ivory-200">
+                  <div className={`w-14 h-14 ${index === 2 ? 'bg-accent-500' : 'bg-noir-900'} flex items-center justify-center mb-4 mx-auto`}>
+                    {index === 2 ? (
+                      <CheckCircle2 className="h-7 w-7 text-white" />
+                    ) : (
+                      <span className="text-2xl text-white">{index + 1}</span>
+                    )}
+                  </div>
+                  <h3 className="font-medium text-noir-900 mb-2">{step.title}</h3>
+                  <p className="text-noir-500 text-sm">{step.description}</p>
                 </div>
-                <h3 className="font-medium text-noir-900 mb-2">Duidelijke offerte</h3>
-                <p className="text-noir-500 text-sm">Gedetailleerde prijsopgave per onderdeel</p>
-              </div>
-              <div className="bg-ivory-100 p-8 border border-ivory-200">
-                <div className="w-14 h-14 bg-noir-900 flex items-center justify-center mb-4 mx-auto">
-                  <span className="text-2xl">2</span>
-                </div>
-                <h3 className="font-medium text-noir-900 mb-2">Meerwerk in overleg</h3>
-                <p className="text-noir-500 text-sm">Altijd vooraf besproken en goedgekeurd</p>
-              </div>
-              <div className="bg-ivory-100 p-8 border border-ivory-200">
-                <div className="w-14 h-14 bg-accent-500 flex items-center justify-center mb-4 mx-auto">
-                  <CheckCircle2 className="h-7 w-7 text-white" />
-                </div>
-                <h3 className="font-medium text-noir-900 mb-2">Betaling na goedkeuring</h3>
-                <p className="text-noir-500 text-sm">U betaalt pas na akkoord op de fase</p>
-              </div>
+              ))}
             </div>
           </div>
         </div>
@@ -239,8 +220,8 @@ export default function BetalingsspreidingPage() {
 
       {/* CTA */}
       <CTABanner
-        title="Renoveren op uw tempo?"
-        subtitle="Bespreek uw project en ontdek hoe we de betaling kunnen spreiden."
+        title={t('ctaBanner.title')}
+        subtitle={t('ctaBanner.subtitle')}
       />
     </>
   );

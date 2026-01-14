@@ -1,50 +1,75 @@
-import Link from 'next/link';
+'use client';
+
 import Image from 'next/image';
-import { Metadata } from 'next';
 import { ArrowRight, CheckCircle2, Paintbrush, Calendar } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
 import { SectionHeader, CTABanner } from '@/components';
 
-export const metadata: Metadata = {
-  title: 'Afwerking Gent | Tegelwerk, Plakwerk, Schilderwerk',
-  description: 'Professionele afwerking in Gent. Tegelwerk, plakwerk, schilderwerk en chapewerk. Vakkundige uitvoering met oog voor detail.',
-};
-
-const services = [
-  {
-    title: 'Tegelwerk',
-    description: 'Vakkundig gelegd tegelwerk voor vloer en wand. Van klassiek tot modern, met oog voor patroon en voegen.',
-    items: ['Vloertegels', 'Wandtegels', 'Mozaïek', 'Natuursteen', 'Grote formaten'],
-    color: 'forest'
-  },
-  {
-    title: 'Plakwerk & Gyproc',
-    description: 'Strakke wanden en plafonds met gyproc of traditioneel pleisterwerk.',
-    items: ['Gyprocwanden', 'Verlaagde plafonds', 'Pleisterwerk', 'Schuurwerk', 'Sierpleister'],
-    color: 'terracotta'
-  },
-  {
-    title: 'Schilderwerk',
-    description: 'Professioneel schilderwerk voor binnen en buiten. Met kwalitatieve verven en gezonde alternatieven.',
-    items: ['Binnenschilderwerk', 'Buitenschilderwerk', 'Lakwerk', 'Behang', 'Decoratieve technieken'],
-    color: 'sand'
-  },
-  {
-    title: 'Chapewerk',
-    description: 'Egale ondervloeren voor een perfecte afwerking van uw vloerbekleding.',
-    items: ['Traditionele chape', 'Vloerverwarming-chape', 'Egalisatie', 'Sneldrogende chape'],
-    color: 'stone'
-  }
-];
-
-const qualityPoints = [
-  'Gebruik van kwalitatieve materialen',
-  'Vakkundige toepassing en verwerking',
-  'Oog voor detail en afwerking',
-  'Gezonde materialen waar mogelijk',
-  'Strakke oplevering'
-];
+const serviceColors = ['forest', 'terracotta', 'sand', 'stone'];
 
 export default function AfwerkingPage() {
+  const t = useTranslations('serviceDetails');
+  const tPage = useTranslations('serviceDetails.afwerking');
+
+  const services = [
+    {
+      title: tPage('services.0.title'),
+      description: tPage('services.0.description'),
+      items: [
+        tPage('services.0.items.0'),
+        tPage('services.0.items.1'),
+        tPage('services.0.items.2'),
+        tPage('services.0.items.3'),
+        tPage('services.0.items.4'),
+      ],
+      color: serviceColors[0]
+    },
+    {
+      title: tPage('services.1.title'),
+      description: tPage('services.1.description'),
+      items: [
+        tPage('services.1.items.0'),
+        tPage('services.1.items.1'),
+        tPage('services.1.items.2'),
+        tPage('services.1.items.3'),
+        tPage('services.1.items.4'),
+      ],
+      color: serviceColors[1]
+    },
+    {
+      title: tPage('services.2.title'),
+      description: tPage('services.2.description'),
+      items: [
+        tPage('services.2.items.0'),
+        tPage('services.2.items.1'),
+        tPage('services.2.items.2'),
+        tPage('services.2.items.3'),
+        tPage('services.2.items.4'),
+      ],
+      color: serviceColors[2]
+    },
+    {
+      title: tPage('services.3.title'),
+      description: tPage('services.3.description'),
+      items: [
+        tPage('services.3.items.0'),
+        tPage('services.3.items.1'),
+        tPage('services.3.items.2'),
+        tPage('services.3.items.3'),
+      ],
+      color: serviceColors[3]
+    }
+  ];
+
+  const qualityPoints = [
+    tPage('qualityPoints.0'),
+    tPage('qualityPoints.1'),
+    tPage('qualityPoints.2'),
+    tPage('qualityPoints.3'),
+    tPage('qualityPoints.4'),
+  ];
+
   return (
     <>
       {/* Hero */}
@@ -61,28 +86,27 @@ export default function AfwerkingPage() {
                 className="inline-flex items-center text-forest-600 hover:text-forest-700 mb-6 group"
               >
                 <ArrowRight className="h-4 w-4 mr-2 rotate-180 transition-transform group-hover:-translate-x-1" />
-                Terug naar diensten
+                {t('backToServices')}
               </Link>
 
               {/* Badge */}
               <span className="inline-flex items-center gap-2 px-4 py-2 bg-sand-200 rounded-full text-sm font-medium text-sand-800 mb-6">
                 <Paintbrush className="h-4 w-4" />
-                Detail & precisie
+                {tPage('badge')}
               </span>
 
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-semibold text-stone-900 mb-6">
-                Afwerking
+                {tPage('title')}
               </h1>
               <p className="text-xl text-stone-600 leading-relaxed mb-8">
-                Vakkundige afwerking die het verschil maakt. Tegelwerk, plakwerk, schilderwerk
-                en meer—met oog voor detail en kwaliteitsvolle materialen.
+                {tPage('description')}
               </p>
               <Link
                 href="/contact"
                 className="group inline-flex items-center justify-center px-8 py-4 bg-forest-600 text-white rounded-full font-medium hover:bg-forest-700 transition-all duration-300 hover:shadow-lg hover:shadow-forest-600/25"
               >
                 <Calendar className="h-5 w-5 mr-2" />
-                Gratis adviesgesprek
+                {t('freeConsultation')}
                 <ArrowRight className="h-5 w-5 ml-2 transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
@@ -92,7 +116,7 @@ export default function AfwerkingPage() {
               <div className="relative h-80 lg:h-[500px] rounded-3xl overflow-hidden shadow-2xl">
                 <Image
                   src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop"
-                  alt="Afwerking"
+                  alt={tPage('title')}
                   fill
                   className="object-cover"
                   priority
@@ -109,9 +133,9 @@ export default function AfwerkingPage() {
       <section className="section-padding bg-white">
         <div className="container-custom">
           <SectionHeader
-            title="Onze afwerkingsdiensten"
-            subtitle="Van tegelwerk tot schilderwerk—alles voor een perfecte afwerking."
-            badge="Diensten"
+            title={tPage('servicesTitle')}
+            subtitle={tPage('servicesSubtitle')}
+            badge={tPage('servicesBadge')}
           />
           <div className="grid md:grid-cols-2 gap-8">
             {services.map((service) => (
@@ -158,7 +182,7 @@ export default function AfwerkingPage() {
               <div className="relative h-80 lg:h-[450px] rounded-3xl overflow-hidden shadow-xl">
                 <Image
                   src="https://images.unsplash.com/photo-1600585154363-67eb9e2e2099?w=800&h=600&fit=crop"
-                  alt="Kwaliteitsafwerking"
+                  alt={tPage('qualityTitle')}
                   fill
                   className="object-cover"
                 />
@@ -168,14 +192,13 @@ export default function AfwerkingPage() {
 
             <div>
               <span className="inline-block px-4 py-1.5 bg-sand-200 text-sand-800 rounded-full text-sm font-medium mb-6">
-                Kwaliteit
+                {tPage('qualityBadge')}
               </span>
               <h2 className="text-3xl md:text-4xl font-display font-semibold text-stone-900 mb-6">
-                Afwerking die blijft
+                {tPage('qualityTitle')}
               </h2>
               <p className="text-lg text-stone-600 mb-8">
-                De afwerking bepaalt het eindresultaat van uw renovatie. Daarom besteden we
-                extra aandacht aan materialen, technieken en details.
+                {tPage('qualityDescription')}
               </p>
               <div className="space-y-4">
                 {qualityPoints.map((item) => (

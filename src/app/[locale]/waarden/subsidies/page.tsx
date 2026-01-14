@@ -1,6 +1,6 @@
-import Link from 'next/link';
+'use client';
+
 import Image from 'next/image';
-import { Metadata } from 'next';
 import {
   Shield,
   ArrowRight,
@@ -13,44 +13,28 @@ import {
   FileCheck,
   ArrowUpRight
 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
 import { CTABanner } from '@/components';
 
-export const metadata: Metadata = {
-  title: 'Subsidie-ondersteuning | Nam Construction',
-  description: 'We helpen bij het aanvragen van beschikbare premies en subsidies. Maximaal voordeel uit uw investering.',
-};
-
-const whatWeDo = [
-  'Premie-proof offerte en factuur (correct opgesplitst per categorie)',
-  'Aannemersattesten ingevuld en ondertekend',
-  'Coördinatie van keuringen via erkende partners',
-  'Advies over welke werken in aanmerking komen'
-];
-
-const whatYouDo = [
-  'Premieaanvraag indienen via Mijn VerbouwPremie',
-  'Eventuele leningaanvraag via het Energiehuis'
-];
-
-const premieTypes = [
-  {
-    title: 'Mijn VerbouwPremie',
-    description: 'Premie voor dakisolatie, muurisolatie, vloerisolatie, hoogrendementsglas en meer.',
-    link: 'https://www.vlaanderen.be/premies-voor-renovatie/mijn-verbouwpremie',
-  },
-  {
-    title: 'Mijn VerbouwLening',
-    description: 'Voordelige lening voor energiebesparende renovaties via het Energiehuis.',
-    link: 'https://www.vlaanderen.be/lenen-voor-een-woning/mijn-verbouwlening',
-  },
-  {
-    title: 'Gemeentelijke premies',
-    description: 'Extra premies van uw gemeente bovenop de Vlaamse premies.',
-    link: '#',
-  }
+const premieLinks = [
+  'https://www.vlaanderen.be/premies-voor-renovatie/mijn-verbouwpremie',
+  'https://www.vlaanderen.be/lenen-voor-een-woning/mijn-verbouwlening',
+  '#'
 ];
 
 export default function SubsidiesPage() {
+  const t = useTranslations('waardenSubsidies');
+
+  const whatWeDo = Array.from({ length: 4 }, (_, i) => t(`whatWeDo.items.${i}`));
+  const whatYouDo = Array.from({ length: 2 }, (_, i) => t(`whatYouDo.items.${i}`));
+
+  const premieTypes = Array.from({ length: 3 }, (_, i) => ({
+    title: t(`premieTypes.${i}.title`),
+    description: t(`premieTypes.${i}.description`),
+    link: premieLinks[i],
+    linkText: i < 2 ? t(`premieTypes.${i}.linkText`) : undefined
+  }));
   return (
     <>
       {/* Hero */}
@@ -61,9 +45,9 @@ export default function SubsidiesPage() {
 
         <div className="container-wide relative">
           {/* Breadcrumb */}
-          <Link href="/#waarden" className="inline-flex items-center gap-2 text-noir-500 hover:text-accent-500 transition-colors mb-8 text-sm uppercase tracking-wide">
+          <Link href="/" className="inline-flex items-center gap-2 text-noir-500 hover:text-accent-500 transition-colors mb-8 text-sm uppercase tracking-wide">
             <ArrowLeft className="h-4 w-4" />
-            <span>Terug naar onze waarden</span>
+            <span>{t('backToValues')}</span>
           </Link>
 
           <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -71,21 +55,20 @@ export default function SubsidiesPage() {
               {/* Badge */}
               <span className="inline-flex items-center gap-2 px-4 py-2 border border-noir-200 text-sm font-medium text-noir-600 mb-6 uppercase tracking-wide">
                 <Shield className="h-4 w-4" />
-                Onze waarden
+                {t('badge')}
               </span>
 
               <h1 className="text-display-lg font-display font-medium text-noir-900 mb-6">
-                Subsidie-ondersteuning
+                {t('title')}
               </h1>
               <p className="text-xl text-noir-500 leading-relaxed mb-10">
-                We helpen bij het aanvragen van beschikbare premies en subsidies.
-                Maximaal voordeel uit uw investering.
+                {t('description')}
               </p>
               <Link
                 href="/afspraak"
                 className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-noir-900 text-white font-medium uppercase tracking-wide hover:bg-accent-500 transition-all duration-500"
               >
-                Plan een adviesgesprek
+                {t('cta')}
                 <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
             </div>
@@ -95,7 +78,7 @@ export default function SubsidiesPage() {
               <div className="relative h-80 lg:h-[500px] overflow-hidden">
                 <Image
                   src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&h=600&fit=crop"
-                  alt="Subsidies en premies"
+                  alt={t('imageAlt')}
                   fill
                   className="object-cover"
                   priority
@@ -111,14 +94,13 @@ export default function SubsidiesPage() {
         <div className="container-wide">
           <div className="max-w-2xl mb-16">
             <span className="text-sm font-medium text-accent-500 uppercase tracking-[0.2em] mb-4 block">
-              Samenwerking
+              {t('collaborationSection.badge')}
             </span>
             <h2 className="text-display-md font-display font-medium text-noir-900 mb-6">
-              Premies, Leningen & Attesten
+              {t('collaborationSection.title')}
             </h2>
             <p className="text-xl text-noir-500">
-              We helpen u wegwijs in het premie-landschap en leveren de juiste documenten
-              zodat uw dossier vlot kan verlopen.
+              {t('collaborationSection.subtitle')}
             </p>
           </div>
 
@@ -129,7 +111,7 @@ export default function SubsidiesPage() {
                 <FileCheck className="h-7 w-7 text-white" />
               </div>
               <h3 className="text-2xl font-display font-medium text-noir-900 mb-6">
-                Wat wij doen
+                {t('whatWeDo.title')}
               </h3>
               <div className="space-y-4">
                 {whatWeDo.map((item) => (
@@ -147,7 +129,7 @@ export default function SubsidiesPage() {
                 <Euro className="h-7 w-7 text-white" />
               </div>
               <h3 className="text-2xl font-display font-medium text-noir-900 mb-6">
-                Wat u doet
+                {t('whatYouDo.title')}
               </h3>
               <div className="space-y-4">
                 {whatYouDo.map((item) => (
@@ -160,8 +142,7 @@ export default function SubsidiesPage() {
 
               <div className="mt-8 pt-6 border-t border-ivory-300">
                 <p className="text-noir-500 text-sm">
-                  De premieaanvraag zelf dient u in via de officiële kanalen.
-                  Wij zorgen voor alle nodige documenten en attesten.
+                  {t('whatYouDo.footer')}
                 </p>
               </div>
             </div>
@@ -174,13 +155,13 @@ export default function SubsidiesPage() {
         <div className="container-wide">
           <div className="max-w-2xl mb-16">
             <span className="text-sm font-medium text-accent-500 uppercase tracking-[0.2em] mb-4 block">
-              Overzicht
+              {t('premiesSection.badge')}
             </span>
             <h2 className="text-display-md font-display font-medium text-noir-900 mb-6">
-              Beschikbare premies
+              {t('premiesSection.title')}
             </h2>
             <p className="text-xl text-noir-500">
-              Een overzicht van de belangrijkste premies waarvoor uw renovatie mogelijk in aanmerking komt.
+              {t('premiesSection.subtitle')}
             </p>
           </div>
 
@@ -189,14 +170,14 @@ export default function SubsidiesPage() {
               <div key={premie.title} className="bg-white p-8 border border-ivory-200 hover:-translate-y-1 transition-all duration-300">
                 <h3 className="text-xl font-display font-medium text-noir-900 mb-3">{premie.title}</h3>
                 <p className="text-noir-500 mb-6">{premie.description}</p>
-                {premie.link !== '#' && (
+                {premie.link !== '#' && premie.linkText && (
                   <a
                     href={premie.link}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center text-sm font-medium text-accent-500 hover:text-accent-600 transition-colors"
                   >
-                    Meer info
+                    {premie.linkText}
                     <ExternalLink className="h-4 w-4 ml-2" />
                   </a>
                 )}
@@ -214,14 +195,13 @@ export default function SubsidiesPage() {
               <AlertCircle className="h-8 w-8 text-accent-500 flex-shrink-0 mt-1" />
               <div>
                 <h2 className="text-2xl md:text-3xl font-display font-medium text-white mb-4">
-                  Belangrijke wijzigingen 2026
+                  {t('importantNotice.title')}
                 </h2>
                 <p className="text-noir-300 text-lg mb-6">
-                  Vanaf 1 maart 2026 wijzigt Mijn VerbouwPremie. Eigenaar-bewoners in de hoogste
-                  inkomenscategorieën komen dan enkel nog in aanmerking voor warmtepomp en warmtepompboiler.
+                  {t('importantNotice.description')}
                 </p>
                 <p className="text-noir-400 mb-8">
-                  Wij houden u op de hoogte van de actuele voorwaarden en zetten eerlijke verwachtingen.
+                  {t('importantNotice.footer')}
                 </p>
                 <a
                   href="https://www.vlaanderen.be/premies-voor-renovatie/mijn-verbouwpremie/wijzigingen-mijn-verbouwpremie-vanaf-2026"
@@ -229,7 +209,7 @@ export default function SubsidiesPage() {
                   rel="noopener noreferrer"
                   className="group inline-flex items-center text-accent-500 hover:text-white transition-colors"
                 >
-                  Lees meer over de wijzigingen
+                  {t('importantNotice.linkText')}
                   <ArrowRight className="h-4 w-4 ml-2 transition-transform group-hover:translate-x-1" />
                 </a>
               </div>
@@ -261,8 +241,8 @@ export default function SubsidiesPage() {
 
       {/* CTA */}
       <CTABanner
-        title="Maximaal profiteren van premies?"
-        subtitle="We bespreken graag welke premies van toepassing zijn op uw renovatieproject."
+        title={t('ctaBanner.title')}
+        subtitle={t('ctaBanner.subtitle')}
       />
     </>
   );

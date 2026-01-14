@@ -1,79 +1,64 @@
-import Link from 'next/link';
+'use client';
+
 import Image from 'next/image';
-import { Metadata } from 'next';
 import { ArrowRight, CheckCircle2, Clock, Users, Shield, FileCheck, Home, Calendar } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
 import { SectionHeader, CTABanner } from '@/components';
 
-export const metadata: Metadata = {
-  title: 'Totaalrenovatie Gent',
-  description: 'Totaalrenovatie in Gent en omstreken. Volledige renovatie van uw woning met één aanspreekpunt, duurzame materialen en premie-proof documentatie.',
-};
-
-const features = [
-  {
-    icon: Users,
-    title: 'Eén aanspreekpunt',
-    description: 'U heeft één contactpersoon voor uw hele project. Wij coördineren alle vakmensen en leveranciers.',
-    color: 'forest'
-  },
-  {
-    icon: Clock,
-    title: 'Heldere planning',
-    description: 'Duidelijke fasering en regelmatige updates. U weet altijd waar u aan toe bent.',
-    color: 'terracotta'
-  },
-  {
-    icon: Shield,
-    title: 'Kwaliteitsgarantie',
-    description: 'Vakkundige uitvoering met oog voor detail en gebruik van duurzame materialen.',
-    color: 'sand'
-  },
-  {
-    icon: FileCheck,
-    title: 'Premie-proof',
-    description: 'Correcte documentatie voor Mijn VerbouwPremie en andere subsidies.',
-    color: 'stone'
-  }
-];
-
-const scope = [
-  'Structurele werken en ruwbouw',
-  'Isolatie (dak, gevel, vloer)',
-  'Ramen en deuren',
-  'Elektriciteit (AREI-conform)',
-  'Sanitair en verwarming',
-  'Ventilatie',
-  'Tegelwerk en vloeren',
-  'Plakwerk en gyproc',
-  'Schilderwerk',
-  'Keuken en badkamer',
-  'Buitenafwerking'
-];
-
-const faqs = [
-  {
-    question: 'Hoe lang duurt een totaalrenovatie?',
-    answer: 'De duur hangt af van de scope en complexiteit van uw project. Een gemiddelde totaalrenovatie duurt 3 tot 6 maanden. We maken een gedetailleerde planning bij de start.'
-  },
-  {
-    question: 'Kan ik blijven wonen tijdens de renovatie?',
-    answer: 'Dit hangt af van de omvang van de werken. We bespreken dit tijdens het adviesgesprek en zoeken samen naar de beste oplossing.'
-  },
-  {
-    question: 'Hoe werkt de betalingsregeling?',
-    answer: 'We werken met een betalingsplan in schijven, gekoppeld aan mijlpalen in het project. Zo heeft u budgetzekerheid en transparantie.'
-  },
-  {
-    question: 'Helpen jullie met premieaanvragen?',
-    answer: 'Ja, we leveren premie-proof offertes en facturen, en helpen met de nodige attesten. U dient de aanvraag zelf in via het loket.'
-  },
-  {
-    question: 'Werken jullie met onderaannemers?',
-    answer: 'Voor gespecialiseerde technieken werken we met vaste, betrouwbare partners. Zij werken onder onze coördinatie en kwaliteitscontrole.'
-  }
-];
-
 export default function TotaalrenovatiePage() {
+  const t = useTranslations('serviceDetails');
+  const tPage = useTranslations('serviceDetails.totaalrenovatie');
+
+  const features = [
+    {
+      icon: Users,
+      title: tPage('features.singleContact.title'),
+      description: tPage('features.singleContact.description'),
+      color: 'forest'
+    },
+    {
+      icon: Clock,
+      title: tPage('features.planning.title'),
+      description: tPage('features.planning.description'),
+      color: 'terracotta'
+    },
+    {
+      icon: Shield,
+      title: tPage('features.quality.title'),
+      description: tPage('features.quality.description'),
+      color: 'sand'
+    },
+    {
+      icon: FileCheck,
+      title: tPage('features.subsidy.title'),
+      description: tPage('features.subsidy.description'),
+      color: 'stone'
+    }
+  ];
+
+  const scope = [
+    tPage('scope.0'),
+    tPage('scope.1'),
+    tPage('scope.2'),
+    tPage('scope.3'),
+    tPage('scope.4'),
+    tPage('scope.5'),
+    tPage('scope.6'),
+    tPage('scope.7'),
+    tPage('scope.8'),
+    tPage('scope.9'),
+    tPage('scope.10'),
+  ];
+
+  const faqs = [
+    { question: tPage('faqs.0.question'), answer: tPage('faqs.0.answer') },
+    { question: tPage('faqs.1.question'), answer: tPage('faqs.1.answer') },
+    { question: tPage('faqs.2.question'), answer: tPage('faqs.2.answer') },
+    { question: tPage('faqs.3.question'), answer: tPage('faqs.3.answer') },
+    { question: tPage('faqs.4.question'), answer: tPage('faqs.4.answer') },
+  ];
+
   return (
     <>
       {/* Hero */}
@@ -90,21 +75,20 @@ export default function TotaalrenovatiePage() {
                 className="inline-flex items-center text-forest-600 hover:text-forest-700 mb-6 group"
               >
                 <ArrowRight className="h-4 w-4 mr-2 rotate-180 transition-transform group-hover:-translate-x-1" />
-                Terug naar diensten
+                {t('backToServices')}
               </Link>
 
               {/* Badge */}
               <span className="inline-flex items-center gap-2 px-4 py-2 bg-forest-100 rounded-full text-sm font-medium text-forest-700 mb-6">
                 <Home className="h-4 w-4" />
-                Meest gevraagd
+                {tPage('badge')}
               </span>
 
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-semibold text-stone-900 mb-6">
-                Totaalrenovatie
+                {tPage('title')}
               </h1>
               <p className="text-xl text-stone-600 leading-relaxed mb-8">
-                Volledige renovatie van uw woning, van ruwbouw tot afwerking. Met één
-                aanspreekpunt, duurzame materiaalkeuzes en premie-proof documentatie.
+                {tPage('description')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
@@ -112,14 +96,14 @@ export default function TotaalrenovatiePage() {
                   className="group inline-flex items-center justify-center px-8 py-4 bg-forest-600 text-white rounded-full font-medium hover:bg-forest-700 transition-all duration-300 hover:shadow-lg hover:shadow-forest-600/25"
                 >
                   <Calendar className="h-5 w-5 mr-2" />
-                  Gratis adviesgesprek
+                  {t('freeConsultation')}
                   <ArrowRight className="h-5 w-5 ml-2 transition-transform group-hover:translate-x-1" />
                 </Link>
                 <Link
                   href="/projecten"
                   className="inline-flex items-center justify-center px-8 py-4 bg-white border-2 border-stone-200 text-stone-700 rounded-full font-medium hover:border-forest-600 hover:text-forest-700 transition-all duration-300"
                 >
-                  Bekijk projecten
+                  {t('viewProjects')}
                 </Link>
               </div>
             </div>
@@ -129,7 +113,7 @@ export default function TotaalrenovatiePage() {
               <div className="relative h-80 lg:h-[500px] rounded-3xl overflow-hidden shadow-2xl">
                 <Image
                   src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop"
-                  alt="Totaalrenovatie"
+                  alt={tPage('title')}
                   fill
                   className="object-cover"
                   priority
@@ -147,9 +131,9 @@ export default function TotaalrenovatiePage() {
       <section className="section-padding bg-white">
         <div className="container-custom">
           <SectionHeader
-            title="Wat mag u verwachten?"
-            subtitle="Onze totaalrenovaties kenmerken zich door kwaliteit, communicatie en duurzaamheid."
-            badge="Voordelen"
+            title={tPage('featuresTitle')}
+            subtitle={tPage('featuresSubtitle')}
+            badge={tPage('featuresBadge')}
           />
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature) => (
@@ -183,14 +167,13 @@ export default function TotaalrenovatiePage() {
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div>
               <span className="inline-block px-4 py-1.5 bg-forest-100 text-forest-700 rounded-full text-sm font-medium mb-6">
-                Scope
+                {tPage('scopeBadge')}
               </span>
               <h2 className="text-3xl md:text-4xl font-display font-semibold text-stone-900 mb-6">
-                Wat omvat een totaalrenovatie?
+                {tPage('scopeTitle')}
               </h2>
               <p className="text-lg text-stone-600 mb-8">
-                Een totaalrenovatie betekent dat we alle aspecten van uw woning onder handen nemen.
-                Van structurele werken tot de kleinste afwerkingsdetails.
+                {tPage('scopeDescription')}
               </p>
               <div className="grid sm:grid-cols-2 gap-4">
                 {scope.map((item) => (
@@ -206,7 +189,7 @@ export default function TotaalrenovatiePage() {
               <div className="relative h-80 lg:h-[500px] rounded-3xl overflow-hidden shadow-xl">
                 <Image
                   src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&h=600&fit=crop"
-                  alt="Renovatie scope"
+                  alt={tPage('scopeTitle')}
                   fill
                   className="object-cover"
                 />
@@ -221,9 +204,9 @@ export default function TotaalrenovatiePage() {
       <section className="section-padding bg-white">
         <div className="container-custom">
           <SectionHeader
-            title="Veelgestelde vragen"
-            subtitle="Antwoorden op de meest voorkomende vragen over totaalrenovatie."
-            badge="FAQ"
+            title={tPage('faqTitle')}
+            subtitle={tPage('faqSubtitle')}
+            badge={tPage('faqBadge')}
           />
           <div className="max-w-3xl mx-auto">
             <div className="space-y-6">

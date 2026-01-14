@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
 import {
   Phone,
   Mail,
@@ -14,69 +15,6 @@ import {
   ArrowUpRight,
   CheckCircle2,
 } from 'lucide-react';
-
-const contactInfo = [
-  {
-    icon: Phone,
-    title: 'Telefoon',
-    content: '+32 493 81 27 89',
-    href: 'tel:+32493812789',
-    description: 'Ma-Vr 8:00-18:00'
-  },
-  {
-    icon: Mail,
-    title: 'Email',
-    content: 'info@namconstruction.be',
-    href: 'mailto:info@namconstruction.be',
-    description: 'Reactie binnen 24u'
-  },
-  {
-    icon: MessageSquare,
-    title: 'WhatsApp',
-    content: 'Direct contact',
-    href: 'https://wa.me/32493812789',
-    description: 'Stuur foto\'s van uw project'
-  },
-  {
-    icon: MapPin,
-    title: 'Kantoor',
-    content: 'Zwijnaardsesteenweg 683',
-    description: '9000 Gent'
-  }
-];
-
-const projectTypes = [
-  'Totaalrenovatie',
-  'Renovatie & verbouwing',
-  'Badkamerrenovatie',
-  'Keukenrenovatie',
-  'Afwerking (tegelwerk, plakwerk, ...)',
-  'Technieken (elektriciteit, sanitair)',
-  'Anders'
-];
-
-const timings = [
-  'Zo snel mogelijk',
-  'Binnen 3 maanden',
-  '3-6 maanden',
-  'Later / nog niet bepaald'
-];
-
-const budgetRanges = [
-  'Nog geen idee',
-  '< €25.000',
-  '€25.000 - €50.000',
-  '€50.000 - €100.000',
-  '€100.000 - €200.000',
-  '> €200.000'
-];
-
-const expectations = [
-  { text: 'Reactie binnen 24 uur', icon: Clock },
-  { text: 'Korte telefonische intake', icon: Phone },
-  { text: 'Gratis plaatsbezoek indien relevant', icon: MapPin },
-  { text: 'Gedetailleerde offerte', icon: CheckCircle2 }
-];
 
 const regions = ['Gent', 'Mariakerke', 'Drongen', 'Sint-Martens-Latem', 'Ledeberg', 'Gentbrugge', 'Merelbeke'];
 
@@ -116,6 +54,7 @@ function AnimatedSection({ children, className = '', delay = 0 }: { children: Re
 }
 
 export default function ContactPage() {
+  const t = useTranslations('contactPage');
   const [heroLoaded, setHeroLoaded] = useState(false);
   const [formState, setFormState] = useState({
     name: '',
@@ -132,6 +71,71 @@ export default function ContactPage() {
   useEffect(() => {
     setHeroLoaded(true);
   }, []);
+
+  // Build contact info from translations
+  const contactInfo = [
+    {
+      icon: Phone,
+      title: t('phone'),
+      content: '+32 493 81 27 89',
+      href: 'tel:+32493812789',
+      description: t('monFri')
+    },
+    {
+      icon: Mail,
+      title: t('email'),
+      content: 'info@namconstruction.be',
+      href: 'mailto:info@namconstruction.be',
+      description: t('responseTime')
+    },
+    {
+      icon: MessageSquare,
+      title: t('whatsapp'),
+      content: t('directContact'),
+      href: 'https://wa.me/32493812789',
+      description: t('sendPhotos')
+    },
+    {
+      icon: MapPin,
+      title: t('office'),
+      content: 'Zwijnaardsesteenweg 683',
+      description: '9000 Gent'
+    }
+  ];
+
+  // Build arrays from translations
+  const projectTypes = [
+    t('projectTypes.0'),
+    t('projectTypes.1'),
+    t('projectTypes.2'),
+    t('projectTypes.3'),
+    t('projectTypes.4'),
+    t('projectTypes.5'),
+    t('projectTypes.6'),
+  ];
+
+  const timings = [
+    t('timings.0'),
+    t('timings.1'),
+    t('timings.2'),
+    t('timings.3'),
+  ];
+
+  const budgetRanges = [
+    t('budgetRanges.0'),
+    t('budgetRanges.1'),
+    t('budgetRanges.2'),
+    t('budgetRanges.3'),
+    t('budgetRanges.4'),
+    t('budgetRanges.5'),
+  ];
+
+  const expectations = [
+    { text: t('processItems.0'), icon: Clock },
+    { text: t('processItems.1'), icon: Phone },
+    { text: t('processItems.2'), icon: MapPin },
+    { text: t('processItems.3'), icon: CheckCircle2 }
+  ];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -167,7 +171,7 @@ export default function ContactPage() {
               >
                 <div className="w-12 h-px bg-accent-500" />
                 <span className="text-sm font-medium text-accent-600 uppercase tracking-[0.2em]">
-                  Neem contact op
+                  {t('badge')}
                 </span>
               </div>
 
@@ -177,8 +181,8 @@ export default function ContactPage() {
                 }`}
                 style={{ transitionDelay: '200ms' }}
               >
-                Laten we{' '}
-                <span className="text-accent-600 italic">samenwerken</span>
+                {t('title')}{' '}
+                <span className="text-accent-600 italic">{t('titleHighlight')}</span>
               </h1>
 
               <p
@@ -187,8 +191,7 @@ export default function ContactPage() {
                 }`}
                 style={{ transitionDelay: '400ms' }}
               >
-                Klaar om uw renovatieproject te bespreken? Neem contact op voor een
-                gratis en vrijblijvend adviesgesprek. We reageren binnen 24 uur.
+                {t('description')}
               </p>
 
               {/* Quick contact buttons */}
@@ -204,7 +207,7 @@ export default function ContactPage() {
                 >
                   <span className="absolute inset-0 bg-noir-900 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
                   <Phone className="relative z-10 h-5 w-5" />
-                  <span className="relative z-10 uppercase tracking-wider text-sm">Bel ons direct</span>
+                  <span className="relative z-10 uppercase tracking-wider text-sm">{t('callUs')}</span>
                   <ArrowRight className="relative z-10 h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </a>
                 <a
@@ -246,8 +249,8 @@ export default function ContactPage() {
                       <CheckCircle2 className="h-7 w-7 text-white" />
                     </div>
                     <div>
-                      <p className="font-display font-medium text-noir-900 text-lg">Gratis adviesgesprek</p>
-                      <p className="text-sm text-noir-500">Vrijblijvend en zonder verplichtingen</p>
+                      <p className="font-display font-medium text-noir-900 text-lg">{t('freeConsultation')}</p>
+                      <p className="text-sm text-noir-500">{t('noObligations')}</p>
                     </div>
                   </div>
                 </div>
@@ -302,15 +305,15 @@ export default function ContactPage() {
                 <div className="flex items-center gap-3 mb-8">
                   <div className="w-12 h-px bg-accent-500" />
                   <span className="text-sm font-medium text-accent-600 uppercase tracking-[0.2em]">
-                    Contactformulier
+                    {t('formBadge')}
                   </span>
                 </div>
 
                 <h2 className="text-2xl md:text-3xl font-display font-medium text-noir-900 mb-2">
-                  Vraag een gratis adviesgesprek aan
+                  {t('formTitle')}
                 </h2>
                 <p className="text-noir-500 mb-10">
-                  Vul het formulier in en we nemen binnen 24 uur contact met u op.
+                  {t('formDescription')}
                 </p>
 
                 {isSubmitted ? (
@@ -319,11 +322,10 @@ export default function ContactPage() {
                       <CheckCircle2 className="h-10 w-10 text-white" />
                     </div>
                     <h3 className="text-2xl font-display font-medium text-noir-900 mb-3">
-                      Bedankt voor uw aanvraag!
+                      {t('successTitle')}
                     </h3>
                     <p className="text-noir-600 mb-8 max-w-md mx-auto">
-                      We hebben uw bericht ontvangen en nemen binnen 24 uur contact met u op
-                      om uw project te bespreken.
+                      {t('successMessage')}
                     </p>
                     <button
                       onClick={() => {
@@ -341,7 +343,7 @@ export default function ContactPage() {
                       }}
                       className="inline-flex items-center px-6 py-3 border-2 border-accent-500 text-accent-600 font-medium hover:bg-accent-500 hover:text-white transition-all duration-300"
                     >
-                      Nieuwe aanvraag
+                      {t('newRequest')}
                     </button>
                   </div>
                 ) : (
@@ -349,7 +351,7 @@ export default function ContactPage() {
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
                         <label htmlFor="name" className="block text-sm font-medium text-noir-700 mb-2 uppercase tracking-wider">
-                          Naam *
+                          {t('nameLabel')} *
                         </label>
                         <input
                           type="text"
@@ -359,12 +361,12 @@ export default function ContactPage() {
                           value={formState.name}
                           onChange={handleChange}
                           className="w-full px-4 py-4 border border-noir-200 bg-ivory-50 focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20 focus:bg-white transition-all duration-300 outline-none"
-                          placeholder="Uw naam"
+                          placeholder={t('namePlaceholder')}
                         />
                       </div>
                       <div>
                         <label htmlFor="email" className="block text-sm font-medium text-noir-700 mb-2 uppercase tracking-wider">
-                          Email *
+                          {t('emailLabel')} *
                         </label>
                         <input
                           type="email"
@@ -374,7 +376,7 @@ export default function ContactPage() {
                           value={formState.email}
                           onChange={handleChange}
                           className="w-full px-4 py-4 border border-noir-200 bg-ivory-50 focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20 focus:bg-white transition-all duration-300 outline-none"
-                          placeholder="uw@email.be"
+                          placeholder={t('emailPlaceholder')}
                         />
                       </div>
                     </div>
@@ -382,7 +384,7 @@ export default function ContactPage() {
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
                         <label htmlFor="phone" className="block text-sm font-medium text-noir-700 mb-2 uppercase tracking-wider">
-                          Telefoon
+                          {t('phoneLabel')}
                         </label>
                         <input
                           type="tel"
@@ -391,12 +393,12 @@ export default function ContactPage() {
                           value={formState.phone}
                           onChange={handleChange}
                           className="w-full px-4 py-4 border border-noir-200 bg-ivory-50 focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20 focus:bg-white transition-all duration-300 outline-none"
-                          placeholder="+32 ..."
+                          placeholder={t('phonePlaceholder')}
                         />
                       </div>
                       <div>
                         <label htmlFor="gemeente" className="block text-sm font-medium text-noir-700 mb-2 uppercase tracking-wider">
-                          Gemeente *
+                          {t('municipalityLabel')} *
                         </label>
                         <input
                           type="text"
@@ -406,14 +408,14 @@ export default function ContactPage() {
                           value={formState.gemeente}
                           onChange={handleChange}
                           className="w-full px-4 py-4 border border-noir-200 bg-ivory-50 focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20 focus:bg-white transition-all duration-300 outline-none"
-                          placeholder="Gent, Mariakerke, ..."
+                          placeholder={t('municipalityPlaceholder')}
                         />
                       </div>
                     </div>
 
                     <div>
                       <label htmlFor="projectType" className="block text-sm font-medium text-noir-700 mb-2 uppercase tracking-wider">
-                        Type project *
+                        {t('projectTypeLabel')} *
                       </label>
                       <select
                         id="projectType"
@@ -423,7 +425,7 @@ export default function ContactPage() {
                         onChange={handleChange}
                         className="w-full px-4 py-4 border border-noir-200 bg-ivory-50 focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20 focus:bg-white transition-all duration-300 outline-none"
                       >
-                        <option value="">Selecteer type project</option>
+                        <option value="">{t('projectTypePlaceholder')}</option>
                         {projectTypes.map((type) => (
                           <option key={type} value={type}>{type}</option>
                         ))}
@@ -433,7 +435,7 @@ export default function ContactPage() {
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
                         <label htmlFor="timing" className="block text-sm font-medium text-noir-700 mb-2 uppercase tracking-wider">
-                          Wanneer starten?
+                          {t('timingLabel')}
                         </label>
                         <select
                           id="timing"
@@ -442,7 +444,7 @@ export default function ContactPage() {
                           onChange={handleChange}
                           className="w-full px-4 py-4 border border-noir-200 bg-ivory-50 focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20 focus:bg-white transition-all duration-300 outline-none"
                         >
-                          <option value="">Selecteer timing</option>
+                          <option value="">{t('timingPlaceholder')}</option>
                           {timings.map((timing) => (
                             <option key={timing} value={timing}>{timing}</option>
                           ))}
@@ -450,7 +452,7 @@ export default function ContactPage() {
                       </div>
                       <div>
                         <label htmlFor="budget" className="block text-sm font-medium text-noir-700 mb-2 uppercase tracking-wider">
-                          Indicatief budget
+                          {t('budgetLabel')}
                         </label>
                         <select
                           id="budget"
@@ -459,7 +461,7 @@ export default function ContactPage() {
                           onChange={handleChange}
                           className="w-full px-4 py-4 border border-noir-200 bg-ivory-50 focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20 focus:bg-white transition-all duration-300 outline-none"
                         >
-                          <option value="">Selecteer budget</option>
+                          <option value="">{t('budgetPlaceholder')}</option>
                           {budgetRanges.map((budget) => (
                             <option key={budget} value={budget}>{budget}</option>
                           ))}
@@ -469,7 +471,7 @@ export default function ContactPage() {
 
                     <div>
                       <label htmlFor="message" className="block text-sm font-medium text-noir-700 mb-2 uppercase tracking-wider">
-                        Uw project
+                        {t('messageLabel')}
                       </label>
                       <textarea
                         id="message"
@@ -478,7 +480,7 @@ export default function ContactPage() {
                         value={formState.message}
                         onChange={handleChange}
                         className="w-full px-4 py-4 border border-noir-200 bg-ivory-50 focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20 focus:bg-white transition-all duration-300 outline-none resize-none"
-                        placeholder="Beschrijf kort uw project, wensen of vragen..."
+                        placeholder={t('messagePlaceholder')}
                       />
                     </div>
 
@@ -487,11 +489,11 @@ export default function ContactPage() {
                         <Mail className="h-5 w-5 text-accent-600" />
                       </div>
                       <p className="text-sm text-noir-600">
-                        Foto&apos;s of plannen? Stuur ze via{' '}
+                        {t('photoTip')}{' '}
                         <a href="https://wa.me/32493812789" className="text-accent-600 hover:underline font-medium">
                           WhatsApp
                         </a>{' '}
-                        of{' '}
+                        {t('or')}{' '}
                         <a href="mailto:info@namconstruction.be" className="text-accent-600 hover:underline font-medium">
                           email
                         </a>
@@ -504,14 +506,14 @@ export default function ContactPage() {
                     >
                       <span className="absolute inset-0 bg-noir-900 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
                       <Send className="relative z-10 h-5 w-5" />
-                      <span className="relative z-10 uppercase tracking-wider text-sm">Verstuur aanvraag</span>
+                      <span className="relative z-10 uppercase tracking-wider text-sm">{t('submitButton')}</span>
                       <ArrowRight className="relative z-10 h-5 w-5 transition-transform group-hover:translate-x-1" />
                     </button>
 
                     <p className="text-sm text-noir-500">
-                      Door dit formulier te versturen, gaat u akkoord met onze{' '}
+                      {t('privacyConsent')}{' '}
                       <Link href="/privacy" className="text-accent-600 hover:underline">
-                        privacyverklaring
+                        {t('privacyLink')}
                       </Link>.
                     </p>
                   </form>
@@ -531,10 +533,10 @@ export default function ContactPage() {
                     <div className="flex items-center gap-3 mb-6">
                       <div className="w-12 h-px bg-accent-400" />
                       <span className="text-sm font-medium text-accent-400 uppercase tracking-[0.2em]">
-                        Ons proces
+                        {t('processBadge')}
                       </span>
                     </div>
-                    <h3 className="text-xl font-display font-medium mb-6">Wat kunt u verwachten?</h3>
+                    <h3 className="text-xl font-display font-medium mb-6">{t('processTitle')}</h3>
                     <ul className="space-y-4">
                       {expectations.map((item, index) => (
                         <li key={index} className="flex items-start gap-4">
@@ -555,22 +557,22 @@ export default function ContactPage() {
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-12 h-px bg-accent-500" />
                     <span className="text-sm font-medium text-accent-600 uppercase tracking-[0.2em]">
-                      Bereikbaarheid
+                      {t('availabilityBadge')}
                     </span>
                   </div>
-                  <h3 className="text-xl font-display font-medium text-noir-900 mb-6">Openingsuren</h3>
+                  <h3 className="text-xl font-display font-medium text-noir-900 mb-6">{t('openingHours')}</h3>
                   <div className="space-y-3">
                     <div className="flex justify-between items-center py-3 border-b border-noir-100">
-                      <span className="text-noir-600">Maandag - Vrijdag</span>
+                      <span className="text-noir-600">{t('monday-friday')}</span>
                       <span className="font-medium text-noir-900 bg-accent-50 px-3 py-1 text-sm">8:00 - 18:00</span>
                     </div>
                     <div className="flex justify-between items-center py-3 border-b border-noir-100">
-                      <span className="text-noir-600">Zaterdag</span>
-                      <span className="font-medium text-noir-900 bg-ivory-100 px-3 py-1 text-sm">Op afspraak</span>
+                      <span className="text-noir-600">{t('saturday')}</span>
+                      <span className="font-medium text-noir-900 bg-ivory-100 px-3 py-1 text-sm">{t('byAppointment')}</span>
                     </div>
                     <div className="flex justify-between items-center py-3">
-                      <span className="text-noir-600">Zondag</span>
-                      <span className="font-medium text-noir-500 bg-noir-100 px-3 py-1 text-sm">Gesloten</span>
+                      <span className="text-noir-600">{t('sunday')}</span>
+                      <span className="font-medium text-noir-500 bg-noir-100 px-3 py-1 text-sm">{t('closed')}</span>
                     </div>
                   </div>
                 </div>
@@ -582,12 +584,12 @@ export default function ContactPage() {
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-12 h-px bg-accent-500" />
                     <span className="text-sm font-medium text-accent-600 uppercase tracking-[0.2em]">
-                      Werkgebied
+                      {t('regionBadge')}
                     </span>
                   </div>
-                  <h3 className="text-xl font-display font-medium text-noir-900 mb-4">Gent & omstreken</h3>
+                  <h3 className="text-xl font-display font-medium text-noir-900 mb-4">{t('regionTitle')}</h3>
                   <p className="text-noir-600 mb-6">
-                    We zijn actief in Gent en de ruime regio errond:
+                    {t('regionDescription')}
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {regions.map((region) => (
@@ -616,10 +618,10 @@ export default function ContactPage() {
           <AnimatedSection>
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="text-display-lg font-display font-medium text-white mb-6">
-                Liever direct een offerte?
+                {t('ctaTitle')}
               </h2>
               <p className="text-xl text-white/80 mb-10">
-                Heeft u al een duidelijk project voor ogen? Vraag direct een vrijblijvende offerte aan.
+                {t('ctaDescription')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
@@ -628,7 +630,7 @@ export default function ContactPage() {
                 >
                   <span className="absolute inset-0 bg-noir-900 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
                   <span className="relative z-10 uppercase tracking-wider text-sm group-hover:text-white transition-colors">
-                    Offerte aanvragen
+                    {t('ctaPrimary')}
                   </span>
                   <ArrowUpRight className="relative z-10 h-5 w-5 group-hover:text-white transition-colors" />
                 </Link>
@@ -636,7 +638,7 @@ export default function ContactPage() {
                   href="/afspraak"
                   className="inline-flex items-center justify-center gap-3 px-10 py-5 border-2 border-white/30 text-white font-medium hover:bg-white/10 transition-all duration-300"
                 >
-                  <span className="uppercase tracking-wider text-sm">Plan een gesprek</span>
+                  <span className="uppercase tracking-wider text-sm">{t('ctaSecondary')}</span>
                   <ArrowRight className="h-5 w-5" />
                 </Link>
               </div>

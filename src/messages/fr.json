@@ -302,5 +302,662 @@
   "legal": {
     "terms": "Conditions Générales",
     "privacy": "Politique de confidentialité"
+  },
+  "projectsPage": {
+    "badge": "Portfolio",
+    "title": "Nos",
+    "titleHighlight": "réalisations",
+    "description": "Découvrez une sélection de nos projets de rénovation à Gand et ses environs. Chaque rénovation est unique, notre approche est toujours la même: qualité et savoir-faire.",
+    "filterAll": "Tous",
+    "noProjects": "Aucun projet trouvé dans cette catégorie.",
+    "viewProject": "Voir le projet",
+    "ctaTitle": "Votre projet ici?",
+    "ctaDescription": "Contactez-nous pour une consultation gratuite. Nous serions ravis de discuter de vos plans.",
+    "ctaPrimary": "Demander un devis",
+    "ctaSecondary": "Consultation gratuite"
+  },
+  "contactPage": {
+    "badge": "Contactez-nous",
+    "title": "Travaillons",
+    "titleHighlight": "ensemble",
+    "description": "Prêt à discuter de votre projet de rénovation? Contactez-nous pour une consultation gratuite et sans engagement. Nous répondons dans les 24 heures.",
+    "callUs": "Appelez-nous directement",
+    "phone": "Téléphone",
+    "email": "Email",
+    "whatsapp": "WhatsApp",
+    "office": "Bureau",
+    "directContact": "Contact direct",
+    "sendPhotos": "Envoyez des photos de votre projet",
+    "responseTime": "Réponse dans les 24h",
+    "monFri": "Lun-Ven 8:00-18:00",
+    "formBadge": "Formulaire de contact",
+    "formTitle": "Demandez une consultation gratuite",
+    "formDescription": "Remplissez le formulaire et nous vous contacterons dans les 24 heures.",
+    "nameLabel": "Nom",
+    "namePlaceholder": "Votre nom",
+    "emailLabel": "Email",
+    "emailPlaceholder": "votre@email.com",
+    "phoneLabel": "Téléphone",
+    "phonePlaceholder": "+32 ...",
+    "municipalityLabel": "Commune",
+    "municipalityPlaceholder": "Gand, Mariakerke, ...",
+    "projectTypeLabel": "Type de projet",
+    "projectTypePlaceholder": "Sélectionnez le type de projet",
+    "timingLabel": "Quand commencer?",
+    "timingPlaceholder": "Sélectionnez le timing",
+    "budgetLabel": "Budget indicatif",
+    "budgetPlaceholder": "Sélectionnez le budget",
+    "messageLabel": "Votre projet",
+    "messagePlaceholder": "Décrivez brièvement votre projet, souhaits ou questions...",
+    "photoTip": "Photos ou plans? Envoyez-les via",
+    "or": "ou",
+    "submitButton": "Envoyer la demande",
+    "privacyConsent": "En soumettant ce formulaire, vous acceptez notre",
+    "privacyLink": "politique de confidentialité",
+    "successTitle": "Merci pour votre demande!",
+    "successMessage": "Nous avons reçu votre message et vous contacterons dans les 24 heures pour discuter de votre projet.",
+    "newRequest": "Nouvelle demande",
+    "freeConsultation": "Consultation gratuite",
+    "noObligations": "Sans engagement et sans obligation",
+    "processBadge": "Notre processus",
+    "processTitle": "À quoi pouvez-vous vous attendre?",
+    "processItems": ["Réponse dans les 24 heures", "Bref entretien téléphonique", "Visite gratuite sur place si pertinent", "Devis détaillé"],
+    "availabilityBadge": "Disponibilité",
+    "openingHours": "Heures d'ouverture",
+    "monday-friday": "Lundi - Vendredi",
+    "saturday": "Samedi",
+    "sunday": "Dimanche",
+    "byAppointment": "Sur rendez-vous",
+    "closed": "Fermé",
+    "regionBadge": "Zone de service",
+    "regionTitle": "Gand et environs",
+    "regionDescription": "Nous sommes actifs à Gand et dans la région:",
+    "ctaTitle": "Vous préférez un devis direct?",
+    "ctaDescription": "Vous avez déjà un projet clair en tête? Demandez directement un devis sans engagement.",
+    "ctaPrimary": "Demander un devis",
+    "ctaSecondary": "Planifier une réunion",
+    "projectTypes": ["Rénovation complète", "Rénovation & transformation", "Rénovation salle de bain", "Rénovation cuisine", "Finitions (carrelage, plâtrage, ...)", "Techniques (électricité, plomberie)", "Autre"],
+    "timings": ["Dès que possible", "Dans les 3 mois", "3-6 mois", "Plus tard / pas encore déterminé"],
+    "budgetRanges": ["Pas encore d'idée", "< 25.000€", "25.000€ - 50.000€", "50.000€ - 100.000€", "100.000€ - 200.000€", "> 200.000€"]
+  },
+  "appointmentPage": {
+    "badge": "Consultation gratuite",
+    "title": "Planifiez votre",
+    "titleHighlight": "rendez-vous",
+    "description": "Sélectionnez le type de projet et choisissez un moment qui vous convient. Sans engagement et sans obligation.",
+    "preferPhone": "Vous préférez le téléphone?",
+    "orRequestQuote": "Ou demandez directement un devis",
+    "trustPoints": [
+      { "title": "Réutilisation des matériaux", "description": "Durable et économique" },
+      { "title": "Certification complète", "description": "Conforme aux normes & certificats énergétiques" },
+      { "title": "Focus écologique", "description": "Matériaux respectueux de l'environnement" }
+    ]
+  },
+  "serviceDetails": {
+    "backToServices": "Retour aux services",
+    "freeConsultation": "Consultation gratuite",
+    "viewProjects": "Voir les projets",
+    "totaalrenovatie": {
+      "badge": "Le plus demandé",
+      "title": "Rénovation complète",
+      "description": "Rénovation complète de votre maison, du gros œuvre aux finitions. Avec un seul interlocuteur, des choix de matériaux durables et une documentation conforme aux primes.",
+      "featuresTitle": "À quoi pouvez-vous vous attendre?",
+      "featuresSubtitle": "Nos rénovations complètes se caractérisent par la qualité, la communication et la durabilité.",
+      "featuresBadge": "Avantages",
+      "features": {
+        "singleContact": { "title": "Un seul interlocuteur", "description": "Vous avez une seule personne de contact pour tout votre projet. Nous coordonnons tous les artisans et fournisseurs." },
+        "planning": { "title": "Planning clair", "description": "Phasage clair et mises à jour régulières. Vous savez toujours où vous en êtes." },
+        "quality": { "title": "Garantie de qualité", "description": "Exécution experte avec attention aux détails et utilisation de matériaux durables." },
+        "subsidy": { "title": "Conforme aux primes", "description": "Documentation correcte pour les primes de rénovation et autres subventions." }
+      },
+      "scopeBadge": "Portée",
+      "scopeTitle": "Que comprend une rénovation complète?",
+      "scopeDescription": "Une rénovation complète signifie que nous prenons en charge tous les aspects de votre maison. Des travaux structurels aux plus petits détails de finition.",
+      "scope": ["Travaux structurels et gros œuvre", "Isolation (toit, façade, sol)", "Fenêtres et portes", "Électricité (conforme aux normes)", "Sanitaire et chauffage", "Ventilation", "Carrelage et revêtements de sol", "Plâtrage et cloisons sèches", "Peinture", "Cuisine et salle de bain", "Finitions extérieures"],
+      "faqBadge": "FAQ",
+      "faqTitle": "Questions fréquentes",
+      "faqSubtitle": "Réponses aux questions les plus courantes sur la rénovation complète.",
+      "faqs": [
+        { "question": "Combien de temps dure une rénovation complète?", "answer": "La durée dépend de l'ampleur et de la complexité de votre projet. Une rénovation complète moyenne dure 3 à 6 mois. Nous établissons un planning détaillé au démarrage." },
+        { "question": "Puis-je rester dans ma maison pendant la rénovation?", "answer": "Cela dépend de l'ampleur des travaux. Nous en discutons lors de la consultation et trouvons ensemble la meilleure solution." },
+        { "question": "Comment fonctionne le plan de paiement?", "answer": "Nous travaillons avec un plan de paiement échelonné, lié aux étapes du projet. Cela vous donne une certitude budgétaire et de la transparence." },
+        { "question": "Aidez-vous avec les demandes de primes?", "answer": "Oui, nous fournissons des devis et factures conformes aux primes, et aidons avec les attestations nécessaires. Vous soumettez vous-même la demande via le portail." },
+        { "question": "Travaillez-vous avec des sous-traitants?", "answer": "Pour les techniques spécialisées, nous travaillons avec des partenaires de confiance. Ils travaillent sous notre coordination et contrôle qualité." }
+      ]
+    },
+    "renovatie": {
+      "badge": "Rénovations ciblées",
+      "title": "Rénovation & Transformation",
+      "description": "Rénovations et transformations ciblées pour des pièces ou parties spécifiques de votre maison. De la rénovation de salle de bain à l'extension—exécution experte.",
+      "typesBadge": "Options",
+      "typesTitle": "Possibilités",
+      "typesSubtitle": "Découvrez les différents projets de rénovation et transformation que nous réalisons.",
+      "types": [
+        { "title": "Rénovation salle de bain", "description": "Renouveler complètement votre salle de bain avec des matériaux de qualité et une finition experte." },
+        { "title": "Rénovation cuisine", "description": "Une cuisine fonctionnelle et élégante qui correspond parfaitement à votre style de vie." },
+        { "title": "Extensions", "description": "Créer un espace de vie supplémentaire avec une extension ou véranda, parfaitement intégrée." },
+        { "title": "Aménagement des combles", "description": "Transformer vos combles en un espace de vie à part entière avec tout le confort." }
+      ],
+      "benefitsBadge": "Avantages",
+      "benefitsTitle": "Avantages de la rénovation ciblée",
+      "benefitsDescription": "Une rénovation ciblée est idéale lorsque vous souhaitez renouveler des pièces spécifiques sans rénover toute votre maison.",
+      "benefits": ["Approche ciblée pour des pièces spécifiques", "Moins de perturbation qu'une rénovation complète", "Portée et budget clairs", "Finition et matériaux experts", "Coordination de tous les artisans", "Documentation conforme aux primes le cas échéant"]
+    },
+    "afwerking": {
+      "badge": "Détail & précision",
+      "title": "Finitions",
+      "description": "Finitions expertes qui font la différence. Carrelage, plâtrage, peinture et plus—avec attention aux détails et matériaux de qualité.",
+      "servicesBadge": "Services",
+      "servicesTitle": "Nos services de finition",
+      "servicesSubtitle": "Du carrelage à la peinture—tout pour une finition parfaite.",
+      "services": [
+        { "title": "Carrelage", "description": "Carrelage posé avec expertise pour sol et mur. Du classique au moderne, avec attention au motif et aux joints.", "items": ["Carrelage sol", "Carrelage mural", "Mosaïque", "Pierre naturelle", "Grands formats"] },
+        { "title": "Plâtrage & Cloisons sèches", "description": "Murs et plafonds lisses avec cloisons sèches ou plâtrage traditionnel.", "items": ["Cloisons en plaques de plâtre", "Plafonds suspendus", "Plâtrage", "Ponçage", "Plâtre décoratif"] },
+        { "title": "Peinture", "description": "Peinture professionnelle intérieure et extérieure. Avec des peintures de qualité et des alternatives saines.", "items": ["Peinture intérieure", "Peinture extérieure", "Laquage", "Papier peint", "Techniques décoratives"] },
+        { "title": "Chape", "description": "Sous-planchers nivelés pour une finition parfaite de votre revêtement de sol.", "items": ["Chape traditionnelle", "Chape chauffage au sol", "Nivellement", "Chape à séchage rapide"] }
+      ],
+      "qualityBadge": "Qualité",
+      "qualityTitle": "Des finitions qui durent",
+      "qualityDescription": "La finition détermine le résultat final de votre rénovation. C'est pourquoi nous accordons une attention particulière aux matériaux, techniques et détails.",
+      "qualityPoints": ["Utilisation de matériaux de qualité", "Application et traitement experts", "Attention aux détails et finitions", "Matériaux sains quand possible", "Livraison impeccable"]
+    },
+    "technieken": {
+      "badge": "Professionnels certifiés",
+      "title": "Techniques",
+      "description": "Électricité, plomberie, chauffage et ventilation par des professionnels certifiés. Sûr, conforme à toutes les normes et avec les bons certificats.",
+      "servicesBadge": "Expertise",
+      "servicesTitle": "Nos services techniques",
+      "servicesSubtitle": "Toutes les installations techniques pour votre projet de rénovation.",
+      "services": [
+        { "title": "Électricité", "description": "Installations électriques complètes, conformes aux normes. De l'installation de base à la domotique.", "items": ["Nouvelles installations", "Rénovation installation existante", "Éclairage", "Prises & interrupteurs", "Inspection électrique"] },
+        { "title": "Plomberie", "description": "Installations sanitaires de haute qualité. Tuyauterie, raccordements et appareils.", "items": ["Tuyauterie (cuivre, plastique)", "Installations salle de bain", "Installations cuisine", "Systèmes d'évacuation", "Systèmes eau de pluie"] },
+        { "title": "Chauffage", "description": "Installations de chauffage pour confort et efficacité. Des radiateurs au chauffage au sol.", "items": ["Chauffage central", "Chauffage au sol", "Radiateurs", "Prêt pour pompe à chaleur", "Contrôle thermostat"] },
+        { "title": "Ventilation", "description": "Systèmes de ventilation pour un climat intérieur sain. Du basique au contrôle à la demande.", "items": ["Ventilation mécanique", "Système C et D", "Hottes aspirantes", "Ventilation salle de bain", "Ventilation à la demande"] }
+      ],
+      "certBadge": "Normes & certification",
+      "certTitle": "Conforme à toutes les normes",
+      "certDescription": "Nos installations techniques sont réalisées par des professionnels certifiés et conformes à toutes les normes et réglementations en vigueur.",
+      "certifications": ["Installations électriques conformes aux normes", "Organismes de contrôle agréés pour les certificats", "Documentation conforme aux primes", "Garantie sur matériaux et exécution", "Service après-vente et support"]
+    }
+  },
+  "servicesPage": {
+    "hero": {
+      "badge": "Notre expertise",
+      "titlePrefix": "Services pour chaque",
+      "titleHighlight": "rénovation",
+      "description": "De la rénovation complète aux finitions expertes. Nous vous accompagnons dans chaque aspect de votre projet de rénovation avec des choix de matériaux durables et une communication claire."
+    },
+    "services": {
+      "fullRenovation": {
+        "title": "Rénovation complète",
+        "subtitle": "Transformation complète",
+        "description": "Rénovation complète de votre maison, du gros œuvre aux finitions. Nous coordonnons tous les aspects de votre projet avec un seul interlocuteur.",
+        "tag": "Le plus demandé",
+        "features": {
+          "0": "Coordination complète du projet",
+          "1": "Gros œuvre et travaux structurels",
+          "2": "Techniques (électricité, plomberie)",
+          "3": "Finitions et intérieur",
+          "4": "Documentation conforme aux primes"
+        }
+      },
+      "renovation": {
+        "title": "Rénovation & Transformation",
+        "subtitle": "Améliorations ciblées",
+        "description": "Rénovations et transformations ciblées pour des pièces ou parties spécifiques de votre maison. De la salle de bain à l'extension.",
+        "features": {
+          "0": "Rénovation salle de bain",
+          "1": "Rénovation cuisine",
+          "2": "Extensions et agrandissements",
+          "3": "Rénovation cave",
+          "4": "Aménagement des combles"
+        }
+      },
+      "finishing": {
+        "title": "Finitions",
+        "subtitle": "La différence est dans les détails",
+        "description": "Finitions expertes qui font la différence. Carrelage, plâtrage, peinture et plus avec attention aux détails.",
+        "features": {
+          "0": "Carrelage (sol et mur)",
+          "1": "Plâtrage et cloisons sèches",
+          "2": "Peinture",
+          "3": "Chapes",
+          "4": "Finitions décoratives"
+        }
+      },
+      "technical": {
+        "title": "Techniques",
+        "subtitle": "Sûr & conforme",
+        "description": "Électricité et plomberie par des professionnels certifiés. Sûr, conforme à toutes les normes et avec les bons certificats.",
+        "features": {
+          "0": "Travaux électriques (conformes)",
+          "1": "Installations sanitaires",
+          "2": "Chauffage",
+          "3": "Ventilation",
+          "4": "Certificats de conformité"
+        }
+      }
+    },
+    "whyUs": {
+      "badge": "Notre approche",
+      "title": "Pourquoi NAM Construction?",
+      "description": "Ce qui nous distingue des autres entrepreneurs dans la région de Gand.",
+      "items": {
+        "0": {
+          "title": "Matériaux durables",
+          "description": "Nous choisissons consciemment des matériaux à longue durée de vie et aux propriétés saines pour vous et l'environnement."
+        },
+        "1": {
+          "title": "Dossier conforme aux primes",
+          "description": "Devis, factures et attestations corrects pour que votre demande de prime auprès du gouvernement se passe bien."
+        },
+        "2": {
+          "title": "Un seul interlocuteur",
+          "description": "Communication directe avec votre chef de projet du début à la fin. Pas de tracas avec les intermédiaires."
+        }
+      }
+    },
+    "cta": {
+      "title": "Curieux de savoir ce que nous pouvons faire pour vous?",
+      "description": "Planifiez une consultation gratuite et nous discuterons de votre projet.",
+      "buttonPrimary": "Demander un devis",
+      "buttonSecondary": "Consultation gratuite"
+    }
+  },
+  "aanpakPage": {
+    "badge": "Notre processus",
+    "title": "Notre approche",
+    "description": "Du premier contact à la livraison : un processus clair avec une communication transparente. Pour que vous sachiez à quoi vous attendre et que vous n'ayez pas de surprises.",
+    "planConsultation": "Planifier une consultation",
+    "callUs": "Appelez-nous",
+    "stepsBadge": "Étapes",
+    "stepsTitle": "Le processus en 4 étapes",
+    "stepsSubtitle": "Comment se déroule un projet chez Nam Construction. Clair et prévisible.",
+    "steps": [
+      {
+        "step": "01",
+        "title": "Prise de contact",
+        "description": "Nous commençons par une consultation gratuite et sans engagement. Par téléphone, vidéo ou chez vous. Nous écoutons vos souhaits, évaluons la situation et discutons des possibilités.",
+        "details": ["Gratuit et sans engagement", "Vos souhaits et priorités", "Première évaluation de faisabilité", "Présentation de notre approche"]
+      },
+      {
+        "step": "02",
+        "title": "Proposition & Devis",
+        "description": "Après la visite sur site, nous préparons une proposition détaillée. Avec une portée claire, des options de matériaux et un devis conforme aux primes. Pas de surprises par la suite.",
+        "details": ["Portée détaillée", "Options de matériaux avec prix", "Format conforme aux primes", "Planning clair"]
+      },
+      {
+        "step": "03",
+        "title": "Exécution",
+        "description": "Pendant l'exécution, vous êtes toujours informé. Mises à jour régulières, un interlocuteur unique et travail expert par notre équipe et partenaires de confiance.",
+        "details": ["Un interlocuteur fixe", "Mises à jour régulières", "Planning coordonné", "Contrôle qualité"]
+      },
+      {
+        "step": "04",
+        "title": "Livraison & Suivi",
+        "description": "À la livraison, nous passons tout en revue ensemble. Nous fournissons les certificats nécessaires et vous accompagnons pour les demandes de primes. Nous restons disponibles après la livraison.",
+        "details": ["Livraison approfondie", "Certificats et documents", "Soutien aux primes", "Suivi et garantie"]
+      }
+    ],
+    "guaranteesBadge": "Garanties",
+    "guaranteesTitle": "Ce que vous pouvez attendre",
+    "guaranteesSubtitle": "Nos garanties pour une collaboration sans souci.",
+    "guarantees": [
+      { "title": "Garantie qualité", "description": "Nous assumons notre travail. Nous résolvons les problèmes même après livraison." },
+      { "title": "Planning clair", "description": "Des jalons clairs et un timing réaliste. Vous savez où vous en êtes." },
+      { "title": "Un interlocuteur", "description": "Pas de tracas avec différents contacts. Vous avez un interlocuteur fixe." },
+      { "title": "Prix transparent", "description": "Devis détaillé sans frais cachés. Travaux supplémentaires uniquement sur accord." }
+    ],
+    "faqBadge": "FAQ",
+    "faqTitle": "Questions fréquentes",
+    "faqSubtitle": "Réponses aux questions les plus courantes sur notre approche.",
+    "faqs": [
+      { "question": "Combien de temps avant de recevoir un devis ?", "answer": "Après la visite sur site, vous recevrez un devis détaillé dans 1 à 2 semaines. Pour les projets plus complexes, cela peut prendre un peu plus de temps." },
+      { "question": "Travaillez-vous avec des prix fixes ou des calculs a posteriori ?", "answer": "Nous travaillons avec un devis détaillé basé sur des prix fixes. Les travaux supplémentaires sont toujours discutés et approuvés à l'avance." },
+      { "question": "Comment se passe la communication pendant le projet ?", "answer": "Vous avez un interlocuteur fixe. Nous donnons des mises à jour régulières (par téléphone, e-mail ou WhatsApp) et sommes disponibles pour les questions." },
+      { "question": "Et si quelque chose ne va pas ou n'est pas à votre goût ?", "answer": "Nous résolvons les problèmes rapidement et correctement. À la livraison, nous passons tout en revue ensemble et les points sont traités avant l'approbation finale." },
+      { "question": "Aidez-vous avec les permis ?", "answer": "Nous conseillons sur les exigences de permis et pouvons référer à des architectes si nécessaire. La demande de permis elle-même est en dehors de notre périmètre." },
+      { "question": "Pouvez-vous faire seulement une partie des travaux ?", "answer": "Oui, nous faisons aussi des rénovations ciblées et des finitions. Discutez de vos besoins spécifiques lors de la consultation." }
+    ]
+  },
+  "offertePage": {
+    "stepLabels": ["Projet", "Détails", "Contact", "Confirmer"],
+    "successTitle": "Demande reçue !",
+    "successMessage": "Merci pour votre intérêt pour NAM Construction. Nous vous contacterons dans les 24 heures.",
+    "referenceLabel": "Votre numéro de référence",
+    "backToHome": "Retour à l'accueil",
+    "step1Title": "Que souhaitez-vous rénover ?",
+    "step1Subtitle": "Sélectionnez tous les éléments applicables",
+    "propertyTypeTitle": "Type de bien",
+    "step2Title": "Parlez-nous de votre projet",
+    "step2Subtitle": "Plus il y a de détails, mieux nous pouvons estimer",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Décrivez votre projet en détail...",
+    "preferredStartLabel": "Date de début souhaitée",
+    "flexibleOption": "Pas encore déterminé / Flexible",
+    "monthLabel": "Mois",
+    "yearLabel": "Année",
+    "selectMonth": "Sélectionnez le mois",
+    "selectYear": "Sélectionnez l'année",
+    "preferredStartPreview": "Début souhaité :",
+    "budgetLabel": "Indication du budget",
+    "step3Title": "Vos coordonnées",
+    "step3Subtitle": "Comment pouvons-nous vous joindre ?",
+    "nameLabel": "Nom",
+    "namePlaceholder": "Jean Dupont",
+    "emailLabel": "E-mail",
+    "emailPlaceholder": "jean@exemple.be",
+    "phoneLabel": "Téléphone",
+    "phonePlaceholder": "0493 12 34 56",
+    "postalCodeLabel": "Code postal",
+    "postalCodePlaceholder": "9000",
+    "step4Title": "Vérifiez votre demande",
+    "step4Subtitle": "Tout est correct ? Nous enverrons votre demande.",
+    "renovationLabel": "Rénovation",
+    "propertyLabel": "Bien",
+    "descriptionSummaryLabel": "Description",
+    "gdprConsent": "J'accepte la",
+    "gdprConsentLink": "politique de confidentialité",
+    "gdprConsentSuffix": "et donne la permission de traiter mes données.",
+    "submitError": "Une erreur s'est produite. Veuillez réessayer.",
+    "prevButton": "Précédent",
+    "nextButton": "Suivant",
+    "submitButton": "Envoyer la demande",
+    "submittingButton": "Envoi en cours...",
+    "months": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
+  },
+  "waardenAttestering": {
+    "backToValues": "Retour à nos valeurs",
+    "badge": "Nos valeurs",
+    "title": "Certification complète",
+    "description": "Installations conformes AREI, attestations EPB et tous les certificats nécessaires. Conforme aux primes et sans souci.",
+    "cta": "Planifier une consultation",
+    "imageAlt": "Certification et documents",
+    "certificatesSection": {
+      "badge": "Certificats",
+      "title": "Tous les documents en ordre",
+      "subtitle": "Nous nous occupons de tous les certificats et documents nécessaires pour que vous n'ayez pas à vous inquiéter."
+    },
+    "certifications": [
+      { "title": "Conformité AREI", "description": "Installations électriques conformes au Règlement Général sur les Installations Électriques. Sûres et certifiées." },
+      { "title": "Attestations EPB", "description": "Documentation sur la Performance Énergétique et le Climat Intérieur pour votre projet de rénovation." },
+      { "title": "Attestations d'entrepreneur", "description": "Toutes les attestations nécessaires pour vos demandes de primes, correctement remplies et signées." },
+      { "title": "Rapports d'inspection", "description": "Coordination de toutes les inspections nécessaires via nos partenaires agréés." }
+    ],
+    "whatWeDo": {
+      "title": "Ce que nous faisons",
+      "items": [
+        "Devis et facture conformes aux primes (correctement répartis par catégorie)",
+        "Attestations d'entrepreneur complétées et signées",
+        "Coordination des inspections via des partenaires agréés",
+        "Conseils sur les travaux éligibles",
+        "Documentation pour l'attestation TVA pour rénovation"
+      ]
+    },
+    "whatYouGet": {
+      "title": "Ce que vous obtenez",
+      "items": [
+        "Tous les documents pour la demande de prime",
+        "Attestation d'inspection AREI",
+        "Factures conformes aux exigences des primes",
+        "Assistance pour la soumission"
+      ],
+      "footer": "Tous nos travaux sont réalisés selon les normes et réglementations en vigueur. Vous recevez tous les documents nécessaires pour vos demandes de primes."
+    },
+    "whyImportant": {
+      "badge": "Pourquoi important",
+      "title": "Rénovation conforme aux primes",
+      "description": "De nombreuses primes de rénovation nécessitent des documents et certificats spécifiques. Nous veillons à ce que tous vos documents soient en ordre afin que vous puissiez maximiser les subsides disponibles.",
+      "withoutTitle": "Sans certification correcte :",
+      "withoutItems": ["Pas d'accès aux primes", "Problèmes lors de la vente du bien", "Risque d'amendes lors de l'inspection"]
+    },
+    "ctaBanner": {
+      "title": "Certitude sur vos documents ?",
+      "subtitle": "Nous nous occupons de tous les certificats et documents nécessaires pour votre projet de rénovation."
+    }
+  },
+  "waardenBetalingsspreiding": {
+    "backToValues": "Retour à nos valeurs",
+    "badge": "Nos valeurs",
+    "title": "Échelonnement des paiements",
+    "description": "Payez par étapes selon les jalons atteints. Transparent, équitable et clair pour votre budget.",
+    "cta": "Planifier une consultation",
+    "imageAlt": "Échelonnement des paiements",
+    "paymentPlan": {
+      "badge": "Plan de paiement",
+      "title": "Comment fonctionne le paiement ?",
+      "subtitle": "Nous travaillons avec un plan de paiement échelonné lié à des jalons concrets de votre projet. Ainsi, vous ne payez que pour le travail effectivement réalisé."
+    },
+    "phases": [
+      { "phase": "Acompte", "desc": "À la signature du contrat", "detail": "Début de la collaboration" },
+      { "phase": "Gros œuvre", "desc": "Après achèvement des travaux structurels", "detail": "Quand les fondations sont en place" },
+      { "phase": "Finitions", "desc": "Après achèvement des finitions", "detail": "Carrelage, plâtrage, peinture" },
+      { "phase": "Livraison", "desc": "Après livraison finale et approbation", "detail": "Quand vous êtes entièrement satisfait" }
+    ],
+    "infoBox": {
+      "title": "Échelonnement adapté à votre projet",
+      "description": "Nous discutons ensemble de la répartition exacte et l'adaptons à la nature et à l'ampleur de votre projet. Cela garantit un plan de paiement adapté à votre situation et votre budget."
+    },
+    "benefits": {
+      "badge": "Avantages",
+      "title": "Pourquoi payer par phases ?",
+      "subtitle": "Une rénovation est un investissement majeur. Avec notre plan de paiement, vous gardez une vue d'ensemble et ne payez que pour le travail terminé.",
+      "items": [
+        "Pas de gros paiement unique",
+        "Paiement lié à la progression",
+        "Jalons clairs convenus à l'avance",
+        "Facturation transparente par phase",
+        "Pas de surprises après",
+        "Étalez clairement votre budget"
+      ]
+    },
+    "budgetFriendly": {
+      "title": "Économique",
+      "description": "En étalant sur plusieurs phases, vous n'avez pas à payer un gros montant d'un coup. Idéal pour votre trésorerie et planification budgétaire.",
+      "howItWorks": "Comment ça marche ?",
+      "howItWorksItems": [
+        "Étalement sur plusieurs jalons",
+        "Répartition alignée sur votre projet",
+        "Paiement uniquement après achèvement de la phase",
+        "Toujours clairement convenu à l'avance"
+      ]
+    },
+    "transparency": {
+      "badge": "Transparence",
+      "title": "Pas de surprises",
+      "subtitle": "Tous les moments de paiement sont convenus à l'avance et consignés dans le contrat. Les travaux supplémentaires sont toujours discutés et approuvés au préalable.",
+      "steps": [
+        { "title": "Devis clair", "description": "Prix détaillé par composant" },
+        { "title": "Travaux supplémentaires sur accord", "description": "Toujours discutés et approuvés à l'avance" },
+        { "title": "Paiement après approbation", "description": "Vous ne payez qu'après approbation de la phase" }
+      ]
+    },
+    "ctaBanner": {
+      "title": "Rénover à votre rythme ?",
+      "subtitle": "Discutez de votre projet et découvrez comment nous pouvons échelonner le paiement."
+    }
+  },
+  "waardenCommunicatie": {
+    "backToValues": "Retour à nos valeurs",
+    "badge": "Nos valeurs",
+    "title": "Communication claire",
+    "description": "Un interlocuteur fixe, des mises à jour régulières et des accords clairs. Vous savez toujours où vous en êtes.",
+    "cta": "Planifier une consultation",
+    "imageAlt": "Communication claire",
+    "pillarsSection": {
+      "badge": "Notre approche",
+      "title": "Une communication qui fonctionne",
+      "subtitle": "Une rénovation nécessite des accords clairs et des mises à jour régulières. Ainsi, vous savez toujours où en est votre projet."
+    },
+    "pillars": [
+      { "title": "Un interlocuteur fixe", "description": "Vous communiquez toujours avec le même responsable de projet. Pas de tracas avec différents contacts." },
+      { "title": "Mises à jour régulières", "description": "Rapports de progression hebdomadaires par téléphone, e-mail ou WhatsApp. Vous choisissez le canal que vous préférez." },
+      { "title": "Accessibilité", "description": "Réponse rapide aux questions ou remarques. Pas d'attente de semaines pour une réponse." }
+    ],
+    "expectations": {
+      "badge": "Attentes",
+      "title": "Ce que vous pouvez attendre",
+      "subtitle": "Pendant votre projet de rénovation, nous vous tenons constamment informé. Pas d'incertitude, pas de surprises.",
+      "items": [
+        "Rapport de progression hebdomadaire",
+        "Ligne directe avec le responsable de projet",
+        "Communication proactive sur les changements",
+        "Planning et calendrier clairs",
+        "Mises à jour photo des travaux"
+      ]
+    },
+    "alwaysInformed": {
+      "title": "Toujours informé",
+      "description": "Vous savez toujours où en est votre projet. Pas d'attente de semaines pour des informations, pas d'incertitude sur le planning.",
+      "channels": ["Disponible par téléphone", "E-mail répondu sous 24h", "WhatsApp pour les questions rapides"]
+    },
+    "timeline": {
+      "badge": "Exemple",
+      "title": "Communication pendant votre projet",
+      "items": [
+        { "week": "Semaine 1", "title": "Réunion de lancement", "description": "Révision du planning, enregistrement des accords, échange des coordonnées" },
+        { "week": "Hebdo", "title": "Mise à jour de progression", "description": "Par téléphone ou e-mail : ce qui a été fait, ce qui est prévu" },
+        { "week": "Changements", "title": "Contact proactif", "description": "En cas d'imprévus, nous vous contactons immédiatement pour discuter" },
+        { "week": "Livraison", "title": "Visite conjointe", "description": "Tout revoir ensemble, finir les détails, remettre les documents" }
+      ]
+    },
+    "ctaBanner": {
+      "title": "Prêt pour un projet sans souci ?",
+      "subtitle": "Découvrez comment notre communication claire fait la différence."
+    }
+  },
+  "waardenHergebruik": {
+    "backToValues": "Retour à nos valeurs",
+    "badge": "Nos valeurs",
+    "title": "Réutilisation & Circularité",
+    "description": "Lorsque c'est possible, nous préservons et réutilisons les matériaux existants. Moins de déchets, plus de caractère, coûts réduits.",
+    "cta": "Planifier une consultation",
+    "imageAlt": "Réutilisation des matériaux",
+    "approachSection": {
+      "badge": "Approche",
+      "title": "Notre approche circulaire",
+      "subtitle": "Lorsque c'est techniquement et esthétiquement possible, nous réutilisons les éléments existants ou les récupérons soigneusement."
+    },
+    "steps": [
+      { "step": "01", "title": "Scan de réutilisation", "description": "Au début, nous inventorions ce qui peut rester, ce qui peut être réutilisé et ce qui va à la récupération." },
+      { "step": "02", "title": "Démontage sélectif", "description": "Lorsque c'est utile, nous démontons soigneusement au lieu de démolir brutalement. Ainsi les matériaux conservent leur valeur." },
+      { "step": "03", "title": "Choix des matériaux", "description": "Nous conseillons sur les alternatives durables avec attention aux performances, au budget et à la disponibilité." },
+      { "step": "04", "title": "Gestion des déchets", "description": "Tri et évacuation corrects. Ce qui peut être récupéré ne va pas à la décharge." }
+    ],
+    "practiceSection": {
+      "badge": "Réalisation",
+      "title": "Réutilisation en pratique",
+      "subtitle": "Les matériaux existants ont une seconde vie."
+    },
+    "beforeAfter": {
+      "before": "Avant",
+      "after": "Après"
+    },
+    "examples": [
+      {
+        "title": "Cuisine avec sol carrelé préservé",
+        "description": "Rénovation complète de cuisine où les carreaux de ciment d'origine de 1920 ont été nettoyés et restaurés. Nouvelle cuisine, sol authentique.",
+        "tag": "Carreaux de ciment préservés"
+      },
+      {
+        "title": "Grenier en salon avec poutres d'origine",
+        "description": "Transformation complète du grenier en espace de vie. Les poutres de toit en chêne d'origine ont été poncées et traitées comme élément caractéristique.",
+        "tag": "Poutres en chêne préservées"
+      }
+    ],
+    "stats": {
+      "lessWaste": "moins de déchets",
+      "savings": "économies possibles",
+      "character": "caractère authentique"
+    },
+    "benefits": {
+      "badge": "Avantages",
+      "title": "Pourquoi choisir la réutilisation ?",
+      "subtitle": "La rénovation circulaire offre des avantages pour votre portefeuille, votre maison et l'environnement.",
+      "items": [
+        "Moins de déchets à la décharge",
+        "Préservation des éléments authentiques",
+        "Coûts de matériaux réduits",
+        "Caractère unique pour votre maison",
+        "Rénovation plus durable",
+        "Moins d'émissions de CO2"
+      ]
+    },
+    "ctaBanner": {
+      "title": "Intéressé par la rénovation circulaire ?",
+      "subtitle": "Nous serions ravis de discuter comment nous pouvons aborder votre projet avec attention à la réutilisation."
+    }
+  },
+  "waardenSubsidies": {
+    "backToValues": "Retour à nos valeurs",
+    "badge": "Nos valeurs",
+    "title": "Aide aux subsides",
+    "description": "Nous aidons à la demande des primes et subsides disponibles. Un maximum d'avantages de votre investissement.",
+    "cta": "Planifier une consultation",
+    "imageAlt": "Subsides et primes",
+    "collaborationSection": {
+      "badge": "Collaboration",
+      "title": "Primes, Prêts & Certificats",
+      "subtitle": "Nous vous guidons dans le paysage des primes et fournissons les bons documents pour que votre dossier se déroule sans problème."
+    },
+    "whatWeDo": {
+      "title": "Ce que nous faisons",
+      "items": [
+        "Devis et facture conformes aux primes (correctement répartis par catégorie)",
+        "Attestations d'entrepreneur complétées et signées",
+        "Coordination des inspections via des partenaires agréés",
+        "Conseils sur les travaux éligibles"
+      ]
+    },
+    "whatYouDo": {
+      "title": "Ce que vous faites",
+      "items": [
+        "Soumettre la demande de prime via Mijn VerbouwPremie",
+        "Éventuelle demande de prêt via het Energiehuis"
+      ],
+      "footer": "Vous soumettez vous-même la demande de prime via les canaux officiels. Nous fournissons tous les documents et certificats nécessaires."
+    },
+    "premiesSection": {
+      "badge": "Aperçu",
+      "title": "Primes disponibles",
+      "subtitle": "Un aperçu des principales primes auxquelles votre rénovation peut être éligible."
+    },
+    "premieTypes": [
+      { "title": "Mijn VerbouwPremie", "description": "Prime pour l'isolation du toit, des murs, du sol, le vitrage à haut rendement et plus.", "linkText": "Plus d'info" },
+      { "title": "Mijn VerbouwLening", "description": "Prêt avantageux pour les rénovations économes en énergie via het Energiehuis.", "linkText": "Plus d'info" },
+      { "title": "Primes communales", "description": "Primes supplémentaires de votre commune en plus des primes flamandes." }
+    ],
+    "importantNotice": {
+      "title": "Changements importants 2026",
+      "description": "À partir du 1er mars 2026, Mijn VerbouwPremie change. Les propriétaires-occupants dans les catégories de revenus les plus élevées ne seront alors éligibles que pour la pompe à chaleur et le chauffe-eau thermodynamique.",
+      "footer": "Nous vous tenons informé des conditions actuelles et définissons des attentes honnêtes.",
+      "linkText": "En savoir plus sur les changements"
+    },
+    "ctaBanner": {
+      "title": "Maximiser les avantages des primes ?",
+      "subtitle": "Nous serions ravis de discuter quelles primes s'appliquent à votre projet de rénovation."
+    }
+  },
+  "legalLayout": {
+    "lastUpdatedLabel": "Dernière mise à jour",
+    "print": "Imprimer",
+    "tableOfContents": "Sommaire",
+    "related": "Connexe",
+    "backToTop": "Retour en haut",
+    "home": "Accueil",
+    "termsLinkText": "Conditions générales",
+    "privacyLinkText": "Politique de confidentialité"
+  },
+  "privacyPage": {
+    "title": "Politique de confidentialité",
+    "subtitle": "Comment NAM Construction traite vos données personnelles et protège votre vie privée",
+    "lastUpdated": "Janvier 2025",
+    "termsLinkText": "Conditions générales"
+  },
+  "termsPage": {
+    "title": "Conditions générales",
+    "subtitle": "Les conditions applicables à nos services et travaux",
+    "lastUpdated": "Janvier 2025",
+    "privacyLinkText": "Politique de confidentialité"
   }
 }

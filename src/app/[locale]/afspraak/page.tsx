@@ -1,34 +1,36 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
-import { Calendar, Leaf, Recycle, Shield, ArrowUpRight, Phone, CheckCircle } from 'lucide-react';
-import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { Leaf, Recycle, Shield, ArrowUpRight, Phone } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
 import { BookingFlow } from '@/components';
 
-const trustPoints = [
-  {
-    icon: Recycle,
-    title: 'Hergebruik materiaal',
-    description: 'Duurzaam en kostenbesparend'
-  },
-  {
-    icon: Shield,
-    title: 'Volledige attestering',
-    description: 'AREI-conform & EPB-attesten'
-  },
-  {
-    icon: Leaf,
-    title: 'Ecologische focus',
-    description: 'Milieuvriendelijke materialen'
-  }
-];
-
 export default function AfspraakPage() {
+  const t = useTranslations('appointmentPage');
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     setLoaded(true);
   }, []);
+
+  const trustPoints = [
+    {
+      icon: Recycle,
+      title: t('trustPoints.0.title'),
+      description: t('trustPoints.0.description')
+    },
+    {
+      icon: Shield,
+      title: t('trustPoints.1.title'),
+      description: t('trustPoints.1.description')
+    },
+    {
+      icon: Leaf,
+      title: t('trustPoints.2.title'),
+      description: t('trustPoints.2.description')
+    }
+  ];
 
   return (
     <>
@@ -44,7 +46,7 @@ export default function AfspraakPage() {
             >
               <div className="w-10 h-px bg-accent-500" />
               <span className="text-xs font-medium text-accent-600 uppercase tracking-[0.2em]">
-                Gratis adviesgesprek
+                {t('badge')}
               </span>
             </div>
 
@@ -54,8 +56,8 @@ export default function AfspraakPage() {
               }`}
               style={{ transitionDelay: '100ms' }}
             >
-              Plan uw{' '}
-              <span className="text-accent-600 italic">afspraak</span>
+              {t('title')}{' '}
+              <span className="text-accent-600 italic">{t('titleHighlight')}</span>
             </h1>
 
             <p
@@ -64,8 +66,7 @@ export default function AfspraakPage() {
               }`}
               style={{ transitionDelay: '200ms' }}
             >
-              Selecteer het type project en kies een moment dat u past.
-              Vrijblijvend en zonder verplichtingen.
+              {t('description')}
             </p>
           </div>
 
@@ -93,7 +94,7 @@ export default function AfspraakPage() {
                 <Phone className="h-5 w-5 text-white" />
               </div>
               <div>
-                <p className="text-sm text-white/60">Liever telefonisch?</p>
+                <p className="text-sm text-white/60">{t('preferPhone')}</p>
                 <a
                   href="tel:+32493812789"
                   className="text-lg font-medium text-white hover:text-accent-400 transition-colors"
@@ -106,7 +107,7 @@ export default function AfspraakPage() {
               href="/offerte"
               className="group flex items-center gap-2 text-sm text-white/80 hover:text-accent-400 transition-colors"
             >
-              <span>Of vraag direct een offerte aan</span>
+              <span>{t('orRequestQuote')}</span>
               <ArrowUpRight className="h-4 w-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </Link>
           </div>

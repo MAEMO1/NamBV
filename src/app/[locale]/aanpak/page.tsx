@@ -1,6 +1,6 @@
-import Link from 'next/link';
+'use client';
+
 import Image from 'next/image';
-import { Metadata } from 'next';
 import {
   MessageSquare,
   FileText,
@@ -15,123 +15,44 @@ import {
   CheckCircle2,
   ArrowRight
 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
 import { SectionHeader, CTABanner } from '@/components';
 
-export const metadata: Metadata = {
-  title: 'Onze Aanpak',
-  description: 'Ontdek hoe we werken: van eerste contact tot oplevering. Heldere communicatie, duidelijke planning en kwaliteitsgarantie.',
-};
+const stepIcons = [MessageSquare, FileText, Hammer, CheckCircle];
+const stepColors = ['forest', 'terracotta', 'sand', 'stone'] as const;
 
-const steps = [
-  {
-    icon: MessageSquare,
-    step: '01',
-    title: 'Intake & Kennismaking',
-    description: 'We starten met een gratis en vrijblijvend adviesgesprek. Telefonisch, via video of bij u thuis. We luisteren naar uw wensen, bekijken de situatie en bespreken de mogelijkheden.',
-    details: [
-      'Vrijblijvend en gratis',
-      'Uw wensen en prioriteiten',
-      'Eerste inschatting haalbaarheid',
-      'Kennismaking met onze aanpak'
-    ],
-    color: 'forest'
-  },
-  {
-    icon: FileText,
-    step: '02',
-    title: 'Voorstel & Offerte',
-    description: 'Na het plaatsbezoek stellen we een gedetailleerd voorstel op. Met duidelijke scope, materiaalopties en premie-proof offerte. Geen verrassingen achteraf.',
-    details: [
-      'Gedetailleerde scope',
-      'Materiaalopties met prijzen',
-      'Premie-proof opmaak',
-      'Duidelijke planning'
-    ],
-    color: 'terracotta'
-  },
-  {
-    icon: Hammer,
-    step: '03',
-    title: 'Uitvoering',
-    description: 'Tijdens de uitvoering bent u altijd op de hoogte. Regelmatige updates, één aanspreekpunt en vakkundige uitvoering door ons team en vaste partners.',
-    details: [
-      'Eén vast aanspreekpunt',
-      'Regelmatige updates',
-      'Gecoördineerde planning',
-      'Kwaliteitscontrole'
-    ],
-    color: 'sand'
-  },
-  {
-    icon: CheckCircle,
-    step: '04',
-    title: 'Oplevering & Nazorg',
-    description: 'Bij oplevering lopen we alles samen door. We zorgen voor de nodige attesten en begeleiden u bij premieaanvragen. Ook na oplevering staan we paraat.',
-    details: [
-      'Grondige oplevering',
-      'Attesten en documenten',
-      'Ondersteuning premies',
-      'Nazorg en garantie'
-    ],
-    color: 'stone'
-  }
-];
-
-const guarantees = [
-  {
-    icon: Shield,
-    title: 'Kwaliteitsgarantie',
-    description: 'We staan achter ons werk. Bij problemen lossen we die op, ook na oplevering.',
-    color: 'forest'
-  },
-  {
-    icon: Clock,
-    title: 'Heldere planning',
-    description: 'Duidelijke mijlpalen en realistische timing. U weet waar u aan toe bent.',
-    color: 'terracotta'
-  },
-  {
-    icon: Users,
-    title: 'Eén aanspreekpunt',
-    description: 'Geen gedoe met verschillende contactpersonen. U heeft één vaste contactpersoon.',
-    color: 'sand'
-  },
-  {
-    icon: ClipboardCheck,
-    title: 'Transparante prijs',
-    description: 'Gedetailleerde offerte zonder verborgen kosten. Meerwerk alleen in overleg.',
-    color: 'stone'
-  }
-];
-
-const faqs = [
-  {
-    question: 'Hoe lang duurt het voor ik een offerte krijg?',
-    answer: 'Na het plaatsbezoek ontvangt u binnen 1 à 2 weken een gedetailleerde offerte. Voor complexere projecten kan dit iets langer duren.'
-  },
-  {
-    question: 'Werken jullie met vaste prijzen of nacalculatie?',
-    answer: 'We werken met een gedetailleerde offerte op basis van vaste prijzen. Meerwerk wordt altijd vooraf besproken en goedgekeurd.'
-  },
-  {
-    question: 'Hoe verloopt de communicatie tijdens het project?',
-    answer: 'U heeft één vast aanspreekpunt. We geven regelmatige updates (telefonisch, per mail of via WhatsApp) en zijn bereikbaar voor vragen.'
-  },
-  {
-    question: 'Wat als er iets misgaat of niet naar wens is?',
-    answer: 'We lossen problemen snel en correct op. Bij oplevering lopen we alles samen door en puntjes worden aangepakt voor finale goedkeuring.'
-  },
-  {
-    question: 'Helpen jullie met vergunningen?',
-    answer: 'We adviseren over vergunningsplicht en kunnen doorverwijzen naar architecten indien nodig. De vergunningsaanvraag zelf valt buiten onze scope.'
-  },
-  {
-    question: 'Kunnen jullie ook enkel een deel van de werken uitvoeren?',
-    answer: 'Ja, we doen ook gerichte renovaties en afwerking. Bespreek uw specifieke wensen tijdens het adviesgesprek.'
-  }
-];
+const guaranteeIcons = [Shield, Clock, Users, ClipboardCheck];
+const guaranteeColors = ['forest', 'terracotta', 'sand', 'stone'] as const;
 
 export default function AanpakPage() {
+  const t = useTranslations('aanpakPage');
+
+  const steps = stepIcons.map((icon, index) => ({
+    icon,
+    step: String(index + 1).padStart(2, '0'),
+    title: t(`steps.${index}.title`),
+    description: t(`steps.${index}.description`),
+    details: [
+      t(`steps.${index}.details.0`),
+      t(`steps.${index}.details.1`),
+      t(`steps.${index}.details.2`),
+      t(`steps.${index}.details.3`)
+    ],
+    color: stepColors[index]
+  }));
+
+  const guarantees = guaranteeIcons.map((icon, index) => ({
+    icon,
+    title: t(`guarantees.${index}.title`),
+    description: t(`guarantees.${index}.description`),
+    color: guaranteeColors[index]
+  }));
+
+  const faqs = Array.from({ length: 6 }, (_, index) => ({
+    question: t(`faqs.${index}.question`),
+    answer: t(`faqs.${index}.answer`)
+  }));
   return (
     <>
       {/* Hero */}
@@ -146,15 +67,14 @@ export default function AanpakPage() {
               {/* Badge */}
               <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-sand-200 text-sm font-medium text-stone-600 mb-6">
                 <span className="w-2 h-2 rounded-full bg-forest-500" />
-                Werkwijze
+                {t('badge')}
               </span>
 
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-semibold text-stone-900 mb-6">
-                Onze aanpak
+                {t('title')}
               </h1>
               <p className="text-xl text-stone-600 leading-relaxed mb-8">
-                Van eerste contact tot oplevering: een helder proces met duidelijke communicatie.
-                Zodat u weet wat u mag verwachten en geen verrassingen tegenkomt.
+                {t('description')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
@@ -162,7 +82,7 @@ export default function AanpakPage() {
                   className="group inline-flex items-center justify-center px-8 py-4 bg-forest-600 text-white rounded-full font-medium hover:bg-forest-700 transition-all duration-300 hover:shadow-lg hover:shadow-forest-600/25"
                 >
                   <Calendar className="h-5 w-5 mr-2" />
-                  Plan adviesgesprek
+                  {t('planConsultation')}
                   <ArrowRight className="h-5 w-5 ml-2 transition-transform group-hover:translate-x-1" />
                 </Link>
                 <a
@@ -170,7 +90,7 @@ export default function AanpakPage() {
                   className="inline-flex items-center justify-center px-8 py-4 bg-white border-2 border-stone-200 text-stone-700 rounded-full font-medium hover:border-forest-600 hover:text-forest-700 transition-all duration-300"
                 >
                   <Phone className="h-5 w-5 mr-2" />
-                  Bel ons
+                  {t('callUs')}
                 </a>
               </div>
             </div>
@@ -180,7 +100,7 @@ export default function AanpakPage() {
               <div className="relative h-80 lg:h-[450px] rounded-3xl overflow-hidden shadow-2xl">
                 <Image
                   src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&h=600&fit=crop"
-                  alt="Onze aanpak"
+                  alt={t('title')}
                   fill
                   className="object-cover"
                   priority
@@ -197,9 +117,9 @@ export default function AanpakPage() {
       <section className="section-padding bg-white">
         <div className="container-custom">
           <SectionHeader
-            title="Het proces in 4 stappen"
-            subtitle="Zo verloopt een project bij Nam Construction. Overzichtelijk en voorspelbaar."
-            badge="Stappen"
+            title={t('stepsTitle')}
+            subtitle={t('stepsSubtitle')}
+            badge={t('stepsBadge')}
           />
           <div className="space-y-16">
             {steps.map((step, index) => (
@@ -275,9 +195,9 @@ export default function AanpakPage() {
 
         <div className="container-custom relative">
           <SectionHeader
-            title="Wat u mag verwachten"
-            subtitle="Onze garanties voor een zorgeloze samenwerking."
-            badge="Garanties"
+            title={t('guaranteesTitle')}
+            subtitle={t('guaranteesSubtitle')}
+            badge={t('guaranteesBadge')}
           />
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {guarantees.map((guarantee) => (
@@ -308,9 +228,9 @@ export default function AanpakPage() {
       <section id="faq" className="section-padding bg-white scroll-mt-24">
         <div className="container-custom">
           <SectionHeader
-            title="Veelgestelde vragen"
-            subtitle="Antwoorden op de meest voorkomende vragen over onze werkwijze."
-            badge="FAQ"
+            title={t('faqTitle')}
+            subtitle={t('faqSubtitle')}
+            badge={t('faqBadge')}
           />
           <div className="max-w-3xl mx-auto">
             <div className="space-y-6">

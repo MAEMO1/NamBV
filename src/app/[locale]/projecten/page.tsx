@@ -1,9 +1,10 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { MapPin, ArrowRight, ArrowUpRight } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
 
 interface Project {
   id: string;
@@ -113,6 +114,7 @@ function AnimatedSection({ children, className = '', delay = 0 }: { children: Re
 }
 
 export default function ProjectenPage() {
+  const t = useTranslations('projectsPage');
   const [heroLoaded, setHeroLoaded] = useState(false);
   const [activeCategory, setActiveCategory] = useState('Alle');
   const [scrollY, setScrollY] = useState(0);
@@ -156,7 +158,7 @@ export default function ProjectenPage() {
     fetchProjects();
   }, []);
 
-  const filteredProjects = activeCategory === 'Alle'
+  const filteredProjects = activeCategory === 'Alle' || activeCategory === t('filterAll')
     ? projects
     : projects.filter(p => p.category === activeCategory);
 
@@ -171,7 +173,7 @@ export default function ProjectenPage() {
         >
           <Image
             src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&h=1200&fit=crop"
-            alt="Projecten"
+            alt={t('titleHighlight')}
             fill
             className="object-cover"
             priority
@@ -193,7 +195,7 @@ export default function ProjectenPage() {
             >
               <div className="w-12 h-px bg-accent-400" />
               <span className="text-sm font-medium text-accent-400 uppercase tracking-[0.2em]">
-                Portfolio
+                {t('badge')}
               </span>
             </div>
 
@@ -203,8 +205,8 @@ export default function ProjectenPage() {
               }`}
               style={{ transitionDelay: '200ms' }}
             >
-              Onze{' '}
-              <span className="text-accent-400 italic">realisaties</span>
+              {t('title')}{' '}
+              <span className="text-accent-400 italic">{t('titleHighlight')}</span>
             </h1>
 
             <p
@@ -213,8 +215,7 @@ export default function ProjectenPage() {
               }`}
               style={{ transitionDelay: '400ms' }}
             >
-              Bekijk een selectie van onze renovatieprojecten in Gent en omstreken.
-              Elke renovatie is uniek, onze aanpak is steeds dezelfde: kwaliteit en vakmanschap.
+              {t('description')}
             </p>
           </div>
         </div>
@@ -234,7 +235,7 @@ export default function ProjectenPage() {
                     : 'bg-white/5 text-white/60 hover:bg-white/10 hover:text-white border border-white/10'
                 }`}
               >
-                {category}
+                {category === 'Alle' ? t('filterAll') : category}
               </button>
             ))}
           </div>
@@ -254,7 +255,7 @@ export default function ProjectenPage() {
             </div>
           ) : filteredProjects.length === 0 ? (
             <div className="text-center py-20">
-              <p className="text-noir-500 text-lg">Geen projecten gevonden in deze categorie.</p>
+              <p className="text-noir-500 text-lg">{t('noProjects')}</p>
             </div>
           ) : (
             <div className="grid md:grid-cols-12 gap-8">
@@ -312,7 +313,7 @@ export default function ProjectenPage() {
 
                           {/* CTA */}
                           <div className="flex items-center gap-2 text-accent-400 font-medium opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
-                            <span className="text-sm uppercase tracking-wider">Bekijk project</span>
+                            <span className="text-sm uppercase tracking-wider">{t('viewProject')}</span>
                             <ArrowRight className="h-4 w-4" />
                           </div>
                         </div>
@@ -336,10 +337,10 @@ export default function ProjectenPage() {
           <AnimatedSection>
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="text-display-lg font-display font-medium text-white mb-6">
-                Uw project hier?
+                {t('ctaTitle')}
               </h2>
               <p className="text-xl text-white/80 mb-10">
-                Neem contact op voor een gratis adviesgesprek. We bespreken graag uw plannen.
+                {t('ctaDescription')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
@@ -348,7 +349,7 @@ export default function ProjectenPage() {
                 >
                   <span className="absolute inset-0 bg-noir-900 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
                   <span className="relative z-10 uppercase tracking-wider text-sm group-hover:text-white transition-colors">
-                    Offerte aanvragen
+                    {t('ctaPrimary')}
                   </span>
                   <ArrowUpRight className="relative z-10 h-5 w-5 group-hover:text-white transition-colors" />
                 </Link>
@@ -356,7 +357,7 @@ export default function ProjectenPage() {
                   href="/afspraak"
                   className="inline-flex items-center justify-center gap-3 px-10 py-5 border-2 border-white/30 text-white font-medium hover:bg-white/10 transition-all duration-300"
                 >
-                  <span className="uppercase tracking-wider text-sm">Gratis adviesgesprek</span>
+                  <span className="uppercase tracking-wider text-sm">{t('ctaSecondary')}</span>
                   <ArrowRight className="h-5 w-5" />
                 </Link>
               </div>

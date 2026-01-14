@@ -1,51 +1,40 @@
-import Link from 'next/link';
+'use client';
+
 import Image from 'next/image';
-import { Metadata } from 'next';
 import { ArrowRight, CheckCircle2, Hammer, Calendar } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
 import { SectionHeader, CTABanner } from '@/components';
 
-export const metadata: Metadata = {
-  title: 'Renovatie & Verbouwing Gent',
-  description: 'Renovatie en verbouwing in Gent. Badkamerrenovatie, keukenrenovatie, uitbreidingen en meer. Vakkundige uitvoering met duurzame materialen.',
-};
-
-const types = [
-  {
-    title: 'Badkamerrenovatie',
-    description: 'Uw badkamer volledig vernieuwen met kwalitatieve materialen en vakkundige afwerking.',
-    image: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=600&h=400&fit=crop',
-    color: 'forest'
-  },
-  {
-    title: 'Keukenrenovatie',
-    description: 'Een functionele en stijlvolle keuken die perfect aansluit bij uw levensstijl.',
-    image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&h=400&fit=crop',
-    color: 'terracotta'
-  },
-  {
-    title: 'Uitbreidingen',
-    description: 'Extra leefruimte creëren met een aanbouw of veranda, naadloos geïntegreerd.',
-    image: 'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=600&h=400&fit=crop',
-    color: 'sand'
-  },
-  {
-    title: 'Zolderinrichting',
-    description: 'Uw zolder omtoveren tot een volwaardige leefruimte met alle comfort.',
-    image: 'https://images.unsplash.com/photo-1600210492493-0946911123ea?w=600&h=400&fit=crop',
-    color: 'stone'
-  }
+const typeImages = [
+  'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=600&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=600&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1600210492493-0946911123ea?w=600&h=400&fit=crop',
 ];
 
-const benefits = [
-  'Gerichte aanpak voor specifieke ruimtes',
-  'Minder overlast dan bij totaalrenovatie',
-  'Duidelijke scope en budget',
-  'Vakkundige afwerking en materialen',
-  'Coördinatie van alle vakmensen',
-  'Premie-proof documentatie waar van toepassing'
-];
+const typeColors = ['forest', 'terracotta', 'sand', 'stone'];
 
 export default function RenovatiePage() {
+  const t = useTranslations('serviceDetails');
+  const tPage = useTranslations('serviceDetails.renovatie');
+
+  const types = [
+    { title: tPage('types.0.title'), description: tPage('types.0.description'), image: typeImages[0], color: typeColors[0] },
+    { title: tPage('types.1.title'), description: tPage('types.1.description'), image: typeImages[1], color: typeColors[1] },
+    { title: tPage('types.2.title'), description: tPage('types.2.description'), image: typeImages[2], color: typeColors[2] },
+    { title: tPage('types.3.title'), description: tPage('types.3.description'), image: typeImages[3], color: typeColors[3] },
+  ];
+
+  const benefits = [
+    tPage('benefits.0'),
+    tPage('benefits.1'),
+    tPage('benefits.2'),
+    tPage('benefits.3'),
+    tPage('benefits.4'),
+    tPage('benefits.5'),
+  ];
+
   return (
     <>
       {/* Hero */}
@@ -61,28 +50,27 @@ export default function RenovatiePage() {
               className="inline-flex items-center text-forest-600 hover:text-forest-700 mb-6 group"
             >
               <ArrowRight className="h-4 w-4 mr-2 rotate-180 transition-transform group-hover:-translate-x-1" />
-              Terug naar diensten
+              {t('backToServices')}
             </Link>
 
             {/* Badge */}
             <span className="inline-flex items-center gap-2 px-4 py-2 bg-terracotta-100 rounded-full text-sm font-medium text-terracotta-700 mb-6">
               <Hammer className="h-4 w-4" />
-              Gerichte renovaties
+              {tPage('badge')}
             </span>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-semibold text-stone-900 mb-6">
-              Renovatie & Verbouwing
+              {tPage('title')}
             </h1>
             <p className="text-xl text-stone-600 leading-relaxed mb-8">
-              Gerichte renovaties en verbouwingen voor specifieke ruimtes of delen van uw woning.
-              Van badkamerrenovatie tot uitbreiding—vakkundig uitgevoerd.
+              {tPage('description')}
             </p>
             <Link
               href="/contact"
               className="group inline-flex items-center justify-center px-8 py-4 bg-forest-600 text-white rounded-full font-medium hover:bg-forest-700 transition-all duration-300 hover:shadow-lg hover:shadow-forest-600/25"
             >
               <Calendar className="h-5 w-5 mr-2" />
-              Gratis adviesgesprek
+              {t('freeConsultation')}
               <ArrowRight className="h-5 w-5 ml-2 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
@@ -93,9 +81,9 @@ export default function RenovatiePage() {
       <section className="section-padding bg-white">
         <div className="container-custom">
           <SectionHeader
-            title="Mogelijkheden"
-            subtitle="Ontdek de verschillende renovatie- en verbouwingsprojecten die we uitvoeren."
-            badge="Opties"
+            title={tPage('typesTitle')}
+            subtitle={tPage('typesSubtitle')}
+            badge={tPage('typesBadge')}
           />
           <div className="grid md:grid-cols-2 gap-8">
             {types.map((type) => (
@@ -140,7 +128,7 @@ export default function RenovatiePage() {
               <div className="relative h-80 lg:h-[450px] rounded-3xl overflow-hidden shadow-xl">
                 <Image
                   src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&h=600&fit=crop"
-                  alt="Renovatie voordelen"
+                  alt={tPage('benefitsTitle')}
                   fill
                   className="object-cover"
                 />
@@ -150,14 +138,13 @@ export default function RenovatiePage() {
 
             <div className="order-1 lg:order-2">
               <span className="inline-block px-4 py-1.5 bg-terracotta-100 text-terracotta-700 rounded-full text-sm font-medium mb-6">
-                Voordelen
+                {tPage('benefitsBadge')}
               </span>
               <h2 className="text-3xl md:text-4xl font-display font-semibold text-stone-900 mb-6">
-                Voordelen van gerichte renovatie
+                {tPage('benefitsTitle')}
               </h2>
               <p className="text-lg text-stone-600 mb-8">
-                Een gerichte renovatie is ideaal wanneer u specifieke ruimtes wilt vernieuwen
-                zonder uw hele woning onder handen te nemen.
+                {tPage('benefitsDescription')}
               </p>
               <div className="space-y-4">
                 {benefits.map((benefit) => (

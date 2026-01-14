@@ -302,5 +302,662 @@
   "legal": {
     "terms": "Terms & Conditions",
     "privacy": "Privacy Policy"
+  },
+  "projectsPage": {
+    "badge": "Portfolio",
+    "title": "Our",
+    "titleHighlight": "realizations",
+    "description": "View a selection of our renovation projects in Ghent and surroundings. Every renovation is unique, our approach is always the same: quality and craftsmanship.",
+    "filterAll": "All",
+    "noProjects": "No projects found in this category.",
+    "viewProject": "View project",
+    "ctaTitle": "Your project here?",
+    "ctaDescription": "Contact us for a free consultation. We'd love to discuss your plans.",
+    "ctaPrimary": "Request quote",
+    "ctaSecondary": "Free consultation"
+  },
+  "contactPage": {
+    "badge": "Contact us",
+    "title": "Let's",
+    "titleHighlight": "work together",
+    "description": "Ready to discuss your renovation project? Contact us for a free, no-obligation consultation. We respond within 24 hours.",
+    "callUs": "Call us directly",
+    "phone": "Phone",
+    "email": "Email",
+    "whatsapp": "WhatsApp",
+    "office": "Office",
+    "directContact": "Direct contact",
+    "sendPhotos": "Send photos of your project",
+    "responseTime": "Response within 24h",
+    "monFri": "Mon-Fri 8:00-18:00",
+    "formBadge": "Contact form",
+    "formTitle": "Request a free consultation",
+    "formDescription": "Fill out the form and we'll contact you within 24 hours.",
+    "nameLabel": "Name",
+    "namePlaceholder": "Your name",
+    "emailLabel": "Email",
+    "emailPlaceholder": "your@email.com",
+    "phoneLabel": "Phone",
+    "phonePlaceholder": "+32 ...",
+    "municipalityLabel": "Municipality",
+    "municipalityPlaceholder": "Ghent, Mariakerke, ...",
+    "projectTypeLabel": "Project type",
+    "projectTypePlaceholder": "Select project type",
+    "timingLabel": "When to start?",
+    "timingPlaceholder": "Select timing",
+    "budgetLabel": "Indicative budget",
+    "budgetPlaceholder": "Select budget",
+    "messageLabel": "Your project",
+    "messagePlaceholder": "Briefly describe your project, wishes or questions...",
+    "photoTip": "Photos or plans? Send them via",
+    "or": "or",
+    "submitButton": "Submit request",
+    "privacyConsent": "By submitting this form, you agree to our",
+    "privacyLink": "privacy policy",
+    "successTitle": "Thank you for your request!",
+    "successMessage": "We have received your message and will contact you within 24 hours to discuss your project.",
+    "newRequest": "New request",
+    "freeConsultation": "Free consultation",
+    "noObligations": "No-obligation and commitment-free",
+    "processBadge": "Our process",
+    "processTitle": "What can you expect?",
+    "processItems": ["Response within 24 hours", "Brief phone intake", "Free site visit if relevant", "Detailed quote"],
+    "availabilityBadge": "Availability",
+    "openingHours": "Opening hours",
+    "monday-friday": "Monday - Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday",
+    "byAppointment": "By appointment",
+    "closed": "Closed",
+    "regionBadge": "Service area",
+    "regionTitle": "Ghent & surroundings",
+    "regionDescription": "We are active in Ghent and the wider region:",
+    "ctaTitle": "Prefer a direct quote?",
+    "ctaDescription": "Already have a clear project in mind? Request a no-obligation quote directly.",
+    "ctaPrimary": "Request quote",
+    "ctaSecondary": "Schedule a meeting",
+    "projectTypes": ["Full renovation", "Renovation & remodeling", "Bathroom renovation", "Kitchen renovation", "Finishing (tiling, plastering, ...)", "Technical (electrical, plumbing)", "Other"],
+    "timings": ["As soon as possible", "Within 3 months", "3-6 months", "Later / not yet determined"],
+    "budgetRanges": ["No idea yet", "< €25,000", "€25,000 - €50,000", "€50,000 - €100,000", "€100,000 - €200,000", "> €200,000"]
+  },
+  "appointmentPage": {
+    "badge": "Free consultation",
+    "title": "Schedule your",
+    "titleHighlight": "appointment",
+    "description": "Select the type of project and choose a time that suits you. No-obligation and commitment-free.",
+    "preferPhone": "Prefer phone?",
+    "orRequestQuote": "Or request a quote directly",
+    "trustPoints": [
+      { "title": "Material reuse", "description": "Sustainable and cost-effective" },
+      { "title": "Full certification", "description": "Code-compliant & energy certificates" },
+      { "title": "Ecological focus", "description": "Environmentally friendly materials" }
+    ]
+  },
+  "serviceDetails": {
+    "backToServices": "Back to services",
+    "freeConsultation": "Free consultation",
+    "viewProjects": "View projects",
+    "totaalrenovatie": {
+      "badge": "Most requested",
+      "title": "Full Renovation",
+      "description": "Complete renovation of your home, from structural work to finishing. With a single point of contact, sustainable material choices and subsidy-ready documentation.",
+      "featuresTitle": "What can you expect?",
+      "featuresSubtitle": "Our full renovations are characterized by quality, communication and sustainability.",
+      "featuresBadge": "Benefits",
+      "features": {
+        "singleContact": { "title": "Single point of contact", "description": "You have one contact person for your entire project. We coordinate all craftsmen and suppliers." },
+        "planning": { "title": "Clear planning", "description": "Clear phasing and regular updates. You always know where you stand." },
+        "quality": { "title": "Quality guarantee", "description": "Expert execution with attention to detail and use of sustainable materials." },
+        "subsidy": { "title": "Subsidy-ready", "description": "Correct documentation for renovation subsidies and other grants." }
+      },
+      "scopeBadge": "Scope",
+      "scopeTitle": "What does a full renovation include?",
+      "scopeDescription": "A full renovation means we take care of all aspects of your home. From structural work to the smallest finishing details.",
+      "scope": ["Structural and shell work", "Insulation (roof, facade, floor)", "Windows and doors", "Electrical (code-compliant)", "Plumbing and heating", "Ventilation", "Tiling and flooring", "Plastering and drywall", "Painting", "Kitchen and bathroom", "Exterior finishing"],
+      "faqBadge": "FAQ",
+      "faqTitle": "Frequently asked questions",
+      "faqSubtitle": "Answers to the most common questions about full renovation.",
+      "faqs": [
+        { "question": "How long does a full renovation take?", "answer": "The duration depends on the scope and complexity of your project. An average full renovation takes 3 to 6 months. We create a detailed schedule at the start." },
+        { "question": "Can I stay in my home during the renovation?", "answer": "This depends on the scope of work. We discuss this during the consultation and find the best solution together." },
+        { "question": "How does the payment arrangement work?", "answer": "We work with a payment plan in installments, linked to milestones in the project. This gives you budget certainty and transparency." },
+        { "question": "Do you help with subsidy applications?", "answer": "Yes, we provide subsidy-ready quotes and invoices, and help with the necessary certificates. You submit the application yourself through the portal." },
+        { "question": "Do you work with subcontractors?", "answer": "For specialized techniques, we work with trusted partners. They work under our coordination and quality control." }
+      ]
+    },
+    "renovatie": {
+      "badge": "Targeted renovations",
+      "title": "Renovation & Remodeling",
+      "description": "Targeted renovations and remodeling for specific rooms or parts of your home. From bathroom renovation to extension—expertly executed.",
+      "typesBadge": "Options",
+      "typesTitle": "Possibilities",
+      "typesSubtitle": "Discover the various renovation and remodeling projects we carry out.",
+      "types": [
+        { "title": "Bathroom renovation", "description": "Completely renew your bathroom with quality materials and expert finishing." },
+        { "title": "Kitchen renovation", "description": "A functional and stylish kitchen that perfectly matches your lifestyle." },
+        { "title": "Extensions", "description": "Create extra living space with an extension or veranda, seamlessly integrated." },
+        { "title": "Attic conversion", "description": "Transform your attic into a full-fledged living space with all comforts." }
+      ],
+      "benefitsBadge": "Benefits",
+      "benefitsTitle": "Benefits of targeted renovation",
+      "benefitsDescription": "A targeted renovation is ideal when you want to renew specific rooms without renovating your entire home.",
+      "benefits": ["Targeted approach for specific rooms", "Less disruption than full renovation", "Clear scope and budget", "Expert finishing and materials", "Coordination of all craftsmen", "Subsidy-ready documentation where applicable"]
+    },
+    "afwerking": {
+      "badge": "Detail & precision",
+      "title": "Finishing",
+      "description": "Expert finishing that makes the difference. Tiling, plastering, painting and more—with attention to detail and quality materials.",
+      "servicesBadge": "Services",
+      "servicesTitle": "Our finishing services",
+      "servicesSubtitle": "From tiling to painting—everything for a perfect finish.",
+      "services": [
+        { "title": "Tiling", "description": "Expertly laid tiling for floor and wall. From classic to modern, with attention to pattern and grouting.", "items": ["Floor tiles", "Wall tiles", "Mosaic", "Natural stone", "Large formats"] },
+        { "title": "Plastering & Drywall", "description": "Smooth walls and ceilings with drywall or traditional plastering.", "items": ["Drywall partitions", "Suspended ceilings", "Plastering", "Sanding", "Decorative plaster"] },
+        { "title": "Painting", "description": "Professional interior and exterior painting. With quality paints and healthy alternatives.", "items": ["Interior painting", "Exterior painting", "Lacquer work", "Wallpaper", "Decorative techniques"] },
+        { "title": "Screeding", "description": "Level subfloors for a perfect finish of your floor covering.", "items": ["Traditional screed", "Underfloor heating screed", "Leveling", "Fast-drying screed"] }
+      ],
+      "qualityBadge": "Quality",
+      "qualityTitle": "Finishing that lasts",
+      "qualityDescription": "The finishing determines the end result of your renovation. That's why we pay extra attention to materials, techniques and details.",
+      "qualityPoints": ["Use of quality materials", "Expert application and processing", "Attention to detail and finishing", "Healthy materials where possible", "Clean handover"]
+    },
+    "technieken": {
+      "badge": "Certified professionals",
+      "title": "Technical",
+      "description": "Electrical, plumbing, heating and ventilation by certified professionals. Safe, compliant with all standards and with proper certificates.",
+      "servicesBadge": "Expertise",
+      "servicesTitle": "Our technical services",
+      "servicesSubtitle": "All technical installations for your renovation project.",
+      "services": [
+        { "title": "Electrical", "description": "Complete electrical installations, code-compliant. From basic installation to home automation.", "items": ["New installations", "Existing installation renovation", "Lighting", "Outlets & switches", "Electrical inspection"] },
+        { "title": "Plumbing", "description": "High-quality plumbing installations. Piping, connections and fixtures.", "items": ["Piping (copper, plastic)", "Bathroom installations", "Kitchen installations", "Drainage systems", "Rainwater systems"] },
+        { "title": "Heating", "description": "Heating installations for comfort and efficiency. From radiators to underfloor heating.", "items": ["Central heating", "Underfloor heating", "Radiators", "Heat pump ready", "Thermostat control"] },
+        { "title": "Ventilation", "description": "Ventilation systems for a healthy indoor climate. From basic to demand-controlled.", "items": ["Mechanical ventilation", "System C and D", "Extractor hoods", "Bathroom ventilation", "Demand-controlled ventilation"] }
+      ],
+      "certBadge": "Standards & certification",
+      "certTitle": "Compliant with all standards",
+      "certDescription": "Our technical installations are carried out by certified professionals and comply with all applicable standards and regulations.",
+      "certifications": ["Code-compliant electrical installations", "Certified inspection bodies for certificates", "Subsidy-ready documentation", "Warranty on materials and workmanship", "Aftercare and support"]
+    }
+  },
+  "servicesPage": {
+    "hero": {
+      "badge": "Our expertise",
+      "titlePrefix": "Services for every",
+      "titleHighlight": "renovation",
+      "description": "From full renovation to expert finishing. We guide you through every aspect of your renovation project with sustainable material choices and clear communication."
+    },
+    "services": {
+      "fullRenovation": {
+        "title": "Full Renovation",
+        "subtitle": "Complete transformation",
+        "description": "Complete renovation of your home, from structural work to finishing. We coordinate all aspects of your project with a single point of contact.",
+        "tag": "Most requested",
+        "features": {
+          "0": "Complete project coordination",
+          "1": "Structural and shell work",
+          "2": "Technical systems (electrical, plumbing)",
+          "3": "Finishing and interior",
+          "4": "Subsidy-ready documentation"
+        }
+      },
+      "renovation": {
+        "title": "Renovation & Remodeling",
+        "subtitle": "Targeted improvements",
+        "description": "Targeted renovations and remodeling for specific rooms or parts of your home. From bathroom to extension.",
+        "features": {
+          "0": "Bathroom renovation",
+          "1": "Kitchen renovation",
+          "2": "Extensions and additions",
+          "3": "Basement renovation",
+          "4": "Attic conversion"
+        }
+      },
+      "finishing": {
+        "title": "Finishing",
+        "subtitle": "The difference is in the details",
+        "description": "Expert finishing that makes the difference. Tiling, plastering, painting and more with attention to detail.",
+        "features": {
+          "0": "Tiling (floor and wall)",
+          "1": "Plastering and drywall",
+          "2": "Painting",
+          "3": "Screeding",
+          "4": "Decorative finishing"
+        }
+      },
+      "technical": {
+        "title": "Technical",
+        "subtitle": "Safe & compliant",
+        "description": "Electrical and plumbing by certified professionals. Safe, compliant with all standards and with proper certificates.",
+        "features": {
+          "0": "Electrical work (code-compliant)",
+          "1": "Plumbing installations",
+          "2": "Heating",
+          "3": "Ventilation",
+          "4": "Inspection certificates"
+        }
+      }
+    },
+    "whyUs": {
+      "badge": "Our approach",
+      "title": "Why NAM Construction?",
+      "description": "What sets us apart from other contractors in the Ghent region.",
+      "items": {
+        "0": {
+          "title": "Sustainable materials",
+          "description": "We consciously choose materials with a long lifespan and healthy properties for you and the environment."
+        },
+        "1": {
+          "title": "Subsidy-ready documentation",
+          "description": "Correct quotes, invoices and certificates so your subsidy application with the government goes smoothly."
+        },
+        "2": {
+          "title": "Single point of contact",
+          "description": "Direct communication with your project manager from start to completion. No hassle with intermediaries."
+        }
+      }
+    },
+    "cta": {
+      "title": "Wondering what we can do for you?",
+      "description": "Schedule a free consultation and we'll discuss your project.",
+      "buttonPrimary": "Request a quote",
+      "buttonSecondary": "Free consultation"
+    }
+  },
+  "aanpakPage": {
+    "badge": "Our Process",
+    "title": "Our Approach",
+    "description": "From first contact to delivery: a clear process with transparent communication. So you know what to expect and won't encounter surprises.",
+    "planConsultation": "Schedule consultation",
+    "callUs": "Call us",
+    "stepsBadge": "Steps",
+    "stepsTitle": "The process in 4 steps",
+    "stepsSubtitle": "How a project works at Nam Construction. Clear and predictable.",
+    "steps": [
+      {
+        "step": "01",
+        "title": "Intake & Introduction",
+        "description": "We start with a free, no-obligation consultation. By phone, video, or at your home. We listen to your wishes, assess the situation, and discuss the possibilities.",
+        "details": ["Free and no-obligation", "Your wishes and priorities", "Initial feasibility assessment", "Introduction to our approach"]
+      },
+      {
+        "step": "02",
+        "title": "Proposal & Quote",
+        "description": "After the site visit, we prepare a detailed proposal. With clear scope, material options, and subsidy-ready quote. No surprises afterwards.",
+        "details": ["Detailed scope", "Material options with prices", "Subsidy-ready format", "Clear planning"]
+      },
+      {
+        "step": "03",
+        "title": "Execution",
+        "description": "During execution, you're always informed. Regular updates, one point of contact, and expert work by our team and trusted partners.",
+        "details": ["One fixed contact person", "Regular updates", "Coordinated planning", "Quality control"]
+      },
+      {
+        "step": "04",
+        "title": "Delivery & Aftercare",
+        "description": "At delivery, we go through everything together. We provide the necessary certificates and guide you with subsidy applications. We're available even after delivery.",
+        "details": ["Thorough delivery", "Certificates and documents", "Subsidy support", "Aftercare and warranty"]
+      }
+    ],
+    "guaranteesBadge": "Guarantees",
+    "guaranteesTitle": "What you can expect",
+    "guaranteesSubtitle": "Our guarantees for a worry-free collaboration.",
+    "guarantees": [
+      { "title": "Quality guarantee", "description": "We stand behind our work. We solve problems even after delivery." },
+      { "title": "Clear planning", "description": "Clear milestones and realistic timing. You know where you stand." },
+      { "title": "One contact person", "description": "No hassle with different contacts. You have one fixed contact person." },
+      { "title": "Transparent pricing", "description": "Detailed quote without hidden costs. Additional work only by agreement." }
+    ],
+    "faqBadge": "FAQ",
+    "faqTitle": "Frequently asked questions",
+    "faqSubtitle": "Answers to the most common questions about our approach.",
+    "faqs": [
+      { "question": "How long until I receive a quote?", "answer": "After the site visit, you will receive a detailed quote within 1 to 2 weeks. For more complex projects, this may take a bit longer." },
+      { "question": "Do you work with fixed prices or post-calculation?", "answer": "We work with a detailed quote based on fixed prices. Additional work is always discussed and approved in advance." },
+      { "question": "How does communication work during the project?", "answer": "You have one fixed contact person. We provide regular updates (by phone, email, or WhatsApp) and are available for questions." },
+      { "question": "What if something goes wrong or isn't to your liking?", "answer": "We solve problems quickly and correctly. At delivery, we go through everything together and issues are addressed before final approval." },
+      { "question": "Do you help with permits?", "answer": "We advise on permit requirements and can refer to architects if needed. The permit application itself is outside our scope." },
+      { "question": "Can you also do just part of the work?", "answer": "Yes, we also do targeted renovations and finishing. Discuss your specific needs during the consultation." }
+    ]
+  },
+  "offertePage": {
+    "stepLabels": ["Project", "Details", "Contact", "Confirm"],
+    "successTitle": "Request received!",
+    "successMessage": "Thank you for your interest in NAM Construction. We will contact you within 24 hours.",
+    "referenceLabel": "Your reference number",
+    "backToHome": "Back to home",
+    "step1Title": "What would you like to renovate?",
+    "step1Subtitle": "Select all applicable items",
+    "propertyTypeTitle": "Property type",
+    "step2Title": "Tell us more about your project",
+    "step2Subtitle": "The more details, the better we can estimate",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Describe your project in as much detail as possible...",
+    "preferredStartLabel": "Preferred start date",
+    "flexibleOption": "Not yet determined / Flexible",
+    "monthLabel": "Month",
+    "yearLabel": "Year",
+    "selectMonth": "Select month",
+    "selectYear": "Select year",
+    "preferredStartPreview": "Preferred start:",
+    "budgetLabel": "Budget indication",
+    "step3Title": "Your contact details",
+    "step3Subtitle": "How can we reach you?",
+    "nameLabel": "Name",
+    "namePlaceholder": "John Smith",
+    "emailLabel": "Email",
+    "emailPlaceholder": "john@example.com",
+    "phoneLabel": "Phone",
+    "phonePlaceholder": "0493 12 34 56",
+    "postalCodeLabel": "Postal code",
+    "postalCodePlaceholder": "9000",
+    "step4Title": "Review your request",
+    "step4Subtitle": "Is everything correct? Then we'll send your request.",
+    "renovationLabel": "Renovation",
+    "propertyLabel": "Property",
+    "descriptionSummaryLabel": "Description",
+    "gdprConsent": "I agree to the",
+    "gdprConsentLink": "privacy policy",
+    "gdprConsentSuffix": "and give permission to process my data.",
+    "submitError": "Something went wrong. Please try again.",
+    "prevButton": "Previous",
+    "nextButton": "Next",
+    "submitButton": "Submit request",
+    "submittingButton": "Submitting...",
+    "months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+  },
+  "waardenAttestering": {
+    "backToValues": "Back to our values",
+    "badge": "Our values",
+    "title": "Complete Certification",
+    "description": "AREI-compliant installations, EPB certificates and all necessary documents. Premium-proof and worry-free.",
+    "cta": "Schedule a consultation",
+    "imageAlt": "Certification and documents",
+    "certificatesSection": {
+      "badge": "Certificates",
+      "title": "All documents in order",
+      "subtitle": "We take care of all necessary certificates and documents so you don't have to worry."
+    },
+    "certifications": [
+      { "title": "AREI compliance", "description": "Electrical installations according to the General Regulations on Electrical Installations. Safe and certified." },
+      { "title": "EPB certificates", "description": "Energy Performance and Indoor Climate documentation for your renovation project." },
+      { "title": "Contractor certificates", "description": "All necessary certificates for your premium applications, correctly completed and signed." },
+      { "title": "Inspection reports", "description": "Coordination of all necessary inspections through our certified partners." }
+    ],
+    "whatWeDo": {
+      "title": "What we do",
+      "items": [
+        "Premium-proof quotation and invoice (correctly split by category)",
+        "Contractor certificates completed and signed",
+        "Coordination of inspections via certified partners",
+        "Advice on which works qualify",
+        "Documentation for VAT certificate for renovation"
+      ]
+    },
+    "whatYouGet": {
+      "title": "What you get",
+      "items": [
+        "All documents for premium application",
+        "AREI inspection certificate",
+        "Invoices compliant with premium requirements",
+        "Support with submission"
+      ],
+      "footer": "All our work is carried out according to applicable standards and regulations. You receive all necessary documents for your premium applications."
+    },
+    "whyImportant": {
+      "badge": "Why important",
+      "title": "Premium-proof renovation",
+      "description": "Many renovation premiums require specific documents and certificates. We ensure all your paperwork is in order so you can maximize available subsidies.",
+      "withoutTitle": "Without proper certification:",
+      "withoutItems": ["No access to premiums", "Problems when selling property", "Risk of fines during inspection"]
+    },
+    "ctaBanner": {
+      "title": "Certainty about your documents?",
+      "subtitle": "We take care of all necessary certificates and documents for your renovation project."
+    }
+  },
+  "waardenBetalingsspreiding": {
+    "backToValues": "Back to our values",
+    "badge": "Our values",
+    "title": "Payment Spreading",
+    "description": "Pay in phases per completed milestone. Transparent, fair and clear for your budget.",
+    "cta": "Schedule a consultation",
+    "imageAlt": "Payment spreading",
+    "paymentPlan": {
+      "badge": "Payment plan",
+      "title": "How does payment work?",
+      "subtitle": "We work with a phased payment plan linked to concrete milestones in your project. This way you only pay for work that has actually been completed."
+    },
+    "phases": [
+      { "phase": "Deposit", "desc": "Upon signing agreement", "detail": "Start of the collaboration" },
+      { "phase": "Shell", "desc": "After completion of structural work", "detail": "When the foundation is in place" },
+      { "phase": "Finishing", "desc": "After completion of finishes", "detail": "Tiling, plastering, painting" },
+      { "phase": "Delivery", "desc": "After final delivery and approval", "detail": "When you are completely satisfied" }
+    ],
+    "infoBox": {
+      "title": "Spreading tailored to your project",
+      "description": "We discuss the exact distribution together and align it with the nature and scope of your project. This ensures a payment plan that fits your situation and budget."
+    },
+    "benefits": {
+      "badge": "Benefits",
+      "title": "Why pay in phases?",
+      "subtitle": "A renovation is a major investment. With our payment plan you keep overview and only pay for completed work.",
+      "items": [
+        "No large one-time payment",
+        "Payment linked to progress",
+        "Clear milestones agreed in advance",
+        "Transparent invoicing per phase",
+        "No surprises afterwards",
+        "Spread your budget clearly"
+      ]
+    },
+    "budgetFriendly": {
+      "title": "Budget-friendly",
+      "description": "By spreading over multiple phases, you don't have to pay a large amount at once. Ideal for your cash flow and budget planning.",
+      "howItWorks": "How does it work?",
+      "howItWorksItems": [
+        "Spreading over multiple milestones",
+        "Distribution aligned with your project",
+        "Payment only after phase completion",
+        "Always clearly agreed in advance"
+      ]
+    },
+    "transparency": {
+      "badge": "Transparency",
+      "title": "No surprises",
+      "subtitle": "All payment moments are agreed in advance and recorded in the agreement. Additional work is always discussed and approved beforehand.",
+      "steps": [
+        { "title": "Clear quotation", "description": "Detailed price quote per component" },
+        { "title": "Additional work by agreement", "description": "Always discussed and approved in advance" },
+        { "title": "Payment after approval", "description": "You only pay after approval of the phase" }
+      ]
+    },
+    "ctaBanner": {
+      "title": "Renovate at your pace?",
+      "subtitle": "Discuss your project and discover how we can spread the payment."
+    }
+  },
+  "waardenCommunicatie": {
+    "backToValues": "Back to our values",
+    "badge": "Our values",
+    "title": "Clear Communication",
+    "description": "One fixed contact person, regular updates and clear agreements. You always know where you stand.",
+    "cta": "Schedule a consultation",
+    "imageAlt": "Clear communication",
+    "pillarsSection": {
+      "badge": "Our approach",
+      "title": "Communication that works",
+      "subtitle": "A renovation requires clear agreements and regular updates. This way you always know where your project stands."
+    },
+    "pillars": [
+      { "title": "One fixed contact person", "description": "You always communicate with the same project manager. No hassle with different contacts." },
+      { "title": "Regular updates", "description": "Weekly progress reports via phone, email or WhatsApp. You choose the channel you prefer." },
+      { "title": "Accessibility", "description": "Quick response to questions or comments. No waiting weeks for an answer." }
+    ],
+    "expectations": {
+      "badge": "Expectations",
+      "title": "What you can expect",
+      "subtitle": "During your renovation project, we keep you constantly informed. No uncertainty, no surprises.",
+      "items": [
+        "Weekly progress report",
+        "Direct line with project manager",
+        "Proactive communication on changes",
+        "Clear planning and timeline",
+        "Photo updates of the works"
+      ]
+    },
+    "alwaysInformed": {
+      "title": "Always informed",
+      "description": "You always know where your project stands. No waiting weeks for information, no uncertainty about the planning.",
+      "channels": ["Available by phone", "Email answered within 24h", "WhatsApp for quick questions"]
+    },
+    "timeline": {
+      "badge": "Example",
+      "title": "Communication during your project",
+      "items": [
+        { "week": "Week 1", "title": "Kickoff meeting", "description": "Review planning, record agreements, exchange contact details" },
+        { "week": "Weekly", "title": "Progress update", "description": "By phone or email: what has been done, what is planned" },
+        { "week": "Changes", "title": "Proactive contact", "description": "In case of unforeseen matters, we contact you immediately to discuss" },
+        { "week": "Delivery", "title": "Joint walkthrough", "description": "Review everything together, finish details, hand over documents" }
+      ]
+    },
+    "ctaBanner": {
+      "title": "Ready for a worry-free project?",
+      "subtitle": "Discover how our clear communication makes the difference."
+    }
+  },
+  "waardenHergebruik": {
+    "backToValues": "Back to our values",
+    "badge": "Our values",
+    "title": "Reuse & Circularity",
+    "description": "Where possible we preserve and reuse existing material. Less waste, more character, lower costs.",
+    "cta": "Schedule a consultation",
+    "imageAlt": "Reuse of materials",
+    "approachSection": {
+      "badge": "Approach",
+      "title": "Our circular approach",
+      "subtitle": "Where technically and aesthetically possible, we reuse existing elements or carefully recover them."
+    },
+    "steps": [
+      { "step": "01", "title": "Reuse scan", "description": "At the start, we inventory what can stay, what can be reused, and what goes to recovery." },
+      { "step": "02", "title": "Selective dismantling", "description": "Where useful, we carefully dismantle instead of brute demolition. This way materials retain their value." },
+      { "step": "03", "title": "Material choice", "description": "We advise on sustainable alternatives with attention to performance, budget and availability." },
+      { "step": "04", "title": "Waste management", "description": "Correct sorting and disposal. What can be recovered doesn't go to landfill." }
+    ],
+    "practiceSection": {
+      "badge": "Implementation",
+      "title": "Reuse in practice",
+      "subtitle": "Existing material gets a second life."
+    },
+    "beforeAfter": {
+      "before": "Before",
+      "after": "After"
+    },
+    "examples": [
+      {
+        "title": "Kitchen with preserved tile floor",
+        "description": "Complete kitchen renovation where the original cement tiles from 1920 were cleaned and restored. New kitchen, authentic floor.",
+        "tag": "Cement tiles preserved"
+      },
+      {
+        "title": "Attic to living room with original beams",
+        "description": "Complete transformation from attic to living space. The original oak roof beams were sanded and treated as a characteristic element.",
+        "tag": "Oak beams preserved"
+      }
+    ],
+    "stats": {
+      "lessWaste": "less waste",
+      "savings": "possible savings",
+      "character": "authentic character"
+    },
+    "benefits": {
+      "badge": "Benefits",
+      "title": "Why choose reuse?",
+      "subtitle": "Circular renovation offers benefits for your wallet, your home and the environment.",
+      "items": [
+        "Less waste to landfill",
+        "Preservation of authentic elements",
+        "Lower material costs",
+        "Unique character for your home",
+        "More sustainable renovation",
+        "Less CO2 emissions"
+      ]
+    },
+    "ctaBanner": {
+      "title": "Interested in circular renovation?",
+      "subtitle": "We'd be happy to discuss how we can approach your project with attention to reuse."
+    }
+  },
+  "waardenSubsidies": {
+    "backToValues": "Back to our values",
+    "badge": "Our values",
+    "title": "Subsidy Support",
+    "description": "We help with applying for available premiums and subsidies. Maximum benefit from your investment.",
+    "cta": "Schedule a consultation",
+    "imageAlt": "Subsidies and premiums",
+    "collaborationSection": {
+      "badge": "Collaboration",
+      "title": "Premiums, Loans & Certificates",
+      "subtitle": "We help you navigate the premium landscape and provide the right documents so your file can proceed smoothly."
+    },
+    "whatWeDo": {
+      "title": "What we do",
+      "items": [
+        "Premium-proof quotation and invoice (correctly split by category)",
+        "Contractor certificates completed and signed",
+        "Coordination of inspections via certified partners",
+        "Advice on which works qualify"
+      ]
+    },
+    "whatYouDo": {
+      "title": "What you do",
+      "items": [
+        "Submit premium application via Mijn VerbouwPremie",
+        "Any loan application via het Energiehuis"
+      ],
+      "footer": "You submit the premium application yourself via the official channels. We provide all necessary documents and certificates."
+    },
+    "premiesSection": {
+      "badge": "Overview",
+      "title": "Available premiums",
+      "subtitle": "An overview of the main premiums your renovation may qualify for."
+    },
+    "premieTypes": [
+      { "title": "Mijn VerbouwPremie", "description": "Premium for roof insulation, wall insulation, floor insulation, high-efficiency glass and more.", "linkText": "More info" },
+      { "title": "Mijn VerbouwLening", "description": "Favorable loan for energy-saving renovations via het Energiehuis.", "linkText": "More info" },
+      { "title": "Municipal premiums", "description": "Extra premiums from your municipality on top of Flemish premiums." }
+    ],
+    "importantNotice": {
+      "title": "Important changes 2026",
+      "description": "From March 1, 2026, Mijn VerbouwPremie changes. Owner-occupiers in the highest income categories will then only qualify for heat pump and heat pump boiler.",
+      "footer": "We keep you informed of current conditions and set honest expectations.",
+      "linkText": "Read more about the changes"
+    },
+    "ctaBanner": {
+      "title": "Maximize premium benefits?",
+      "subtitle": "We'd be happy to discuss which premiums apply to your renovation project."
+    }
+  },
+  "legalLayout": {
+    "lastUpdatedLabel": "Last updated",
+    "print": "Print",
+    "tableOfContents": "Contents",
+    "related": "Related",
+    "backToTop": "Back to top",
+    "home": "Home",
+    "termsLinkText": "Terms and Conditions",
+    "privacyLinkText": "Privacy Policy"
+  },
+  "privacyPage": {
+    "title": "Privacy Policy",
+    "subtitle": "How NAM Construction handles your personal data and protects your privacy",
+    "lastUpdated": "January 2025",
+    "termsLinkText": "Terms and Conditions"
+  },
+  "termsPage": {
+    "title": "Terms and Conditions",
+    "subtitle": "The conditions that apply to our services and work",
+    "lastUpdated": "January 2025",
+    "privacyLinkText": "Privacy Policy"
   }
 }

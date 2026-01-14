@@ -1,6 +1,6 @@
-import Link from 'next/link';
+'use client';
+
 import Image from 'next/image';
-import { Metadata } from 'next';
 import {
   Recycle,
   Leaf,
@@ -10,46 +10,26 @@ import {
   ArrowLeft,
   ArrowUpRight
 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
 import { CTABanner } from '@/components';
 
-export const metadata: Metadata = {
-  title: 'Hergebruik & Circulariteit | Nam Construction',
-  description: 'Waar mogelijk behouden en hergebruiken we bestaand materiaal. Minder afval, meer karakter, lagere kosten.',
-};
-
-const circularApproach = [
-  {
-    step: '01',
-    title: 'Hergebruikscan',
-    description: 'Bij de start inventariseren we wat kan blijven, wat hergebruikt kan worden en wat naar recuperatie gaat.'
-  },
-  {
-    step: '02',
-    title: 'Selectieve demontage',
-    description: 'Waar zinvol demonteren we zorgvuldig in plaats van brute afbraak. Zo behouden materialen hun waarde.'
-  },
-  {
-    step: '03',
-    title: 'Materialenkeuze',
-    description: 'We adviseren over duurzame alternatieven met aandacht voor prestaties, budget en beschikbaarheid.'
-  },
-  {
-    step: '04',
-    title: 'Afvalbeheer',
-    description: 'Correcte sortering en afvoer. Wat gerecupereerd kan worden, gaat niet naar het stort.'
-  }
-];
-
-const benefits = [
-  'Minder afval naar het stort',
-  'Behoud van authentieke elementen',
-  'Lagere materiaalkosten',
-  'Uniek karakter voor uw woning',
-  'Duurzamer renoveren',
-  'Minder CO2-uitstoot'
-];
-
 export default function HergebruikPage() {
+  const t = useTranslations('waardenHergebruik');
+
+  const circularApproach = Array.from({ length: 4 }, (_, i) => ({
+    step: t(`steps.${i}.step`),
+    title: t(`steps.${i}.title`),
+    description: t(`steps.${i}.description`)
+  }));
+
+  const benefits = Array.from({ length: 6 }, (_, i) => t(`benefits.items.${i}`));
+
+  const examples = Array.from({ length: 2 }, (_, i) => ({
+    title: t(`examples.${i}.title`),
+    description: t(`examples.${i}.description`),
+    tag: t(`examples.${i}.tag`)
+  }));
   return (
     <>
       {/* Hero */}
@@ -60,9 +40,9 @@ export default function HergebruikPage() {
 
         <div className="container-wide relative">
           {/* Breadcrumb */}
-          <Link href="/#waarden" className="inline-flex items-center gap-2 text-noir-500 hover:text-accent-500 transition-colors mb-8 text-sm uppercase tracking-wide">
+          <Link href="/" className="inline-flex items-center gap-2 text-noir-500 hover:text-accent-500 transition-colors mb-8 text-sm uppercase tracking-wide">
             <ArrowLeft className="h-4 w-4" />
-            <span>Terug naar onze waarden</span>
+            <span>{t('backToValues')}</span>
           </Link>
 
           <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -70,21 +50,20 @@ export default function HergebruikPage() {
               {/* Badge */}
               <span className="inline-flex items-center gap-2 px-4 py-2 border border-noir-200 text-sm font-medium text-noir-600 mb-6 uppercase tracking-wide">
                 <Recycle className="h-4 w-4" />
-                Onze waarden
+                {t('badge')}
               </span>
 
               <h1 className="text-display-lg font-display font-medium text-noir-900 mb-6">
-                Hergebruik & Circulariteit
+                {t('title')}
               </h1>
               <p className="text-xl text-noir-500 leading-relaxed mb-10">
-                Waar mogelijk behouden en hergebruiken we bestaand materiaal.
-                Minder afval, meer karakter, lagere kosten.
+                {t('description')}
               </p>
               <Link
                 href="/afspraak"
                 className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-noir-900 text-white font-medium uppercase tracking-wide hover:bg-accent-500 transition-all duration-500"
               >
-                Plan een adviesgesprek
+                {t('cta')}
                 <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
             </div>
@@ -94,7 +73,7 @@ export default function HergebruikPage() {
               <div className="relative h-80 lg:h-[500px] overflow-hidden">
                 <Image
                   src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=600&fit=crop"
-                  alt="Hergebruik van materialen"
+                  alt={t('imageAlt')}
                   fill
                   className="object-cover"
                   priority
@@ -110,13 +89,13 @@ export default function HergebruikPage() {
         <div className="container-wide">
           <div className="max-w-2xl mb-16">
             <span className="text-sm font-medium text-accent-500 uppercase tracking-[0.2em] mb-4 block">
-              Werkwijze
+              {t('approachSection.badge')}
             </span>
             <h2 className="text-display-md font-display font-medium text-noir-900 mb-6">
-              Onze circulaire aanpak
+              {t('approachSection.title')}
             </h2>
             <p className="text-xl text-noir-500">
-              Waar het technisch en esthetisch kan, hergebruiken we bestaande elementen of recupereren we ze zorgvuldig.
+              {t('approachSection.subtitle')}
             </p>
           </div>
 
@@ -137,13 +116,13 @@ export default function HergebruikPage() {
         <div className="container-wide">
           <div className="max-w-2xl mb-16">
             <span className="text-sm font-medium text-accent-500 uppercase tracking-[0.2em] mb-4 block">
-              Realisatie
+              {t('practiceSection.badge')}
             </span>
             <h2 className="text-display-md font-display font-medium text-noir-900 mb-6">
-              Hergebruik in de praktijk
+              {t('practiceSection.title')}
             </h2>
             <p className="text-xl text-noir-500">
-              Bestaand materiaal krijgt een tweede leven.
+              {t('practiceSection.subtitle')}
             </p>
           </div>
 
@@ -156,7 +135,7 @@ export default function HergebruikPage() {
                   <div className="aspect-square sm:aspect-[4/3] relative">
                     <Image
                       src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=300&fit=crop"
-                      alt="Voor renovatie"
+                      alt={t('beforeAfter.before')}
                       fill
                       className="object-cover brightness-90 sepia-[0.2]"
                     />
@@ -164,7 +143,7 @@ export default function HergebruikPage() {
                   </div>
                   <div className="absolute bottom-3 left-3">
                     <span className="px-3 py-1.5 bg-noir-900/80 backdrop-blur-sm text-white text-sm font-medium uppercase tracking-wide">
-                      Voor
+                      {t('beforeAfter.before')}
                     </span>
                   </div>
                 </div>
@@ -172,29 +151,28 @@ export default function HergebruikPage() {
                   <div className="aspect-square sm:aspect-[4/3] relative">
                     <Image
                       src="https://images.unsplash.com/photo-1556909114-44e3e70034e2?w=400&h=300&fit=crop"
-                      alt="Na renovatie"
+                      alt={t('beforeAfter.after')}
                       fill
                       className="object-cover"
                     />
                   </div>
                   <div className="absolute bottom-3 right-3">
                     <span className="px-3 py-1.5 bg-accent-500 text-white text-sm font-medium uppercase tracking-wide">
-                      Na
+                      {t('beforeAfter.after')}
                     </span>
                   </div>
                 </div>
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-display font-medium text-noir-900 mb-2">
-                  Keuken met behouden tegelvloer
+                  {examples[0].title}
                 </h3>
                 <p className="text-noir-500 mb-4">
-                  Complete keukenrenovatie waarbij de originele cementtegels uit 1920 werden gereinigd
-                  en gerestaureerd. Nieuwe keuken, authentieke vloer.
+                  {examples[0].description}
                 </p>
                 <div className="flex flex-wrap gap-2">
                   <span className="px-3 py-1 border border-noir-200 text-noir-600 text-sm uppercase tracking-wide">
-                    Cementtegels behouden
+                    {examples[0].tag}
                   </span>
                 </div>
               </div>
@@ -207,7 +185,7 @@ export default function HergebruikPage() {
                   <div className="aspect-square sm:aspect-[4/3] relative">
                     <Image
                       src="https://images.unsplash.com/photo-1513694203232-719a280e022f?w=400&h=300&fit=crop"
-                      alt="Oude zolder"
+                      alt={t('beforeAfter.before')}
                       fill
                       className="object-cover brightness-75 sepia-[0.3]"
                     />
@@ -215,7 +193,7 @@ export default function HergebruikPage() {
                   </div>
                   <div className="absolute bottom-3 left-3">
                     <span className="px-3 py-1.5 bg-noir-900/80 backdrop-blur-sm text-white text-sm font-medium uppercase tracking-wide">
-                      Voor
+                      {t('beforeAfter.before')}
                     </span>
                   </div>
                 </div>
@@ -223,29 +201,28 @@ export default function HergebruikPage() {
                   <div className="aspect-square sm:aspect-[4/3] relative">
                     <Image
                       src="https://images.unsplash.com/photo-1600210492493-0946911123ea?w=400&h=300&fit=crop"
-                      alt="Moderne living"
+                      alt={t('beforeAfter.after')}
                       fill
                       className="object-cover"
                     />
                   </div>
                   <div className="absolute bottom-3 right-3">
                     <span className="px-3 py-1.5 bg-accent-500 text-white text-sm font-medium uppercase tracking-wide">
-                      Na
+                      {t('beforeAfter.after')}
                     </span>
                   </div>
                 </div>
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-display font-medium text-noir-900 mb-2">
-                  Zolder tot living met originele balken
+                  {examples[1].title}
                 </h3>
                 <p className="text-noir-500 mb-4">
-                  Volledige transformatie van zolder naar woonruimte. De originele eiken dakbalken
-                  werden geschuurd en behandeld als karakteristiek element.
+                  {examples[1].description}
                 </p>
                 <div className="flex flex-wrap gap-2">
                   <span className="px-3 py-1 border border-noir-200 text-noir-600 text-sm uppercase tracking-wide">
-                    Eiken balken behouden
+                    {examples[1].tag}
                   </span>
                 </div>
               </div>
@@ -257,15 +234,15 @@ export default function HergebruikPage() {
             <div className="grid grid-cols-3 gap-8 text-center">
               <div>
                 <p className="text-4xl md:text-5xl font-display font-medium text-white mb-2">70%</p>
-                <p className="text-noir-400 uppercase tracking-wide text-sm">minder afval</p>
+                <p className="text-noir-400 uppercase tracking-wide text-sm">{t('stats.lessWaste')}</p>
               </div>
               <div>
                 <p className="text-4xl md:text-5xl font-display font-medium text-accent-500 mb-2">€2.500+</p>
-                <p className="text-noir-400 uppercase tracking-wide text-sm">besparing mogelijk</p>
+                <p className="text-noir-400 uppercase tracking-wide text-sm">{t('stats.savings')}</p>
               </div>
               <div>
                 <p className="text-4xl md:text-5xl font-display font-medium text-white mb-2">100%</p>
-                <p className="text-noir-400 uppercase tracking-wide text-sm">authentiek karakter</p>
+                <p className="text-noir-400 uppercase tracking-wide text-sm">{t('stats.character')}</p>
               </div>
             </div>
           </div>
@@ -278,13 +255,13 @@ export default function HergebruikPage() {
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
               <span className="text-sm font-medium text-accent-500 uppercase tracking-[0.2em] mb-4 block">
-                Voordelen
+                {t('benefits.badge')}
               </span>
               <h2 className="text-display-md font-display font-medium text-noir-900 mb-6">
-                Waarom kiezen voor hergebruik?
+                {t('benefits.title')}
               </h2>
               <p className="text-xl text-noir-500 mb-8">
-                Circulair renoveren biedt voordelen voor uw portemonnee, uw woning en het milieu.
+                {t('benefits.subtitle')}
               </p>
 
               <div className="grid sm:grid-cols-2 gap-4">
@@ -300,7 +277,7 @@ export default function HergebruikPage() {
             <div className="relative h-96 overflow-hidden">
               <Image
                 src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&h=600&fit=crop"
-                alt="Duurzame materialen"
+                alt={t('imageAlt')}
                 fill
                 className="object-cover"
               />
@@ -311,8 +288,8 @@ export default function HergebruikPage() {
 
       {/* CTA */}
       <CTABanner
-        title="Interesse in circulair renoveren?"
-        subtitle="We bespreken graag hoe we uw project kunnen aanpakken met aandacht voor hergebruik."
+        title={t('ctaBanner.title')}
+        subtitle={t('ctaBanner.subtitle')}
       />
     </>
   );

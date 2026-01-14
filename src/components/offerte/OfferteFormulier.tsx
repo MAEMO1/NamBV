@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import Link from 'next/link'
+import { useTranslations } from 'next-intl'
+import { Link } from '@/i18n/routing'
 import {
   ArrowLeft,
   ArrowRight,
@@ -71,12 +72,6 @@ const budgetRanges = [
   { id: 'UNKNOWN', label: budgetRangeLabels.UNKNOWN },
 ]
 
-// Generate months for dropdown
-const monthNames = [
-  'Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni',
-  'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'
-]
-
 // Generate years (current year + next 3 years)
 const currentYear = new Date().getFullYear()
 const currentMonth = new Date().getMonth()
@@ -96,6 +91,7 @@ type FormData = {
 }
 
 export default function OfferteFormulier() {
+  const t = useTranslations('offertePage')
   const [step, setStep] = useState(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
@@ -119,6 +115,13 @@ export default function OfferteFormulier() {
 
   const [errors, setErrors] = useState<Record<string, string>>({})
 
+  // Get translated month names
+  const monthNames = [
+    t('months.0'), t('months.1'), t('months.2'), t('months.3'),
+    t('months.4'), t('months.5'), t('months.6'), t('months.7'),
+    t('months.8'), t('months.9'), t('months.10'), t('months.11')
+  ]
+
   // Load service types and property types from API
   useEffect(() => {
     async function loadFormData() {
@@ -137,7 +140,7 @@ export default function OfferteFormulier() {
   }, [])
 
   const totalSteps = 4
-  const stepLabels = ['Project', 'Details', 'Contact', 'Bevestig']
+  const stepLabels = [t('stepLabels.0'), t('stepLabels.1'), t('stepLabels.2'), t('stepLabels.3')]
 
   // Track form start on first interaction
   const trackStart = () => {
@@ -261,7 +264,7 @@ export default function OfferteFormulier() {
       setIsSubmitted(true)
     } catch {
       trackFormError('offerte', 'server', undefined, 'Submission failed')
-      setErrors({ submit: 'Er is iets misgegaan. Probeer het opnieuw.' })
+      setErrors({ submit: t('submitError') })
     } finally {
       setIsSubmitting(false)
     }
@@ -281,16 +284,15 @@ export default function OfferteFormulier() {
           </div>
 
           <h1 className="text-3xl md:text-4xl font-display font-medium text-white mb-4 animate-fade-up">
-            Aanvraag ontvangen!
+            {t('successTitle')}
           </h1>
           <p className="text-lg text-white/70 mb-10 animate-fade-up" style={{ animationDelay: '100ms' }}>
-            Bedankt voor uw interesse in NAM Construction.
-            We nemen binnen 24 uur contact met u op.
+            {t('successMessage')}
           </p>
 
           {referenceNumber && (
             <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-6 mb-10 animate-fade-up" style={{ animationDelay: '200ms' }}>
-              <span className="text-sm text-white/50 uppercase tracking-wider">Uw referentienummer</span>
+              <span className="text-sm text-white/50 uppercase tracking-wider">{t('referenceLabel')}</span>
               <p className="text-2xl text-white font-display font-medium mt-2">{referenceNumber}</p>
             </div>
           )}
@@ -301,7 +303,7 @@ export default function OfferteFormulier() {
             style={{ animationDelay: '300ms' }}
           >
             <Home className="h-5 w-5" />
-            Terug naar home
+            {t('backToHome')}
           </Link>
         </div>
       </div>
@@ -393,11 +395,11 @@ export default function OfferteFormulier() {
                   <Sparkles className="h-5 w-5 text-accent-600" />
                 </div>
                 <h1 className="text-2xl md:text-3xl font-display font-medium text-noir-900">
-                  Wat wilt u laten renoveren?
+                  {t('step1Title')}
                 </h1>
               </div>
               <p className="text-noir-500 mb-10 ml-[52px]">
-                Selecteer alle onderdelen die van toepassing zijn
+                {t('step1Subtitle')}
               </p>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-10">
@@ -447,7 +449,7 @@ export default function OfferteFormulier() {
                     <Building2 className="h-5 w-5 text-noir-600" />
                   </div>
                   <h2 className="text-lg font-display font-medium text-noir-900">
-                    Type woning
+                    {t('propertyTypeTitle')}
                   </h2>
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -487,21 +489,21 @@ export default function OfferteFormulier() {
                   <Layers className="h-5 w-5 text-accent-600" />
                 </div>
                 <h1 className="text-2xl md:text-3xl font-display font-medium text-noir-900">
-                  Vertel ons meer over uw project
+                  {t('step2Title')}
                 </h1>
               </div>
               <p className="text-noir-500 mb-10 ml-[52px]">
-                Hoe meer details, hoe beter we kunnen inschatten
+                {t('step2Subtitle')}
               </p>
 
               <div className="mb-8">
                 <label className="block text-sm font-medium text-noir-700 mb-3">
-                  Omschrijving <span className="text-accent-500">*</span>
+                  {t('descriptionLabel')} <span className="text-accent-500">*</span>
                 </label>
                 <textarea
                   value={formData.description}
                   onChange={(e) => updateField('description', e.target.value)}
-                  placeholder="Beschrijf uw project zo gedetailleerd mogelijk..."
+                  placeholder={t('descriptionPlaceholder')}
                   rows={5}
                   className={`w-full p-4 rounded-xl border-2 bg-ivory-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all ${
                     errors.description ? 'border-red-500' : 'border-noir-200'
@@ -518,7 +520,7 @@ export default function OfferteFormulier() {
               <div className="mb-8">
                 <label className="flex items-center gap-2 text-sm font-medium text-noir-700 mb-4">
                   <Calendar className="h-4 w-4 text-noir-400" />
-                  Gewenste startdatum
+                  {t('preferredStartLabel')}
                 </label>
 
                 {/* Option: Not yet determined */}
@@ -538,7 +540,7 @@ export default function OfferteFormulier() {
                   }`}>
                     {formData.preferredStart === 'flexible' && <Check className="h-3 w-3 text-white" />}
                   </div>
-                  Nog niet bepaald / Flexibel
+                  {t('flexibleOption')}
                 </button>
 
                 {/* Month/Year selector - only show if not flexible */}
@@ -546,7 +548,7 @@ export default function OfferteFormulier() {
                   <div className="grid grid-cols-2 gap-4">
                     {/* Month selector */}
                     <div>
-                      <label className="block text-xs text-noir-500 uppercase tracking-wider mb-2">Maand</label>
+                      <label className="block text-xs text-noir-500 uppercase tracking-wider mb-2">{t('monthLabel')}</label>
                       <select
                         value={formData.preferredStart ? formData.preferredStart.split('-')[0] || '' : ''}
                         onChange={(e) => {
@@ -560,7 +562,7 @@ export default function OfferteFormulier() {
                         }}
                         className="w-full p-4 rounded-xl border-2 border-noir-200 bg-ivory-50 text-noir-800 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all appearance-none cursor-pointer"
                       >
-                        <option value="">Selecteer maand</option>
+                        <option value="">{t('selectMonth')}</option>
                         {monthNames.map((month, idx) => {
                           // Don't show past months for current year
                           const selectedYear = formData.preferredStart?.split('-')[1]
@@ -578,7 +580,7 @@ export default function OfferteFormulier() {
 
                     {/* Year selector */}
                     <div>
-                      <label className="block text-xs text-noir-500 uppercase tracking-wider mb-2">Jaar</label>
+                      <label className="block text-xs text-noir-500 uppercase tracking-wider mb-2">{t('yearLabel')}</label>
                       <select
                         value={formData.preferredStart ? formData.preferredStart.split('-')[1] || '' : ''}
                         onChange={(e) => {
@@ -597,7 +599,7 @@ export default function OfferteFormulier() {
                         }}
                         className="w-full p-4 rounded-xl border-2 border-noir-200 bg-ivory-50 text-noir-800 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all appearance-none cursor-pointer"
                       >
-                        <option value="">Selecteer jaar</option>
+                        <option value="">{t('selectYear')}</option>
                         {availableYears.map(year => (
                           <option key={year} value={String(year)}>
                             {year}
@@ -614,7 +616,7 @@ export default function OfferteFormulier() {
                     <p className="text-sm text-accent-700 flex items-center gap-2">
                       <Calendar className="h-4 w-4" />
                       <span className="font-medium">
-                        Gewenste start:{' '}
+                        {t('preferredStartPreview')}{' '}
                         {(() => {
                           const [month, year] = formData.preferredStart.split('-')
                           if (month && year) {
@@ -632,7 +634,7 @@ export default function OfferteFormulier() {
 
               <div>
                 <label className="block text-sm font-medium text-noir-700 mb-4">
-                  Budget-indicatie
+                  {t('budgetLabel')}
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   {budgetRanges.map(range => {
@@ -665,24 +667,24 @@ export default function OfferteFormulier() {
                   <User className="h-5 w-5 text-accent-600" />
                 </div>
                 <h1 className="text-2xl md:text-3xl font-display font-medium text-noir-900">
-                  Uw contactgegevens
+                  {t('step3Title')}
                 </h1>
               </div>
               <p className="text-noir-500 mb-10 ml-[52px]">
-                Hoe kunnen we u bereiken?
+                {t('step3Subtitle')}
               </p>
 
               <div className="grid sm:grid-cols-2 gap-6">
                 <div>
                   <label className="flex items-center gap-2 text-sm font-medium text-noir-700 mb-3">
                     <User className="h-4 w-4 text-noir-400" />
-                    Naam <span className="text-accent-500">*</span>
+                    {t('nameLabel')} <span className="text-accent-500">*</span>
                   </label>
                   <input
                     type="text"
                     value={formData.fullName}
                     onChange={(e) => updateField('fullName', e.target.value)}
-                    placeholder="Jan Janssens"
+                    placeholder={t('namePlaceholder')}
                     className={`w-full p-4 rounded-xl border-2 bg-ivory-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all ${
                       errors.fullName ? 'border-red-500' : 'border-noir-200'
                     }`}
@@ -695,13 +697,13 @@ export default function OfferteFormulier() {
                 <div>
                   <label className="flex items-center gap-2 text-sm font-medium text-noir-700 mb-3">
                     <Mail className="h-4 w-4 text-noir-400" />
-                    E-mail <span className="text-accent-500">*</span>
+                    {t('emailLabel')} <span className="text-accent-500">*</span>
                   </label>
                   <input
                     type="email"
                     value={formData.email}
                     onChange={(e) => updateField('email', e.target.value)}
-                    placeholder="jan@voorbeeld.be"
+                    placeholder={t('emailPlaceholder')}
                     className={`w-full p-4 rounded-xl border-2 bg-ivory-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all ${
                       errors.email ? 'border-red-500' : 'border-noir-200'
                     }`}
@@ -714,13 +716,13 @@ export default function OfferteFormulier() {
                 <div>
                   <label className="flex items-center gap-2 text-sm font-medium text-noir-700 mb-3">
                     <Phone className="h-4 w-4 text-noir-400" />
-                    Telefoon <span className="text-accent-500">*</span>
+                    {t('phoneLabel')} <span className="text-accent-500">*</span>
                   </label>
                   <input
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => updateField('phone', e.target.value)}
-                    placeholder="0493 12 34 56"
+                    placeholder={t('phonePlaceholder')}
                     className={`w-full p-4 rounded-xl border-2 bg-ivory-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all ${
                       errors.phone ? 'border-red-500' : 'border-noir-200'
                     }`}
@@ -733,13 +735,13 @@ export default function OfferteFormulier() {
                 <div>
                   <label className="flex items-center gap-2 text-sm font-medium text-noir-700 mb-3">
                     <MapPin className="h-4 w-4 text-noir-400" />
-                    Postcode <span className="text-accent-500">*</span>
+                    {t('postalCodeLabel')} <span className="text-accent-500">*</span>
                   </label>
                   <input
                     type="text"
                     value={formData.postalCode}
                     onChange={(e) => updateField('postalCode', e.target.value)}
-                    placeholder="9000"
+                    placeholder={t('postalCodePlaceholder')}
                     className={`w-full p-4 rounded-xl border-2 bg-ivory-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all ${
                       errors.postalCode ? 'border-red-500' : 'border-noir-200'
                     }`}
@@ -760,11 +762,11 @@ export default function OfferteFormulier() {
                   <CheckCircle2 className="h-5 w-5 text-accent-600" />
                 </div>
                 <h1 className="text-2xl md:text-3xl font-display font-medium text-noir-900">
-                  Controleer uw aanvraag
+                  {t('step4Title')}
                 </h1>
               </div>
               <p className="text-noir-500 mb-10 ml-[52px]">
-                Klopt alles? Dan versturen we uw aanvraag.
+                {t('step4Subtitle')}
               </p>
 
               <div className="bg-gradient-to-br from-ivory-100 to-ivory-50 rounded-2xl p-6 md:p-8 mb-8 border border-noir-100">
@@ -774,7 +776,7 @@ export default function OfferteFormulier() {
                       <Sparkles className="h-5 w-5 text-accent-600" />
                     </div>
                     <div>
-                      <span className="text-xs text-noir-500 uppercase tracking-wider">Renovatie</span>
+                      <span className="text-xs text-noir-500 uppercase tracking-wider">{t('renovationLabel')}</span>
                       <p className="text-noir-900 font-medium mt-1">
                         {formData.serviceTypeIds.map(id =>
                           serviceTypes.find(s => s.id === id)?.name
@@ -788,7 +790,7 @@ export default function OfferteFormulier() {
                       <Building2 className="h-5 w-5 text-noir-600" />
                     </div>
                     <div>
-                      <span className="text-xs text-noir-500 uppercase tracking-wider">Woning</span>
+                      <span className="text-xs text-noir-500 uppercase tracking-wider">{t('propertyLabel')}</span>
                       <p className="text-noir-900 font-medium mt-1">
                         {propertyTypes.find(p => p.id === formData.propertyTypeId)?.name}
                       </p>
@@ -800,7 +802,7 @@ export default function OfferteFormulier() {
                       <Layers className="h-5 w-5 text-noir-600" />
                     </div>
                     <div>
-                      <span className="text-xs text-noir-500 uppercase tracking-wider">Omschrijving</span>
+                      <span className="text-xs text-noir-500 uppercase tracking-wider">{t('descriptionSummaryLabel')}</span>
                       <p className="text-noir-900 mt-1 leading-relaxed">
                         {formData.description}
                       </p>
@@ -811,28 +813,28 @@ export default function OfferteFormulier() {
                     <div className="flex items-start gap-3">
                       <User className="h-5 w-5 text-noir-400 mt-0.5" />
                       <div>
-                        <span className="text-xs text-noir-500 uppercase tracking-wider">Naam</span>
+                        <span className="text-xs text-noir-500 uppercase tracking-wider">{t('nameLabel')}</span>
                         <p className="text-noir-900 font-medium mt-1">{formData.fullName}</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
                       <Mail className="h-5 w-5 text-noir-400 mt-0.5" />
                       <div>
-                        <span className="text-xs text-noir-500 uppercase tracking-wider">E-mail</span>
+                        <span className="text-xs text-noir-500 uppercase tracking-wider">{t('emailLabel')}</span>
                         <p className="text-noir-900 font-medium mt-1">{formData.email}</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
                       <Phone className="h-5 w-5 text-noir-400 mt-0.5" />
                       <div>
-                        <span className="text-xs text-noir-500 uppercase tracking-wider">Telefoon</span>
+                        <span className="text-xs text-noir-500 uppercase tracking-wider">{t('phoneLabel')}</span>
                         <p className="text-noir-900 font-medium mt-1">{formData.phone}</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
                       <MapPin className="h-5 w-5 text-noir-400 mt-0.5" />
                       <div>
-                        <span className="text-xs text-noir-500 uppercase tracking-wider">Postcode</span>
+                        <span className="text-xs text-noir-500 uppercase tracking-wider">{t('postalCodeLabel')}</span>
                         <p className="text-noir-900 font-medium mt-1">{formData.postalCode}</p>
                       </div>
                     </div>
@@ -863,9 +865,9 @@ export default function OfferteFormulier() {
                   className="sr-only"
                 />
                 <span className="text-sm text-noir-600 leading-relaxed">
-                  Ik ga akkoord met de{' '}
-                  <Link href="/privacy" className="text-accent-600 hover:underline font-medium">privacyverklaring</Link>
-                  {' '}en geef toestemming om mijn gegevens te verwerken.
+                  {t('gdprConsent')}{' '}
+                  <Link href="/privacy" className="text-accent-600 hover:underline font-medium">{t('gdprConsentLink')}</Link>
+                  {' '}{t('gdprConsentSuffix')}
                 </span>
               </label>
               {errors.gdprConsent && (
@@ -886,7 +888,7 @@ export default function OfferteFormulier() {
                 className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border-2 border-noir-200 text-noir-700 font-medium hover:bg-noir-50 hover:border-noir-300 transition-all"
               >
                 <ArrowLeft className="h-4 w-4" />
-                Vorige
+                {t('prevButton')}
               </button>
             ) : <div />}
 
@@ -896,7 +898,7 @@ export default function OfferteFormulier() {
                 onClick={nextStep}
                 className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-noir-900 text-white font-medium hover:bg-accent-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-accent-500/20"
               >
-                Volgende
+                {t('nextButton')}
                 <ArrowRight className="h-4 w-4" />
               </button>
             ) : (
@@ -909,11 +911,11 @@ export default function OfferteFormulier() {
                 {isSubmitting ? (
                   <>
                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    Versturen...
+                    {t('submittingButton')}
                   </>
                 ) : (
                   <>
-                    Verstuur aanvraag
+                    {t('submitButton')}
                     <ArrowRight className="h-4 w-4" />
                   </>
                 )}

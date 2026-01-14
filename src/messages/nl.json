@@ -302,5 +302,662 @@
   "legal": {
     "terms": "Algemene Voorwaarden",
     "privacy": "Privacybeleid"
+  },
+  "projectsPage": {
+    "badge": "Portfolio",
+    "title": "Onze",
+    "titleHighlight": "realisaties",
+    "description": "Bekijk een selectie van onze renovatieprojecten in Gent en omstreken. Elke renovatie is uniek, onze aanpak is steeds dezelfde: kwaliteit en vakmanschap.",
+    "filterAll": "Alle",
+    "noProjects": "Geen projecten gevonden in deze categorie.",
+    "viewProject": "Bekijk project",
+    "ctaTitle": "Uw project hier?",
+    "ctaDescription": "Neem contact op voor een gratis adviesgesprek. We bespreken graag uw plannen.",
+    "ctaPrimary": "Offerte aanvragen",
+    "ctaSecondary": "Gratis adviesgesprek"
+  },
+  "contactPage": {
+    "badge": "Neem contact op",
+    "title": "Laten we",
+    "titleHighlight": "samenwerken",
+    "description": "Klaar om uw renovatieproject te bespreken? Neem contact op voor een gratis en vrijblijvend adviesgesprek. We reageren binnen 24 uur.",
+    "callUs": "Bel ons direct",
+    "phone": "Telefoon",
+    "email": "Email",
+    "whatsapp": "WhatsApp",
+    "office": "Kantoor",
+    "directContact": "Direct contact",
+    "sendPhotos": "Stuur foto's van uw project",
+    "responseTime": "Reactie binnen 24u",
+    "monFri": "Ma-Vr 8:00-18:00",
+    "formBadge": "Contactformulier",
+    "formTitle": "Vraag een gratis adviesgesprek aan",
+    "formDescription": "Vul het formulier in en we nemen binnen 24 uur contact met u op.",
+    "nameLabel": "Naam",
+    "namePlaceholder": "Uw naam",
+    "emailLabel": "Email",
+    "emailPlaceholder": "uw@email.be",
+    "phoneLabel": "Telefoon",
+    "phonePlaceholder": "+32 ...",
+    "municipalityLabel": "Gemeente",
+    "municipalityPlaceholder": "Gent, Mariakerke, ...",
+    "projectTypeLabel": "Type project",
+    "projectTypePlaceholder": "Selecteer type project",
+    "timingLabel": "Wanneer starten?",
+    "timingPlaceholder": "Selecteer timing",
+    "budgetLabel": "Indicatief budget",
+    "budgetPlaceholder": "Selecteer budget",
+    "messageLabel": "Uw project",
+    "messagePlaceholder": "Beschrijf kort uw project, wensen of vragen...",
+    "photoTip": "Foto's of plannen? Stuur ze via",
+    "or": "of",
+    "submitButton": "Verstuur aanvraag",
+    "privacyConsent": "Door dit formulier te versturen, gaat u akkoord met onze",
+    "privacyLink": "privacyverklaring",
+    "successTitle": "Bedankt voor uw aanvraag!",
+    "successMessage": "We hebben uw bericht ontvangen en nemen binnen 24 uur contact met u op om uw project te bespreken.",
+    "newRequest": "Nieuwe aanvraag",
+    "freeConsultation": "Gratis adviesgesprek",
+    "noObligations": "Vrijblijvend en zonder verplichtingen",
+    "processBadge": "Ons proces",
+    "processTitle": "Wat kunt u verwachten?",
+    "processItems": ["Reactie binnen 24 uur", "Korte telefonische intake", "Gratis plaatsbezoek indien relevant", "Gedetailleerde offerte"],
+    "availabilityBadge": "Bereikbaarheid",
+    "openingHours": "Openingsuren",
+    "monday-friday": "Maandag - Vrijdag",
+    "saturday": "Zaterdag",
+    "sunday": "Zondag",
+    "byAppointment": "Op afspraak",
+    "closed": "Gesloten",
+    "regionBadge": "Werkgebied",
+    "regionTitle": "Gent & omstreken",
+    "regionDescription": "We zijn actief in Gent en de ruime regio errond:",
+    "ctaTitle": "Liever direct een offerte?",
+    "ctaDescription": "Heeft u al een duidelijk project voor ogen? Vraag direct een vrijblijvende offerte aan.",
+    "ctaPrimary": "Offerte aanvragen",
+    "ctaSecondary": "Plan een gesprek",
+    "projectTypes": ["Totaalrenovatie", "Renovatie & verbouwing", "Badkamerrenovatie", "Keukenrenovatie", "Afwerking (tegelwerk, plakwerk, ...)", "Technieken (elektriciteit, sanitair)", "Anders"],
+    "timings": ["Zo snel mogelijk", "Binnen 3 maanden", "3-6 maanden", "Later / nog niet bepaald"],
+    "budgetRanges": ["Nog geen idee", "< €25.000", "€25.000 - €50.000", "€50.000 - €100.000", "€100.000 - €200.000", "> €200.000"]
+  },
+  "appointmentPage": {
+    "badge": "Gratis adviesgesprek",
+    "title": "Plan uw",
+    "titleHighlight": "afspraak",
+    "description": "Selecteer het type project en kies een moment dat u past. Vrijblijvend en zonder verplichtingen.",
+    "preferPhone": "Liever telefonisch?",
+    "orRequestQuote": "Of vraag direct een offerte aan",
+    "trustPoints": [
+      { "title": "Hergebruik materiaal", "description": "Duurzaam en kostenbesparend" },
+      { "title": "Volledige attestering", "description": "AREI-conform & EPB-attesten" },
+      { "title": "Ecologische focus", "description": "Milieuvriendelijke materialen" }
+    ]
+  },
+  "serviceDetails": {
+    "backToServices": "Terug naar diensten",
+    "freeConsultation": "Gratis adviesgesprek",
+    "viewProjects": "Bekijk projecten",
+    "totaalrenovatie": {
+      "badge": "Meest gevraagd",
+      "title": "Totaalrenovatie",
+      "description": "Volledige renovatie van uw woning, van ruwbouw tot afwerking. Met één aanspreekpunt, duurzame materiaalkeuzes en premie-proof documentatie.",
+      "featuresTitle": "Wat mag u verwachten?",
+      "featuresSubtitle": "Onze totaalrenovaties kenmerken zich door kwaliteit, communicatie en duurzaamheid.",
+      "featuresBadge": "Voordelen",
+      "features": {
+        "singleContact": { "title": "Eén aanspreekpunt", "description": "U heeft één contactpersoon voor uw hele project. Wij coördineren alle vakmensen en leveranciers." },
+        "planning": { "title": "Heldere planning", "description": "Duidelijke fasering en regelmatige updates. U weet altijd waar u aan toe bent." },
+        "quality": { "title": "Kwaliteitsgarantie", "description": "Vakkundige uitvoering met oog voor detail en gebruik van duurzame materialen." },
+        "subsidy": { "title": "Premie-proof", "description": "Correcte documentatie voor Mijn VerbouwPremie en andere subsidies." }
+      },
+      "scopeBadge": "Scope",
+      "scopeTitle": "Wat omvat een totaalrenovatie?",
+      "scopeDescription": "Een totaalrenovatie betekent dat we alle aspecten van uw woning onder handen nemen. Van structurele werken tot de kleinste afwerkingsdetails.",
+      "scope": ["Structurele werken en ruwbouw", "Isolatie (dak, gevel, vloer)", "Ramen en deuren", "Elektriciteit (AREI-conform)", "Sanitair en verwarming", "Ventilatie", "Tegelwerk en vloeren", "Plakwerk en gyproc", "Schilderwerk", "Keuken en badkamer", "Buitenafwerking"],
+      "faqBadge": "FAQ",
+      "faqTitle": "Veelgestelde vragen",
+      "faqSubtitle": "Antwoorden op de meest voorkomende vragen over totaalrenovatie.",
+      "faqs": [
+        { "question": "Hoe lang duurt een totaalrenovatie?", "answer": "De duur hangt af van de scope en complexiteit van uw project. Een gemiddelde totaalrenovatie duurt 3 tot 6 maanden. We maken een gedetailleerde planning bij de start." },
+        { "question": "Kan ik blijven wonen tijdens de renovatie?", "answer": "Dit hangt af van de omvang van de werken. We bespreken dit tijdens het adviesgesprek en zoeken samen naar de beste oplossing." },
+        { "question": "Hoe werkt de betalingsregeling?", "answer": "We werken met een betalingsplan in schijven, gekoppeld aan mijlpalen in het project. Zo heeft u budgetzekerheid en transparantie." },
+        { "question": "Helpen jullie met premieaanvragen?", "answer": "Ja, we leveren premie-proof offertes en facturen, en helpen met de nodige attesten. U dient de aanvraag zelf in via het loket." },
+        { "question": "Werken jullie met onderaannemers?", "answer": "Voor gespecialiseerde technieken werken we met vaste, betrouwbare partners. Zij werken onder onze coördinatie en kwaliteitscontrole." }
+      ]
+    },
+    "renovatie": {
+      "badge": "Gerichte renovaties",
+      "title": "Renovatie & Verbouwing",
+      "description": "Gerichte renovaties en verbouwingen voor specifieke ruimtes of delen van uw woning. Van badkamerrenovatie tot uitbreiding—vakkundig uitgevoerd.",
+      "typesBadge": "Opties",
+      "typesTitle": "Mogelijkheden",
+      "typesSubtitle": "Ontdek de verschillende renovatie- en verbouwingsprojecten die we uitvoeren.",
+      "types": [
+        { "title": "Badkamerrenovatie", "description": "Uw badkamer volledig vernieuwen met kwalitatieve materialen en vakkundige afwerking." },
+        { "title": "Keukenrenovatie", "description": "Een functionele en stijlvolle keuken die perfect aansluit bij uw levensstijl." },
+        { "title": "Uitbreidingen", "description": "Extra leefruimte creëren met een aanbouw of veranda, naadloos geïntegreerd." },
+        { "title": "Zolderinrichting", "description": "Uw zolder omtoveren tot een volwaardige leefruimte met alle comfort." }
+      ],
+      "benefitsBadge": "Voordelen",
+      "benefitsTitle": "Voordelen van gerichte renovatie",
+      "benefitsDescription": "Een gerichte renovatie is ideaal wanneer u specifieke ruimtes wilt vernieuwen zonder uw hele woning onder handen te nemen.",
+      "benefits": ["Gerichte aanpak voor specifieke ruimtes", "Minder overlast dan bij totaalrenovatie", "Duidelijke scope en budget", "Vakkundige afwerking en materialen", "Coördinatie van alle vakmensen", "Premie-proof documentatie waar van toepassing"]
+    },
+    "afwerking": {
+      "badge": "Detail & precisie",
+      "title": "Afwerking",
+      "description": "Vakkundige afwerking die het verschil maakt. Tegelwerk, plakwerk, schilderwerk en meer—met oog voor detail en kwaliteitsvolle materialen.",
+      "servicesBadge": "Diensten",
+      "servicesTitle": "Onze afwerkingsdiensten",
+      "servicesSubtitle": "Van tegelwerk tot schilderwerk—alles voor een perfecte afwerking.",
+      "services": [
+        { "title": "Tegelwerk", "description": "Vakkundig gelegd tegelwerk voor vloer en wand. Van klassiek tot modern, met oog voor patroon en voegen.", "items": ["Vloertegels", "Wandtegels", "Mozaïek", "Natuursteen", "Grote formaten"] },
+        { "title": "Plakwerk & Gyproc", "description": "Strakke wanden en plafonds met gyproc of traditioneel pleisterwerk.", "items": ["Gyprocwanden", "Verlaagde plafonds", "Pleisterwerk", "Schuurwerk", "Sierpleister"] },
+        { "title": "Schilderwerk", "description": "Professioneel schilderwerk voor binnen en buiten. Met kwalitatieve verven en gezonde alternatieven.", "items": ["Binnenschilderwerk", "Buitenschilderwerk", "Lakwerk", "Behang", "Decoratieve technieken"] },
+        { "title": "Chapewerk", "description": "Egale ondervloeren voor een perfecte afwerking van uw vloerbekleding.", "items": ["Traditionele chape", "Vloerverwarming-chape", "Egalisatie", "Sneldrogende chape"] }
+      ],
+      "qualityBadge": "Kwaliteit",
+      "qualityTitle": "Afwerking die blijft",
+      "qualityDescription": "De afwerking bepaalt het eindresultaat van uw renovatie. Daarom besteden we extra aandacht aan materialen, technieken en details.",
+      "qualityPoints": ["Gebruik van kwalitatieve materialen", "Vakkundige toepassing en verwerking", "Oog voor detail en afwerking", "Gezonde materialen waar mogelijk", "Strakke oplevering"]
+    },
+    "technieken": {
+      "badge": "Erkende vakmensen",
+      "title": "Technieken",
+      "description": "Elektriciteit, sanitair, verwarming en ventilatie door erkende vakmensen. Veilig, conform alle normen en met de juiste attesten.",
+      "servicesBadge": "Expertise",
+      "servicesTitle": "Onze technische diensten",
+      "servicesSubtitle": "Alle technische installaties voor uw renovatieproject.",
+      "services": [
+        { "title": "Elektriciteit", "description": "Volledige elektrische installaties, conform AREI-normen. Van basisinstallatie tot domotica.", "items": ["Nieuwe installaties", "Renovatie bestaande installatie", "Verlichting", "Stopcontacten & schakelaars", "Elektrische keuring"] },
+        { "title": "Sanitair", "description": "Sanitaire installaties van hoge kwaliteit. Leidingwerk, aansluitingen en toestellen.", "items": ["Leidingwerk (koper, kunststof)", "Badkamerinstallaties", "Keukeninstallaties", "Afvoersystemen", "Regenwatersystemen"] },
+        { "title": "Verwarming", "description": "Verwarmingsinstallaties voor comfort en efficiëntie. Van radiatoren tot vloerverwarming.", "items": ["Centrale verwarming", "Vloerverwarming", "Radiatoren", "Warmtepomp-ready", "Thermostaatregeling"] },
+        { "title": "Ventilatie", "description": "Ventilatiesystemen voor een gezond binnenklimaat. Van basis tot systeem D.", "items": ["Mechanische ventilatie", "Systeem C en D", "Dampkappen", "Badkamerventilatie", "Vraaggestuurde ventilatie"] }
+      ],
+      "certBadge": "Normen & certificering",
+      "certTitle": "Conform alle normen",
+      "certDescription": "Onze technische installaties worden uitgevoerd door erkende vakmensen en voldoen aan alle geldende normen en voorschriften.",
+      "certifications": ["AREI-conforme elektrische installaties", "Erkende keuringsorganismen voor attesten", "Premie-proof documentatie", "Garantie op materialen en uitvoering", "Nazorg en ondersteuning"]
+    }
+  },
+  "servicesPage": {
+    "hero": {
+      "badge": "Onze expertise",
+      "titlePrefix": "Diensten voor elke",
+      "titleHighlight": "renovatie",
+      "description": "Van totaalrenovatie tot vakkundige afwerking. We begeleiden u door elk aspect van uw renovatieproject met duurzame materiaalkeuzes en heldere communicatie."
+    },
+    "services": {
+      "fullRenovation": {
+        "title": "Totaalrenovatie",
+        "subtitle": "Complete transformatie",
+        "description": "Volledige renovatie van uw woning, van ruwbouw tot afwerking. We coördineren alle aspecten van uw project met één aanspreekpunt.",
+        "tag": "Meest gevraagd",
+        "features": {
+          "0": "Volledige projectcoördinatie",
+          "1": "Ruwbouw en structurele werken",
+          "2": "Technieken (elektriciteit, sanitair)",
+          "3": "Afwerking en interieur",
+          "4": "Premie-proof documentatie"
+        }
+      },
+      "renovation": {
+        "title": "Renovatie & Verbouwing",
+        "subtitle": "Gerichte aanpassingen",
+        "description": "Gerichte renovaties en verbouwingen voor specifieke ruimtes of delen van uw woning. Van badkamer tot uitbreiding.",
+        "features": {
+          "0": "Badkamerrenovatie",
+          "1": "Keukenrenovatie",
+          "2": "Uitbreidingen en aanbouw",
+          "3": "Kelderrenovatie",
+          "4": "Zolderinrichting"
+        }
+      },
+      "finishing": {
+        "title": "Afwerking",
+        "subtitle": "Het verschil zit in de details",
+        "description": "Vakkundige afwerking die het verschil maakt. Tegelwerk, plakwerk, schilderwerk en meer met oog voor detail.",
+        "features": {
+          "0": "Tegelwerk (vloer en wand)",
+          "1": "Plakwerk en gyproc",
+          "2": "Schilderwerk",
+          "3": "Chapewerk",
+          "4": "Decoratieve afwerking"
+        }
+      },
+      "technical": {
+        "title": "Technieken",
+        "subtitle": "Veilig & conform",
+        "description": "Elektriciteit en sanitair door erkende vakmensen. Veilig, conform alle normen en met de juiste attesten.",
+        "features": {
+          "0": "Elektriciteitswerken (AREI-conform)",
+          "1": "Sanitaire installaties",
+          "2": "Verwarming",
+          "3": "Ventilatie",
+          "4": "Keuringsattesten"
+        }
+      }
+    },
+    "whyUs": {
+      "badge": "Onze aanpak",
+      "title": "Waarom NAM Construction?",
+      "description": "Wat ons onderscheidt van andere aannemers in de regio Gent.",
+      "items": {
+        "0": {
+          "title": "Duurzame materialen",
+          "description": "We kiezen bewust voor materialen met een lange levensduur en gezonde eigenschappen voor u en het milieu."
+        },
+        "1": {
+          "title": "Premie-proof dossier",
+          "description": "Correcte offerte, factuur en attesten zodat uw premieaanvraag bij de overheid vlot verloopt."
+        },
+        "2": {
+          "title": "Eén vast aanspreekpunt",
+          "description": "Directe communicatie met uw projectleider van start tot oplevering. Geen gedoe met tussenpersonen."
+        }
+      }
+    },
+    "cta": {
+      "title": "Benieuwd wat we voor u kunnen betekenen?",
+      "description": "Plan een gratis adviesgesprek en we bespreken uw project.",
+      "buttonPrimary": "Offerte aanvragen",
+      "buttonSecondary": "Gratis adviesgesprek"
+    }
+  },
+  "aanpakPage": {
+    "badge": "Werkwijze",
+    "title": "Onze aanpak",
+    "description": "Van eerste contact tot oplevering: een helder proces met duidelijke communicatie. Zodat u weet wat u mag verwachten en geen verrassingen tegenkomt.",
+    "planConsultation": "Plan adviesgesprek",
+    "callUs": "Bel ons",
+    "stepsBadge": "Stappen",
+    "stepsTitle": "Het proces in 4 stappen",
+    "stepsSubtitle": "Zo verloopt een project bij Nam Construction. Overzichtelijk en voorspelbaar.",
+    "steps": [
+      {
+        "step": "01",
+        "title": "Intake & Kennismaking",
+        "description": "We starten met een gratis en vrijblijvend adviesgesprek. Telefonisch, via video of bij u thuis. We luisteren naar uw wensen, bekijken de situatie en bespreken de mogelijkheden.",
+        "details": ["Vrijblijvend en gratis", "Uw wensen en prioriteiten", "Eerste inschatting haalbaarheid", "Kennismaking met onze aanpak"]
+      },
+      {
+        "step": "02",
+        "title": "Voorstel & Offerte",
+        "description": "Na het plaatsbezoek stellen we een gedetailleerd voorstel op. Met duidelijke scope, materiaalopties en premie-proof offerte. Geen verrassingen achteraf.",
+        "details": ["Gedetailleerde scope", "Materiaalopties met prijzen", "Premie-proof opmaak", "Duidelijke planning"]
+      },
+      {
+        "step": "03",
+        "title": "Uitvoering",
+        "description": "Tijdens de uitvoering bent u altijd op de hoogte. Regelmatige updates, één aanspreekpunt en vakkundige uitvoering door ons team en vaste partners.",
+        "details": ["Eén vast aanspreekpunt", "Regelmatige updates", "Gecoördineerde planning", "Kwaliteitscontrole"]
+      },
+      {
+        "step": "04",
+        "title": "Oplevering & Nazorg",
+        "description": "Bij oplevering lopen we alles samen door. We zorgen voor de nodige attesten en begeleiden u bij premieaanvragen. Ook na oplevering staan we paraat.",
+        "details": ["Grondige oplevering", "Attesten en documenten", "Ondersteuning premies", "Nazorg en garantie"]
+      }
+    ],
+    "guaranteesBadge": "Garanties",
+    "guaranteesTitle": "Wat u mag verwachten",
+    "guaranteesSubtitle": "Onze garanties voor een zorgeloze samenwerking.",
+    "guarantees": [
+      { "title": "Kwaliteitsgarantie", "description": "We staan achter ons werk. Bij problemen lossen we die op, ook na oplevering." },
+      { "title": "Heldere planning", "description": "Duidelijke mijlpalen en realistische timing. U weet waar u aan toe bent." },
+      { "title": "Eén aanspreekpunt", "description": "Geen gedoe met verschillende contactpersonen. U heeft één vaste contactpersoon." },
+      { "title": "Transparante prijs", "description": "Gedetailleerde offerte zonder verborgen kosten. Meerwerk alleen in overleg." }
+    ],
+    "faqBadge": "FAQ",
+    "faqTitle": "Veelgestelde vragen",
+    "faqSubtitle": "Antwoorden op de meest voorkomende vragen over onze werkwijze.",
+    "faqs": [
+      { "question": "Hoe lang duurt het voor ik een offerte krijg?", "answer": "Na het plaatsbezoek ontvangt u binnen 1 à 2 weken een gedetailleerde offerte. Voor complexere projecten kan dit iets langer duren." },
+      { "question": "Werken jullie met vaste prijzen of nacalculatie?", "answer": "We werken met een gedetailleerde offerte op basis van vaste prijzen. Meerwerk wordt altijd vooraf besproken en goedgekeurd." },
+      { "question": "Hoe verloopt de communicatie tijdens het project?", "answer": "U heeft één vast aanspreekpunt. We geven regelmatige updates (telefonisch, per mail of via WhatsApp) en zijn bereikbaar voor vragen." },
+      { "question": "Wat als er iets misgaat of niet naar wens is?", "answer": "We lossen problemen snel en correct op. Bij oplevering lopen we alles samen door en puntjes worden aangepakt voor finale goedkeuring." },
+      { "question": "Helpen jullie met vergunningen?", "answer": "We adviseren over vergunningsplicht en kunnen doorverwijzen naar architecten indien nodig. De vergunningsaanvraag zelf valt buiten onze scope." },
+      { "question": "Kunnen jullie ook enkel een deel van de werken uitvoeren?", "answer": "Ja, we doen ook gerichte renovaties en afwerking. Bespreek uw specifieke wensen tijdens het adviesgesprek." }
+    ]
+  },
+  "offertePage": {
+    "stepLabels": ["Project", "Details", "Contact", "Bevestig"],
+    "successTitle": "Aanvraag ontvangen!",
+    "successMessage": "Bedankt voor uw interesse in NAM Construction. We nemen binnen 24 uur contact met u op.",
+    "referenceLabel": "Uw referentienummer",
+    "backToHome": "Terug naar home",
+    "step1Title": "Wat wilt u laten renoveren?",
+    "step1Subtitle": "Selecteer alle onderdelen die van toepassing zijn",
+    "propertyTypeTitle": "Type woning",
+    "step2Title": "Vertel ons meer over uw project",
+    "step2Subtitle": "Hoe meer details, hoe beter we kunnen inschatten",
+    "descriptionLabel": "Omschrijving",
+    "descriptionPlaceholder": "Beschrijf uw project zo gedetailleerd mogelijk...",
+    "preferredStartLabel": "Gewenste startdatum",
+    "flexibleOption": "Nog niet bepaald / Flexibel",
+    "monthLabel": "Maand",
+    "yearLabel": "Jaar",
+    "selectMonth": "Selecteer maand",
+    "selectYear": "Selecteer jaar",
+    "preferredStartPreview": "Gewenste start:",
+    "budgetLabel": "Budget-indicatie",
+    "step3Title": "Uw contactgegevens",
+    "step3Subtitle": "Hoe kunnen we u bereiken?",
+    "nameLabel": "Naam",
+    "namePlaceholder": "Jan Janssens",
+    "emailLabel": "E-mail",
+    "emailPlaceholder": "jan@voorbeeld.be",
+    "phoneLabel": "Telefoon",
+    "phonePlaceholder": "0493 12 34 56",
+    "postalCodeLabel": "Postcode",
+    "postalCodePlaceholder": "9000",
+    "step4Title": "Controleer uw aanvraag",
+    "step4Subtitle": "Klopt alles? Dan versturen we uw aanvraag.",
+    "renovationLabel": "Renovatie",
+    "propertyLabel": "Woning",
+    "descriptionSummaryLabel": "Omschrijving",
+    "gdprConsent": "Ik ga akkoord met de",
+    "gdprConsentLink": "privacyverklaring",
+    "gdprConsentSuffix": "en geef toestemming om mijn gegevens te verwerken.",
+    "submitError": "Er is iets misgegaan. Probeer het opnieuw.",
+    "prevButton": "Vorige",
+    "nextButton": "Volgende",
+    "submitButton": "Verstuur aanvraag",
+    "submittingButton": "Versturen...",
+    "months": ["Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September", "Oktober", "November", "December"]
+  },
+  "waardenAttestering": {
+    "backToValues": "Terug naar onze waarden",
+    "badge": "Onze waarden",
+    "title": "Volledige Attestering",
+    "description": "AREI-conforme installaties, EPB-attesten en alle nodige certificaten. Premie-proof en zonder zorgen.",
+    "cta": "Plan een adviesgesprek",
+    "imageAlt": "Attestering en documenten",
+    "certificatesSection": {
+      "badge": "Certificaten",
+      "title": "Alle documenten in orde",
+      "subtitle": "Wij zorgen voor alle nodige attesten en certificaten zodat u zich geen zorgen hoeft te maken."
+    },
+    "certifications": [
+      { "title": "AREI-conformiteit", "description": "Elektrische installaties volgens het Algemeen Reglement op de Elektrische Installaties. Veilig en gekeurd." },
+      { "title": "EPB-attesten", "description": "Energie Prestatie en Binnenklimaat documentatie voor uw renovatieproject." },
+      { "title": "Aannemersattesten", "description": "Alle nodige attesten voor uw premieaanvragen, correct ingevuld en ondertekend." },
+      { "title": "Keuringsrapporten", "description": "Coördinatie van alle nodige keuringen via onze erkende partners." }
+    ],
+    "whatWeDo": {
+      "title": "Wat wij doen",
+      "items": [
+        "Premie-proof offerte en factuur (correct opgesplitst per categorie)",
+        "Aannemersattesten ingevuld en ondertekend",
+        "Coördinatie van keuringen via erkende partners",
+        "Advies over welke werken in aanmerking komen",
+        "Documentatie voor BTW-attest bij renovatie"
+      ]
+    },
+    "whatYouGet": {
+      "title": "Wat u krijgt",
+      "items": [
+        "Alle documenten voor premieaanvraag",
+        "AREI-keuringsattest",
+        "Facturen conform premievereisten",
+        "Ondersteuning bij het indienen"
+      ],
+      "footer": "Al onze werken worden uitgevoerd volgens de geldende normen en regelgeving. U ontvangt alle nodige documenten voor uw premieaanvragen."
+    },
+    "whyImportant": {
+      "badge": "Waarom belangrijk",
+      "title": "Premie-proof renoveren",
+      "description": "Veel renovatiepremies vereisen specifieke documenten en attesten. Wij zorgen ervoor dat al uw paperassen in orde zijn, zodat u maximaal kunt profiteren van beschikbare subsidies.",
+      "withoutTitle": "Zonder correcte attestering:",
+      "withoutItems": ["Geen toegang tot premies", "Problemen bij verkoop woning", "Risico op boetes bij keuring"]
+    },
+    "ctaBanner": {
+      "title": "Zekerheid over uw documenten?",
+      "subtitle": "Wij zorgen voor alle nodige attesten en certificaten bij uw renovatieproject."
+    }
+  },
+  "waardenBetalingsspreiding": {
+    "backToValues": "Terug naar onze waarden",
+    "badge": "Onze waarden",
+    "title": "Betalingsspreiding",
+    "description": "Betaal in fasen per afgeronde mijlpaal. Transparant, eerlijk en overzichtelijk voor uw budget.",
+    "cta": "Plan een adviesgesprek",
+    "imageAlt": "Betalingsspreiding",
+    "paymentPlan": {
+      "badge": "Betalingsplan",
+      "title": "Hoe werkt de betaling?",
+      "subtitle": "We werken met een gefaseerd betalingsplan dat gekoppeld is aan concrete mijlpalen in uw project. Zo betaalt u pas voor werk dat effectief is uitgevoerd."
+    },
+    "phases": [
+      { "phase": "Voorschot", "desc": "Bij ondertekening overeenkomst", "detail": "Start van de samenwerking" },
+      { "phase": "Ruwbouw", "desc": "Na afronding structurele werken", "detail": "Wanneer de basis staat" },
+      { "phase": "Afwerking", "desc": "Na afronding afwerkingen", "detail": "Tegelwerk, pleisterwerk, schilderwerk" },
+      { "phase": "Oplevering", "desc": "Na finale oplevering en goedkeuring", "detail": "Wanneer u volledig tevreden bent" }
+    ],
+    "infoBox": {
+      "title": "Spreiding op maat van uw project",
+      "description": "De exacte verdeling bespreken we samen en stemmen we af op de aard en omvang van uw project. Zo zorgen we voor een betalingsplan dat past bij uw situatie en budget."
+    },
+    "benefits": {
+      "badge": "Voordelen",
+      "title": "Waarom gefaseerd betalen?",
+      "subtitle": "Een renovatie is een grote investering. Met ons betalingsplan houdt u het overzicht en betaalt u enkel voor afgerond werk.",
+      "items": [
+        "Geen grote eenmalige betaling",
+        "Betaling gekoppeld aan voortgang",
+        "Duidelijke mijlpalen vooraf afgesproken",
+        "Transparante facturatie per fase",
+        "Geen verrassingen achteraf",
+        "Budget overzichtelijk spreiden"
+      ]
+    },
+    "budgetFriendly": {
+      "title": "Budgetvriendelijk",
+      "description": "Door de spreiding over meerdere fasen hoeft u niet in één keer een groot bedrag te betalen. Ideaal voor uw cashflow en budgetplanning.",
+      "howItWorks": "Hoe werkt het?",
+      "howItWorksItems": [
+        "Spreiding over meerdere mijlpalen",
+        "Verdeling afgestemd op uw project",
+        "Betaling pas na afronding fase",
+        "Altijd vooraf duidelijk afgesproken"
+      ]
+    },
+    "transparency": {
+      "badge": "Transparantie",
+      "title": "Geen verrassingen",
+      "subtitle": "Alle betalingsmomenten worden vooraf afgesproken en vastgelegd in de overeenkomst. Meerwerk wordt altijd vooraf besproken en goedgekeurd.",
+      "steps": [
+        { "title": "Duidelijke offerte", "description": "Gedetailleerde prijsopgave per onderdeel" },
+        { "title": "Meerwerk in overleg", "description": "Altijd vooraf besproken en goedgekeurd" },
+        { "title": "Betaling na goedkeuring", "description": "U betaalt pas na akkoord op de fase" }
+      ]
+    },
+    "ctaBanner": {
+      "title": "Renoveren op uw tempo?",
+      "subtitle": "Bespreek uw project en ontdek hoe we de betaling kunnen spreiden."
+    }
+  },
+  "waardenCommunicatie": {
+    "backToValues": "Terug naar onze waarden",
+    "badge": "Onze waarden",
+    "title": "Heldere Communicatie",
+    "description": "Eén vast aanspreekpunt, regelmatige updates en duidelijke afspraken. U weet altijd waar u aan toe bent.",
+    "cta": "Plan een adviesgesprek",
+    "imageAlt": "Heldere communicatie",
+    "pillarsSection": {
+      "badge": "Onze aanpak",
+      "title": "Communicatie die werkt",
+      "subtitle": "Een renovatie vraagt om heldere afspraken en regelmatige updates. Zo weet u altijd waar uw project staat."
+    },
+    "pillars": [
+      { "title": "Eén vast aanspreekpunt", "description": "U communiceert steeds met dezelfde projectverantwoordelijke. Geen gedoe met verschillende contactpersonen." },
+      { "title": "Regelmatige updates", "description": "Wekelijkse voortgangsrapporten via telefoon, e-mail of WhatsApp. U kiest het kanaal dat u prefereert." },
+      { "title": "Bereikbaarheid", "description": "Snelle reactie op vragen of opmerkingen. Geen weken wachten op antwoord." }
+    ],
+    "expectations": {
+      "badge": "Verwachtingen",
+      "title": "Wat u mag verwachten",
+      "subtitle": "Tijdens uw renovatieproject houden we u voortdurend op de hoogte. Geen onzekerheid, geen verrassingen.",
+      "items": [
+        "Wekelijks voortgangsrapport",
+        "Directe lijn met projectverantwoordelijke",
+        "Proactieve communicatie bij wijzigingen",
+        "Duidelijke planning en tijdlijn",
+        "Foto-updates van de werken"
+      ]
+    },
+    "alwaysInformed": {
+      "title": "Altijd op de hoogte",
+      "description": "U weet altijd waar uw project staat. Geen weken wachten op informatie, geen onduidelijkheid over de planning.",
+      "channels": ["Telefonisch bereikbaar", "Mail binnen 24u beantwoord", "WhatsApp voor snelle vragen"]
+    },
+    "timeline": {
+      "badge": "Voorbeeld",
+      "title": "Communicatie tijdens uw project",
+      "items": [
+        { "week": "Week 1", "title": "Kickoff meeting", "description": "Planning doorlopen, afspraken vastleggen, contactgegevens uitwisselen" },
+        { "week": "Wekelijks", "title": "Voortgangsupdate", "description": "Telefonisch of per mail: wat is er gedaan, wat staat er gepland" },
+        { "week": "Wijzigingen", "title": "Proactief contact", "description": "Bij onvoorziene zaken nemen wij direct contact op om te overleggen" },
+        { "week": "Oplevering", "title": "Gezamenlijke doorloop", "description": "Alles samen nalopen, puntjes afwerken, documenten overhandigen" }
+      ]
+    },
+    "ctaBanner": {
+      "title": "Klaar voor een project zonder zorgen?",
+      "subtitle": "Ontdek hoe onze heldere communicatie het verschil maakt."
+    }
+  },
+  "waardenHergebruik": {
+    "backToValues": "Terug naar onze waarden",
+    "badge": "Onze waarden",
+    "title": "Hergebruik & Circulariteit",
+    "description": "Waar mogelijk behouden en hergebruiken we bestaand materiaal. Minder afval, meer karakter, lagere kosten.",
+    "cta": "Plan een adviesgesprek",
+    "imageAlt": "Hergebruik van materialen",
+    "approachSection": {
+      "badge": "Werkwijze",
+      "title": "Onze circulaire aanpak",
+      "subtitle": "Waar het technisch en esthetisch kan, hergebruiken we bestaande elementen of recupereren we ze zorgvuldig."
+    },
+    "steps": [
+      { "step": "01", "title": "Hergebruikscan", "description": "Bij de start inventariseren we wat kan blijven, wat hergebruikt kan worden en wat naar recuperatie gaat." },
+      { "step": "02", "title": "Selectieve demontage", "description": "Waar zinvol demonteren we zorgvuldig in plaats van brute afbraak. Zo behouden materialen hun waarde." },
+      { "step": "03", "title": "Materialenkeuze", "description": "We adviseren over duurzame alternatieven met aandacht voor prestaties, budget en beschikbaarheid." },
+      { "step": "04", "title": "Afvalbeheer", "description": "Correcte sortering en afvoer. Wat gerecupereerd kan worden, gaat niet naar het stort." }
+    ],
+    "practiceSection": {
+      "badge": "Realisatie",
+      "title": "Hergebruik in de praktijk",
+      "subtitle": "Bestaand materiaal krijgt een tweede leven."
+    },
+    "beforeAfter": {
+      "before": "Voor",
+      "after": "Na"
+    },
+    "examples": [
+      {
+        "title": "Keuken met behouden tegelvloer",
+        "description": "Complete keukenrenovatie waarbij de originele cementtegels uit 1920 werden gereinigd en gerestaureerd. Nieuwe keuken, authentieke vloer.",
+        "tag": "Cementtegels behouden"
+      },
+      {
+        "title": "Zolder tot living met originele balken",
+        "description": "Volledige transformatie van zolder naar woonruimte. De originele eiken dakbalken werden geschuurd en behandeld als karakteristiek element.",
+        "tag": "Eiken balken behouden"
+      }
+    ],
+    "stats": {
+      "lessWaste": "minder afval",
+      "savings": "besparing mogelijk",
+      "character": "authentiek karakter"
+    },
+    "benefits": {
+      "badge": "Voordelen",
+      "title": "Waarom kiezen voor hergebruik?",
+      "subtitle": "Circulair renoveren biedt voordelen voor uw portemonnee, uw woning en het milieu.",
+      "items": [
+        "Minder afval naar het stort",
+        "Behoud van authentieke elementen",
+        "Lagere materiaalkosten",
+        "Uniek karakter voor uw woning",
+        "Duurzamer renoveren",
+        "Minder CO2-uitstoot"
+      ]
+    },
+    "ctaBanner": {
+      "title": "Interesse in circulair renoveren?",
+      "subtitle": "We bespreken graag hoe we uw project kunnen aanpakken met aandacht voor hergebruik."
+    }
+  },
+  "waardenSubsidies": {
+    "backToValues": "Terug naar onze waarden",
+    "badge": "Onze waarden",
+    "title": "Subsidie-ondersteuning",
+    "description": "We helpen bij het aanvragen van beschikbare premies en subsidies. Maximaal voordeel uit uw investering.",
+    "cta": "Plan een adviesgesprek",
+    "imageAlt": "Subsidies en premies",
+    "collaborationSection": {
+      "badge": "Samenwerking",
+      "title": "Premies, Leningen & Attesten",
+      "subtitle": "We helpen u wegwijs in het premie-landschap en leveren de juiste documenten zodat uw dossier vlot kan verlopen."
+    },
+    "whatWeDo": {
+      "title": "Wat wij doen",
+      "items": [
+        "Premie-proof offerte en factuur (correct opgesplitst per categorie)",
+        "Aannemersattesten ingevuld en ondertekend",
+        "Coördinatie van keuringen via erkende partners",
+        "Advies over welke werken in aanmerking komen"
+      ]
+    },
+    "whatYouDo": {
+      "title": "Wat u doet",
+      "items": [
+        "Premieaanvraag indienen via Mijn VerbouwPremie",
+        "Eventuele leningaanvraag via het Energiehuis"
+      ],
+      "footer": "De premieaanvraag zelf dient u in via de officiële kanalen. Wij zorgen voor alle nodige documenten en attesten."
+    },
+    "premiesSection": {
+      "badge": "Overzicht",
+      "title": "Beschikbare premies",
+      "subtitle": "Een overzicht van de belangrijkste premies waarvoor uw renovatie mogelijk in aanmerking komt."
+    },
+    "premieTypes": [
+      { "title": "Mijn VerbouwPremie", "description": "Premie voor dakisolatie, muurisolatie, vloerisolatie, hoogrendementsglas en meer.", "linkText": "Meer info" },
+      { "title": "Mijn VerbouwLening", "description": "Voordelige lening voor energiebesparende renovaties via het Energiehuis.", "linkText": "Meer info" },
+      { "title": "Gemeentelijke premies", "description": "Extra premies van uw gemeente bovenop de Vlaamse premies." }
+    ],
+    "importantNotice": {
+      "title": "Belangrijke wijzigingen 2026",
+      "description": "Vanaf 1 maart 2026 wijzigt Mijn VerbouwPremie. Eigenaar-bewoners in de hoogste inkomenscategorieën komen dan enkel nog in aanmerking voor warmtepomp en warmtepompboiler.",
+      "footer": "Wij houden u op de hoogte van de actuele voorwaarden en zetten eerlijke verwachtingen.",
+      "linkText": "Lees meer over de wijzigingen"
+    },
+    "ctaBanner": {
+      "title": "Maximaal profiteren van premies?",
+      "subtitle": "We bespreken graag welke premies van toepassing zijn op uw renovatieproject."
+    }
+  },
+  "legalLayout": {
+    "lastUpdatedLabel": "Laatst bijgewerkt",
+    "print": "Afdrukken",
+    "tableOfContents": "Inhoud",
+    "related": "Gerelateerd",
+    "backToTop": "Terug naar boven",
+    "home": "Home",
+    "termsLinkText": "Algemene Voorwaarden",
+    "privacyLinkText": "Privacybeleid"
+  },
+  "privacyPage": {
+    "title": "Privacybeleid",
+    "subtitle": "Hoe NAM Construction omgaat met uw persoonsgegevens en uw privacy beschermt",
+    "lastUpdated": "Januari 2025",
+    "termsLinkText": "Algemene Voorwaarden"
+  },
+  "termsPage": {
+    "title": "Algemene Voorwaarden",
+    "subtitle": "De voorwaarden die van toepassing zijn op onze diensten en werkzaamheden",
+    "lastUpdated": "Januari 2025",
+    "privacyLinkText": "Privacybeleid"
   }
 }

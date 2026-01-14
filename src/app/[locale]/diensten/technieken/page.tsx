@@ -1,54 +1,81 @@
-import Link from 'next/link';
+'use client';
+
 import Image from 'next/image';
-import { Metadata } from 'next';
 import { ArrowRight, CheckCircle2, Zap, Droplets, Thermometer, Wind, ShieldCheck, Calendar } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
 import { SectionHeader, CTABanner } from '@/components';
 
-export const metadata: Metadata = {
-  title: 'Technieken Gent | Elektriciteit & Sanitair',
-  description: 'Elektriciteit en sanitair in Gent. AREI-conforme installaties, sanitaire werken en verwarmingsinstallaties door erkende vakmensen.',
-};
-
-const services = [
-  {
-    icon: Zap,
-    title: 'Elektriciteit',
-    description: 'Volledige elektrische installaties, conform AREI-normen. Van basisinstallatie tot domotica.',
-    items: ['Nieuwe installaties', 'Renovatie bestaande installatie', 'Verlichting', 'Stopcontacten & schakelaars', 'Elektrische keuring'],
-    color: 'forest'
-  },
-  {
-    icon: Droplets,
-    title: 'Sanitair',
-    description: 'Sanitaire installaties van hoge kwaliteit. Leidingwerk, aansluitingen en toestellen.',
-    items: ['Leidingwerk (koper, kunststof)', 'Badkamerinstallaties', 'Keukeninstallaties', 'Afvoersystemen', 'Regenwatersystemen'],
-    color: 'terracotta'
-  },
-  {
-    icon: Thermometer,
-    title: 'Verwarming',
-    description: 'Verwarmingsinstallaties voor comfort en efficiëntie. Van radiatoren tot vloerverwarming.',
-    items: ['Centrale verwarming', 'Vloerverwarming', 'Radiatoren', 'Warmtepomp-ready', 'Thermostaatregeling'],
-    color: 'sand'
-  },
-  {
-    icon: Wind,
-    title: 'Ventilatie',
-    description: 'Ventilatiesystemen voor een gezond binnenklimaat. Van basis tot systeem D.',
-    items: ['Mechanische ventilatie', 'Systeem C en D', 'Dampkappen', 'Badkamerventilatie', 'Vraaggestuurde ventilatie'],
-    color: 'stone'
-  }
-];
-
-const certifications = [
-  'AREI-conforme elektrische installaties',
-  'Erkende keuringsorganismen voor attesten',
-  'Premie-proof documentatie',
-  'Garantie op materialen en uitvoering',
-  'Nazorg en ondersteuning'
-];
+const serviceIcons = [Zap, Droplets, Thermometer, Wind];
+const serviceColors = ['forest', 'terracotta', 'sand', 'stone'];
 
 export default function TechniekenPage() {
+  const t = useTranslations('serviceDetails');
+  const tPage = useTranslations('serviceDetails.technieken');
+
+  const services = [
+    {
+      icon: serviceIcons[0],
+      title: tPage('services.0.title'),
+      description: tPage('services.0.description'),
+      items: [
+        tPage('services.0.items.0'),
+        tPage('services.0.items.1'),
+        tPage('services.0.items.2'),
+        tPage('services.0.items.3'),
+        tPage('services.0.items.4'),
+      ],
+      color: serviceColors[0]
+    },
+    {
+      icon: serviceIcons[1],
+      title: tPage('services.1.title'),
+      description: tPage('services.1.description'),
+      items: [
+        tPage('services.1.items.0'),
+        tPage('services.1.items.1'),
+        tPage('services.1.items.2'),
+        tPage('services.1.items.3'),
+        tPage('services.1.items.4'),
+      ],
+      color: serviceColors[1]
+    },
+    {
+      icon: serviceIcons[2],
+      title: tPage('services.2.title'),
+      description: tPage('services.2.description'),
+      items: [
+        tPage('services.2.items.0'),
+        tPage('services.2.items.1'),
+        tPage('services.2.items.2'),
+        tPage('services.2.items.3'),
+        tPage('services.2.items.4'),
+      ],
+      color: serviceColors[2]
+    },
+    {
+      icon: serviceIcons[3],
+      title: tPage('services.3.title'),
+      description: tPage('services.3.description'),
+      items: [
+        tPage('services.3.items.0'),
+        tPage('services.3.items.1'),
+        tPage('services.3.items.2'),
+        tPage('services.3.items.3'),
+        tPage('services.3.items.4'),
+      ],
+      color: serviceColors[3]
+    }
+  ];
+
+  const certifications = [
+    tPage('certifications.0'),
+    tPage('certifications.1'),
+    tPage('certifications.2'),
+    tPage('certifications.3'),
+    tPage('certifications.4'),
+  ];
+
   return (
     <>
       {/* Hero */}
@@ -65,28 +92,27 @@ export default function TechniekenPage() {
                 className="inline-flex items-center text-forest-600 hover:text-forest-700 mb-6 group"
               >
                 <ArrowRight className="h-4 w-4 mr-2 rotate-180 transition-transform group-hover:-translate-x-1" />
-                Terug naar diensten
+                {t('backToServices')}
               </Link>
 
               {/* Badge */}
               <span className="inline-flex items-center gap-2 px-4 py-2 bg-stone-100 rounded-full text-sm font-medium text-stone-700 mb-6">
                 <Zap className="h-4 w-4" />
-                Erkende vakmensen
+                {tPage('badge')}
               </span>
 
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-semibold text-stone-900 mb-6">
-                Technieken
+                {tPage('title')}
               </h1>
               <p className="text-xl text-stone-600 leading-relaxed mb-8">
-                Elektriciteit, sanitair, verwarming en ventilatie door erkende vakmensen.
-                Veilig, conform alle normen en met de juiste attesten.
+                {tPage('description')}
               </p>
               <Link
                 href="/contact"
                 className="group inline-flex items-center justify-center px-8 py-4 bg-forest-600 text-white rounded-full font-medium hover:bg-forest-700 transition-all duration-300 hover:shadow-lg hover:shadow-forest-600/25"
               >
                 <Calendar className="h-5 w-5 mr-2" />
-                Gratis adviesgesprek
+                {t('freeConsultation')}
                 <ArrowRight className="h-5 w-5 ml-2 transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
@@ -96,7 +122,7 @@ export default function TechniekenPage() {
               <div className="relative h-80 lg:h-[500px] rounded-3xl overflow-hidden shadow-2xl">
                 <Image
                   src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800&h=600&fit=crop"
-                  alt="Technieken"
+                  alt={tPage('title')}
                   fill
                   className="object-cover"
                   priority
@@ -113,9 +139,9 @@ export default function TechniekenPage() {
       <section className="section-padding bg-white">
         <div className="container-custom">
           <SectionHeader
-            title="Onze technische diensten"
-            subtitle="Alle technische installaties voor uw renovatieproject."
-            badge="Expertise"
+            title={tPage('servicesTitle')}
+            subtitle={tPage('servicesSubtitle')}
+            badge={tPage('servicesBadge')}
           />
           <div className="grid md:grid-cols-2 gap-8">
             {services.map((service) => (
@@ -182,15 +208,14 @@ export default function TechniekenPage() {
               {/* Badge */}
               <span className="inline-flex items-center gap-2 px-4 py-2 bg-forest-800 rounded-full text-forest-300 text-sm font-medium mb-8">
                 <ShieldCheck className="h-4 w-4" />
-                Normen & certificering
+                {tPage('certBadge')}
               </span>
 
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-semibold text-white mb-6">
-                Conform alle normen
+                {tPage('certTitle')}
               </h2>
               <p className="text-forest-200 text-lg mb-10">
-                Onze technische installaties worden uitgevoerd door erkende vakmensen en
-                voldoen aan alle geldende normen en voorschriften.
+                {tPage('certDescription')}
               </p>
               <div className="space-y-4">
                 {certifications.map((item) => (
@@ -209,7 +234,7 @@ export default function TechniekenPage() {
               <div className="relative h-[450px] rounded-3xl overflow-hidden shadow-2xl">
                 <Image
                   src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop"
-                  alt="Certificering"
+                  alt={tPage('certTitle')}
                   fill
                   className="object-cover"
                 />

@@ -1,8 +1,9 @@
 'use client'
 
 import { useEffect, useState, useRef } from 'react'
-import Link from 'next/link'
+import { Link } from '@/i18n/routing'
 import { Shield, FileText, ChevronRight, ArrowUp, Printer } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 interface Section {
   id: string
@@ -97,6 +98,7 @@ export default function LegalPageLayout({
   content,
   icon
 }: LegalPageLayoutProps) {
+  const t = useTranslations('legalLayout')
   const [activeSection, setActiveSection] = useState<string>('')
   const [showBackToTop, setShowBackToTop] = useState(false)
   const contentRef = useRef<HTMLDivElement>(null)
@@ -165,7 +167,7 @@ export default function LegalPageLayout({
           <div className="py-20 md:py-28 lg:py-32">
             {/* Breadcrumb */}
             <nav className="flex items-center gap-2 text-sm text-noir-400 mb-8 animate-fade-in print:hidden">
-              <Link href="/" className="hover:text-white transition-colors">Home</Link>
+              <Link href="/" className="hover:text-white transition-colors">{t('home')}</Link>
               <ChevronRight className="w-4 h-4" />
               <span className="text-white">{title}</span>
             </nav>
@@ -191,14 +193,14 @@ export default function LegalPageLayout({
                      style={{ animationDelay: '0.3s' }}>
                   <span className="flex items-center gap-2 text-noir-500">
                     <span className="w-2 h-2 bg-accent-500 rounded-full" />
-                    Laatst bijgewerkt: {lastUpdated}
+                    {t('lastUpdatedLabel')}: {lastUpdated}
                   </span>
                   <button
                     onClick={handlePrint}
                     className="flex items-center gap-2 text-noir-500 hover:text-white transition-colors print:hidden"
                   >
                     <Printer className="w-4 h-4" />
-                    <span>Afdrukken</span>
+                    <span>{t('print')}</span>
                   </button>
                 </div>
               </div>
@@ -220,7 +222,7 @@ export default function LegalPageLayout({
               <div className="bg-white/80 backdrop-blur-sm border border-noir-100 p-6 animate-fade-in">
                 <h3 className="text-xs font-semibold text-noir-500 uppercase tracking-wider mb-6 flex items-center gap-2">
                   <span className="w-6 h-px bg-accent-500" />
-                  Inhoud
+                  {t('tableOfContents')}
                 </h3>
 
                 <nav className="space-y-1">
@@ -248,7 +250,7 @@ export default function LegalPageLayout({
                 {/* Quick Links */}
                 <div className="mt-8 pt-6 border-t border-noir-100">
                   <h4 className="text-xs font-semibold text-noir-500 uppercase tracking-wider mb-4">
-                    Gerelateerd
+                    {t('related')}
                   </h4>
                   <div className="space-y-2">
                     {icon === 'privacy' ? (
@@ -257,7 +259,7 @@ export default function LegalPageLayout({
                         className="flex items-center gap-2 text-sm text-noir-600 hover:text-accent-600 transition-colors"
                       >
                         <FileText className="w-4 h-4" />
-                        Algemene Voorwaarden
+                        {t('termsLinkText')}
                       </Link>
                     ) : (
                       <Link
@@ -265,7 +267,7 @@ export default function LegalPageLayout({
                         className="flex items-center gap-2 text-sm text-noir-600 hover:text-accent-600 transition-colors"
                       >
                         <Shield className="w-4 h-4" />
-                        Privacybeleid
+                        {t('privacyLinkText')}
                       </Link>
                     )}
                   </div>
@@ -324,7 +326,7 @@ export default function LegalPageLayout({
         className={`fixed bottom-8 right-8 w-12 h-12 bg-noir-900 text-white flex items-center justify-center shadow-lg transition-all duration-500 hover:bg-accent-600 print:hidden ${
           showBackToTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
         }`}
-        aria-label="Terug naar boven"
+        aria-label={t('backToTop')}
       >
         <ArrowUp className="w-5 h-5" />
       </button>

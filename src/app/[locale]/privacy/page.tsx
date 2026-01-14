@@ -1,12 +1,16 @@
-import { Metadata } from 'next'
 import { db } from '@/lib/db'
 import LegalPageLayout from '@/components/LegalPageLayout'
+import { getTranslations } from 'next-intl/server'
 
 export const dynamic = 'force-dynamic'
 
-export const metadata: Metadata = {
-  title: 'Privacybeleid | NAM Construction',
-  description: 'Privacybeleid van NAM Construction - Hoe wij omgaan met uw persoonsgegevens.',
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'privacyPage' })
+  return {
+    title: `${t('title')} | NAM Construction`,
+    description: t('subtitle'),
+  }
 }
 
 async function getPrivacyContent() {
@@ -66,13 +70,14 @@ Voor vragen over dit privacybeleid kunt u contact opnemen via info@namconstructi
 }
 
 export default async function PrivacyPage() {
+  const t = await getTranslations('privacyPage')
   const content = await getPrivacyContent()
 
   return (
     <LegalPageLayout
-      title="Privacybeleid"
-      subtitle="Hoe NAM Construction omgaat met uw persoonsgegevens en uw privacy beschermt"
-      lastUpdated="Januari 2025"
+      title={t('title')}
+      subtitle={t('subtitle')}
+      lastUpdated={t('lastUpdated')}
       content={content}
       icon="privacy"
     />

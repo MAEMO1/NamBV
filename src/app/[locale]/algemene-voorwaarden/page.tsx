@@ -1,12 +1,16 @@
-import { Metadata } from 'next'
 import { db } from '@/lib/db'
 import LegalPageLayout from '@/components/LegalPageLayout'
+import { getTranslations } from 'next-intl/server'
 
 export const dynamic = 'force-dynamic'
 
-export const metadata: Metadata = {
-  title: 'Algemene Voorwaarden | NAM Construction',
-  description: 'Algemene voorwaarden van NAM Construction voor onze diensten en werkzaamheden.',
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'termsPage' })
+  return {
+    title: `${t('title')} | NAM Construction`,
+    description: t('subtitle'),
+  }
 }
 
 async function getTermsContent() {
@@ -62,13 +66,14 @@ Voor vragen over deze voorwaarden kunt u contact opnemen via info@namconstructio
 }
 
 export default async function TermsPage() {
+  const t = await getTranslations('termsPage')
   const content = await getTermsContent()
 
   return (
     <LegalPageLayout
-      title="Algemene Voorwaarden"
-      subtitle="De voorwaarden die van toepassing zijn op onze diensten en werkzaamheden"
-      lastUpdated="Januari 2025"
+      title={t('title')}
+      subtitle={t('subtitle')}
+      lastUpdated={t('lastUpdated')}
       content={content}
       icon="terms"
     />
