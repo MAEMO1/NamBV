@@ -1267,15 +1267,15 @@ export default function AdminDashboard() {
                 </>
               )}
             </div>
-            <div className="hidden sm:block w-px h-6 bg-gray-200 mx-1" />
             <a
               href="/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-sm text-gray-500 hover:text-accent-600 transition-colors"
+              className="w-9 h-9 sm:w-auto sm:h-auto rounded-lg border border-gray-200 sm:border-0 hover:bg-gray-50 sm:hover:bg-transparent flex items-center justify-center sm:justify-start gap-1.5 sm:px-3 sm:py-1.5 text-sm text-gray-500 hover:text-accent-600 transition-colors"
+              title="Bekijk website"
             >
-              <ExternalLink className="w-3.5 h-3.5" />
-              <span>Website</span>
+              <ExternalLink className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
+              <span className="hidden sm:inline">Website</span>
             </a>
           </div>
         </header>
