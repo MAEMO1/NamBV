@@ -314,7 +314,15 @@
     "ctaTitle": "Your project here?",
     "ctaDescription": "Contact us for a free consultation. We'd love to discuss your plans.",
     "ctaPrimary": "Request quote",
-    "ctaSecondary": "Free consultation"
+    "ctaSecondary": "Free consultation",
+    "categories": {
+      "Alle": "All",
+      "Totaalrenovatie": "Full Renovation",
+      "Renovatie & Afwerking": "Renovation & Finishing",
+      "Badkamerrenovatie": "Bathroom Renovation",
+      "Keukenrenovatie": "Kitchen Renovation",
+      "Renovatie & Technieken": "Renovation & Technical"
+    }
   },
   "contactPage": {
     "badge": "Contact us",
@@ -621,6 +629,8 @@
     ]
   },
   "offertePage": {
+    "metaTitle": "Request a Quote",
+    "metaDescription": "Request a free quote for your renovation project in Ghent and surrounding areas.",
     "stepLabels": ["Project", "Details", "Contact", "Confirm"],
     "successTitle": "Request received!",
     "successMessage": "Thank you for your interest in NAM Construction. We will contact you within 24 hours.",
@@ -664,7 +674,36 @@
     "nextButton": "Next",
     "submitButton": "Submit request",
     "submittingButton": "Submitting...",
-    "months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    "months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    "budgetRanges": {
+      "UNDER_10K": "< €10,000",
+      "RANGE_10K_25K": "€10,000 - €25,000",
+      "RANGE_25K_50K": "€25,000 - €50,000",
+      "RANGE_50K_100K": "€50,000 - €100,000",
+      "OVER_100K": "> €100,000",
+      "UNKNOWN": "Not sure yet"
+    },
+    "serviceTypes": {
+      "badkamer": "Bathroom",
+      "keuken": "Kitchen",
+      "woonkamer": "Living room",
+      "slaapkamer": "Bedroom",
+      "toilet": "Toilet",
+      "uitbreiding": "Extension",
+      "elektriciteit": "Electricity",
+      "sanitair": "Plumbing",
+      "vloeren": "Floors",
+      "schilderwerk": "Painting",
+      "andere": "Other"
+    },
+    "propertyTypes": {
+      "appartement": "Apartment",
+      "rijwoning": "Terraced house",
+      "halfopen": "Semi-detached house",
+      "vrijstaand": "Detached house",
+      "studio": "Studio",
+      "handelspand": "Commercial property"
+    }
   },
   "waardenAttestering": {
     "backToValues": "Back to our values",

@@ -314,7 +314,15 @@
     "ctaTitle": "Votre projet ici?",
     "ctaDescription": "Contactez-nous pour une consultation gratuite. Nous serions ravis de discuter de vos plans.",
     "ctaPrimary": "Demander un devis",
-    "ctaSecondary": "Consultation gratuite"
+    "ctaSecondary": "Consultation gratuite",
+    "categories": {
+      "Alle": "Tous",
+      "Totaalrenovatie": "Rénovation complète",
+      "Renovatie & Afwerking": "Rénovation & Finitions",
+      "Badkamerrenovatie": "Rénovation de salle de bain",
+      "Keukenrenovatie": "Rénovation de cuisine",
+      "Renovatie & Technieken": "Rénovation & Techniques"
+    }
   },
   "contactPage": {
     "badge": "Contactez-nous",
@@ -621,6 +629,8 @@
     ]
   },
   "offertePage": {
+    "metaTitle": "Demander un Devis",
+    "metaDescription": "Demandez un devis gratuit pour votre projet de rénovation à Gand et ses environs.",
     "stepLabels": ["Projet", "Détails", "Contact", "Confirmer"],
     "successTitle": "Demande reçue !",
     "successMessage": "Merci pour votre intérêt pour NAM Construction. Nous vous contacterons dans les 24 heures.",
@@ -664,7 +674,36 @@
     "nextButton": "Suivant",
     "submitButton": "Envoyer la demande",
     "submittingButton": "Envoi en cours...",
-    "months": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
+    "months": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
+    "budgetRanges": {
+      "UNDER_10K": "< €10.000",
+      "RANGE_10K_25K": "€10.000 - €25.000",
+      "RANGE_25K_50K": "€25.000 - €50.000",
+      "RANGE_50K_100K": "€50.000 - €100.000",
+      "OVER_100K": "> €100.000",
+      "UNKNOWN": "Je ne sais pas encore"
+    },
+    "serviceTypes": {
+      "badkamer": "Salle de bain",
+      "keuken": "Cuisine",
+      "woonkamer": "Salon",
+      "slaapkamer": "Chambre",
+      "toilet": "Toilettes",
+      "uitbreiding": "Extension",
+      "elektriciteit": "Électricité",
+      "sanitair": "Sanitaire",
+      "vloeren": "Sols",
+      "schilderwerk": "Peinture",
+      "andere": "Autre"
+    },
+    "propertyTypes": {
+      "appartement": "Appartement",
+      "rijwoning": "Maison mitoyenne",
+      "halfopen": "Maison semi-mitoyenne",
+      "vrijstaand": "Maison individuelle",
+      "studio": "Studio",
+      "handelspand": "Local commercial"
+    }
   },
   "waardenAttestering": {
     "backToValues": "Retour à nos valeurs",

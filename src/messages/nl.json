@@ -314,7 +314,15 @@
     "ctaTitle": "Uw project hier?",
     "ctaDescription": "Neem contact op voor een gratis adviesgesprek. We bespreken graag uw plannen.",
     "ctaPrimary": "Offerte aanvragen",
-    "ctaSecondary": "Gratis adviesgesprek"
+    "ctaSecondary": "Gratis adviesgesprek",
+    "categories": {
+      "Alle": "Alle",
+      "Totaalrenovatie": "Totaalrenovatie",
+      "Renovatie & Afwerking": "Renovatie & Afwerking",
+      "Badkamerrenovatie": "Badkamerrenovatie",
+      "Keukenrenovatie": "Keukenrenovatie",
+      "Renovatie & Technieken": "Renovatie & Technieken"
+    }
   },
   "contactPage": {
     "badge": "Neem contact op",
@@ -621,6 +629,8 @@
     ]
   },
   "offertePage": {
+    "metaTitle": "Offerte Aanvragen",
+    "metaDescription": "Vraag vrijblijvend een offerte aan voor uw renovatieproject in Gent en omstreken.",
     "stepLabels": ["Project", "Details", "Contact", "Bevestig"],
     "successTitle": "Aanvraag ontvangen!",
     "successMessage": "Bedankt voor uw interesse in NAM Construction. We nemen binnen 24 uur contact met u op.",
@@ -664,7 +674,36 @@
     "nextButton": "Volgende",
     "submitButton": "Verstuur aanvraag",
     "submittingButton": "Versturen...",
-    "months": ["Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September", "Oktober", "November", "December"]
+    "months": ["Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September", "Oktober", "November", "December"],
+    "budgetRanges": {
+      "UNDER_10K": "< €10.000",
+      "RANGE_10K_25K": "€10.000 - €25.000",
+      "RANGE_25K_50K": "€25.000 - €50.000",
+      "RANGE_50K_100K": "€50.000 - €100.000",
+      "OVER_100K": "> €100.000",
+      "UNKNOWN": "Nog geen idee"
+    },
+    "serviceTypes": {
+      "badkamer": "Badkamer",
+      "keuken": "Keuken",
+      "woonkamer": "Woonkamer",
+      "slaapkamer": "Slaapkamer",
+      "toilet": "Toilet",
+      "uitbreiding": "Uitbreiding",
+      "elektriciteit": "Elektriciteit",
+      "sanitair": "Sanitair",
+      "vloeren": "Vloeren",
+      "schilderwerk": "Schilderwerk",
+      "andere": "Andere"
+    },
+    "propertyTypes": {
+      "appartement": "Appartement",
+      "rijwoning": "Rijwoning",
+      "halfopen": "Halfopen bebouwing",
+      "vrijstaand": "Vrijstaande woning",
+      "studio": "Studio",
+      "handelspand": "Handelspand"
+    }
   },
   "waardenAttestering": {
     "backToValues": "Terug naar onze waarden",

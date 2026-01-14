@@ -33,7 +33,6 @@ import {
   Step2Schema,
   Step3Schema,
   Step4Schema,
-  budgetRangeLabels,
 } from '@/lib/validations/quote'
 import {
   trackFormStart,
@@ -63,14 +62,15 @@ const serviceIcons: Record<string, React.ComponentType<{ className?: string }>> 
   'more-horizontal': MoreHorizontal,
 }
 
-const budgetRanges = [
-  { id: 'UNDER_10K', label: budgetRangeLabels.UNDER_10K },
-  { id: 'RANGE_10K_25K', label: budgetRangeLabels.RANGE_10K_25K },
-  { id: 'RANGE_25K_50K', label: budgetRangeLabels.RANGE_25K_50K },
-  { id: 'RANGE_50K_100K', label: budgetRangeLabels.RANGE_50K_100K },
-  { id: 'OVER_100K', label: budgetRangeLabels.OVER_100K },
-  { id: 'UNKNOWN', label: budgetRangeLabels.UNKNOWN },
-]
+// Budget range IDs - labels come from translations
+const budgetRangeIds = [
+  'UNDER_10K',
+  'RANGE_10K_25K',
+  'RANGE_25K_50K',
+  'RANGE_50K_100K',
+  'OVER_100K',
+  'UNKNOWN',
+] as const
 
 // Generate years (current year + next 3 years)
 const currentYear = new Date().getFullYear()
@@ -121,6 +121,29 @@ export default function OfferteFormulier() {
     t('months.4'), t('months.5'), t('months.6'), t('months.7'),
     t('months.8'), t('months.9'), t('months.10'), t('months.11')
   ]
+
+  // Get translated budget ranges
+  const budgetRanges = budgetRangeIds.map(id => ({
+    id,
+    label: t(`budgetRanges.${id}`)
+  }))
+
+  // Helper to get translated service/property type name
+  const getServiceTypeName = (slug: string, fallbackName: string) => {
+    try {
+      return t(`serviceTypes.${slug}`)
+    } catch {
+      return fallbackName
+    }
+  }
+
+  const getPropertyTypeName = (slug: string, fallbackName: string) => {
+    try {
+      return t(`propertyTypes.${slug}`)
+    } catch {
+      return fallbackName
+    }
+  }
 
   // Load service types and property types from API
   useEffect(() => {
@@ -430,7 +453,7 @@ export default function OfferteFormulier() {
                       <span className={`text-sm font-medium block ${
                         isSelected ? 'text-accent-700' : 'text-noir-700'
                       }`}>
-                        {service.name}
+                        {getServiceTypeName(service.slug, service.name)}
                       </span>
                     </button>
                   )
@@ -466,7 +489,7 @@ export default function OfferteFormulier() {
                             : 'border-noir-200 text-noir-700 hover:border-accent-300 hover:shadow-sm'
                         }`}
                       >
-                        {type.name}
+                        {getPropertyTypeName(type.slug, type.name)}
                       </button>
                     )
                   })}
@@ -778,9 +801,10 @@ export default function OfferteFormulier() {
                     <div>
                       <span className="text-xs text-noir-500 uppercase tracking-wider">{t('renovationLabel')}</span>
                       <p className="text-noir-900 font-medium mt-1">
-                        {formData.serviceTypeIds.map(id =>
-                          serviceTypes.find(s => s.id === id)?.name
-                        ).join(', ')}
+                        {formData.serviceTypeIds.map(id => {
+                          const service = serviceTypes.find(s => s.id === id)
+                          return service ? getServiceTypeName(service.slug, service.name) : ''
+                        }).filter(Boolean).join(', ')}
                       </p>
                     </div>
                   </div>
@@ -792,7 +816,10 @@ export default function OfferteFormulier() {
                     <div>
                       <span className="text-xs text-noir-500 uppercase tracking-wider">{t('propertyLabel')}</span>
                       <p className="text-noir-900 font-medium mt-1">
-                        {propertyTypes.find(p => p.id === formData.propertyTypeId)?.name}
+                        {(() => {
+                          const propType = propertyTypes.find(p => p.id === formData.propertyTypeId)
+                          return propType ? getPropertyTypeName(propType.slug, propType.name) : ''
+                        })()}
                       </p>
                     </div>
                   </div>

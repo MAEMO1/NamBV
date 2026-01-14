@@ -76,7 +76,8 @@ const fallbackProjects: Project[] = [
   }
 ];
 
-const fallbackCategories = ['Alle', 'Totaalrenovatie', 'Renovatie & Afwerking', 'Badkamerrenovatie', 'Keukenrenovatie'];
+// Category keys for translation lookup (values match database categories)
+const fallbackCategoryKeys = ['Alle', 'Totaalrenovatie', 'Renovatie & Afwerking', 'Badkamerrenovatie', 'Keukenrenovatie'];
 
 // Scroll animation hook
 function useScrollAnimation() {
@@ -119,7 +120,16 @@ export default function ProjectenPage() {
   const [activeCategory, setActiveCategory] = useState('Alle');
   const [scrollY, setScrollY] = useState(0);
   const [projects, setProjects] = useState<Project[]>([]);
-  const [categories, setCategories] = useState<string[]>(fallbackCategories);
+  const [categoryKeys, setCategoryKeys] = useState<string[]>(fallbackCategoryKeys);
+
+  // Helper to translate category
+  const getCategoryLabel = (categoryKey: string) => {
+    try {
+      return t(`categories.${categoryKey}`);
+    } catch {
+      return categoryKey;
+    }
+  };
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -139,10 +149,10 @@ export default function ProjectenPage() {
           // Use fetched projects if available, otherwise use fallback
           if (data.projects && data.projects.length > 0) {
             setProjects(data.projects);
-            setCategories(data.categories || fallbackCategories);
+            setCategoryKeys(data.categories || fallbackCategoryKeys);
           } else {
             setProjects(fallbackProjects);
-            setCategories(fallbackCategories);
+            setCategoryKeys(fallbackCategoryKeys);
           }
         } else {
           setProjects(fallbackProjects);
@@ -158,7 +168,8 @@ export default function ProjectenPage() {
     fetchProjects();
   }, []);
 
-  const filteredProjects = activeCategory === 'Alle' || activeCategory === t('filterAll')
+  // Filter uses the category key (Dutch original), which matches database values
+  const filteredProjects = activeCategory === 'Alle'
     ? projects
     : projects.filter(p => p.category === activeCategory);
 
@@ -225,17 +236,17 @@ export default function ProjectenPage() {
       <section className="bg-noir-900 border-b border-white/10 py-6 sticky top-20 z-30">
         <div className="container-wide">
           <div className="flex flex-wrap gap-3">
-            {categories.map((category) => (
+            {categoryKeys.map((categoryKey) => (
               <button
-                key={category}
-                onClick={() => setActiveCategory(category)}
+                key={categoryKey}
+                onClick={() => setActiveCategory(categoryKey)}
                 className={`px-5 py-2.5 text-sm font-medium uppercase tracking-wider transition-all duration-300 ${
-                  activeCategory === category
+                  activeCategory === categoryKey
                     ? 'bg-accent-500 text-white'
                     : 'bg-white/5 text-white/60 hover:bg-white/10 hover:text-white border border-white/10'
                 }`}
               >
-                {category === 'Alle' ? t('filterAll') : category}
+                {getCategoryLabel(categoryKey)}
               </button>
             ))}
           </div>
@@ -284,7 +295,7 @@ export default function ProjectenPage() {
                         {/* Category tag */}
                         <div className="absolute top-6 left-6">
                           <span className="px-4 py-2 bg-accent-500 text-white text-xs font-medium uppercase tracking-wider">
-                            {project.category}
+                            {getCategoryLabel(project.category)}
                           </span>
                         </div>
 
