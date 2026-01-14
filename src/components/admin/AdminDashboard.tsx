@@ -116,35 +116,35 @@ function StatCard({ title, value, subtitle, icon, loading, highlight, onClick }:
   return (
     <div
       onClick={onClick}
-      className={`p-5 rounded-xl transition-all duration-200 ${
+      className={`p-3 sm:p-5 rounded-xl transition-all duration-200 active:scale-[0.98] ${
         onClick ? 'cursor-pointer' : ''
       } ${
         highlight
           ? 'bg-accent-600 text-white hover:bg-accent-700'
           : 'bg-white border border-gray-100 hover:border-gray-200 hover:shadow-sm'
       }`}>
-      <div className="flex items-start justify-between">
-        <div>
-          <p className={`text-xs font-medium mb-2 ${highlight ? 'text-white/70' : 'text-gray-500'}`}>
+      <div className="flex items-start justify-between gap-2">
+        <div className="min-w-0 flex-1">
+          <p className={`text-[10px] sm:text-xs font-medium mb-1 sm:mb-2 truncate ${highlight ? 'text-white/70' : 'text-gray-500'}`}>
             {title}
           </p>
           {loading ? (
-            <div className={`h-8 w-16 rounded animate-pulse ${highlight ? 'bg-white/20' : 'bg-gray-100'}`} />
+            <div className={`h-6 sm:h-8 w-12 sm:w-16 rounded animate-pulse ${highlight ? 'bg-white/20' : 'bg-gray-100'}`} />
           ) : (
-            <p className={`text-2xl font-semibold tracking-tight ${highlight ? 'text-white' : 'text-gray-900'}`}>
+            <p className={`text-xl sm:text-2xl font-semibold tracking-tight ${highlight ? 'text-white' : 'text-gray-900'}`}>
               {value}
             </p>
           )}
           {subtitle && (
-            <p className={`text-xs mt-1 ${highlight ? 'text-white/60' : 'text-gray-400'}`}>
+            <p className={`text-[10px] sm:text-xs mt-0.5 sm:mt-1 truncate ${highlight ? 'text-white/60' : 'text-gray-400'}`}>
               {subtitle}
             </p>
           )}
         </div>
-        <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+        <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
           highlight ? 'bg-white/10' : 'bg-gray-50'
         }`}>
-          <span className={highlight ? 'text-white/80' : 'text-gray-400'}>
+          <span className={`${highlight ? 'text-white/80' : 'text-gray-400'} [&>svg]:w-4 [&>svg]:h-4 sm:[&>svg]:w-5 sm:[&>svg]:h-5`}>
             {icon}
           </span>
         </div>
@@ -306,22 +306,30 @@ function QuoteDetail({ quote, onClose, onDelete }: QuoteDetailProps) {
   }
 
   return (
-    <div className="fixed top-0 right-0 bottom-0 w-[440px] bg-white shadow-2xl z-50 overflow-auto">
+    <div className="fixed inset-0 sm:inset-auto sm:top-0 sm:right-0 sm:bottom-0 w-full sm:w-[440px] bg-white shadow-2xl z-50 overflow-auto">
       {/* Header */}
-      <div className="sticky top-0 bg-white border-b border-gray-100 px-6 py-4 flex justify-between items-center">
-        <div>
-          <p className="text-xs text-gray-500 mb-1">Offerte</p>
-          <h3 className="text-lg font-semibold text-gray-900">{quote.referenceNumber}</h3>
+      <div className="sticky top-0 bg-white border-b border-gray-100 px-4 sm:px-6 py-3 sm:py-4 flex justify-between items-center">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={onClose}
+            className="sm:hidden w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <div>
+            <p className="text-xs text-gray-500 mb-0.5 sm:mb-1">Offerte</p>
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900">{quote.referenceNumber}</h3>
+          </div>
         </div>
         <button
           onClick={onClose}
-          className="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors"
+          className="hidden sm:flex w-8 h-8 rounded-lg hover:bg-gray-100 items-center justify-center text-gray-400 hover:text-gray-600 transition-colors"
         >
           <X className="w-4 h-4" />
         </button>
       </div>
 
-      <div className="p-6 space-y-6">
+      <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
         {/* Status */}
         <div>
           <label className="block text-xs font-medium text-gray-500 mb-2">Status</label>
@@ -536,22 +544,30 @@ function AppointmentDetail({ appointment, onClose, onUpdate }: AppointmentDetail
   const isPending = appointment.status === 'PENDING'
 
   return (
-    <div className="fixed top-0 right-0 bottom-0 w-[440px] bg-white shadow-2xl z-50 overflow-auto">
+    <div className="fixed inset-0 sm:inset-auto sm:top-0 sm:right-0 sm:bottom-0 w-full sm:w-[440px] bg-white shadow-2xl z-50 overflow-auto">
       {/* Header */}
-      <div className="sticky top-0 bg-white border-b border-gray-100 px-6 py-4 flex justify-between items-center">
-        <div>
-          <p className="text-xs text-gray-500 mb-1">Afspraak</p>
-          <h3 className="text-lg font-semibold text-gray-900">{appointment.referenceNumber}</h3>
+      <div className="sticky top-0 bg-white border-b border-gray-100 px-4 sm:px-6 py-3 sm:py-4 flex justify-between items-center">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={onClose}
+            className="sm:hidden w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <div>
+            <p className="text-xs text-gray-500 mb-0.5 sm:mb-1">Afspraak</p>
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900">{appointment.referenceNumber}</h3>
+          </div>
         </div>
         <button
           onClick={onClose}
-          className="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors"
+          className="hidden sm:flex w-8 h-8 rounded-lg hover:bg-gray-100 items-center justify-center text-gray-400 hover:text-gray-600 transition-colors"
         >
           <X className="w-4 h-4" />
         </button>
       </div>
 
-      <div className="p-6 space-y-6">
+      <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
         {/* Pending Actions */}
         {isPending && (
           <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
@@ -1095,15 +1111,16 @@ export default function AdminDashboard() {
       {/* Main */}
       <main className="flex-1 overflow-auto lg:ml-0">
         {/* Header */}
-        <header className="bg-white border-b border-gray-100 px-4 lg:px-6 py-4 flex justify-between items-center sticky top-0 z-10">
-          {/* Mobile menu button */}
-          <button
-            onClick={() => setMobileMenuOpen(true)}
-            className="lg:hidden w-10 h-10 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-500 hover:text-gray-700 transition-colors mr-2"
-          >
-            <Menu className="w-5 h-5" />
-          </button>
-          <div className="flex items-center gap-3">
+        <header className="bg-white border-b border-gray-100 px-3 sm:px-4 lg:px-6 py-3 sm:py-4 flex justify-between items-center sticky top-0 z-10">
+          {/* Left side: Menu + Title */}
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+            {/* Mobile menu button */}
+            <button
+              onClick={() => setMobileMenuOpen(true)}
+              className="lg:hidden w-9 h-9 sm:w-10 sm:h-10 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-500 hover:text-gray-700 transition-colors flex-shrink-0"
+            >
+              <Menu className="w-5 h-5" />
+            </button>
             {currentView !== 'dashboard' && (
               <button
                 onClick={() => {
@@ -1111,30 +1128,30 @@ export default function AdminDashboard() {
                   setStatusFilter('all')
                   setAppointmentStatusFilter('all')
                 }}
-                className="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors"
+                className="hidden sm:flex w-8 h-8 rounded-lg hover:bg-gray-100 items-center justify-center text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0"
                 title="Terug naar dashboard"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
             )}
-            <div>
+            <div className="min-w-0">
               <div className="flex items-center gap-2">
                 {currentView !== 'dashboard' && (
                   <button
                     onClick={() => setCurrentView('dashboard')}
-                    className="text-xs text-gray-400 hover:text-accent-600 transition-colors"
+                    className="hidden sm:block text-xs text-gray-400 hover:text-accent-600 transition-colors"
                   >
                     Dashboard
                   </button>
                 )}
                 {currentView !== 'dashboard' && (
-                  <span className="text-xs text-gray-300">/</span>
+                  <span className="hidden sm:block text-xs text-gray-300">/</span>
                 )}
-                <h1 className="text-lg font-semibold text-gray-900">
+                <h1 className="text-base sm:text-lg font-semibold text-gray-900 truncate">
                   {currentView === 'dashboard' && 'Dashboard'}
                   {currentView === 'analytics' && 'Analytics'}
-                  {currentView === 'quotes' && 'Offerteaanvragen'}
-                  {currentView === 'appointments' && 'Adviesgesprekken'}
+                  {currentView === 'quotes' && 'Offertes'}
+                  {currentView === 'appointments' && 'Afspraken'}
                   {currentView === 'availability' && 'Beschikbaarheid'}
                   {currentView === 'projects' && 'Projecten'}
                   {currentView === 'content' && 'Content'}
@@ -1142,12 +1159,14 @@ export default function AdminDashboard() {
                   {currentView === 'settings' && 'Instellingen'}
                 </h1>
               </div>
-              <p className="text-xs text-gray-400 mt-0.5">
+              <p className="hidden sm:block text-xs text-gray-400 mt-0.5">
                 {new Date().toLocaleDateString('nl-BE', { weekday: 'long', day: 'numeric', month: 'long' })}
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+
+          {/* Right side: Actions */}
+          <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
             <button
               onClick={fetchData}
               className="w-9 h-9 rounded-lg border border-gray-200 hover:bg-gray-50 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors"
@@ -1167,19 +1186,27 @@ export default function AdminDashboard() {
                 )}
               </button>
 
-              {/* Notifications Dropdown */}
+              {/* Notifications Dropdown - Mobile optimized */}
               {showNotifications && (
                 <>
                   <div
-                    className="fixed inset-0 z-20"
+                    className="fixed inset-0 z-20 bg-black/20 sm:bg-transparent"
                     onClick={() => setShowNotifications(false)}
                   />
-                  <div className="absolute right-0 top-11 w-80 bg-white rounded-xl border border-gray-200 shadow-lg z-30 overflow-hidden">
+                  <div className="fixed sm:absolute inset-x-3 sm:inset-x-auto bottom-3 sm:bottom-auto sm:right-0 sm:top-11 sm:w-80 bg-white rounded-xl border border-gray-200 shadow-xl z-30 overflow-hidden max-h-[70vh] sm:max-h-96">
                     <div className="px-4 py-3 border-b border-gray-100 flex justify-between items-center">
                       <h3 className="text-sm font-semibold text-gray-900">Notificaties</h3>
-                      <span className="text-xs text-gray-400">{newQuotes + pendingAppointments} nieuw</span>
+                      <div className="flex items-center gap-3">
+                        <span className="text-xs text-gray-400">{newQuotes + pendingAppointments} nieuw</span>
+                        <button
+                          onClick={() => setShowNotifications(false)}
+                          className="sm:hidden w-6 h-6 rounded-full hover:bg-gray-100 flex items-center justify-center"
+                        >
+                          <X className="w-4 h-4 text-gray-400" />
+                        </button>
+                      </div>
                     </div>
-                    <div className="max-h-80 overflow-y-auto">
+                    <div className="overflow-y-auto max-h-[50vh] sm:max-h-80">
                       {newQuotes > 0 && quotes.filter(q => q.status === 'NEW').slice(0, 3).map(quote => (
                         <button
                           key={quote.id}
@@ -1187,10 +1214,10 @@ export default function AdminDashboard() {
                             setSelectedQuote(quote)
                             setShowNotifications(false)
                           }}
-                          className="w-full px-4 py-3 hover:bg-gray-50 flex items-start gap-3 text-left border-b border-gray-50"
+                          className="w-full px-4 py-3 hover:bg-gray-50 flex items-start gap-3 text-left border-b border-gray-50 active:bg-gray-100"
                         >
-                          <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                            <FileText className="w-4 h-4 text-blue-600" />
+                          <div className="w-10 h-10 sm:w-8 sm:h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <FileText className="w-5 h-5 sm:w-4 sm:h-4 text-blue-600" />
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-medium text-gray-900 truncate">{quote.fullName}</p>
@@ -1205,10 +1232,10 @@ export default function AdminDashboard() {
                             setSelectedAppointment(apt)
                             setShowNotifications(false)
                           }}
-                          className="w-full px-4 py-3 hover:bg-gray-50 flex items-start gap-3 text-left border-b border-gray-50"
+                          className="w-full px-4 py-3 hover:bg-gray-50 flex items-start gap-3 text-left border-b border-gray-50 active:bg-gray-100"
                         >
-                          <div className="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center flex-shrink-0">
-                            <Calendar className="w-4 h-4 text-amber-600" />
+                          <div className="w-10 h-10 sm:w-8 sm:h-8 bg-amber-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <Calendar className="w-5 h-5 sm:w-4 sm:h-4 text-amber-600" />
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-medium text-gray-900 truncate">{apt.fullName}</p>
@@ -1230,7 +1257,7 @@ export default function AdminDashboard() {
                             setCurrentView(newQuotes > 0 ? 'quotes' : 'appointments')
                             setShowNotifications(false)
                           }}
-                          className="w-full text-center text-xs font-medium text-accent-600 hover:text-accent-700"
+                          className="w-full text-center text-sm sm:text-xs font-medium text-accent-600 hover:text-accent-700 py-1"
                         >
                           Bekijk alle
                         </button>
@@ -1240,12 +1267,12 @@ export default function AdminDashboard() {
                 </>
               )}
             </div>
-            <div className="w-px h-6 bg-gray-200 mx-1" />
+            <div className="hidden sm:block w-px h-6 bg-gray-200 mx-1" />
             <a
               href="/"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-gray-500 hover:text-accent-600 transition-colors"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-sm text-gray-500 hover:text-accent-600 transition-colors"
             >
               <ExternalLink className="w-3.5 h-3.5" />
               <span>Website</span>
@@ -1253,7 +1280,7 @@ export default function AdminDashboard() {
           </div>
         </header>
 
-        <div className="p-6">
+        <div className="p-3 sm:p-4 lg:p-6">
           {error && (
             <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg">
               {error}
@@ -1262,9 +1289,9 @@ export default function AdminDashboard() {
 
           {/* Dashboard View */}
           {currentView === 'dashboard' && (
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
               {/* Stats */}
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
                 <StatCard
                   title="Totaal offertes"
                   value={totalQuotes}
@@ -1302,10 +1329,10 @@ export default function AdminDashboard() {
               </div>
 
               {/* Recent Items */}
-              <div className="grid lg:grid-cols-2 gap-6">
+              <div className="grid lg:grid-cols-2 gap-4 sm:gap-6">
                 {/* Recent Quotes */}
                 <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-                  <div className="flex justify-between items-center px-5 py-4 border-b border-gray-100">
+                  <div className="flex justify-between items-center px-4 sm:px-5 py-3 sm:py-4 border-b border-gray-100">
                     <h3 className="text-sm font-medium text-gray-900">Recente offertes</h3>
                     <button
                       onClick={() => setCurrentView('quotes')}
@@ -1315,7 +1342,7 @@ export default function AdminDashboard() {
                     </button>
                   </div>
                   {loading ? (
-                    <div className="p-4 space-y-3">
+                    <div className="p-3 sm:p-4 space-y-2 sm:space-y-3">
                       {[1, 2, 3].map(i => <div key={i} className="h-12 bg-gray-50 rounded-lg animate-pulse" />)}
                     </div>
                   ) : quotes.length > 0 ? (
@@ -1324,19 +1351,19 @@ export default function AdminDashboard() {
                         <div
                           key={quote.id}
                           onClick={() => setSelectedQuote(quote)}
-                          className="px-5 py-3 hover:bg-gray-50 cursor-pointer transition-colors flex items-center justify-between"
+                          className="px-4 sm:px-5 py-3 hover:bg-gray-50 active:bg-gray-100 cursor-pointer transition-colors flex items-center justify-between gap-3"
                         >
-                          <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-500 text-sm font-medium">
+                          <div className="flex items-center gap-3 min-w-0 flex-1">
+                            <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-500 text-sm font-medium flex-shrink-0">
                               {quote.fullName.charAt(0)}
                             </div>
-                            <div>
-                              <p className="text-sm font-medium text-gray-900">{quote.fullName}</p>
+                            <div className="min-w-0">
+                              <p className="text-sm font-medium text-gray-900 truncate">{quote.fullName}</p>
                               <p className="text-xs text-gray-400">{quote.referenceNumber}</p>
                             </div>
                           </div>
                           <span
-                            className="px-2 py-1 text-xs font-medium rounded-full"
+                            className="px-2 py-1 text-[10px] sm:text-xs font-medium rounded-full flex-shrink-0 whitespace-nowrap"
                             style={{ background: statusConfig[quote.status]?.bg, color: statusConfig[quote.status]?.color }}
                           >
                             {statusConfig[quote.status]?.label}
@@ -1345,7 +1372,7 @@ export default function AdminDashboard() {
                       ))}
                     </div>
                   ) : (
-                    <div className="p-8 text-center">
+                    <div className="p-6 sm:p-8 text-center">
                       <FileText className="w-8 h-8 mx-auto text-gray-200 mb-2" />
                       <p className="text-sm text-gray-400">Nog geen offertes</p>
                     </div>
@@ -1354,7 +1381,7 @@ export default function AdminDashboard() {
 
                 {/* Recent Appointments */}
                 <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-                  <div className="flex justify-between items-center px-5 py-4 border-b border-gray-100">
+                  <div className="flex justify-between items-center px-4 sm:px-5 py-3 sm:py-4 border-b border-gray-100">
                     <h3 className="text-sm font-medium text-gray-900">Recente afspraken</h3>
                     <button
                       onClick={() => setCurrentView('appointments')}
@@ -1364,7 +1391,7 @@ export default function AdminDashboard() {
                     </button>
                   </div>
                   {loading ? (
-                    <div className="p-4 space-y-3">
+                    <div className="p-3 sm:p-4 space-y-2 sm:space-y-3">
                       {[1, 2, 3].map(i => <div key={i} className="h-12 bg-gray-50 rounded-lg animate-pulse" />)}
                     </div>
                   ) : appointments.length > 0 ? (
@@ -1373,21 +1400,21 @@ export default function AdminDashboard() {
                         <div
                           key={apt.id}
                           onClick={() => setSelectedAppointment(apt)}
-                          className="px-5 py-3 hover:bg-gray-50 cursor-pointer transition-colors flex items-center justify-between"
+                          className="px-4 sm:px-5 py-3 hover:bg-gray-50 active:bg-gray-100 cursor-pointer transition-colors flex items-center justify-between gap-3"
                         >
-                          <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 bg-accent-50 rounded-full flex items-center justify-center">
+                          <div className="flex items-center gap-3 min-w-0 flex-1">
+                            <div className="w-8 h-8 bg-accent-50 rounded-full flex items-center justify-center flex-shrink-0">
                               <Calendar className="w-4 h-4 text-accent-600" />
                             </div>
-                            <div>
-                              <p className="text-sm font-medium text-gray-900">{apt.fullName}</p>
+                            <div className="min-w-0">
+                              <p className="text-sm font-medium text-gray-900 truncate">{apt.fullName}</p>
                               <p className="text-xs text-gray-400">
                                 {new Date(apt.appointmentDate).toLocaleDateString('nl-BE', { day: 'numeric', month: 'short' })} • {apt.appointmentTime}
                               </p>
                             </div>
                           </div>
                           <span
-                            className="px-2 py-1 text-xs font-medium rounded-full"
+                            className="px-2 py-1 text-[10px] sm:text-xs font-medium rounded-full flex-shrink-0 whitespace-nowrap"
                             style={{ background: appointmentStatusConfig[apt.status].bg, color: appointmentStatusConfig[apt.status].color }}
                           >
                             {appointmentStatusConfig[apt.status].label}
@@ -1396,7 +1423,7 @@ export default function AdminDashboard() {
                       ))}
                     </div>
                   ) : (
-                    <div className="p-8 text-center">
+                    <div className="p-6 sm:p-8 text-center">
                       <Calendar className="w-8 h-8 mx-auto text-gray-200 mb-2" />
                       <p className="text-sm text-gray-400">Nog geen afspraken</p>
                     </div>
@@ -1423,13 +1450,13 @@ export default function AdminDashboard() {
 
           {/* Quotes List */}
           {currentView === 'quotes' && (
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {/* Action Bar */}
-              <div className="flex items-center justify-between">
-                <div className="flex flex-wrap gap-2">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div className="flex gap-2 overflow-x-auto pb-2 sm:pb-0 -mx-3 px-3 sm:mx-0 sm:px-0 scrollbar-hide">
                   <button
                     onClick={() => setStatusFilter('all')}
-                    className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${
+                    className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors whitespace-nowrap flex-shrink-0 ${
                       statusFilter === 'all' ? 'bg-accent-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                     }`}
                   >
@@ -1439,7 +1466,7 @@ export default function AdminDashboard() {
                     <button
                       key={key}
                       onClick={() => setStatusFilter(key)}
-                      className="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors"
+                      className="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors whitespace-nowrap flex-shrink-0"
                       style={{
                         background: statusFilter === key ? config.color : config.bg,
                         color: statusFilter === key ? 'white' : config.color
@@ -1454,7 +1481,7 @@ export default function AdminDashboard() {
                     setQuoteSelectionMode(!quoteSelectionMode)
                     if (quoteSelectionMode) clearQuoteSelection()
                   }}
-                  className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center gap-1.5 ${
+                  className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center justify-center gap-1.5 flex-shrink-0 ${
                     quoteSelectionMode ? 'bg-accent-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
                 >
@@ -1465,29 +1492,29 @@ export default function AdminDashboard() {
 
               {/* Selection Action Bar */}
               {quoteSelectionMode && selectedQuoteIds.size > 0 && (
-                <div className="bg-accent-50 border border-accent-200 rounded-lg px-4 py-3 flex items-center justify-between">
+                <div className="bg-accent-50 border border-accent-200 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
                   <span className="text-sm font-medium text-accent-800">
                     {selectedQuoteIds.size} offerte{selectedQuoteIds.size > 1 ? 's' : ''} geselecteerd
                   </span>
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => selectAllQuotes(filteredQuotes)}
-                      className="px-3 py-1.5 text-xs font-medium text-accent-700 hover:text-accent-800 transition-colors"
+                      className="px-2 sm:px-3 py-1.5 text-xs font-medium text-accent-700 hover:text-accent-800 transition-colors"
                     >
                       Selecteer alles
                     </button>
                     <button
                       onClick={clearQuoteSelection}
-                      className="px-3 py-1.5 text-xs font-medium text-gray-600 hover:text-gray-800 transition-colors"
+                      className="px-2 sm:px-3 py-1.5 text-xs font-medium text-gray-600 hover:text-gray-800 transition-colors"
                     >
                       Deselecteer
                     </button>
                     <button
                       onClick={() => setShowBulkDeleteConfirm('quotes')}
-                      className="px-3 py-1.5 text-xs font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors flex items-center gap-1.5"
+                      className="px-2.5 sm:px-3 py-1.5 text-xs font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors flex items-center gap-1.5"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
-                      Verwijderen
+                      <span className="hidden sm:inline">Verwijderen</span>
                     </button>
                   </div>
                 </div>
@@ -1552,13 +1579,13 @@ export default function AdminDashboard() {
 
           {/* Appointments List */}
           {currentView === 'appointments' && (
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {/* Action Bar */}
-              <div className="flex items-center justify-between">
-                <div className="flex flex-wrap gap-2">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div className="flex gap-2 overflow-x-auto pb-2 sm:pb-0 -mx-3 px-3 sm:mx-0 sm:px-0 scrollbar-hide">
                   <button
                     onClick={() => setAppointmentStatusFilter('all')}
-                    className={`px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
+                    className={`px-3 py-1.5 text-xs font-medium rounded-full transition-colors whitespace-nowrap flex-shrink-0 ${
                       appointmentStatusFilter === 'all' ? 'bg-accent-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                     }`}
                   >
@@ -1568,7 +1595,7 @@ export default function AdminDashboard() {
                     <button
                       key={key}
                       onClick={() => setAppointmentStatusFilter(key)}
-                      className="px-3 py-1.5 text-xs font-medium rounded-full transition-colors"
+                      className="px-3 py-1.5 text-xs font-medium rounded-full transition-colors whitespace-nowrap flex-shrink-0"
                       style={{
                         background: appointmentStatusFilter === key ? config.color : config.bg,
                         color: appointmentStatusFilter === key ? 'white' : config.color
@@ -1583,7 +1610,7 @@ export default function AdminDashboard() {
                     setAppointmentSelectionMode(!appointmentSelectionMode)
                     if (appointmentSelectionMode) clearAppointmentSelection()
                   }}
-                  className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center gap-1.5 ${
+                  className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors flex items-center justify-center gap-1.5 flex-shrink-0 ${
                     appointmentSelectionMode ? 'bg-accent-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
                 >
@@ -1594,7 +1621,7 @@ export default function AdminDashboard() {
 
               {/* Selection Action Bar */}
               {appointmentSelectionMode && selectedAppointmentIds.size > 0 && (
-                <div className="bg-accent-50 border border-accent-200 rounded-lg px-4 py-3 flex items-center justify-between">
+                <div className="bg-accent-50 border border-accent-200 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
                   <span className="text-sm font-medium text-accent-800">
                     {selectedAppointmentIds.size} afspra{selectedAppointmentIds.size > 1 ? 'ken' : 'ak'} geselecteerd
                   </span>
@@ -1606,22 +1633,22 @@ export default function AdminDashboard() {
                           : appointments.filter(a => a.status === appointmentStatusFilter)
                         selectAllAppointments(filteredAppointments)
                       }}
-                      className="px-3 py-1.5 text-xs font-medium text-accent-700 hover:text-accent-800 transition-colors"
+                      className="px-2 sm:px-3 py-1.5 text-xs font-medium text-accent-700 hover:text-accent-800 transition-colors"
                     >
                       Selecteer alles
                     </button>
                     <button
                       onClick={clearAppointmentSelection}
-                      className="px-3 py-1.5 text-xs font-medium text-gray-600 hover:text-gray-800 transition-colors"
+                      className="px-2 sm:px-3 py-1.5 text-xs font-medium text-gray-600 hover:text-gray-800 transition-colors"
                     >
                       Deselecteer
                     </button>
                     <button
                       onClick={() => setShowBulkDeleteConfirm('appointments')}
-                      className="px-3 py-1.5 text-xs font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors flex items-center gap-1.5"
+                      className="px-2.5 sm:px-3 py-1.5 text-xs font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors flex items-center gap-1.5"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
-                      Verwijderen
+                      <span className="hidden sm:inline">Verwijderen</span>
                     </button>
                   </div>
                 </div>
