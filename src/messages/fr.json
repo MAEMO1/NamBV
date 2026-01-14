@@ -959,5 +959,138 @@
     "subtitle": "Les conditions applicables à nos services et travaux",
     "lastUpdated": "Janvier 2025",
     "privacyLinkText": "Politique de confidentialité"
+  },
+  "bookingFlow": {
+    "stepLabels": ["Projet", "Logement", "Préférences", "Budget", "Rendez-vous"],
+    "projectTypes": [
+      { "id": "totaal", "label": "Rénovation complète", "description": "Rénovation complète de A à Z" },
+      { "id": "renovatie", "label": "Rénovation & Transformation", "description": "Travaux de rénovation ciblés" },
+      { "id": "badkamer", "label": "Rénovation salle de bain", "description": "Nouvelle salle de bain" },
+      { "id": "keuken", "label": "Rénovation cuisine", "description": "Nouvelle cuisine" },
+      { "id": "afwerking", "label": "Finitions", "description": "Carrelage, peinture, ..." },
+      { "id": "technieken", "label": "Techniques", "description": "Électricité, plomberie, chauffage" }
+    ],
+    "propertyTypes": [
+      { "id": "rijwoning", "label": "Maison mitoyenne" },
+      { "id": "herenhuis", "label": "Maison de maître" },
+      { "id": "appartement", "label": "Appartement" },
+      { "id": "vrijstaand", "label": "Maison individuelle" },
+      { "id": "koppelwoning", "label": "Maison jumelée" },
+      { "id": "anders", "label": "Autre" }
+    ],
+    "propertyAges": [
+      { "id": "voor1945", "label": "Avant 1945" },
+      { "id": "1945-1970", "label": "1945 - 1970" },
+      { "id": "1970-1990", "label": "1970 - 1990" },
+      { "id": "1990-2010", "label": "1990 - 2010" },
+      { "id": "na2010", "label": "Après 2010" },
+      { "id": "onbekend", "label": "Je ne sais pas" }
+    ],
+    "priorities": [
+      { "id": "duurzaam", "label": "Matériaux durables" },
+      { "id": "hergebruik", "label": "Réutilisation matériaux" },
+      { "id": "energie", "label": "Économie d'énergie" },
+      { "id": "comfort", "label": "Confort de vie" },
+      { "id": "design", "label": "Design & esthétique" },
+      { "id": "budget", "label": "Économique" }
+    ],
+    "materialPreferences": [
+      { "id": "eco", "label": "Écologique & durable", "description": "Matériaux naturels et écologiques" },
+      { "id": "hergebruik", "label": "Réutilisation si possible", "description": "Conserver les matériaux existants" },
+      { "id": "mix", "label": "Combinaison", "description": "Mélange de neuf et réutilisé" },
+      { "id": "standaard", "label": "Qualité standard", "description": "Matériaux courants de qualité" }
+    ],
+    "motivationOptions": [
+      { "id": "verkoop", "label": "Vente du bien", "description": "Augmenter la valeur pour la vente" },
+      { "id": "comfort", "label": "Plus de confort", "description": "Mieux vivre dans votre logement actuel" },
+      { "id": "energie", "label": "Économie d'énergie", "description": "Réduire les coûts énergétiques" },
+      { "id": "noodzaak", "label": "Réparations nécessaires", "description": "Résoudre des problèmes urgents" },
+      { "id": "uitbreiding", "label": "Agrandissement famille", "description": "Besoin de plus d'espace" },
+      { "id": "anders", "label": "Autre", "description": "Autre raison" }
+    ],
+    "budgetRanges": [
+      { "id": "klein", "label": "< 25 000 €" },
+      { "id": "medium", "label": "25 000 € - 50 000 €" },
+      { "id": "groot", "label": "50 000 € - 100 000 €" },
+      { "id": "xl", "label": "100 000 € - 200 000 €" },
+      { "id": "xxl", "label": "> 200 000 €" },
+      { "id": "onbekend", "label": "Pas encore sûr" }
+    ],
+    "weekDays": ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"],
+    "monthNames": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
+    "step1": {
+      "title": "Quel type de projet avez-vous en tête ?",
+      "subtitle": "Sélectionnez le type de rénovation"
+    },
+    "step2": {
+      "title": "Parlez-nous de votre logement",
+      "subtitle": "Cela nous aide à mieux vous conseiller",
+      "propertyTypeLabel": "Type de logement",
+      "propertyAgeLabel": "Année de construction (optionnel)"
+    },
+    "step3": {
+      "title": "Qu'est-ce qui est important pour vous ?",
+      "subtitle": "Sélectionnez vos priorités (plusieurs possibles)",
+      "materialLabel": "Préférence matériaux",
+      "motivationLabel": "Pourquoi voulez-vous rénover ?"
+    },
+    "step4": {
+      "title": "Budget & planning",
+      "subtitle": "Cela nous aide à créer une proposition réaliste",
+      "budgetLabel": "Budget indicatif",
+      "timingLabel": "Quand souhaitez-vous commencer ?",
+      "flexibleOption": "Pas encore déterminé / Flexible",
+      "monthLabel": "Mois",
+      "yearLabel": "Année",
+      "selectMonth": "Sélectionnez le mois",
+      "selectYear": "Sélectionnez l'année",
+      "preferredStart": "Début souhaité :",
+      "extraOptions": "Options supplémentaires",
+      "subsidyTitle": "Aide aux primes & subsides",
+      "subsidyDescription": "Nous vous aidons à demander les primes disponibles",
+      "paymentTitle": "Intérêt pour l'échelonnement des paiements",
+      "paymentDescription": "Payez en phases selon l'avancement"
+    },
+    "step5": {
+      "title": "Planifiez votre consultation gratuite",
+      "subtitle": "Choisissez une date et une heure qui vous conviennent",
+      "nameLabel": "Nom",
+      "namePlaceholder": "Votre nom",
+      "emailLabel": "Email",
+      "emailPlaceholder": "votre@email.be",
+      "phoneLabel": "Téléphone",
+      "phonePlaceholder": "+32 ...",
+      "municipalityLabel": "Commune",
+      "municipalityPlaceholder": "Gand, Mariakerke, ...",
+      "timeLabel": "Choisissez un créneau horaire",
+      "messageLabel": "Informations supplémentaires (optionnel)",
+      "messagePlaceholder": "Demandes spéciales ou questions ?"
+    },
+    "calendar": {
+      "free": "libre",
+      "full": "complet"
+    },
+    "navigation": {
+      "previous": "Précédent",
+      "next": "Suivant",
+      "submitting": "En cours...",
+      "submit": "Confirmer le rendez-vous"
+    },
+    "success": {
+      "title": "Votre rendez-vous est confirmé !",
+      "confirmationMessage": "Nous enverrons une confirmation à",
+      "lookingForward": "Nous avons hâte de discuter de votre projet.",
+      "newAppointment": "Nouveau rendez-vous"
+    },
+    "errors": {
+      "generic": "Une erreur s'est produite",
+      "sendFailed": "Une erreur s'est produite lors de l'envoi"
+    }
+  },
+  "ctaBanner": {
+    "title": "Prêt à commencer ?",
+    "subtitle": "Planifiez une consultation gratuite et sans engagement. Nous discuterons de vos souhaits et possibilités.",
+    "quoteButton": "Demander un devis",
+    "appointmentButton": "Prendre rendez-vous"
   }
 }

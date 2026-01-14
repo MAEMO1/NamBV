@@ -1,6 +1,7 @@
 'use client';
 
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
 import { Phone, ArrowRight, ArrowUpRight } from 'lucide-react';
 
 interface CTABannerProps {
@@ -10,11 +11,16 @@ interface CTABannerProps {
 }
 
 export default function CTABanner({
-  title = "Klaar om te starten?",
-  subtitle = "Plan een gratis en vrijblijvend adviesgesprek. We bespreken uw wensen en mogelijkheden.",
+  title,
+  subtitle,
   variant = 'default'
 }: CTABannerProps) {
+  const t = useTranslations('ctaBanner');
   const isDark = variant === 'dark';
+
+  // Use provided props or fall back to translations
+  const displayTitle = title || t('title');
+  const displaySubtitle = subtitle || t('subtitle');
 
   return (
     <section className={`relative overflow-hidden ${
@@ -24,12 +30,12 @@ export default function CTABanner({
         <h2 className={`text-display-xl font-display font-medium mb-6 ${
           isDark ? 'text-white' : 'text-noir-900'
         }`}>
-          {title}
+          {displayTitle}
         </h2>
         <p className={`text-lg md:text-xl max-w-2xl mx-auto mb-12 ${
           isDark ? 'text-noir-400' : 'text-noir-500'
         }`}>
-          {subtitle}
+          {displaySubtitle}
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -41,7 +47,7 @@ export default function CTABanner({
                 : 'bg-noir-900 text-white hover:bg-accent-500'
             }`}
           >
-            Offerte aanvragen
+            {t('quoteButton')}
             <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
           <Link
@@ -52,7 +58,7 @@ export default function CTABanner({
                 : 'border-noir-300 text-noir-900 hover:bg-noir-900 hover:text-white hover:border-noir-900'
             }`}
           >
-            Plan afspraak
+            {t('appointmentButton')}
             <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </div>

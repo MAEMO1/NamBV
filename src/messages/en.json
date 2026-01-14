@@ -959,5 +959,138 @@
     "subtitle": "The conditions that apply to our services and work",
     "lastUpdated": "January 2025",
     "privacyLinkText": "Privacy Policy"
+  },
+  "bookingFlow": {
+    "stepLabels": ["Project", "Property", "Preferences", "Budget", "Appointment"],
+    "projectTypes": [
+      { "id": "totaal", "label": "Full Renovation", "description": "Complete renovation from A to Z" },
+      { "id": "renovatie", "label": "Renovation & Remodeling", "description": "Targeted renovation work" },
+      { "id": "badkamer", "label": "Bathroom Renovation", "description": "New bathroom" },
+      { "id": "keuken", "label": "Kitchen Renovation", "description": "New kitchen" },
+      { "id": "afwerking", "label": "Finishing", "description": "Tiling, painting, ..." },
+      { "id": "technieken", "label": "Technical", "description": "Electricity, plumbing, heating" }
+    ],
+    "propertyTypes": [
+      { "id": "rijwoning", "label": "Terraced house" },
+      { "id": "herenhuis", "label": "Townhouse" },
+      { "id": "appartement", "label": "Apartment" },
+      { "id": "vrijstaand", "label": "Detached house" },
+      { "id": "koppelwoning", "label": "Semi-detached" },
+      { "id": "anders", "label": "Other" }
+    ],
+    "propertyAges": [
+      { "id": "voor1945", "label": "Before 1945" },
+      { "id": "1945-1970", "label": "1945 - 1970" },
+      { "id": "1970-1990", "label": "1970 - 1990" },
+      { "id": "1990-2010", "label": "1990 - 2010" },
+      { "id": "na2010", "label": "After 2010" },
+      { "id": "onbekend", "label": "Don't know" }
+    ],
+    "priorities": [
+      { "id": "duurzaam", "label": "Sustainable materials" },
+      { "id": "hergebruik", "label": "Material reuse" },
+      { "id": "energie", "label": "Energy savings" },
+      { "id": "comfort", "label": "Living comfort" },
+      { "id": "design", "label": "Design & aesthetics" },
+      { "id": "budget", "label": "Budget-conscious" }
+    ],
+    "materialPreferences": [
+      { "id": "eco", "label": "Ecological & sustainable", "description": "Natural, eco-friendly materials" },
+      { "id": "hergebruik", "label": "Reuse where possible", "description": "Preserve existing materials" },
+      { "id": "mix", "label": "Combination", "description": "Mix of new and reused" },
+      { "id": "standaard", "label": "Standard quality", "description": "Common, quality materials" }
+    ],
+    "motivationOptions": [
+      { "id": "verkoop", "label": "Selling the property", "description": "Increase value for sale" },
+      { "id": "comfort", "label": "More comfort", "description": "Better living in your current home" },
+      { "id": "energie", "label": "Energy savings", "description": "Lower energy costs and sustainability" },
+      { "id": "noodzaak", "label": "Necessary repairs", "description": "Solve urgent problems" },
+      { "id": "uitbreiding", "label": "Growing family", "description": "Need more space" },
+      { "id": "anders", "label": "Other", "description": "Other reason" }
+    ],
+    "budgetRanges": [
+      { "id": "klein", "label": "< €25,000" },
+      { "id": "medium", "label": "€25,000 - €50,000" },
+      { "id": "groot", "label": "€50,000 - €100,000" },
+      { "id": "xl", "label": "€100,000 - €200,000" },
+      { "id": "xxl", "label": "> €200,000" },
+      { "id": "onbekend", "label": "Not sure yet" }
+    ],
+    "weekDays": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    "monthNames": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    "step1": {
+      "title": "What kind of project do you have in mind?",
+      "subtitle": "Select the type of renovation"
+    },
+    "step2": {
+      "title": "Tell us about your property",
+      "subtitle": "This helps us give better advice",
+      "propertyTypeLabel": "Property type",
+      "propertyAgeLabel": "Year built (optional)"
+    },
+    "step3": {
+      "title": "What's important to you?",
+      "subtitle": "Select your priorities (multiple possible)",
+      "materialLabel": "Material preference",
+      "motivationLabel": "Why do you want to renovate?"
+    },
+    "step4": {
+      "title": "Budget & planning",
+      "subtitle": "This helps us create a realistic proposal",
+      "budgetLabel": "Indicative budget",
+      "timingLabel": "When would you like to start?",
+      "flexibleOption": "Not yet determined / Flexible",
+      "monthLabel": "Month",
+      "yearLabel": "Year",
+      "selectMonth": "Select month",
+      "selectYear": "Select year",
+      "preferredStart": "Preferred start:",
+      "extraOptions": "Additional options",
+      "subsidyTitle": "Subsidy & premium support",
+      "subsidyDescription": "We help with applying for available premiums",
+      "paymentTitle": "Interest in payment spreading",
+      "paymentDescription": "Pay in phases according to progress"
+    },
+    "step5": {
+      "title": "Schedule your free consultation",
+      "subtitle": "Choose a date and time that suits you",
+      "nameLabel": "Name",
+      "namePlaceholder": "Your name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "your@email.com",
+      "phoneLabel": "Phone",
+      "phonePlaceholder": "+32 ...",
+      "municipalityLabel": "Municipality",
+      "municipalityPlaceholder": "Ghent, Mariakerke, ...",
+      "timeLabel": "Choose a time slot",
+      "messageLabel": "Additional information (optional)",
+      "messagePlaceholder": "Special requests or questions?"
+    },
+    "calendar": {
+      "free": "free",
+      "full": "full"
+    },
+    "navigation": {
+      "previous": "Previous",
+      "next": "Next",
+      "submitting": "Processing...",
+      "submit": "Confirm appointment"
+    },
+    "success": {
+      "title": "Your appointment is confirmed!",
+      "confirmationMessage": "We'll send a confirmation to",
+      "lookingForward": "We look forward to discussing your project.",
+      "newAppointment": "New appointment"
+    },
+    "errors": {
+      "generic": "An error occurred",
+      "sendFailed": "An error occurred while sending"
+    }
+  },
+  "ctaBanner": {
+    "title": "Ready to get started?",
+    "subtitle": "Schedule a free, no-obligation consultation. We'll discuss your wishes and possibilities.",
+    "quoteButton": "Request quote",
+    "appointmentButton": "Schedule appointment"
   }
 }

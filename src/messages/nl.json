@@ -959,5 +959,138 @@
     "subtitle": "De voorwaarden die van toepassing zijn op onze diensten en werkzaamheden",
     "lastUpdated": "Januari 2025",
     "privacyLinkText": "Privacybeleid"
+  },
+  "bookingFlow": {
+    "stepLabels": ["Project", "Woning", "Voorkeuren", "Budget", "Afspraak"],
+    "projectTypes": [
+      { "id": "totaal", "label": "Totaalrenovatie", "description": "Complete renovatie van A tot Z" },
+      { "id": "renovatie", "label": "Renovatie & Verbouwing", "description": "Gerichte renovatiewerken" },
+      { "id": "badkamer", "label": "Badkamerrenovatie", "description": "Nieuwe badkamer" },
+      { "id": "keuken", "label": "Keukenrenovatie", "description": "Nieuwe keuken" },
+      { "id": "afwerking", "label": "Afwerking", "description": "Tegelwerk, schilderwerk, ..." },
+      { "id": "technieken", "label": "Technieken", "description": "Elektriciteit, sanitair, verwarming" }
+    ],
+    "propertyTypes": [
+      { "id": "rijwoning", "label": "Rijwoning" },
+      { "id": "herenhuis", "label": "Herenhuis" },
+      { "id": "appartement", "label": "Appartement" },
+      { "id": "vrijstaand", "label": "Vrijstaande woning" },
+      { "id": "koppelwoning", "label": "Koppelwoning" },
+      { "id": "anders", "label": "Anders" }
+    ],
+    "propertyAges": [
+      { "id": "voor1945", "label": "Voor 1945" },
+      { "id": "1945-1970", "label": "1945 - 1970" },
+      { "id": "1970-1990", "label": "1970 - 1990" },
+      { "id": "1990-2010", "label": "1990 - 2010" },
+      { "id": "na2010", "label": "Na 2010" },
+      { "id": "onbekend", "label": "Weet ik niet" }
+    ],
+    "priorities": [
+      { "id": "duurzaam", "label": "Duurzame materialen" },
+      { "id": "hergebruik", "label": "Hergebruik materiaal" },
+      { "id": "energie", "label": "Energiebesparing" },
+      { "id": "comfort", "label": "Wooncomfort" },
+      { "id": "design", "label": "Design & esthetiek" },
+      { "id": "budget", "label": "Prijsbewust" }
+    ],
+    "materialPreferences": [
+      { "id": "eco", "label": "Ecologisch & duurzaam", "description": "Natuurlijke, milieuvriendelijke materialen" },
+      { "id": "hergebruik", "label": "Hergebruik waar mogelijk", "description": "Bestaande materialen behouden" },
+      { "id": "mix", "label": "Combinatie", "description": "Mix van nieuw en hergebruik" },
+      { "id": "standaard", "label": "Standaard kwaliteit", "description": "Gangbare, kwalitatieve materialen" }
+    ],
+    "motivationOptions": [
+      { "id": "verkoop", "label": "Verkoop van de woning", "description": "Waarde verhogen voor verkoop" },
+      { "id": "comfort", "label": "Meer wooncomfort", "description": "Beter wonen in uw huidige woning" },
+      { "id": "energie", "label": "Energiebesparing", "description": "Lagere energiekosten en duurzaamheid" },
+      { "id": "noodzaak", "label": "Noodzakelijke reparaties", "description": "Dringende problemen oplossen" },
+      { "id": "uitbreiding", "label": "Uitbreiding gezin", "description": "Meer ruimte nodig" },
+      { "id": "anders", "label": "Anders", "description": "Andere reden" }
+    ],
+    "budgetRanges": [
+      { "id": "klein", "label": "< €25.000" },
+      { "id": "medium", "label": "€25.000 - €50.000" },
+      { "id": "groot", "label": "€50.000 - €100.000" },
+      { "id": "xl", "label": "€100.000 - €200.000" },
+      { "id": "xxl", "label": "> €200.000" },
+      { "id": "onbekend", "label": "Nog geen idee" }
+    ],
+    "weekDays": ["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"],
+    "monthNames": ["Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September", "Oktober", "November", "December"],
+    "step1": {
+      "title": "Wat voor project heeft u in gedachten?",
+      "subtitle": "Selecteer het type renovatie"
+    },
+    "step2": {
+      "title": "Vertel ons over uw woning",
+      "subtitle": "Dit helpt ons om beter advies te geven",
+      "propertyTypeLabel": "Type woning",
+      "propertyAgeLabel": "Bouwjaar (optioneel)"
+    },
+    "step3": {
+      "title": "Wat is voor u belangrijk?",
+      "subtitle": "Selecteer uw prioriteiten (meerdere mogelijk)",
+      "materialLabel": "Voorkeur materiaalgebruik",
+      "motivationLabel": "Waarom wilt u renoveren?"
+    },
+    "step4": {
+      "title": "Budget & planning",
+      "subtitle": "Dit helpt ons een realistisch voorstel te maken",
+      "budgetLabel": "Indicatief budget",
+      "timingLabel": "Wanneer wilt u starten?",
+      "flexibleOption": "Nog niet bepaald / Flexibel",
+      "monthLabel": "Maand",
+      "yearLabel": "Jaar",
+      "selectMonth": "Selecteer maand",
+      "selectYear": "Selecteer jaar",
+      "preferredStart": "Gewenste start:",
+      "extraOptions": "Bijkomende opties",
+      "subsidyTitle": "Ondersteuning subsidies & premies",
+      "subsidyDescription": "We helpen bij het aanvragen van beschikbare premies",
+      "paymentTitle": "Interesse in betalingsspreiding",
+      "paymentDescription": "Betaal in fasen naargelang de vordering"
+    },
+    "step5": {
+      "title": "Plan uw gratis adviesgesprek",
+      "subtitle": "Kies een datum en tijdstip dat u past",
+      "nameLabel": "Naam",
+      "namePlaceholder": "Uw naam",
+      "emailLabel": "Email",
+      "emailPlaceholder": "uw@email.be",
+      "phoneLabel": "Telefoon",
+      "phonePlaceholder": "+32 ...",
+      "municipalityLabel": "Gemeente",
+      "municipalityPlaceholder": "Gent, Mariakerke, ...",
+      "timeLabel": "Kies een tijdstip",
+      "messageLabel": "Extra informatie (optioneel)",
+      "messagePlaceholder": "Speciale wensen of vragen?"
+    },
+    "calendar": {
+      "free": "vrij",
+      "full": "vol"
+    },
+    "navigation": {
+      "previous": "Vorige",
+      "next": "Volgende",
+      "submitting": "Bezig...",
+      "submit": "Bevestig afspraak"
+    },
+    "success": {
+      "title": "Uw afspraak is bevestigd!",
+      "confirmationMessage": "We sturen een bevestiging naar",
+      "lookingForward": "We kijken ernaar uit om uw project te bespreken.",
+      "newAppointment": "Nieuwe afspraak"
+    },
+    "errors": {
+      "generic": "Er is een fout opgetreden",
+      "sendFailed": "Er is een fout opgetreden bij het versturen"
+    }
+  },
+  "ctaBanner": {
+    "title": "Klaar om te starten?",
+    "subtitle": "Plan een gratis en vrijblijvend adviesgesprek. We bespreken uw wensen en mogelijkheden.",
+    "quoteButton": "Offerte aanvragen",
+    "appointmentButton": "Plan afspraak"
   }
 }

@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useMemo, useEffect, useCallback } from 'react';
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
 import {
   ArrowRight,
   ArrowLeft,
@@ -68,66 +69,11 @@ interface AvailabilityData {
   };
 }
 
-const projectTypes = [
-  { id: 'totaal', label: 'Totaalrenovatie', description: 'Complete renovatie van A tot Z', icon: Home },
-  { id: 'renovatie', label: 'Renovatie & Verbouwing', description: 'Gerichte renovatiewerken', icon: Building2 },
-  { id: 'badkamer', label: 'Badkamerrenovatie', description: 'Nieuwe badkamer', icon: Bath },
-  { id: 'keuken', label: 'Keukenrenovatie', description: 'Nieuwe keuken', icon: UtensilsCrossed },
-  { id: 'afwerking', label: 'Afwerking', description: 'Tegelwerk, schilderwerk, ...', icon: Paintbrush },
-  { id: 'technieken', label: 'Technieken', description: 'Elektriciteit, sanitair, verwarming', icon: Zap },
-];
-
-const propertyTypes = [
-  { id: 'rijwoning', label: 'Rijwoning' },
-  { id: 'herenhuis', label: 'Herenhuis' },
-  { id: 'appartement', label: 'Appartement' },
-  { id: 'vrijstaand', label: 'Vrijstaande woning' },
-  { id: 'koppelwoning', label: 'Koppelwoning' },
-  { id: 'anders', label: 'Anders' },
-];
-
-const propertyAges = [
-  { id: 'voor1945', label: 'Voor 1945' },
-  { id: '1945-1970', label: '1945 - 1970' },
-  { id: '1970-1990', label: '1970 - 1990' },
-  { id: '1990-2010', label: '1990 - 2010' },
-  { id: 'na2010', label: 'Na 2010' },
-  { id: 'onbekend', label: 'Weet ik niet' },
-];
-
-const priorities = [
-  { id: 'duurzaam', label: 'Duurzame materialen', icon: Leaf },
-  { id: 'hergebruik', label: 'Hergebruik materiaal', icon: Recycle },
-  { id: 'energie', label: 'Energiebesparing', icon: Zap },
-  { id: 'comfort', label: 'Wooncomfort', icon: Sofa },
-  { id: 'design', label: 'Design & esthetiek', icon: Sparkles },
-  { id: 'budget', label: 'Prijsbewust', icon: Euro },
-];
-
-const materialPreferences = [
-  { id: 'eco', label: 'Ecologisch & duurzaam', description: 'Natuurlijke, milieuvriendelijke materialen', icon: TreePine },
-  { id: 'hergebruik', label: 'Hergebruik waar mogelijk', description: 'Bestaande materialen behouden', icon: Recycle },
-  { id: 'mix', label: 'Combinatie', description: 'Mix van nieuw en hergebruik', icon: Layers },
-  { id: 'standaard', label: 'Standaard kwaliteit', description: 'Gangbare, kwalitatieve materialen', icon: Settings },
-];
-
-const motivationOptions = [
-  { id: 'verkoop', label: 'Verkoop van de woning', description: 'Waarde verhogen voor verkoop', icon: TrendingUp },
-  { id: 'comfort', label: 'Meer wooncomfort', description: 'Beter wonen in uw huidige woning', icon: Sofa },
-  { id: 'energie', label: 'Energiebesparing', description: 'Lagere energiekosten en duurzaamheid', icon: Zap },
-  { id: 'noodzaak', label: 'Noodzakelijke reparaties', description: 'Dringende problemen oplossen', icon: Wrench },
-  { id: 'uitbreiding', label: 'Uitbreiding gezin', description: 'Meer ruimte nodig', icon: Users },
-  { id: 'anders', label: 'Anders', description: 'Andere reden', icon: HelpCircle },
-];
-
-const budgetRanges = [
-  { id: 'klein', label: '< €25.000' },
-  { id: 'medium', label: '€25.000 - €50.000' },
-  { id: 'groot', label: '€50.000 - €100.000' },
-  { id: 'xl', label: '€100.000 - €200.000' },
-  { id: 'xxl', label: '> €200.000' },
-  { id: 'onbekend', label: 'Nog geen idee' },
-];
+// Icon mappings for project types
+const projectTypeIcons = [Home, Building2, Bath, UtensilsCrossed, Paintbrush, Zap];
+const priorityIcons = [Leaf, Recycle, Zap, Sofa, Sparkles, Euro];
+const materialIcons = [TreePine, Recycle, Layers, Settings];
+const motivationIcons = [TrendingUp, Sofa, Zap, Wrench, Users, HelpCircle];
 
 // Current date for timing selector
 const timingCurrentYear = new Date().getFullYear();
@@ -135,11 +81,6 @@ const timingCurrentMonth = new Date().getMonth();
 const timingAvailableYears = [timingCurrentYear, timingCurrentYear + 1, timingCurrentYear + 2, timingCurrentYear + 3];
 
 const allTimeSlots = ['09:00', '10:00', '11:00', '14:00', '15:00', '16:00', '17:00'];
-const weekDays = ['Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'];
-const monthNames = [
-  'Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni',
-  'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'
-];
 
 function getMonthDays(year: number, month: number) {
   const firstDay = new Date(year, month, 1);
@@ -158,6 +99,7 @@ function formatDateKey(year: number, month: number, day: number): string {
 }
 
 export default function BookingFlow() {
+  const t = useTranslations('bookingFlow');
   const [step, setStep] = useState(1);
   const [currentMonth, setCurrentMonth] = useState(() => {
     const now = new Date();
@@ -187,7 +129,36 @@ export default function BookingFlow() {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const totalSteps = 5;
-  const stepLabels = ['Project', 'Woning', 'Voorkeuren', 'Budget', 'Afspraak'];
+
+  // Get translated data
+  const stepLabels = t.raw('stepLabels') as string[];
+  const weekDays = t.raw('weekDays') as string[];
+  const monthNames = t.raw('monthNames') as string[];
+
+  // Build translated arrays with icons
+  const projectTypes = (t.raw('projectTypes') as Array<{id: string; label: string; description: string}>).map((item, idx) => ({
+    ...item,
+    icon: projectTypeIcons[idx]
+  }));
+
+  const propertyTypes = t.raw('propertyTypes') as Array<{id: string; label: string}>;
+  const propertyAges = t.raw('propertyAges') as Array<{id: string; label: string}>;
+  const budgetRanges = t.raw('budgetRanges') as Array<{id: string; label: string}>;
+
+  const priorities = (t.raw('priorities') as Array<{id: string; label: string}>).map((item, idx) => ({
+    ...item,
+    icon: priorityIcons[idx]
+  }));
+
+  const materialPreferences = (t.raw('materialPreferences') as Array<{id: string; label: string; description: string}>).map((item, idx) => ({
+    ...item,
+    icon: materialIcons[idx]
+  }));
+
+  const motivationOptions = (t.raw('motivationOptions') as Array<{id: string; label: string; description: string}>).map((item, idx) => ({
+    ...item,
+    icon: motivationIcons[idx]
+  }));
 
   // Fetch availability for current month
   const fetchAvailability = useCallback(async (year: number, month: number) => {
@@ -335,10 +306,10 @@ export default function BookingFlow() {
       if (response.ok) {
         setIsSubmitted(true);
       } else {
-        setSubmitError(data.error || 'Er is een fout opgetreden');
+        setSubmitError(data.error || t('errors.generic'));
       }
     } catch {
-      setSubmitError('Er is een fout opgetreden bij het versturen');
+      setSubmitError(t('errors.sendFailed'));
     } finally {
       setIsSubmitting(false);
     }
@@ -364,7 +335,7 @@ export default function BookingFlow() {
         </div>
 
         <h3 className="text-2xl md:text-3xl font-display font-medium text-white mb-4">
-          Uw afspraak is bevestigd!
+          {t('success.title')}
         </h3>
 
         <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-6 mb-8 max-w-sm mx-auto">
@@ -379,8 +350,8 @@ export default function BookingFlow() {
         </div>
 
         <p className="text-white/70 mb-10 max-w-md mx-auto">
-          We sturen een bevestiging naar <strong className="text-white">{formData.email}</strong>.
-          We kijken ernaar uit om uw project te bespreken.
+          {t('success.confirmationMessage')} <strong className="text-white">{formData.email}</strong>.
+          {' '}{t('success.lookingForward')}
         </p>
 
         <button
@@ -397,7 +368,7 @@ export default function BookingFlow() {
           className="inline-flex items-center gap-3 px-8 py-4 bg-white text-noir-900 font-medium rounded-xl hover:bg-accent-100 transition-all duration-500"
         >
           <Sparkles className="h-5 w-5" />
-          Nieuwe afspraak
+          {t('success.newAppointment')}
         </button>
       </div>
     );
@@ -456,10 +427,10 @@ export default function BookingFlow() {
                 <Sparkles className="h-5 w-5 text-accent-600" />
               </div>
               <h3 className="text-2xl md:text-3xl font-display font-medium text-noir-900">
-                Wat voor project heeft u in gedachten?
+                {t('step1.title')}
               </h3>
             </div>
-            <p className="text-noir-500 mb-10 ml-[52px]">Selecteer het type renovatie</p>
+            <p className="text-noir-500 mb-10 ml-[52px]">{t('step1.subtitle')}</p>
 
             <div className="grid sm:grid-cols-2 gap-4">
               {projectTypes.map((type) => {
@@ -505,15 +476,15 @@ export default function BookingFlow() {
                   <Building2 className="h-5 w-5 text-accent-600" />
                 </div>
                 <h3 className="text-2xl md:text-3xl font-display font-medium text-noir-900">
-                  Vertel ons over uw woning
+                  {t('step2.title')}
                 </h3>
               </div>
-              <p className="text-noir-500 mb-10 ml-[52px]">Dit helpt ons om beter advies te geven</p>
+              <p className="text-noir-500 mb-10 ml-[52px]">{t('step2.subtitle')}</p>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-noir-700 mb-4">
-                Type woning <span className="text-accent-500">*</span>
+                {t('step2.propertyTypeLabel')} <span className="text-accent-500">*</span>
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {propertyTypes.map((type) => {
@@ -536,7 +507,7 @@ export default function BookingFlow() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-noir-700 mb-4">Bouwjaar (optioneel)</label>
+              <label className="block text-sm font-medium text-noir-700 mb-4">{t('step2.propertyAgeLabel')}</label>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {propertyAges.map((age) => {
                   const isSelected = formData.propertyAge === age.id;
@@ -568,10 +539,10 @@ export default function BookingFlow() {
                   <Target className="h-5 w-5 text-accent-600" />
                 </div>
                 <h3 className="text-2xl md:text-3xl font-display font-medium text-noir-900">
-                  Wat is voor u belangrijk?
+                  {t('step3.title')}
                 </h3>
               </div>
-              <p className="text-noir-500 mb-10 ml-[52px]">Selecteer uw prioriteiten (meerdere mogelijk)</p>
+              <p className="text-noir-500 mb-10 ml-[52px]">{t('step3.subtitle')}</p>
             </div>
 
             <div className="grid sm:grid-cols-2 gap-3">
@@ -606,7 +577,7 @@ export default function BookingFlow() {
 
             <div>
               <label className="block text-sm font-medium text-noir-700 mb-4">
-                Voorkeur materiaalgebruik <span className="text-accent-500">*</span>
+                {t('step3.materialLabel')} <span className="text-accent-500">*</span>
               </label>
               <div className="space-y-3">
                 {materialPreferences.map((pref) => {
@@ -642,7 +613,7 @@ export default function BookingFlow() {
 
             <div>
               <label className="block text-sm font-medium text-noir-700 mb-4">
-                Waarom wilt u renoveren?
+                {t('step3.motivationLabel')}
               </label>
               <div className="grid sm:grid-cols-2 gap-3">
                 {motivationOptions.map((option) => {
@@ -686,15 +657,15 @@ export default function BookingFlow() {
                   <Wallet className="h-5 w-5 text-accent-600" />
                 </div>
                 <h3 className="text-2xl md:text-3xl font-display font-medium text-noir-900">
-                  Budget & planning
+                  {t('step4.title')}
                 </h3>
               </div>
-              <p className="text-noir-500 mb-10 ml-[52px]">Dit helpt ons een realistisch voorstel te maken</p>
+              <p className="text-noir-500 mb-10 ml-[52px]">{t('step4.subtitle')}</p>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-noir-700 mb-4">
-                Indicatief budget <span className="text-accent-500">*</span>
+                {t('step4.budgetLabel')} <span className="text-accent-500">*</span>
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {budgetRanges.map((range) => {
@@ -719,7 +690,7 @@ export default function BookingFlow() {
             <div>
               <label className="flex items-center gap-2 text-sm font-medium text-noir-700 mb-4">
                 <Calendar className="h-4 w-4 text-noir-400" />
-                Wanneer wilt u starten? <span className="text-accent-500">*</span>
+                {t('step4.timingLabel')} <span className="text-accent-500">*</span>
               </label>
 
               {/* Option: Not yet determined */}
@@ -739,7 +710,7 @@ export default function BookingFlow() {
                 }`}>
                   {formData.timing === 'flexible' && <Check className="h-3 w-3 text-white" />}
                 </div>
-                Nog niet bepaald / Flexibel
+                {t('step4.flexibleOption')}
               </button>
 
               {/* Month/Year selector - only show if not flexible */}
@@ -747,7 +718,7 @@ export default function BookingFlow() {
                 <div className="grid grid-cols-2 gap-4">
                   {/* Month selector */}
                   <div>
-                    <label className="block text-xs text-noir-500 uppercase tracking-wider mb-2">Maand</label>
+                    <label className="block text-xs text-noir-500 uppercase tracking-wider mb-2">{t('step4.monthLabel')}</label>
                     <select
                       value={formData.timing ? formData.timing.split('-')[0] || '' : ''}
                       onChange={(e) => {
@@ -761,7 +732,7 @@ export default function BookingFlow() {
                       }}
                       className="w-full p-4 rounded-xl border-2 border-noir-200 bg-ivory-50 text-noir-800 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all appearance-none cursor-pointer"
                     >
-                      <option value="">Selecteer maand</option>
+                      <option value="">{t('step4.selectMonth')}</option>
                       {monthNames.map((month, idx) => {
                         // Don't show past months for current year
                         const selectedYear = formData.timing?.split('-')[1];
@@ -779,7 +750,7 @@ export default function BookingFlow() {
 
                   {/* Year selector */}
                   <div>
-                    <label className="block text-xs text-noir-500 uppercase tracking-wider mb-2">Jaar</label>
+                    <label className="block text-xs text-noir-500 uppercase tracking-wider mb-2">{t('step4.yearLabel')}</label>
                     <select
                       value={formData.timing ? formData.timing.split('-')[1] || '' : ''}
                       onChange={(e) => {
@@ -798,7 +769,7 @@ export default function BookingFlow() {
                       }}
                       className="w-full p-4 rounded-xl border-2 border-noir-200 bg-ivory-50 text-noir-800 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all appearance-none cursor-pointer"
                     >
-                      <option value="">Selecteer jaar</option>
+                      <option value="">{t('step4.selectYear')}</option>
                       {timingAvailableYears.map(year => (
                         <option key={year} value={String(year)}>
                           {year}
@@ -815,7 +786,7 @@ export default function BookingFlow() {
                   <p className="text-sm text-accent-700 flex items-center gap-2">
                     <Calendar className="h-4 w-4" />
                     <span className="font-medium">
-                      Gewenste start:{' '}
+                      {t('step4.preferredStart')}{' '}
                       {(() => {
                         const [month, year] = formData.timing.split('-');
                         if (month && year) {
@@ -833,7 +804,7 @@ export default function BookingFlow() {
 
             {/* Extra options */}
             <div className="space-y-3 pt-8 border-t border-noir-100">
-              <p className="text-sm font-medium text-noir-700 mb-4">Bijkomende opties</p>
+              <p className="text-sm font-medium text-noir-700 mb-4">{t('step4.extraOptions')}</p>
 
               <button
                 onClick={() => updateFormData('subsidyInterest', !formData.subsidyInterest)}
@@ -850,9 +821,9 @@ export default function BookingFlow() {
                 </div>
                 <div className="flex-1">
                   <p className={`font-medium ${formData.subsidyInterest ? 'text-accent-700' : 'text-noir-900'}`}>
-                    Ondersteuning subsidies & premies
+                    {t('step4.subsidyTitle')}
                   </p>
-                  <p className="text-sm text-noir-500">We helpen bij het aanvragen van beschikbare premies</p>
+                  <p className="text-sm text-noir-500">{t('step4.subsidyDescription')}</p>
                 </div>
                 {formData.subsidyInterest && <CheckCircle2 className="h-5 w-5 text-accent-500" />}
               </button>
@@ -872,9 +843,9 @@ export default function BookingFlow() {
                 </div>
                 <div className="flex-1">
                   <p className={`font-medium ${formData.paymentSpread ? 'text-accent-700' : 'text-noir-900'}`}>
-                    Interesse in betalingsspreiding
+                    {t('step4.paymentTitle')}
                   </p>
-                  <p className="text-sm text-noir-500">Betaal in fasen naargelang de vordering</p>
+                  <p className="text-sm text-noir-500">{t('step4.paymentDescription')}</p>
                 </div>
                 {formData.paymentSpread && <CheckCircle2 className="h-5 w-5 text-accent-500" />}
               </button>
@@ -891,10 +862,10 @@ export default function BookingFlow() {
                   <Calendar className="h-5 w-5 text-accent-600" />
                 </div>
                 <h3 className="text-2xl md:text-3xl font-display font-medium text-noir-900">
-                  Plan uw gratis adviesgesprek
+                  {t('step5.title')}
                 </h3>
               </div>
-              <p className="text-noir-500 mb-10 ml-[52px]">Kies een datum en tijdstip dat u past</p>
+              <p className="text-noir-500 mb-10 ml-[52px]">{t('step5.subtitle')}</p>
             </div>
 
             {/* Contact details */}
@@ -902,53 +873,53 @@ export default function BookingFlow() {
               <div>
                 <label className="flex items-center gap-2 text-sm font-medium text-noir-700 mb-3">
                   <User className="h-4 w-4 text-noir-400" />
-                  Naam <span className="text-accent-500">*</span>
+                  {t('step5.nameLabel')} <span className="text-accent-500">*</span>
                 </label>
                 <input
                   type="text"
                   value={formData.name}
                   onChange={(e) => updateFormData('name', e.target.value)}
                   className="w-full p-4 rounded-xl border-2 border-noir-200 bg-ivory-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all"
-                  placeholder="Uw naam"
+                  placeholder={t('step5.namePlaceholder')}
                 />
               </div>
               <div>
                 <label className="flex items-center gap-2 text-sm font-medium text-noir-700 mb-3">
                   <Mail className="h-4 w-4 text-noir-400" />
-                  Email <span className="text-accent-500">*</span>
+                  {t('step5.emailLabel')} <span className="text-accent-500">*</span>
                 </label>
                 <input
                   type="email"
                   value={formData.email}
                   onChange={(e) => updateFormData('email', e.target.value)}
                   className="w-full p-4 rounded-xl border-2 border-noir-200 bg-ivory-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all"
-                  placeholder="uw@email.be"
+                  placeholder={t('step5.emailPlaceholder')}
                 />
               </div>
               <div>
                 <label className="flex items-center gap-2 text-sm font-medium text-noir-700 mb-3">
                   <Phone className="h-4 w-4 text-noir-400" />
-                  Telefoon <span className="text-accent-500">*</span>
+                  {t('step5.phoneLabel')} <span className="text-accent-500">*</span>
                 </label>
                 <input
                   type="tel"
                   value={formData.phone}
                   onChange={(e) => updateFormData('phone', e.target.value)}
                   className="w-full p-4 rounded-xl border-2 border-noir-200 bg-ivory-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all"
-                  placeholder="+32 ..."
+                  placeholder={t('step5.phonePlaceholder')}
                 />
               </div>
               <div>
                 <label className="flex items-center gap-2 text-sm font-medium text-noir-700 mb-3">
                   <MapPin className="h-4 w-4 text-noir-400" />
-                  Gemeente <span className="text-accent-500">*</span>
+                  {t('step5.municipalityLabel')} <span className="text-accent-500">*</span>
                 </label>
                 <input
                   type="text"
                   value={formData.gemeente}
                   onChange={(e) => updateFormData('gemeente', e.target.value)}
                   className="w-full p-4 rounded-xl border-2 border-noir-200 bg-ivory-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all"
-                  placeholder="Gent, Mariakerke, ..."
+                  placeholder={t('step5.municipalityPlaceholder')}
                 />
               </div>
             </div>
@@ -1027,9 +998,9 @@ export default function BookingFlow() {
                     >
                       <span className="font-medium">{day}</span>
                       {isSelectable && !isSelected && availableTimes < allTimeSlots.length && availableTimes > 0 && (
-                        <span className="text-[9px] text-accent-600 font-medium">{availableTimes} vrij</span>
+                        <span className="text-[9px] text-accent-600 font-medium">{availableTimes} {t('calendar.free')}</span>
                       )}
-                      {isFullyBooked && <span className="text-[9px] text-noir-400">vol</span>}
+                      {isFullyBooked && <span className="text-[9px] text-noir-400">{t('calendar.full')}</span>}
                     </button>
                   );
                 })}
@@ -1041,7 +1012,7 @@ export default function BookingFlow() {
               <div>
                 <label className="flex items-center gap-2 text-sm font-medium text-noir-700 mb-4">
                   <Clock className="h-4 w-4 text-noir-400" />
-                  Kies een tijdstip <span className="text-accent-500">*</span>
+                  {t('step5.timeLabel')} <span className="text-accent-500">*</span>
                 </label>
                 <div className="grid grid-cols-4 sm:grid-cols-7 gap-3">
                   {allTimeSlots.map((time) => {
@@ -1073,14 +1044,14 @@ export default function BookingFlow() {
             <div>
               <label className="flex items-center gap-2 text-sm font-medium text-noir-700 mb-3">
                 <MessageSquare className="h-4 w-4 text-noir-400" />
-                Extra informatie (optioneel)
+                {t('step5.messageLabel')}
               </label>
               <textarea
                 value={formData.message}
                 onChange={(e) => updateFormData('message', e.target.value)}
                 rows={3}
                 className="w-full p-4 rounded-xl border-2 border-noir-200 bg-ivory-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all resize-none"
-                placeholder="Speciale wensen of vragen?"
+                placeholder={t('step5.messagePlaceholder')}
               />
             </div>
           </div>
@@ -1095,7 +1066,7 @@ export default function BookingFlow() {
             className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border-2 border-noir-200 text-noir-700 font-medium hover:bg-white hover:border-noir-300 transition-all"
           >
             <ArrowLeft className="h-4 w-4" />
-            Vorige
+            {t('navigation.previous')}
           </button>
         ) : <div />}
 
@@ -1113,7 +1084,7 @@ export default function BookingFlow() {
                   : 'bg-noir-200 text-noir-400 cursor-not-allowed'
               }`}
             >
-              Volgende
+              {t('navigation.next')}
               <ArrowRight className="h-4 w-4" />
             </button>
           ) : (
@@ -1127,7 +1098,7 @@ export default function BookingFlow() {
               }`}
             >
               <Calendar className="h-4 w-4" />
-              {isSubmitting ? 'Bezig...' : 'Bevestig afspraak'}
+              {isSubmitting ? t('navigation.submitting') : t('navigation.submit')}
             </button>
           )}
         </div>
