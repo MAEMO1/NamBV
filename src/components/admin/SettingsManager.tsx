@@ -169,153 +169,157 @@ export default function SettingsManager() {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Tabs */}
-      <div className="flex gap-2 pb-4 border-b border-gray-100">
-        {tabs.map(tab => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${
-              activeTab === tab.id
-                ? 'bg-accent-600 text-white'
-                : 'text-gray-600 hover:bg-gray-100'
-            }`}
-          >
-            {tab.icon}
-            {tab.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Language Selector for Legal - Professional Segmented Control */}
-      {activeTab === 'legal' && (
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h3 className="text-sm font-semibold text-gray-900 tracking-tight">
-                Taalversie
-              </h3>
-              <p className="text-xs text-gray-500 mt-0.5">
-                Selecteer de taal om de juridische content te bewerken
-              </p>
-            </div>
-
-            {/* Segmented Control */}
-            <div className="inline-flex p-1 bg-gray-100 rounded-lg">
-              {LANGUAGES.map((lang, index) => (
+    <div className="space-y-4 sm:space-y-6">
+      <div className="grid lg:grid-cols-4 gap-4 sm:gap-6">
+        {/* Navigation Sidebar */}
+        <div className="lg:col-span-1">
+          <nav className="bg-white rounded-xl border border-gray-100 p-2 sm:p-3">
+            {/* Mobile: horizontal scroll, Desktop: vertical list */}
+            <div className="flex lg:flex-col gap-1 overflow-x-auto lg:overflow-x-visible scrollbar-hide -mx-1 px-1 lg:mx-0 lg:px-0">
+              {tabs.map(tab => (
                 <button
-                  key={lang.code}
-                  onClick={() => setActiveLegalLang(lang.code)}
-                  className={`relative px-4 py-2 text-sm font-medium transition-all duration-200 ${
-                    activeLegalLang === lang.code
-                      ? 'text-gray-900'
-                      : 'text-gray-500 hover:text-gray-700'
-                  } ${index === 0 ? 'rounded-l-md' : ''} ${index === LANGUAGES.length - 1 ? 'rounded-r-md' : ''}`}
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-all whitespace-nowrap flex-shrink-0 lg:flex-shrink lg:w-full ${
+                    activeTab === tab.id
+                      ? 'bg-accent-50 text-accent-700 border border-accent-200'
+                      : 'text-gray-600 hover:bg-gray-50 bg-gray-50 lg:bg-transparent'
+                  }`}
                 >
-                  {activeLegalLang === lang.code && (
-                    <span className="absolute inset-0 bg-white rounded-md shadow-sm" />
-                  )}
-                  <span className="relative flex items-center gap-2">
-                    <span className="font-semibold tracking-wide">{lang.shortLabel}</span>
-                    <span className="hidden sm:inline text-gray-400 font-normal">
-                      {lang.label}
-                    </span>
+                  <span className={activeTab === tab.id ? 'text-accent-600' : 'text-gray-400'}>
+                    {tab.icon}
                   </span>
+                  <span>{tab.label}</span>
                 </button>
               ))}
             </div>
-          </div>
-
-          {/* Current Language Indicator */}
-          <div className="flex items-center gap-2 px-3 py-2 bg-gray-50 border border-gray-100 rounded-lg">
-            <div className="w-2 h-2 bg-accent-500 rounded-full" />
-            <span className="text-xs text-gray-600">
-              Nu bewerken: <span className="font-medium text-gray-900">{LANGUAGES.find(l => l.code === activeLegalLang)?.label}</span>
-            </span>
-          </div>
+          </nav>
         </div>
-      )}
 
-      {/* Settings Form */}
-      <div className="bg-white rounded-xl border border-gray-100 p-5">
-        <div className="space-y-5">
-          {getSettingsByCategory(activeTab).map(setting => (
-            <div key={setting.key}>
-              {setting.type !== 'boolean' && (
-                <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
-                  {setting.description}
-                </label>
-              )}
-              {renderInput(setting)}
+        {/* Settings Content */}
+        <div className="lg:col-span-3 space-y-4">
+          {/* Language Selector for Legal */}
+          {activeTab === 'legal' && (
+            <div className="bg-white rounded-xl border border-gray-100 p-4 sm:p-5">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-900 tracking-tight">
+                    Taalversie
+                  </h3>
+                  <p className="text-xs text-gray-500 mt-0.5">
+                    Selecteer de taal om te bewerken
+                  </p>
+                </div>
+
+                {/* Segmented Control */}
+                <div className="inline-flex p-1 bg-gray-100 rounded-lg self-start sm:self-auto">
+                  {LANGUAGES.map((lang, index) => (
+                    <button
+                      key={lang.code}
+                      onClick={() => setActiveLegalLang(lang.code)}
+                      className={`relative px-3 sm:px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                        activeLegalLang === lang.code
+                          ? 'text-gray-900'
+                          : 'text-gray-500 hover:text-gray-700'
+                      } ${index === 0 ? 'rounded-l-md' : ''} ${index === LANGUAGES.length - 1 ? 'rounded-r-md' : ''}`}
+                    >
+                      {activeLegalLang === lang.code && (
+                        <span className="absolute inset-0 bg-white rounded-md shadow-sm" />
+                      )}
+                      <span className="relative flex items-center gap-1.5 sm:gap-2">
+                        <span className="font-semibold tracking-wide">{lang.shortLabel}</span>
+                        <span className="hidden sm:inline text-gray-400 font-normal text-xs">
+                          {lang.label}
+                        </span>
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
-          ))}
-
-          {getSettingsByCategory(activeTab).length === 0 && (
-            <p className="text-gray-400 text-center py-8">
-              Geen instellingen voor deze categorie
-            </p>
           )}
+
+          {/* Settings Form */}
+          <div className="bg-white rounded-xl border border-gray-100 p-4 sm:p-5">
+            <div className="space-y-4 sm:space-y-5">
+              {getSettingsByCategory(activeTab).map(setting => (
+                <div key={setting.key}>
+                  {setting.type !== 'boolean' && (
+                    <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
+                      {setting.description}
+                    </label>
+                  )}
+                  {renderInput(setting)}
+                </div>
+              ))}
+
+              {getSettingsByCategory(activeTab).length === 0 && (
+                <p className="text-gray-400 text-center py-8">
+                  Geen instellingen voor deze categorie
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* Save Button */}
+          <div className="flex justify-end">
+            <button
+              onClick={handleSave}
+              disabled={saving}
+              className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${
+                saved
+                  ? 'bg-green-500 text-white'
+                  : 'bg-accent-600 text-white hover:bg-accent-700'
+              } disabled:opacity-50`}
+            >
+              {saved ? (
+                <>
+                  <Check className="w-4 h-4" />
+                  Opgeslagen
+                </>
+              ) : (
+                <>
+                  <Save className="w-4 h-4" />
+                  {saving ? 'Opslaan...' : 'Opslaan'}
+                </>
+              )}
+            </button>
+          </div>
+
+          {/* Help text per category */}
+          <div className="bg-gray-50 rounded-xl p-3 sm:p-4 text-xs sm:text-sm text-gray-600">
+            {activeTab === 'contact' && (
+              <p>
+                <strong>Contactgegevens:</strong> Deze informatie wordt getoond op de website en in automatische emails.
+              </p>
+            )}
+            {activeTab === 'general' && (
+              <p>
+                <strong>Algemeen:</strong> Bedrijfsinformatie en statistieken die op de website worden getoond.
+              </p>
+            )}
+            {activeTab === 'social' && (
+              <p>
+                <strong>Social Media:</strong> Links naar je social media profielen. Laat leeg om te verbergen.
+              </p>
+            )}
+            {activeTab === 'notifications' && (
+              <p>
+                <strong>Notificaties:</strong> Configureer wanneer en naar wie email notificaties worden verstuurd.
+              </p>
+            )}
+            {activeTab === 'seo' && (
+              <p>
+                <strong>SEO:</strong> Standaard meta tags voor zoekmachines.
+              </p>
+            )}
+            {activeTab === 'legal' && (
+              <p>
+                <strong>Juridisch:</strong> Bewerk hier uw privacybeleid en algemene voorwaarden per taal. Gebruik Markdown voor opmaak.
+              </p>
+            )}
+          </div>
         </div>
-      </div>
-
-      {/* Save Button */}
-      <div className="flex justify-end">
-        <button
-          onClick={handleSave}
-          disabled={saving}
-          className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${
-            saved
-              ? 'bg-green-500 text-white'
-              : 'bg-accent-600 text-white hover:bg-accent-700'
-          } disabled:opacity-50`}
-        >
-          {saved ? (
-            <>
-              <Check className="w-4 h-4" />
-              Opgeslagen
-            </>
-          ) : (
-            <>
-              <Save className="w-4 h-4" />
-              {saving ? 'Opslaan...' : 'Opslaan'}
-            </>
-          )}
-        </button>
-      </div>
-
-      {/* Help text per category */}
-      <div className="bg-gray-50 rounded-xl p-4 text-sm text-gray-600">
-        {activeTab === 'contact' && (
-          <p>
-            <strong>Contactgegevens:</strong> Deze informatie wordt getoond op de website en in automatische emails.
-          </p>
-        )}
-        {activeTab === 'general' && (
-          <p>
-            <strong>Algemeen:</strong> Bedrijfsinformatie en statistieken die op de website worden getoond.
-          </p>
-        )}
-        {activeTab === 'social' && (
-          <p>
-            <strong>Social Media:</strong> Links naar je social media profielen. Laat leeg om te verbergen.
-          </p>
-        )}
-        {activeTab === 'notifications' && (
-          <p>
-            <strong>Notificaties:</strong> Configureer wanneer en naar wie email notificaties worden verstuurd.
-          </p>
-        )}
-        {activeTab === 'seo' && (
-          <p>
-            <strong>SEO:</strong> Standaard meta tags voor zoekmachines.
-          </p>
-        )}
-        {activeTab === 'legal' && (
-          <p>
-            <strong>Juridisch:</strong> Bewerk hier uw privacybeleid en algemene voorwaarden per taal. Selecteer bovenaan de gewenste taal en pas de content aan. Gebruik Markdown voor opmaak (# voor titels, **tekst** voor vet). Wijzigingen worden direct op de website getoond in de bijbehorende taal.
-          </p>
-        )}
       </div>
     </div>
   )

@@ -132,9 +132,9 @@ export default function ContentManager() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Page Tabs */}
-      <div className="flex gap-2 pb-4 border-b border-gray-100">
+      <div className="flex gap-2 pb-3 sm:pb-4 border-b border-gray-100 overflow-x-auto scrollbar-hide -mx-3 px-3 sm:mx-0 sm:px-0">
         {pages.map(page => (
           <button
             key={page}
@@ -142,7 +142,7 @@ export default function ContentManager() {
               setActivePage(page)
               setActiveSection(null)
             }}
-            className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-lg capitalize transition-colors ${
+            className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-lg capitalize transition-colors whitespace-nowrap flex-shrink-0 ${
               activePage === page
                 ? 'bg-accent-600 text-white'
                 : 'text-gray-600 hover:bg-gray-100'
@@ -154,26 +154,26 @@ export default function ContentManager() {
         ))}
       </div>
 
-      <div className="grid lg:grid-cols-4 gap-6">
-        {/* Sections Sidebar */}
+      <div className="grid lg:grid-cols-4 gap-4 sm:gap-6">
+        {/* Sections - Horizontal scroll on mobile, sidebar on desktop */}
         <div className="lg:col-span-1">
-          <div className="bg-white rounded-xl border border-gray-100 p-4">
-            <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">
+          <div className="bg-white rounded-xl border border-gray-100 p-3 sm:p-4">
+            <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2 sm:mb-3">
               Secties
             </h3>
-            <div className="space-y-1">
+            <div className="flex lg:flex-col gap-2 lg:gap-1 overflow-x-auto lg:overflow-x-visible scrollbar-hide -mx-1 px-1 lg:mx-0 lg:px-0 pb-1 lg:pb-0">
               {Object.keys(sections).map(section => (
                 <button
                   key={section}
                   onClick={() => setActiveSection(section)}
-                  className={`w-full flex items-center justify-between px-3 py-2 text-sm text-left rounded-lg capitalize transition-colors ${
+                  className={`flex items-center justify-between px-3 py-2 text-sm text-left rounded-lg capitalize transition-colors whitespace-nowrap flex-shrink-0 lg:flex-shrink lg:w-full ${
                     activeSection === section
                       ? 'bg-accent-50 text-accent-700 font-medium'
-                      : 'text-gray-600 hover:bg-gray-50'
+                      : 'text-gray-600 hover:bg-gray-50 bg-gray-50 lg:bg-transparent'
                   }`}
                 >
                   {section.replace('_', ' ')}
-                  <ChevronRight className="w-4 h-4" />
+                  <ChevronRight className="w-4 h-4 hidden lg:block" />
                 </button>
               ))}
             </div>
@@ -182,11 +182,11 @@ export default function ContentManager() {
 
         {/* Content Editor */}
         <div className="lg:col-span-3">
-          <div className="bg-white rounded-xl border border-gray-100 p-5">
+          <div className="bg-white rounded-xl border border-gray-100 p-4 sm:p-5">
             {activeSection ? (
-              <div className="space-y-5">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900 capitalize">
+              <div className="space-y-4 sm:space-y-5">
+                <div className="flex items-center justify-between mb-3 sm:mb-4">
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-900 capitalize">
                     {activeSection.replace('_', ' ')}
                   </h3>
                   <button
