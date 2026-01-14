@@ -35,6 +35,9 @@ import {
   MoreHorizontal,
   Trash2,
   AlertTriangle,
+  Menu,
+  PanelLeftClose,
+  PanelLeft,
 } from 'lucide-react'
 import AnalyticsDashboard from './AnalyticsDashboard'
 import ProjectsManager from './ProjectsManager'
@@ -784,6 +787,7 @@ export default function AdminDashboard() {
   const [statusFilter, setStatusFilter] = useState<QuoteStatus | 'all'>('all')
   const [appointmentStatusFilter, setAppointmentStatusFilter] = useState<AppointmentStatus | 'all'>('all')
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [showNotifications, setShowNotifications] = useState(false)
 
@@ -961,22 +965,63 @@ export default function AdminDashboard() {
     { id: 'settings' as const, icon: Settings, label: 'Instellingen' },
   ]
 
+  // Close mobile menu when navigating
+  const handleNavClick = (viewId: typeof currentView) => {
+    setCurrentView(viewId)
+    setMobileMenuOpen(false)
+  }
+
   return (
     <div className={`flex min-h-screen bg-gray-50 transition-opacity duration-500 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
+      {/* Mobile Overlay */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className={`bg-white border-r border-gray-100 flex flex-col transition-all duration-300 ${
-        sidebarCollapsed ? 'w-16' : 'w-60'
-      }`}>
-        {/* Logo */}
-        <div className="p-4 border-b border-gray-100">
-          <div className="flex items-center gap-3">
-            <Logo variant="icon" color="dark" className="w-9 h-9 flex-shrink-0" />
-            {!sidebarCollapsed && (
-              <div>
-                <p className="text-sm font-semibold text-gray-900">NAM</p>
-                <p className="text-xs text-gray-400">Admin</p>
-              </div>
-            )}
+      <aside className={`
+        fixed lg:relative inset-y-0 left-0 z-50
+        bg-white border-r border-gray-100 flex flex-col
+        transition-all duration-300 ease-in-out
+        ${sidebarCollapsed ? 'lg:w-16' : 'lg:w-60'}
+        w-72 lg:w-auto
+        ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+        shadow-xl lg:shadow-none
+      `}>
+        {/* Logo + Collapse Toggle */}
+        <div className="p-3 border-b border-gray-100">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-3 min-w-0">
+              <Logo variant="icon" color="dark" className="w-8 h-8 flex-shrink-0" />
+              {(!sidebarCollapsed || mobileMenuOpen) && (
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-gray-900 truncate">NAM</p>
+                  <p className="text-xs text-gray-400">Admin</p>
+                </div>
+              )}
+            </div>
+            {/* Desktop collapse button - always visible at top */}
+            <button
+              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+              className="hidden lg:flex w-8 h-8 rounded-lg hover:bg-gray-100 flex-shrink-0 items-center justify-center text-gray-400 hover:text-gray-600 transition-colors"
+              title={sidebarCollapsed ? 'Uitklappen' : 'Inklappen'}
+            >
+              {sidebarCollapsed ? (
+                <PanelLeft className="w-4 h-4" />
+              ) : (
+                <PanelLeftClose className="w-4 h-4" />
+              )}
+            </button>
+            {/* Mobile close button */}
+            <button
+              onClick={() => setMobileMenuOpen(false)}
+              className="lg:hidden w-8 h-8 rounded-lg hover:bg-gray-100 flex-shrink-0 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
           </div>
         </div>
 
@@ -986,63 +1031,78 @@ export default function AdminDashboard() {
             const Icon = item.icon
             const isActive = currentView === item.id
             return (
-              <button
-                key={item.id}
-                onClick={() => setCurrentView(item.id)}
-                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                  isActive
-                    ? 'bg-accent-50 text-accent-700'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                }`}
-              >
-                <Icon className={`w-[18px] h-[18px] flex-shrink-0 ${isActive ? 'text-accent-600' : 'text-gray-400'}`} />
-                {!sidebarCollapsed && (
-                  <>
-                    <span className="flex-1 text-left">{item.label}</span>
-                    {item.badge && item.badge > 0 && (
-                      <span className="px-1.5 py-0.5 text-xs font-semibold bg-accent-600 text-white rounded">
-                        {item.badge}
-                      </span>
+              <div key={item.id} className="relative group">
+                <button
+                  onClick={() => handleNavClick(item.id)}
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    isActive
+                      ? 'bg-accent-50 text-accent-700 shadow-sm'
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  }`}
+                >
+                  <div className="relative">
+                    <Icon className={`w-[18px] h-[18px] flex-shrink-0 transition-colors ${isActive ? 'text-accent-600' : 'text-gray-400 group-hover:text-gray-600'}`} />
+                    {sidebarCollapsed && !mobileMenuOpen && item.badge && item.badge > 0 && (
+                      <span className="absolute -top-1 -right-1 w-2 h-2 bg-accent-600 rounded-full ring-2 ring-white" />
                     )}
-                  </>
+                  </div>
+                  {(!sidebarCollapsed || mobileMenuOpen) && (
+                    <>
+                      <span className="flex-1 text-left">{item.label}</span>
+                      {item.badge && item.badge > 0 && (
+                        <span className="px-2 py-0.5 text-xs font-semibold bg-accent-600 text-white rounded-full min-w-[20px] text-center">
+                          {item.badge}
+                        </span>
+                      )}
+                    </>
+                  )}
+                </button>
+                {/* Tooltip for collapsed sidebar on desktop */}
+                {sidebarCollapsed && !mobileMenuOpen && (
+                  <div className="absolute left-full top-1/2 -translate-y-1/2 ml-2 px-2.5 py-1.5 bg-gray-900 text-white text-xs font-medium rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 whitespace-nowrap z-50 hidden lg:block shadow-lg">
+                    {item.label}
+                    {item.badge && item.badge > 0 && (
+                      <span className="ml-2 px-1.5 py-0.5 bg-accent-500 rounded text-[10px]">{item.badge}</span>
+                    )}
+                    <div className="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-gray-900" />
+                  </div>
                 )}
-                {sidebarCollapsed && item.badge && item.badge > 0 && (
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-accent-600 rounded-full" />
-                )}
-              </button>
+              </div>
             )
           })}
         </nav>
 
-        {/* Footer */}
-        <div className="p-2 border-t border-gray-100 space-y-1">
-          <button
-            onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-500 hover:bg-red-50 hover:text-red-600 transition-colors"
-          >
-            <LogOut className="w-[18px] h-[18px]" />
-            {!sidebarCollapsed && <span>Uitloggen</span>}
-          </button>
-          <button
-            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-400 hover:bg-gray-50 hover:text-gray-600 transition-colors"
-          >
-            {sidebarCollapsed ? (
-              <ChevronRight className="w-[18px] h-[18px]" />
-            ) : (
-              <>
-                <ChevronLeft className="w-[18px] h-[18px]" />
-                <span>Inklappen</span>
-              </>
+        {/* Footer - Logout only */}
+        <div className="p-2 border-t border-gray-100">
+          <div className="relative group">
+            <button
+              onClick={handleLogout}
+              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-500 hover:bg-red-50 hover:text-red-600 transition-colors"
+            >
+              <LogOut className="w-[18px] h-[18px]" />
+              {(!sidebarCollapsed || mobileMenuOpen) && <span>Uitloggen</span>}
+            </button>
+            {sidebarCollapsed && !mobileMenuOpen && (
+              <div className="absolute left-full top-1/2 -translate-y-1/2 ml-2 px-2.5 py-1.5 bg-gray-900 text-white text-xs font-medium rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 whitespace-nowrap z-50 hidden lg:block shadow-lg">
+                Uitloggen
+                <div className="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-gray-900" />
+              </div>
             )}
-          </button>
+          </div>
         </div>
       </aside>
 
       {/* Main */}
-      <main className="flex-1 overflow-auto">
+      <main className="flex-1 overflow-auto lg:ml-0">
         {/* Header */}
-        <header className="bg-white border-b border-gray-100 px-6 py-4 flex justify-between items-center sticky top-0 z-10">
+        <header className="bg-white border-b border-gray-100 px-4 lg:px-6 py-4 flex justify-between items-center sticky top-0 z-10">
+          {/* Mobile menu button */}
+          <button
+            onClick={() => setMobileMenuOpen(true)}
+            className="lg:hidden w-10 h-10 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-500 hover:text-gray-700 transition-colors mr-2"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
           <div className="flex items-center gap-3">
             {currentView !== 'dashboard' && (
               <button
