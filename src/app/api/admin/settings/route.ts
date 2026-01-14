@@ -38,6 +38,97 @@ const defaultSettings: Record<string, { value: string; type: string; category: s
   'seo.defaultTitle': { value: 'NAM Construction - Renovatie & Bouw in Gent', type: 'string', category: 'seo', description: 'Standaard paginatitel' },
   'seo.defaultDescription': { value: 'NAM Construction is uw partner voor totaalrenovatie, renovatie en afwerking in Gent en omgeving. Vraag een gratis offerte aan.', type: 'string', category: 'seo', description: 'Standaard meta beschrijving' },
   'seo.ogImage': { value: '/og-image.jpg', type: 'string', category: 'seo', description: 'Open Graph afbeelding' },
+
+  // Legal
+  'legal.privacyPolicy': { value: `# Privacybeleid
+
+**Laatst bijgewerkt: januari 2025**
+
+NAM BV (hierna "wij", "ons" of "NAM Construction") respecteert uw privacy en zet zich in voor de bescherming van uw persoonlijke gegevens.
+
+## 1. Welke gegevens verzamelen wij?
+
+Wij verzamelen de volgende gegevens:
+- Contactgegevens (naam, e-mail, telefoonnummer, adres)
+- Projectinformatie die u met ons deelt
+- Technische gegevens (IP-adres, browsertype) voor websiteoptimalisatie
+
+## 2. Waarom verzamelen wij deze gegevens?
+
+Wij gebruiken uw gegevens voor:
+- Het opstellen en versturen van offertes
+- Het inplannen van afspraken
+- Communicatie over uw project
+- Het verbeteren van onze dienstverlening
+
+## 3. Hoe lang bewaren wij uw gegevens?
+
+Wij bewaren uw gegevens niet langer dan noodzakelijk voor de doeleinden waarvoor ze zijn verzameld, met inachtneming van wettelijke bewaartermijnen.
+
+## 4. Uw rechten
+
+U heeft het recht om:
+- Uw gegevens in te zien
+- Uw gegevens te laten corrigeren
+- Uw gegevens te laten verwijderen
+- Bezwaar te maken tegen de verwerking
+
+## 5. Contact
+
+Voor vragen over dit privacybeleid kunt u contact opnemen via:
+- E-mail: info@namconstruction.be
+- Telefoon: +32 493 81 27 89
+
+NAM BV
+BTW: BE0792.212.559`, type: 'text', category: 'legal', description: 'Privacybeleid' },
+
+  'legal.termsConditions': { value: `# Algemene Voorwaarden
+
+**NAM BV - BTW BE0792.212.559**
+
+## 1. Algemeen
+
+Deze algemene voorwaarden zijn van toepassing op alle offertes, overeenkomsten en werkzaamheden van NAM BV.
+
+## 2. Offertes
+
+- Alle offertes zijn vrijblijvend en geldig gedurende 30 dagen
+- Prijzen zijn exclusief BTW tenzij anders vermeld
+- Wijzigingen in het werk kunnen leiden tot prijsaanpassingen
+
+## 3. Uitvoering van werkzaamheden
+
+- Wij streven ernaar alle werkzaamheden binnen de afgesproken termijn uit te voeren
+- Vertragingen door overmacht of door de klant gevraagde wijzigingen kunnen leiden tot aangepaste termijnen
+- De klant zorgt voor vrije toegang tot de werkplek
+
+## 4. Betaling
+
+- Facturen dienen binnen 14 dagen na factuurdatum te worden voldaan
+- Bij niet-tijdige betaling zijn wij gerechtigd de wettelijke rente in rekening te brengen
+- Bij grote projecten kan een betalingsregeling worden afgesproken
+
+## 5. Garantie
+
+- Wij bieden garantie op ons vakmanschap conform de wettelijke bepalingen
+- De garantie is niet van toepassing bij oneigenlijk gebruik of wijzigingen door derden
+
+## 6. Aansprakelijkheid
+
+- Onze aansprakelijkheid is beperkt tot het bedrag dat door onze verzekering wordt gedekt
+- Wij zijn niet aansprakelijk voor gevolgschade
+
+## 7. Geschillen
+
+Op deze voorwaarden is Belgisch recht van toepassing. Geschillen worden voorgelegd aan de bevoegde rechtbank in Gent.
+
+## Contact
+
+NAM BV
+Zwijnaardsesteenweg 683
+9000 Gent
+info@namconstruction.be
++32 493 81 27 89`, type: 'text', category: 'legal', description: 'Algemene Voorwaarden' },
 }
 
 // GET - Get all settings or by category

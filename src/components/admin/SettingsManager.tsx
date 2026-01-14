@@ -5,12 +5,11 @@ import {
   Save,
   Building2,
   Phone,
-  Mail,
-  MapPin,
   Globe,
   Bell,
   Search,
   Check,
+  FileText,
 } from 'lucide-react'
 
 interface Setting {
@@ -103,6 +102,18 @@ export default function SettingsManager() {
       )
     }
 
+    if (setting.type === 'text' || setting.category === 'legal') {
+      return (
+        <textarea
+          value={setting.value}
+          onChange={e => updateSetting(setting.key, e.target.value)}
+          className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:border-accent-500 focus:ring-1 focus:ring-accent-500 outline-none resize-y transition-colors font-mono"
+          rows={20}
+          placeholder="Gebruik Markdown voor opmaak (# voor titels, ** voor vet, etc.)"
+        />
+      )
+    }
+
     if (setting.key.includes('description') || setting.key.includes('tagline')) {
       return (
         <textarea
@@ -130,6 +141,7 @@ export default function SettingsManager() {
     { id: 'social', label: 'Social', icon: <Globe className="w-4 h-4" /> },
     { id: 'notifications', label: 'Notificaties', icon: <Bell className="w-4 h-4" /> },
     { id: 'seo', label: 'SEO', icon: <Search className="w-4 h-4" /> },
+    { id: 'legal', label: 'Juridisch', icon: <FileText className="w-4 h-4" /> },
   ]
 
   if (loading) {
@@ -234,6 +246,11 @@ export default function SettingsManager() {
         {activeTab === 'seo' && (
           <p>
             <strong>SEO:</strong> Standaard meta tags voor zoekmachines.
+          </p>
+        )}
+        {activeTab === 'legal' && (
+          <p>
+            <strong>Juridisch:</strong> Bewerk hier uw privacybeleid en algemene voorwaarden. Gebruik Markdown voor opmaak (# voor titels, **tekst** voor vet). Wijzigingen worden direct op de website getoond.
           </p>
         )}
       </div>
