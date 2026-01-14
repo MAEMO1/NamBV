@@ -1,4 +1,8 @@
 import { Metadata } from 'next'
+import { db } from '@/lib/db'
+
+// Force dynamic rendering to always get fresh content from database
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Privacybeleid | NAM Construction',
@@ -46,27 +50,26 @@ function formatInline(text: string): string {
 
 async function getPrivacyContent() {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
-    const response = await fetch(`${baseUrl}/api/legal?type=privacy`, {
-      next: { revalidate: 60 } // Revalidate every minute
+    const setting = await db.setting.findUnique({
+      where: { key: 'legal.privacyPolicy' },
+      select: { value: true }
     })
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch')
+    if (setting?.value) {
+      return setting.value
     }
+  } catch (error) {
+    console.error('Error fetching privacy content:', error)
+  }
 
-    const data = await response.json()
-    return data.content
-  } catch {
-    // Fallback content
-    return `# Privacybeleid
+  // Fallback content
+  return `# Privacybeleid
 
 **Laatst bijgewerkt: januari 2025**
 
 NAM BV respecteert uw privacy en zet zich in voor de bescherming van uw persoonlijke gegevens.
 
 Voor vragen kunt u contact opnemen via info@namconstruction.be`
-  }
 }
 
 export default async function PrivacyPage() {

@@ -1,4 +1,8 @@
 import { Metadata } from 'next'
+import { db } from '@/lib/db'
+
+// Force dynamic rendering to always get fresh content from database
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Algemene Voorwaarden | NAM Construction',
@@ -46,27 +50,26 @@ function formatInline(text: string): string {
 
 async function getTermsContent() {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
-    const response = await fetch(`${baseUrl}/api/legal?type=terms`, {
-      next: { revalidate: 60 } // Revalidate every minute
+    const setting = await db.setting.findUnique({
+      where: { key: 'legal.termsConditions' },
+      select: { value: true }
     })
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch')
+    if (setting?.value) {
+      return setting.value
     }
+  } catch (error) {
+    console.error('Error fetching terms content:', error)
+  }
 
-    const data = await response.json()
-    return data.content
-  } catch {
-    // Fallback content
-    return `# Algemene Voorwaarden
+  // Fallback content
+  return `# Algemene Voorwaarden
 
 **NAM BV - BTW BE0792.212.559**
 
 Deze algemene voorwaarden zijn van toepassing op alle offertes, overeenkomsten en werkzaamheden van NAM BV.
 
 Voor vragen kunt u contact opnemen via info@namconstruction.be`
-  }
 }
 
 export default async function TermsPage() {
