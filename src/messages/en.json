@@ -321,7 +321,10 @@
       "Renovatie & Afwerking": "Renovation & Finishing",
       "Badkamerrenovatie": "Bathroom Renovation",
       "Keukenrenovatie": "Kitchen Renovation",
-      "Renovatie & Technieken": "Renovation & Technical"
+      "Renovatie & Technieken": "Renovation & Technical",
+      "Renovatie": "Renovation",
+      "Afwerking": "Finishing",
+      "Ruwbouw": "Structural Work"
     }
   },
   "contactPage": {
@@ -1136,5 +1139,24 @@
     "subtitle": "Schedule a free, no-obligation consultation. We'll discuss your wishes and possibilities.",
     "quoteButton": "Request quote",
     "appointmentButton": "Schedule appointment"
+  },
+  "projectDetail": {
+    "badge": "Project Detail",
+    "challengeTitle": "The Challenge",
+    "approachTitle": "Our Approach",
+    "resultTitle": "The Result",
+    "before": "Before",
+    "after": "After",
+    "projectInfo": "Project Info",
+    "location": "Location",
+    "year": "Year",
+    "type": "Type",
+    "duration": "Duration",
+    "surface": "Surface",
+    "gallery": "Photo Gallery",
+    "nextProject": "Next project",
+    "backToProjects": "Back to projects",
+    "ctaTitle": "Inspired by this project?",
+    "ctaDescription": "Contact us for a free consultation about your own renovation project."
   }
 }

@@ -5,6 +5,7 @@ import { ArrowRight, CheckCircle2, Clock, Users, Shield, FileCheck, Home, Calend
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { SectionHeader, CTABanner } from '@/components';
+import { servicePageImages } from '@/lib/images';
 
 export default function TotaalrenovatiePage() {
   const t = useTranslations('serviceDetails');
@@ -112,7 +113,7 @@ export default function TotaalrenovatiePage() {
             <div className="relative">
               <div className="relative h-80 lg:h-[500px] rounded-3xl overflow-hidden shadow-2xl">
                 <Image
-                  src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop"
+                  src={servicePageImages.totaalrenovatie.hero}
                   alt={tPage('title')}
                   fill
                   className="object-cover"
@@ -188,7 +189,7 @@ export default function TotaalrenovatiePage() {
             <div className="relative">
               <div className="relative h-80 lg:h-[500px] rounded-3xl overflow-hidden shadow-xl">
                 <Image
-                  src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&h=600&fit=crop"
+                  src={servicePageImages.totaalrenovatie.scope}
                   alt={tPage('scopeTitle')}
                   fill
                   className="object-cover"

@@ -5,6 +5,7 @@ import { ArrowRight, ArrowUpRight, Home, Hammer, Paintbrush, Zap, CheckCircle2 }
 import { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
+import { servicePageImages } from '@/lib/images';
 
 // Scroll animation hook
 function useScrollAnimation() {
@@ -43,10 +44,10 @@ function AnimatedSection({ children, className = '', delay = 0 }: { children: Re
 }
 
 const serviceImages = [
-  'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=1000&fit=crop',
-  'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&h=1000&fit=crop',
-  'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=1000&fit=crop',
-  'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800&h=1000&fit=crop',
+  servicePageImages.totaalrenovatie.card,
+  servicePageImages.renovatie.card,
+  servicePageImages.afwerking.card,
+  servicePageImages.technieken.card,
 ];
 
 const serviceIcons = [Home, Hammer, Paintbrush, Zap];

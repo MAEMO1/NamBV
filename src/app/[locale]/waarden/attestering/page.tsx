@@ -15,6 +15,7 @@ import {
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { CTABanner } from '@/components';
+import { waardenImages } from '@/lib/images';
 
 const certificationIcons = [Shield, FileText, Award, FileCheck];
 
@@ -72,7 +73,7 @@ export default function AttesteringPage() {
             <div className="relative">
               <div className="relative h-80 lg:h-[500px] overflow-hidden">
                 <Image
-                  src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&h=600&fit=crop"
+                  src={waardenImages.attestering.hero}
                   alt={t('imageAlt')}
                   fill
                   className="object-cover"
@@ -164,7 +165,7 @@ export default function AttesteringPage() {
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="relative h-96 overflow-hidden">
               <Image
-                src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&h=600&fit=crop"
+                src={waardenImages.attestering.whyImportant}
                 alt={t('imageAlt')}
                 fill
                 className="object-cover"

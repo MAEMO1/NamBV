@@ -321,7 +321,10 @@
       "Renovatie & Afwerking": "Renovatie & Afwerking",
       "Badkamerrenovatie": "Badkamerrenovatie",
       "Keukenrenovatie": "Keukenrenovatie",
-      "Renovatie & Technieken": "Renovatie & Technieken"
+      "Renovatie & Technieken": "Renovatie & Technieken",
+      "Renovatie": "Renovatie",
+      "Afwerking": "Afwerking",
+      "Ruwbouw": "Ruwbouw"
     }
   },
   "contactPage": {
@@ -1136,5 +1139,24 @@
     "subtitle": "Plan een gratis en vrijblijvend adviesgesprek. We bespreken uw wensen en mogelijkheden.",
     "quoteButton": "Offerte aanvragen",
     "appointmentButton": "Plan afspraak"
+  },
+  "projectDetail": {
+    "badge": "Projectdetail",
+    "challengeTitle": "De Uitdaging",
+    "approachTitle": "Onze Aanpak",
+    "resultTitle": "Het Resultaat",
+    "before": "Voor",
+    "after": "Na",
+    "projectInfo": "Projectinfo",
+    "location": "Locatie",
+    "year": "Jaar",
+    "type": "Type",
+    "duration": "Doorlooptijd",
+    "surface": "Oppervlakte",
+    "gallery": "Fotogalerij",
+    "nextProject": "Volgend project",
+    "backToProjects": "Terug naar projecten",
+    "ctaTitle": "Geïnspireerd door dit project?",
+    "ctaDescription": "Neem contact op voor een gratis adviesgesprek over uw eigen renovatieproject."
   }
 }

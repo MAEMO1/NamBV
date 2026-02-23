@@ -13,6 +13,7 @@ import {
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { CTABanner } from '@/components';
+import { waardenImages } from '@/lib/images';
 
 export default function HergebruikPage() {
   const t = useTranslations('waardenHergebruik');
@@ -72,7 +73,7 @@ export default function HergebruikPage() {
             <div className="relative">
               <div className="relative h-80 lg:h-[500px] overflow-hidden">
                 <Image
-                  src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=600&fit=crop"
+                  src={waardenImages.hergebruik.hero}
                   alt={t('imageAlt')}
                   fill
                   className="object-cover"
@@ -134,7 +135,7 @@ export default function HergebruikPage() {
                 <div className="relative">
                   <div className="aspect-square sm:aspect-[4/3] relative">
                     <Image
-                      src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=300&fit=crop"
+                      src={waardenImages.hergebruik.beforeAfter1.before}
                       alt={t('beforeAfter.before')}
                       fill
                       className="object-cover brightness-90 sepia-[0.2]"
@@ -150,7 +151,7 @@ export default function HergebruikPage() {
                 <div className="relative">
                   <div className="aspect-square sm:aspect-[4/3] relative">
                     <Image
-                      src="https://images.unsplash.com/photo-1556909114-44e3e70034e2?w=400&h=300&fit=crop"
+                      src={waardenImages.hergebruik.beforeAfter1.after}
                       alt={t('beforeAfter.after')}
                       fill
                       className="object-cover"
@@ -184,7 +185,7 @@ export default function HergebruikPage() {
                 <div className="relative">
                   <div className="aspect-square sm:aspect-[4/3] relative">
                     <Image
-                      src="https://images.unsplash.com/photo-1513694203232-719a280e022f?w=400&h=300&fit=crop"
+                      src={waardenImages.hergebruik.beforeAfter2.before}
                       alt={t('beforeAfter.before')}
                       fill
                       className="object-cover brightness-75 sepia-[0.3]"
@@ -200,7 +201,7 @@ export default function HergebruikPage() {
                 <div className="relative">
                   <div className="aspect-square sm:aspect-[4/3] relative">
                     <Image
-                      src="https://images.unsplash.com/photo-1600210492493-0946911123ea?w=400&h=300&fit=crop"
+                      src={waardenImages.hergebruik.beforeAfter2.after}
                       alt={t('beforeAfter.after')}
                       fill
                       className="object-cover"
@@ -276,7 +277,7 @@ export default function HergebruikPage() {
 
             <div className="relative h-96 overflow-hidden">
               <Image
-                src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&h=600&fit=crop"
+                src={waardenImages.hergebruik.benefits}
                 alt={t('imageAlt')}
                 fill
                 className="object-cover"

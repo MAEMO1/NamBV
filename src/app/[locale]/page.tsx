@@ -6,6 +6,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { trackCTAClick, trackClickToCall, CTALocation } from '@/lib/analytics';
+import { homepageImages } from '@/lib/images';
 
 // Tracked Link component for CTA buttons
 function TrackedCTA({
@@ -47,17 +48,9 @@ function TrackedCTA({
 }
 
 // Static data (non-translatable parts like images)
-const serviceImages = [
-  'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=1000&fit=crop',
-  'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&h=1000&fit=crop',
-  'https://images.unsplash.com/photo-1600566753051-f0b89df2dd90?w=800&h=1000&fit=crop',
-];
+const serviceImages = homepageImages.services;
 
-const projectImages = [
-  'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&h=800&fit=crop',
-  'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&h=600&fit=crop',
-  'https://images.unsplash.com/photo-1600566753051-f0b89df2dd90?w=800&h=600&fit=crop',
-];
+const projectImagesArr = homepageImages.projects;
 
 // Text reveal animation - character by character (Bouw-ID inspired)
 function AnimatedText({ text, className = '', delay = 0 }: { text: string; className?: string; delay?: number }) {
@@ -232,21 +225,21 @@ export default function HomePage() {
       category: t('projects.items.0.category'),
       location: t('projects.items.0.location'),
       year: '2024',
-      image: projectImages[0],
+      image: projectImagesArr[0],
     },
     {
       title: t('projects.items.1.title'),
       category: t('projects.items.1.category'),
       location: t('projects.items.1.location'),
       year: '2024',
-      image: projectImages[1],
+      image: projectImagesArr[1],
     },
     {
       title: t('projects.items.2.title'),
       category: t('projects.items.2.category'),
       location: t('projects.items.2.location'),
       year: '2023',
-      image: projectImages[2],
+      image: projectImagesArr[2],
     },
   ];
 
@@ -280,8 +273,8 @@ export default function HomePage() {
             style={{ transform: `scale(1.1) translateY(${scrollY * 0.15}px)` }}
           >
             <Image
-              src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&h=1200&fit=crop"
-              alt="Gerenoveerd interieur"
+              src={homepageImages.hero}
+              alt="Gerenoveerde gevel Meulemanstraat"
               fill
               className="object-cover"
               priority
@@ -397,8 +390,8 @@ export default function HomePage() {
                 {/* Main image */}
                 <div className="relative aspect-[4/5] overflow-hidden">
                   <Image
-                    src="https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?w=800&h=1000&fit=crop"
-                    alt="Vakman aan het werk"
+                    src={homepageImages.whyUs}
+                    alt="Moderne keuken renovatie"
                     fill
                     className="object-cover"
                   />
@@ -656,8 +649,8 @@ export default function HomePage() {
         {/* Background image with overlay */}
         <div className="absolute inset-0">
           <Image
-            src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&h=800&fit=crop"
-            alt="Modern interieur"
+            src={homepageImages.ctaBackground}
+            alt="Modern gerenoveerd interieur"
             fill
             className="object-cover"
           />

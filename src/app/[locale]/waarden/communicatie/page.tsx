@@ -16,6 +16,7 @@ import {
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { CTABanner } from '@/components';
+import { waardenImages } from '@/lib/images';
 
 const pillarIcons = [Users, Smartphone, Mail];
 
@@ -77,7 +78,7 @@ export default function CommunicatiePage() {
             <div className="relative">
               <div className="relative h-80 lg:h-[500px] overflow-hidden">
                 <Image
-                  src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&h=600&fit=crop"
+                  src={waardenImages.communicatie.hero}
                   alt={t('imageAlt')}
                   fill
                   className="object-cover"

@@ -5,6 +5,7 @@ import { MapPin, ArrowRight, ArrowUpRight } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
+import { projectImages, siteImages } from '@/lib/images';
 
 interface Project {
   id: string;
@@ -21,63 +22,63 @@ interface Project {
 const fallbackProjects: Project[] = [
   {
     id: '1',
-    title: 'Herenhuis Gent-centrum',
+    title: 'Meulemanstraat 34',
     category: 'Totaalrenovatie',
-    location: 'Gent',
+    location: 'Gavere',
     year: '2024',
     description: 'Volledige renovatie van een karaktervol herenhuis met behoud van authentieke elementen.',
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&h=800&fit=crop',
+    image: projectImages.meulemanstraat.main,
     featured: true
   },
   {
     id: '2',
-    title: 'Rijwoning Mariakerke',
-    category: 'Renovatie & Afwerking',
-    location: 'Mariakerke',
+    title: 'Renovatie Oostende',
+    category: 'Renovatie',
+    location: 'Oostende',
     year: '2024',
-    description: 'Grondige renovatie van een jaren 60 rijwoning met nieuwe indeling.',
-    image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&h=600&fit=crop'
+    description: 'Grondige renovatie met nieuwe indeling en moderne afwerking.',
+    image: projectImages.oostende.main
   },
   {
     id: '3',
-    title: 'Appartement Ledeberg',
-    category: 'Badkamerrenovatie',
-    location: 'Ledeberg',
+    title: 'Afwerking Parijs',
+    category: 'Afwerking',
+    location: 'Parijs',
     year: '2024',
-    description: 'Complete badkamerrenovatie met moderne sanitaire installatie.',
-    image: 'https://images.unsplash.com/photo-1600566753051-f0b89df2dd90?w=800&h=600&fit=crop'
+    description: 'Complete afwerking met hoogwaardige materialen en stijlvol design.',
+    image: projectImages.parijs.main
   },
   {
     id: '4',
-    title: 'Villa Sint-Martens-Latem',
+    title: 'Reginald Warnefordstraat',
     category: 'Totaalrenovatie',
-    location: 'Sint-Martens-Latem',
+    location: 'Gent',
     year: '2023',
-    description: 'Luxueuze renovatie van een vrijstaande villa met focus op comfort.',
-    image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=600&fit=crop'
+    description: 'Totaalrenovatie van een stadswoning met focus op modern comfort.',
+    image: projectImages.reginaldWarneford.main
   },
   {
     id: '5',
-    title: 'Koppelwoning Drongen',
-    category: 'Keukenrenovatie',
-    location: 'Drongen',
+    title: 'Markt 6 Gavere',
+    category: 'Ruwbouw',
+    location: 'Gavere',
     year: '2023',
-    description: 'Open keuken met kookeiland en sfeervolle afwerking.',
-    image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=600&fit=crop'
+    description: 'Ruwbouwwerken voor een volledige heropbouw in het centrum.',
+    image: projectImages.gavere.main
   },
   {
     id: '6',
-    title: 'Stadswoning Muide',
-    category: 'Renovatie & Technieken',
+    title: 'Visitatiestraat',
+    category: 'Totaalrenovatie',
     location: 'Gent',
     year: '2023',
-    description: 'Volledige vernieuwing van elektriciteit en sanitair.',
-    image: 'https://images.unsplash.com/photo-1600210492493-0946911123ea?w=800&h=600&fit=crop'
+    description: 'Volledige vernieuwing van een historisch pand met moderne technieken.',
+    image: projectImages.visitatiestraat.main
   }
 ];
 
 // Category keys for translation lookup (values match database categories)
-const fallbackCategoryKeys = ['Alle', 'Totaalrenovatie', 'Renovatie & Afwerking', 'Badkamerrenovatie', 'Keukenrenovatie'];
+const fallbackCategoryKeys = ['Alle', 'Totaalrenovatie', 'Renovatie', 'Afwerking', 'Ruwbouw'];
 
 // Scroll animation hook
 function useScrollAnimation() {
@@ -183,7 +184,7 @@ export default function ProjectenPage() {
           style={{ transform: `scale(1.1) translateY(${scrollY * 0.15}px)` }}
         >
           <Image
-            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&h=1200&fit=crop"
+            src={siteImages.heroHome}
             alt={t('titleHighlight')}
             fill
             className="object-cover"

@@ -16,6 +16,7 @@ import {
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { CTABanner } from '@/components';
+import { waardenImages } from '@/lib/images';
 
 const premieLinks = [
   'https://www.vlaanderen.be/premies-voor-renovatie/mijn-verbouwpremie',
@@ -77,7 +78,7 @@ export default function SubsidiesPage() {
             <div className="relative">
               <div className="relative h-80 lg:h-[500px] overflow-hidden">
                 <Image
-                  src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&h=600&fit=crop"
+                  src={waardenImages.subsidies.hero}
                   alt={t('imageAlt')}
                   fill
                   className="object-cover"

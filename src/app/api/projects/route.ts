@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { siteImages } from '@/lib/images'
 
 // GET /api/projects - Get published projects (public)
 export async function GET(request: NextRequest) {
@@ -47,7 +48,7 @@ export async function GET(request: NextRequest) {
       location: project.location,
       year: project.year,
       description: project.description,
-      image: project.mainImage || project.images[0]?.url || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&h=800&fit=crop',
+      image: project.mainImage || project.images[0]?.url || siteImages.heroHome,
       images: project.images.map(img => img.url),
       featured: project.featured,
     }))

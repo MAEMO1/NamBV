@@ -5,6 +5,7 @@ import { ArrowRight, CheckCircle2, Paintbrush, Calendar } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { SectionHeader, CTABanner } from '@/components';
+import { servicePageImages } from '@/lib/images';
 
 const serviceColors = ['forest', 'terracotta', 'sand', 'stone'];
 
@@ -115,7 +116,7 @@ export default function AfwerkingPage() {
             <div className="relative">
               <div className="relative h-80 lg:h-[500px] rounded-3xl overflow-hidden shadow-2xl">
                 <Image
-                  src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop"
+                  src={servicePageImages.afwerking.hero}
                   alt={tPage('title')}
                   fill
                   className="object-cover"
@@ -181,7 +182,7 @@ export default function AfwerkingPage() {
             <div className="relative">
               <div className="relative h-80 lg:h-[450px] rounded-3xl overflow-hidden shadow-xl">
                 <Image
-                  src="https://images.unsplash.com/photo-1600585154363-67eb9e2e2099?w=800&h=600&fit=crop"
+                  src={servicePageImages.afwerking.quality}
                   alt={tPage('qualityTitle')}
                   fill
                   className="object-cover"

@@ -5,6 +5,7 @@ import { ArrowRight, CheckCircle2, Zap, Droplets, Thermometer, Wind, ShieldCheck
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { SectionHeader, CTABanner } from '@/components';
+import { servicePageImages } from '@/lib/images';
 
 const serviceIcons = [Zap, Droplets, Thermometer, Wind];
 const serviceColors = ['forest', 'terracotta', 'sand', 'stone'];
@@ -121,7 +122,7 @@ export default function TechniekenPage() {
             <div className="relative">
               <div className="relative h-80 lg:h-[500px] rounded-3xl overflow-hidden shadow-2xl">
                 <Image
-                  src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800&h=600&fit=crop"
+                  src={servicePageImages.technieken.hero}
                   alt={tPage('title')}
                   fill
                   className="object-cover"
@@ -191,7 +192,7 @@ export default function TechniekenPage() {
         <div className="absolute inset-0 bg-forest-900">
           <div className="absolute inset-0 opacity-20">
             <Image
-              src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&h=900&fit=crop"
+              src={servicePageImages.technieken.certBackground}
               alt="Background"
               fill
               className="object-cover"
@@ -233,7 +234,7 @@ export default function TechniekenPage() {
             <div className="relative hidden lg:block">
               <div className="relative h-[450px] rounded-3xl overflow-hidden shadow-2xl">
                 <Image
-                  src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop"
+                  src={servicePageImages.technieken.certifications}
                   alt={tPage('certTitle')}
                   fill
                   className="object-cover"

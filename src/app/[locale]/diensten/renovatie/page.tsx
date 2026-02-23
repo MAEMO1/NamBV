@@ -5,13 +5,9 @@ import { ArrowRight, CheckCircle2, Hammer, Calendar } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { SectionHeader, CTABanner } from '@/components';
+import { servicePageImages } from '@/lib/images';
 
-const typeImages = [
-  'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=600&h=400&fit=crop',
-  'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&h=400&fit=crop',
-  'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=600&h=400&fit=crop',
-  'https://images.unsplash.com/photo-1600210492493-0946911123ea?w=600&h=400&fit=crop',
-];
+const typeImages = servicePageImages.renovatie.types;
 
 const typeColors = ['forest', 'terracotta', 'sand', 'stone'];
 
@@ -127,7 +123,7 @@ export default function RenovatiePage() {
             <div className="relative order-2 lg:order-1">
               <div className="relative h-80 lg:h-[450px] rounded-3xl overflow-hidden shadow-xl">
                 <Image
-                  src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&h=600&fit=crop"
+                  src={servicePageImages.renovatie.benefits}
                   alt={tPage('benefitsTitle')}
                   fill
                   className="object-cover"

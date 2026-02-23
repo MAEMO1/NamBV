@@ -18,6 +18,7 @@ import {
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { SectionHeader, CTABanner } from '@/components';
+import { aanpakImages } from '@/lib/images';
 
 const stepIcons = [MessageSquare, FileText, Hammer, CheckCircle];
 const stepColors = ['forest', 'terracotta', 'sand', 'stone'] as const;
@@ -99,7 +100,7 @@ export default function AanpakPage() {
             <div className="relative">
               <div className="relative h-80 lg:h-[450px] rounded-3xl overflow-hidden shadow-2xl">
                 <Image
-                  src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&h=600&fit=crop"
+                  src={aanpakImages.hero}
                   alt={t('title')}
                   fill
                   className="object-cover"

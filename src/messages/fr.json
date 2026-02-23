@@ -321,7 +321,10 @@
       "Renovatie & Afwerking": "Rénovation & Finitions",
       "Badkamerrenovatie": "Rénovation de salle de bain",
       "Keukenrenovatie": "Rénovation de cuisine",
-      "Renovatie & Technieken": "Rénovation & Techniques"
+      "Renovatie & Technieken": "Rénovation & Techniques",
+      "Renovatie": "Rénovation",
+      "Afwerking": "Finitions",
+      "Ruwbouw": "Gros œuvre"
     }
   },
   "contactPage": {
@@ -1136,5 +1139,24 @@
     "subtitle": "Planifiez une consultation gratuite et sans engagement. Nous discuterons de vos souhaits et possibilités.",
     "quoteButton": "Demander un devis",
     "appointmentButton": "Prendre rendez-vous"
+  },
+  "projectDetail": {
+    "badge": "Détail du projet",
+    "challengeTitle": "Le Défi",
+    "approachTitle": "Notre Approche",
+    "resultTitle": "Le Résultat",
+    "before": "Avant",
+    "after": "Après",
+    "projectInfo": "Infos projet",
+    "location": "Localisation",
+    "year": "Année",
+    "type": "Type",
+    "duration": "Durée",
+    "surface": "Surface",
+    "gallery": "Galerie photos",
+    "nextProject": "Projet suivant",
+    "backToProjects": "Retour aux projets",
+    "ctaTitle": "Inspiré par ce projet?",
+    "ctaDescription": "Contactez-nous pour un entretien gratuit sur votre propre projet de rénovation."
   }
 }

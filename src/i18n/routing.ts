@@ -46,6 +46,11 @@ export const routing = defineRouting({
       fr: '/projets',
       en: '/projects',
     },
+    '/projecten/[slug]': {
+      nl: '/projecten/[slug]',
+      fr: '/projets/[slug]',
+      en: '/projects/[slug]',
+    },
     '/aanpak': {
       nl: '/aanpak',
       fr: '/approche',

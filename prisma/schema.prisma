@@ -451,6 +451,17 @@ model Project {
   location      String
   year          Int
 
+  // Project detail content (De Raedt style)
+  challengeText   String?  @map("challenge_text") @db.Text
+  approachText    String?  @map("approach_text") @db.Text
+  resultText      String?  @map("result_text") @db.Text
+
+  // Project metadata
+  projectType     String?  @map("project_type")
+  duration        String?
+  surface         String?
+  completionDate  String?  @map("completion_date")
+
   // Display
   featured      Boolean  @default(false)
   sortOrder     Int      @default(0) @map("sort_order")
