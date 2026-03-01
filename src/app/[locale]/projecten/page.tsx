@@ -10,6 +10,7 @@ import { projectImages, siteImages } from '@/lib/images';
 interface Project {
   id: string;
   title: string;
+  slug?: string;
   category: string;
   location: string;
   year: string;
@@ -23,6 +24,7 @@ const fallbackProjects: Project[] = [
   {
     id: '1',
     title: 'Meulemanstraat 34',
+    slug: 'meulemanstraat-34',
     category: 'Totaalrenovatie',
     location: 'Gavere',
     year: '2024',
@@ -33,6 +35,7 @@ const fallbackProjects: Project[] = [
   {
     id: '2',
     title: 'Renovatie Oostende',
+    slug: 'renovatie-oostende',
     category: 'Renovatie',
     location: 'Oostende',
     year: '2024',
@@ -42,6 +45,7 @@ const fallbackProjects: Project[] = [
   {
     id: '3',
     title: 'Afwerking Parijs',
+    slug: 'afwerking-parijs',
     category: 'Afwerking',
     location: 'Parijs',
     year: '2024',
@@ -51,6 +55,7 @@ const fallbackProjects: Project[] = [
   {
     id: '4',
     title: 'Reginald Warnefordstraat',
+    slug: 'reginald-warnefordstraat',
     category: 'Totaalrenovatie',
     location: 'Gent',
     year: '2023',
@@ -60,6 +65,7 @@ const fallbackProjects: Project[] = [
   {
     id: '5',
     title: 'Markt 6 Gavere',
+    slug: 'markt-gavere',
     category: 'Ruwbouw',
     location: 'Gavere',
     year: '2023',
@@ -69,6 +75,7 @@ const fallbackProjects: Project[] = [
   {
     id: '6',
     title: 'Visitatiestraat',
+    slug: 'visitatiestraat',
     category: 'Totaalrenovatie',
     location: 'Gent',
     year: '2023',
@@ -281,7 +288,7 @@ export default function ProjectenPage() {
                     delay={index * 100}
                     className={gridSpan}
                   >
-                    <article className="group relative h-full">
+                    <Link href={{ pathname: '/projecten/[slug]', params: { slug: project.slug || project.id } }} className="group block relative h-full">
                       <div className={`relative overflow-hidden ${isLarge ? 'aspect-[4/3]' : 'aspect-square'}`}>
                         <Image
                           src={project.image}
@@ -330,7 +337,7 @@ export default function ProjectenPage() {
                           </div>
                         </div>
                       </div>
-                    </article>
+                    </Link>
                   </AnimatedSection>
                 );
               })}

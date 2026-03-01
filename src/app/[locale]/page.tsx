@@ -226,6 +226,7 @@ export default function HomePage() {
       location: t('projects.items.0.location'),
       year: '2024',
       image: projectImagesArr[0],
+      slug: 'meulemanstraat-34',
     },
     {
       title: t('projects.items.1.title'),
@@ -233,6 +234,7 @@ export default function HomePage() {
       location: t('projects.items.1.location'),
       year: '2024',
       image: projectImagesArr[1],
+      slug: 'reginald-warnefordstraat',
     },
     {
       title: t('projects.items.2.title'),
@@ -240,6 +242,7 @@ export default function HomePage() {
       location: t('projects.items.2.location'),
       year: '2023',
       image: projectImagesArr[2],
+      slug: 'afwerking-parijs',
     },
   ];
 
@@ -575,7 +578,7 @@ export default function HomePage() {
           <div className="grid md:grid-cols-12 gap-8">
             {/* Large featured project */}
             <AnimatedSection className="md:col-span-7">
-              <Link href="/projecten" className="group block relative">
+              <Link href={{ pathname: '/projecten/[slug]', params: { slug: projects[0].slug } }} className="group block relative">
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <Image
                     src={projects[0].image}
@@ -613,7 +616,7 @@ export default function HomePage() {
             <div className="md:col-span-5 grid gap-8">
               {projects.slice(1).map((project, index) => (
                 <AnimatedSection key={project.title} delay={(index + 1) * 150}>
-                  <Link href="/projecten" className="group block relative">
+                  <Link href={{ pathname: '/projecten/[slug]', params: { slug: project.slug } }} className="group block relative">
                     <div className="relative aspect-[3/2] overflow-hidden">
                       <Image
                         src={project.image}
