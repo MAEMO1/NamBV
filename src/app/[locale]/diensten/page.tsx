@@ -152,42 +152,33 @@ export default function DienstenPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 bg-ivory-100 overflow-hidden">
-        {/* Background decoration */}
-        <div className="absolute top-0 right-0 w-1/2 h-full">
-          <div className="absolute top-20 right-20 w-96 h-96 bg-accent-100/50 rounded-full blur-3xl" />
-          <div className="absolute bottom-20 right-40 w-64 h-64 bg-accent-200/30 rounded-full blur-3xl" />
-        </div>
-
+      <section className="relative pt-32 pb-16 md:pt-40 md:pb-20 bg-noir-50 overflow-hidden">
         <div className="container-wide relative">
           <div className="max-w-3xl">
             {/* Badge */}
-            <div
-              className={`flex items-center gap-3 mb-6 transition-all duration-1000 ${
+            <span
+              className={`inline-block px-4 py-1.5 bg-accent-100 text-accent-700 text-xs font-semibold uppercase tracking-[0.15em] rounded-full mb-6 transition-all duration-700 ${
                 heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
             >
-              <div className="w-12 h-px bg-accent-500" />
-              <span className="text-sm font-medium text-accent-600 uppercase tracking-[0.2em]">
-                {t('hero.badge')}
-              </span>
-            </div>
+              {t('hero.badge')}
+            </span>
 
             <h1
-              className={`text-display-lg md:text-display-xl font-display font-medium text-noir-900 mb-6 transition-all duration-1000 ${
+              className={`text-display-lg md:text-display-xl font-display font-bold text-noir-900 mb-6 transition-all duration-700 ${
                 heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
               }`}
-              style={{ transitionDelay: '200ms' }}
+              style={{ transitionDelay: '150ms' }}
             >
               {t('hero.titlePrefix')}{' '}
-              <span className="text-accent-600 italic">{t('hero.titleHighlight')}</span>
+              <span className="text-accent-600">{t('hero.titleHighlight')}</span>
             </h1>
 
             <p
-              className={`text-xl text-noir-500 leading-relaxed transition-all duration-1000 ${
+              className={`text-lg md:text-xl text-noir-500 leading-relaxed transition-all duration-700 ${
                 heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
-              style={{ transitionDelay: '400ms' }}
+              style={{ transitionDelay: '300ms' }}
             >
               {t('hero.description')}
             </p>
@@ -198,48 +189,48 @@ export default function DienstenPage() {
       {/* Services Grid - Premium cards */}
       <section className="py-20 md:py-28 bg-white">
         <div className="container-wide">
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
             {services.map((service, index) => (
               <AnimatedSection key={index} delay={index * 100}>
                 <Link href={service.href} className="group block">
-                  <div className="relative bg-ivory-100 overflow-hidden h-full">
+                  <div className="relative bg-white rounded-2xl border border-noir-100 overflow-hidden h-full hover:border-noir-200 hover:shadow-soft transition-all duration-300">
                     {/* Image section */}
                     <div className="relative aspect-[4/3] overflow-hidden">
                       <Image
                         src={service.image}
                         alt={service.title}
                         fill
-                        className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-noir-900/80 via-noir-900/20 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-noir-900/60 via-noir-900/10 to-transparent" />
 
                       {/* Tag */}
                       {service.tag && (
-                        <span className="absolute top-6 left-6 px-4 py-2 bg-accent-500 text-white text-xs font-medium uppercase tracking-wider">
+                        <span className="absolute top-5 left-5 px-3 py-1.5 bg-accent-600 text-white text-xs font-semibold uppercase tracking-wider rounded-full">
                           {service.tag}
                         </span>
                       )}
 
                       {/* Icon */}
-                      <div className="absolute bottom-6 right-6 w-14 h-14 bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center group-hover:bg-accent-500 transition-colors duration-500">
-                        <service.icon className="h-6 w-6 text-white" />
+                      <div className="absolute bottom-5 right-5 w-12 h-12 bg-white/10 backdrop-blur-md rounded-xl border border-white/20 flex items-center justify-center group-hover:bg-accent-600 transition-colors duration-300">
+                        <service.icon className="h-5 w-5 text-white" />
                       </div>
                     </div>
 
                     {/* Content */}
-                    <div className="p-8">
-                      <span className="text-xs text-accent-600 uppercase tracking-wider mb-2 block">
+                    <div className="p-6 md:p-8">
+                      <span className="text-xs text-accent-600 font-semibold uppercase tracking-wider mb-2 block">
                         {service.subtitle}
                       </span>
-                      <h2 className="text-2xl font-display font-medium text-noir-900 mb-4 group-hover:text-accent-600 transition-colors">
+                      <h2 className="text-xl md:text-2xl font-display font-bold text-noir-900 mb-3 group-hover:text-accent-600 transition-colors">
                         {service.title}
                       </h2>
-                      <p className="text-noir-500 mb-6 line-clamp-2">
+                      <p className="text-noir-500 mb-5 line-clamp-2">
                         {service.description}
                       </p>
 
                       {/* Features preview */}
-                      <ul className="space-y-2 mb-6">
+                      <ul className="space-y-2 mb-5">
                         {service.features.slice(0, 3).map((feature, idx) => (
                           <li key={idx} className="flex items-center gap-2 text-sm text-noir-600">
                             <CheckCircle2 className="h-4 w-4 text-accent-500 flex-shrink-0" />
@@ -249,8 +240,8 @@ export default function DienstenPage() {
                       </ul>
 
                       {/* CTA */}
-                      <div className="flex items-center gap-2 text-accent-600 font-medium group-hover:gap-4 transition-all duration-300">
-                        <span className="text-sm uppercase tracking-wider">{tCommon('learnMore')}</span>
+                      <div className="flex items-center gap-2 text-accent-600 font-semibold group-hover:gap-3 transition-all duration-300">
+                        <span className="text-sm">{tCommon('learnMore')}</span>
                         <ArrowRight className="h-4 w-4" />
                       </div>
                     </div>
@@ -331,37 +322,30 @@ export default function DienstenPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 md:py-28 bg-accent-500 relative overflow-hidden">
-        {/* Decorative circles */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-white/10 rounded-full" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] border border-white/10 rounded-full" />
-
+      <section className="section-padding bg-noir-900 relative overflow-hidden">
         <div className="container-wide relative">
           <AnimatedSection>
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-display-lg font-display font-medium text-white mb-6">
+              <h2 className="text-display-lg font-display font-bold text-white mb-6">
                 {t('cta.title')}
               </h2>
-              <p className="text-xl text-white/80 mb-10">
+              <p className="text-lg md:text-xl text-noir-400 mb-10 leading-relaxed">
                 {t('cta.description')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   href="/offerte"
-                  className="group relative inline-flex items-center justify-center gap-3 px-10 py-5 bg-white text-accent-700 font-medium overflow-hidden transition-all duration-500 hover:shadow-xl"
+                  className="group inline-flex items-center justify-center gap-3 px-10 py-5 bg-accent-600 text-white font-semibold rounded-full hover:bg-accent-500 transition-all duration-300"
                 >
-                  <span className="absolute inset-0 bg-noir-900 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-                  <span className="relative z-10 uppercase tracking-wider text-sm group-hover:text-white transition-colors">
-                    {t('cta.buttonPrimary')}
-                  </span>
-                  <ArrowUpRight className="relative z-10 h-5 w-5 group-hover:text-white transition-colors" />
+                  <span>{t('cta.buttonPrimary')}</span>
+                  <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </Link>
                 <Link
                   href="/afspraak"
-                  className="inline-flex items-center justify-center gap-3 px-10 py-5 border-2 border-white/30 text-white font-medium hover:bg-white/10 transition-all duration-300"
+                  className="group inline-flex items-center justify-center gap-3 px-10 py-5 border-2 border-noir-700 text-white font-semibold rounded-full hover:bg-white hover:text-noir-900 hover:border-white transition-all duration-300"
                 >
-                  <span className="uppercase tracking-wider text-sm">{t('cta.buttonSecondary')}</span>
-                  <ArrowRight className="h-5 w-5" />
+                  <span>{t('cta.buttonSecondary')}</span>
+                  <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </Link>
               </div>
             </div>

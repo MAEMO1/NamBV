@@ -44,7 +44,13 @@
       "subtitle": "Artisanat avec respect pour chaque détail. Du concept à la livraison, nous réalisons la maison de vos rêves.",
       "ctaPrimary": "Demander un devis gratuit",
       "ctaSecondary": "ou découvrez nos réalisations",
-      "scroll": "Défiler"
+      "scroll": "Défiler",
+      "stats": {
+        "years": "Années d'expérience",
+        "projects": "Projets réalisés",
+        "satisfaction": "Satisfaction client",
+        "certified": "Certifié"
+      }
     },
     "whyUs": {
       "badge": "Pourquoi NAM Construction",
@@ -316,15 +322,11 @@
     "ctaPrimary": "Demander un devis",
     "ctaSecondary": "Consultation gratuite",
     "categories": {
-      "Alle": "Tous",
-      "Totaalrenovatie": "Rénovation complète",
-      "Renovatie & Afwerking": "Rénovation & Finitions",
       "Badkamerrenovatie": "Rénovation de salle de bain",
       "Keukenrenovatie": "Rénovation de cuisine",
-      "Renovatie & Technieken": "Rénovation & Techniques",
-      "Renovatie": "Rénovation",
-      "Afwerking": "Finitions",
-      "Ruwbouw": "Gros œuvre"
+      "Dakwerken": "Toiture",
+      "Elektriciteit": "Électricité",
+      "Sanitair": "Plomberie"
     }
   },
   "contactPage": {

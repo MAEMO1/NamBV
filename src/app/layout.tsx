@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { dmSans, playfair } from "@/lib/fonts";
+import { dmSans, plusJakarta } from "@/lib/fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -24,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html className={`${dmSans.variable} ${playfair.variable}`}>
+    <html className={`${dmSans.variable} ${plusJakarta.variable}`}>
       <body className="font-sans">
         {children}
       </body>

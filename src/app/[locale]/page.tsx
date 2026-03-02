@@ -1,8 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import { ArrowRight, ArrowUpRight, MapPin, Phone, ChevronDown } from 'lucide-react';
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { ArrowRight, ArrowUpRight, MapPin, Phone } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { trackCTAClick, trackClickToCall, CTALocation } from '@/lib/analytics';
@@ -49,43 +49,9 @@ function TrackedCTA({
 
 // Static data (non-translatable parts like images)
 const serviceImages = homepageImages.services;
-
 const projectImagesArr = homepageImages.projects;
 
-// Text reveal animation - character by character (Bouw-ID inspired)
-function AnimatedText({ text, className = '', delay = 0 }: { text: string; className?: string; delay?: number }) {
-  const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef<HTMLSpanElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setIsVisible(true); },
-      { threshold: 0.1 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <span ref={ref} className={`inline-block ${className}`}>
-      {text.split('').map((char, index) => (
-        <span
-          key={index}
-          className="inline-block transition-all duration-500"
-          style={{
-            opacity: isVisible ? 1 : 0,
-            transform: isVisible ? 'translateY(0) rotateX(0)' : 'translateY(100%) rotateX(-90deg)',
-            transitionDelay: `${delay + index * 30}ms`,
-          }}
-        >
-          {char === ' ' ? '\u00A0' : char}
-        </span>
-      ))}
-    </span>
-  );
-}
-
-// Scroll animation hook with parallax
+// Scroll animation hook
 function useScrollAnimation(options = { threshold: 0.1, rootMargin: '0px' }) {
   const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -100,19 +66,6 @@ function useScrollAnimation(options = { threshold: 0.1, rootMargin: '0px' }) {
   }, [options.threshold, options.rootMargin]);
 
   return { ref, isVisible };
-}
-
-// Multi-layer parallax hook
-function useParallax() {
-  const [scrollY, setScrollY] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  return scrollY;
 }
 
 // Animated section with stagger support
@@ -130,16 +83,16 @@ function AnimatedSection({
   const { ref, isVisible } = useScrollAnimation();
 
   const transforms = {
-    up: 'translateY(80px)',
-    down: 'translateY(-80px)',
-    left: 'translateX(80px)',
-    right: 'translateX(-80px)',
+    up: 'translateY(60px)',
+    down: 'translateY(-60px)',
+    left: 'translateX(60px)',
+    right: 'translateX(-60px)',
   };
 
   return (
     <div
       ref={ref}
-      className={`transition-all duration-1000 ease-out ${className}`}
+      className={`transition-all duration-700 ease-out ${className}`}
       style={{
         opacity: isVisible ? 1 : 0,
         transform: isVisible ? 'translate(0)' : transforms[direction],
@@ -151,38 +104,8 @@ function AnimatedSection({
   );
 }
 
-// SVG Line draw animation (Bouw-ID inspired)
-function AnimatedLine({ className = '' }: { className?: string }) {
-  const { ref, isVisible } = useScrollAnimation();
-
-  return (
-    <svg
-      ref={ref as any}
-      className={className}
-      viewBox="0 0 2 100"
-      preserveAspectRatio="none"
-    >
-      <line
-        x1="1"
-        y1="0"
-        x2="1"
-        y2="100"
-        stroke="currentColor"
-        strokeWidth="2"
-        className="transition-all duration-1500"
-        style={{
-          strokeDasharray: 100,
-          strokeDashoffset: isVisible ? 0 : 100,
-        }}
-      />
-    </svg>
-  );
-}
-
 export default function HomePage() {
   const [heroLoaded, setHeroLoaded] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const scrollY = useParallax();
   const t = useTranslations('home');
   const tCommon = useTranslations('common');
 
@@ -251,191 +174,161 @@ export default function HomePage() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Mouse parallax for hero
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    const { clientX, clientY } = e;
-    const { innerWidth, innerHeight } = window;
-    setMousePosition({
-      x: (clientX - innerWidth / 2) / 50,
-      y: (clientY - innerHeight / 2) / 50,
-    });
-  }, []);
-
   return (
     <>
-      {/* ===== HERO SECTION - Cinematic, full-screen (Beneens + Bouw-ID style) ===== */}
-      <section
-        className="relative min-h-screen flex items-center overflow-hidden"
-        onMouseMove={handleMouseMove}
-      >
-        {/* Background layers with parallax */}
+      {/* ===== HERO SECTION - Clean, full-screen ===== */}
+      <section className="relative min-h-screen flex items-center overflow-hidden">
+        {/* Background image */}
         <div className="absolute inset-0">
-          {/* Main background image */}
-          <div
-            className="absolute inset-0 scale-110"
-            style={{ transform: `scale(1.1) translateY(${scrollY * 0.15}px)` }}
-          >
-            <Image
-              src={homepageImages.hero}
-              alt="Gerenoveerde gevel Meulemanstraat"
-              fill
-              className="object-cover"
-              priority
-            />
-          </div>
-
-          {/* Dark cinematic overlay (Beneens style) */}
-          <div className="absolute inset-0 bg-noir-950/60" />
-          <div className="absolute inset-0 bg-gradient-to-r from-noir-950/80 via-noir-950/40 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-noir-950/90 via-transparent to-noir-950/30" />
+          <Image
+            src={homepageImages.hero}
+            alt="Gerenoveerde gevel Meulemanstraat"
+            fill
+            className="object-cover"
+            priority
+          />
+          {/* Single clean overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-noir-950/80 via-noir-950/50 to-noir-950/30" />
         </div>
-
-        {/* Animated geometric shapes (Be Factory style) */}
-        <div
-          className="absolute top-1/4 right-1/4 w-96 h-96 border border-white/5 rounded-full transition-transform duration-1000"
-          style={{ transform: `translate(${mousePosition.x}px, ${mousePosition.y}px)` }}
-        />
-        <div
-          className="absolute bottom-1/3 right-1/3 w-64 h-64 border border-accent-500/20 rounded-full transition-transform duration-1000"
-          style={{ transform: `translate(${mousePosition.x * -1}px, ${mousePosition.y * -1}px)` }}
-        />
 
         {/* Content */}
-        <div className="container-wide relative z-10 pt-32 pb-24">
-          <div className="grid lg:grid-cols-12 gap-8 items-center min-h-[70vh]">
-            {/* Left content */}
-            <div className="lg:col-span-7">
-              {/* Main headline - Character animation (Bouw-ID inspired) */}
-              <h1 className="mb-8">
-                <span
-                  className={`block text-[clamp(3.5rem,10vw,7rem)] font-display font-medium text-white leading-[0.9] tracking-[-0.03em] transition-all duration-1000 ${
-                    heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16'
-                  }`}
-                  style={{ transitionDelay: '500ms' }}
-                >
-                  {t('hero.title1')}
-                </span>
-                <span
-                  className={`block text-[clamp(3.5rem,10vw,7rem)] font-display font-medium leading-[0.9] tracking-[-0.03em] transition-all duration-1000 ${
-                    heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16'
-                  }`}
-                  style={{ transitionDelay: '700ms' }}
-                >
-                  <span className="text-accent-400">{t('hero.title2')}</span>
-                </span>
-              </h1>
-
-              {/* Subtitle with reveal */}
-              <p
-                className={`text-xl md:text-2xl text-white/70 mb-12 max-w-lg leading-relaxed transition-all duration-1000 ${
-                  heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        <div className="container-wide relative z-10 pt-32 pb-32">
+          <div className="max-w-3xl">
+            {/* Main headline */}
+            <h1 className="mb-8">
+              <span
+                className={`block text-[clamp(3rem,8vw,5.5rem)] font-display font-bold text-white leading-[1.05] tracking-[-0.02em] transition-all duration-700 ${
+                  heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
                 }`}
-                style={{ transitionDelay: '900ms' }}
+                style={{ transitionDelay: '300ms' }}
               >
-                {t('hero.subtitle')}
-              </p>
-
-              {/* CTA Buttons with complex hover (Beneens style) */}
-              <div
-                className={`flex flex-wrap gap-4 transition-all duration-1000 ${
-                  heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                {t('hero.title1')}
+              </span>
+              <span
+                className={`block text-[clamp(3rem,8vw,5.5rem)] font-display font-bold leading-[1.05] tracking-[-0.02em] transition-all duration-700 ${
+                  heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
                 }`}
-                style={{ transitionDelay: '1100ms' }}
+                style={{ transitionDelay: '450ms' }}
               >
-                {/* Primary CTA with sweep animation - SINGLE FOCUS */}
-                <TrackedCTA
-                  href="/offerte"
-                  location="hero"
-                  label={t('hero.ctaPrimary')}
-                  className="group relative inline-flex items-center gap-3 px-10 py-5 bg-accent-600 text-white font-medium overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-accent-500/30"
-                >
-                  {/* Sweep effect */}
-                  <span className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-full transition-transform duration-700 skew-x-12" />
-                  <span className="relative z-10 uppercase tracking-wider text-sm">{t('hero.ctaPrimary')}</span>
-                  <ArrowRight className="relative z-10 h-5 w-5 transition-transform duration-300 group-hover:translate-x-2" />
-                </TrackedCTA>
+                <span className="text-accent-400">{t('hero.title2')}</span>
+              </span>
+            </h1>
 
-                {/* Secondary - subtle text link, not competing conversion */}
-                <TrackedCTA
-                  href="/projecten"
-                  location="hero"
-                  label={t('hero.ctaSecondary')}
-                  className="group inline-flex items-center gap-2 px-4 py-5 text-white/70 hover:text-white font-medium transition-colors duration-300"
-                >
-                  <span className="text-sm">{t('hero.ctaSecondary')}</span>
-                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </TrackedCTA>
-              </div>
+            {/* Subtitle */}
+            <p
+              className={`text-lg md:text-xl text-white/70 mb-10 max-w-lg leading-relaxed transition-all duration-700 ${
+                heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
+              style={{ transitionDelay: '600ms' }}
+            >
+              {t('hero.subtitle')}
+            </p>
+
+            {/* CTA Buttons */}
+            <div
+              className={`flex flex-wrap gap-4 transition-all duration-700 ${
+                heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
+              style={{ transitionDelay: '750ms' }}
+            >
+              <TrackedCTA
+                href="/offerte"
+                location="hero"
+                label={t('hero.ctaPrimary')}
+                className="group inline-flex items-center gap-3 px-8 py-4 bg-accent-600 text-white font-semibold rounded-full hover:bg-accent-500 transition-all duration-300"
+              >
+                <span>{t('hero.ctaPrimary')}</span>
+                <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </TrackedCTA>
+
+              <TrackedCTA
+                href="/projecten"
+                location="hero"
+                label={t('hero.ctaSecondary')}
+                className="group inline-flex items-center gap-3 px-8 py-4 border-2 border-white/30 text-white font-semibold rounded-full hover:bg-white hover:text-noir-900 transition-all duration-300"
+              >
+                <span>{t('hero.ctaSecondary')}</span>
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </TrackedCTA>
             </div>
-
           </div>
         </div>
 
-        {/* Scroll indicator */}
+        {/* Stats bar */}
         <div
-          className={`absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 transition-all duration-1000 ${
-            heroLoaded ? 'opacity-100' : 'opacity-0'
+          className={`absolute bottom-0 left-0 right-0 z-10 bg-noir-950/60 backdrop-blur-md border-t border-white/10 transition-all duration-700 ${
+            heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
-          style={{ transitionDelay: '1500ms' }}
+          style={{ transitionDelay: '900ms' }}
         >
-          <span className="text-xs text-white/50 uppercase tracking-[0.3em]">{t('hero.scroll')}</span>
-          <ChevronDown className="h-5 w-5 text-white/50 animate-bounce" />
+          <div className="container-wide py-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-12">
+              <div className="text-center">
+                <span className="block text-2xl md:text-3xl font-display font-bold text-white">10+</span>
+                <span className="text-xs md:text-sm text-white/50 uppercase tracking-wider">{t('hero.stats.years')}</span>
+              </div>
+              <div className="text-center">
+                <span className="block text-2xl md:text-3xl font-display font-bold text-white">50+</span>
+                <span className="text-xs md:text-sm text-white/50 uppercase tracking-wider">{t('hero.stats.projects')}</span>
+              </div>
+              <div className="text-center">
+                <span className="block text-2xl md:text-3xl font-display font-bold text-white">100%</span>
+                <span className="text-xs md:text-sm text-white/50 uppercase tracking-wider">{t('hero.stats.satisfaction')}</span>
+              </div>
+              <div className="text-center">
+                <span className="block text-2xl md:text-3xl font-display font-bold text-accent-400">&#10003;</span>
+                <span className="text-xs md:text-sm text-white/50 uppercase tracking-wider">{t('hero.stats.certified')}</span>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* ===== WHY US SECTION - Split layout with image ===== */}
-      <section className="py-32 bg-ivory-100 relative overflow-hidden">
+      <section className="section-padding bg-white relative overflow-hidden">
         <div className="container-wide">
-          <div className="grid lg:grid-cols-2 gap-20 items-center">
-            {/* Image side with decorative elements */}
+          <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
+            {/* Image side */}
             <AnimatedSection direction="left">
-              <div className="relative">
-                {/* Main image */}
-                <div className="relative aspect-[4/5] overflow-hidden">
-                  <Image
-                    src={homepageImages.whyUs}
-                    alt="Moderne keuken renovatie"
-                    fill
-                    className="object-cover"
-                  />
-                  {/* Overlay gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-noir-900/30 to-transparent" />
-                </div>
-
-                {/* Decorative frame */}
-                <div className="absolute -top-8 -left-8 w-full h-full border-2 border-accent-400 -z-10" />
+              <div className="relative aspect-[4/5] rounded-2xl overflow-hidden">
+                <Image
+                  src={homepageImages.whyUs}
+                  alt="Moderne keuken renovatie"
+                  fill
+                  className="object-cover"
+                />
               </div>
             </AnimatedSection>
 
             {/* Content side */}
-            <div className="lg:pl-8">
+            <div>
               <AnimatedSection>
-                <span className="inline-block px-4 py-2 bg-accent-100 text-accent-700 text-xs font-medium uppercase tracking-[0.2em] rounded-full mb-6">
+                <span className="inline-block px-4 py-1.5 bg-accent-100 text-accent-700 text-xs font-semibold uppercase tracking-[0.15em] rounded-full mb-6">
                   {t('whyUs.badge')}
                 </span>
-                <h2 className="text-display-lg font-display font-medium text-noir-900 mb-6">
+                <h2 className="text-display-lg font-display font-bold text-noir-900 mb-6">
                   {t('whyUs.titlePrefix')}{' '}
                   <span className="text-accent-600">{t('whyUs.titleHighlight')}</span>
                 </h2>
-                <p className="text-lg text-noir-500 mb-12">
+                <p className="text-lg text-noir-500 mb-10 leading-relaxed">
                   {t('whyUs.description')}
                 </p>
               </AnimatedSection>
 
               {/* Values list */}
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {kernwaarden.map((waarde, index) => (
                   <AnimatedSection key={waarde.id} delay={index * 100}>
-                    <div className="group flex gap-6 p-5 bg-white hover:bg-accent-50 border border-transparent hover:border-accent-200 transition-all duration-500 cursor-default">
+                    <div className="group flex gap-5 p-4 bg-noir-50 rounded-xl hover:bg-accent-50 transition-all duration-300 cursor-default">
                       {/* Number */}
-                      <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center bg-noir-100 group-hover:bg-accent-500 transition-colors duration-500">
-                        <span className="text-sm font-medium text-noir-500 group-hover:text-white transition-colors">
+                      <div className="flex-shrink-0 w-11 h-11 flex items-center justify-center bg-white rounded-lg group-hover:bg-accent-600 transition-colors duration-300">
+                        <span className="text-sm font-semibold text-noir-400 group-hover:text-white transition-colors">
                           {waarde.icon}
                         </span>
                       </div>
                       {/* Content */}
                       <div>
-                        <h3 className="font-medium text-noir-900 mb-1 group-hover:text-accent-700 transition-colors">
+                        <h3 className="font-semibold text-noir-900 mb-0.5 group-hover:text-accent-700 transition-colors">
                           {waarde.title}
                         </h3>
                         <p className="text-noir-500 text-sm">{waarde.description}</p>
@@ -446,16 +339,15 @@ export default function HomePage() {
               </div>
 
               {/* CTA */}
-              <AnimatedSection delay={600} className="mt-10">
+              <AnimatedSection delay={600} className="mt-8">
                 <TrackedCTA
                   href="/afspraak"
                   location="services"
                   label={t('whyUs.cta')}
-                  className="group relative inline-flex items-center gap-3 px-8 py-4 bg-accent-600 text-white font-medium overflow-hidden transition-all duration-500 hover:shadow-xl hover:shadow-accent-500/20"
+                  className="group inline-flex items-center gap-3 px-8 py-4 bg-accent-600 text-white font-semibold rounded-full hover:bg-accent-500 transition-all duration-300"
                 >
-                  <span className="absolute inset-0 bg-accent-700 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-                  <span className="relative z-10 uppercase tracking-wider text-sm">{t('whyUs.cta')}</span>
-                  <ArrowRight className="relative z-10 h-4 w-4 transition-transform duration-300 group-hover:translate-x-2" />
+                  <span>{t('whyUs.cta')}</span>
+                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </TrackedCTA>
               </AnimatedSection>
             </div>
@@ -463,110 +355,112 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ===== SERVICES SECTION - Premium cards with hover reveal ===== */}
-      <section className="py-32 bg-ivory-200 relative overflow-hidden">
-        {/* Background texture */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(107,127,84,0.05),transparent_50%)]" />
-
-        <div className="container-wide relative">
+      {/* ===== SERVICES SECTION - Split layout De Raedt style ===== */}
+      <section className="section-padding bg-noir-50 relative overflow-hidden">
+        <div className="container-wide">
           {/* Header */}
-          <AnimatedSection className="mb-20">
-            <div className="grid lg:grid-cols-2 gap-12 items-end">
+          <AnimatedSection className="mb-16">
+            <div className="grid lg:grid-cols-2 gap-8 items-end">
               <div>
-                <span className="inline-block px-4 py-2 bg-accent-100 text-accent-700 text-xs font-medium uppercase tracking-[0.2em] rounded-full mb-6">
+                <span className="inline-block px-4 py-1.5 bg-accent-100 text-accent-700 text-xs font-semibold uppercase tracking-[0.15em] rounded-full mb-6">
                   {t('services.badge')}
                 </span>
-                <h2 className="text-display-lg font-display font-medium text-noir-900">
+                <h2 className="text-display-lg font-display font-bold text-noir-900">
                   {t('services.titlePrefix')}{' '}
-                  <span className="text-accent-600 italic">{t('services.titleHighlight')}</span>{' '}
+                  <span className="text-accent-600">{t('services.titleHighlight')}</span>{' '}
                   {t('services.titleSuffix')}
                 </h2>
               </div>
-              <p className="text-lg text-noir-500 lg:pl-12">
+              <p className="text-lg text-noir-500 lg:pl-12 leading-relaxed">
                 {t('services.description')}
               </p>
             </div>
           </AnimatedSection>
 
-          {/* Services grid - Tall cards with overlay */}
-          <div className="grid md:grid-cols-3 gap-8">
-            {services.map((service, index) => (
-              <AnimatedSection key={service.title} delay={index * 150}>
-                <Link href={service.href} className="group block relative">
-                  {/* Card container */}
-                  <div className="relative aspect-[3/4] overflow-hidden">
-                    {/* Image with zoom */}
-                    <Image
-                      src={service.image}
-                      alt={service.title}
-                      fill
-                      className="object-cover transition-transform duration-1000 group-hover:scale-110"
-                    />
+          {/* Services — split layout */}
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
+            {/* Left: large image */}
+            <AnimatedSection direction="left">
+              <div className="relative aspect-[4/5] rounded-2xl overflow-hidden">
+                <Image
+                  src={serviceImages[0]}
+                  alt={services[0].title}
+                  fill
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-noir-950/70 via-transparent to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-8">
+                  <span className="inline-block px-3 py-1 bg-accent-600 text-white text-xs font-semibold uppercase tracking-wider rounded-full mb-3">
+                    {t('services.badge')}
+                  </span>
+                  <h3 className="text-2xl md:text-3xl font-display font-bold text-white">
+                    {t('services.titlePrefix')} {t('services.titleHighlight')}
+                  </h3>
+                </div>
+              </div>
+            </AnimatedSection>
 
-                    {/* Gradient overlay - stronger on hover */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-noir-950 via-noir-950/50 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-500" />
-
-                    {/* Content overlay */}
-                    <div className="absolute inset-0 p-8 flex flex-col justify-end">
-                      {/* Category tag */}
-                      <span className="inline-block self-start px-3 py-1 bg-accent-500 text-white text-xs uppercase tracking-wider mb-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+            {/* Right: services list with separator lines */}
+            <div className="flex flex-col justify-center">
+              {services.map((service, index) => (
+                <AnimatedSection key={service.title} delay={index * 100}>
+                  <Link
+                    href={service.href}
+                    className="group flex items-center justify-between py-6 border-b border-noir-200 hover:border-accent-400 transition-colors duration-300"
+                  >
+                    <div className="flex-1">
+                      <span className="text-xs text-accent-600 font-semibold uppercase tracking-wider mb-1 block">
                         {service.subtitle}
                       </span>
-
-                      {/* Title */}
-                      <h3 className="text-3xl font-display font-medium text-white mb-3 transition-transform duration-500 group-hover:-translate-y-2">
+                      <h3 className="text-xl md:text-2xl font-display font-bold text-noir-900 group-hover:text-accent-600 transition-colors duration-300 mb-1">
                         {service.title}
                       </h3>
-
-                      {/* Description - hidden by default */}
-                      <p className="text-white/70 mb-6 max-h-0 overflow-hidden group-hover:max-h-24 transition-all duration-500">
+                      <p className="text-noir-500 text-sm max-w-md">
                         {service.description}
                       </p>
-
-                      {/* CTA link */}
-                      <div className="flex items-center gap-2 text-accent-400 font-medium translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-100">
-                        <span className="text-sm uppercase tracking-wider">{tCommon('learnMore')}</span>
-                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-2" />
-                      </div>
                     </div>
+                    <div className="flex-shrink-0 ml-6 w-10 h-10 flex items-center justify-center rounded-full border border-noir-200 group-hover:bg-accent-600 group-hover:border-accent-600 transition-all duration-300">
+                      <ArrowUpRight className="h-4 w-4 text-noir-400 group-hover:text-white transition-colors duration-300" />
+                    </div>
+                  </Link>
+                </AnimatedSection>
+              ))}
 
-                    {/* Decorative corner */}
-                    <div className="absolute top-0 right-0 w-24 h-24 border-t-2 border-r-2 border-accent-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500 m-4" />
-                  </div>
+              {/* View all link */}
+              <AnimatedSection delay={400} className="mt-8">
+                <Link
+                  href="/diensten"
+                  className="group inline-flex items-center gap-2 text-sm font-semibold text-accent-600 hover:text-accent-700 transition-colors"
+                >
+                  <span className="uppercase tracking-wider">{t('services.viewAll')}</span>
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </AnimatedSection>
-            ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ===== PROJECTS SECTION - Dark background, editorial grid ===== */}
-      <section className="py-32 bg-noir-900 relative overflow-hidden">
-        {/* Background pattern */}
-        <div className="absolute inset-0">
-          <div className="absolute top-0 left-1/4 w-px h-full bg-white/5" />
-          <div className="absolute top-0 left-2/4 w-px h-full bg-white/5" />
-          <div className="absolute top-0 left-3/4 w-px h-full bg-white/5" />
-        </div>
-
-        <div className="container-wide relative">
+      {/* ===== PROJECTS SECTION - Light background, editorial grid ===== */}
+      <section className="section-padding bg-white relative overflow-hidden">
+        <div className="container-wide">
           {/* Header */}
-          <AnimatedSection className="mb-20">
+          <AnimatedSection className="mb-16">
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
               <div>
-                <span className="inline-block px-4 py-2 bg-white/10 text-accent-400 text-xs font-medium uppercase tracking-[0.2em] rounded-full mb-6">
+                <span className="inline-block px-4 py-1.5 bg-accent-100 text-accent-700 text-xs font-semibold uppercase tracking-[0.15em] rounded-full mb-6">
                   {t('projects.badge')}
                 </span>
-                <h2 className="text-display-lg font-display font-medium text-white">
+                <h2 className="text-display-lg font-display font-bold text-noir-900">
                   {t('projects.titlePrefix')}{' '}
-                  <span className="text-accent-400 italic">{t('projects.titleHighlight')}</span>
+                  <span className="text-accent-600">{t('projects.titleHighlight')}</span>
                 </h2>
               </div>
               <Link
                 href="/projecten"
-                className="group inline-flex items-center gap-3 text-white/60 hover:text-white transition-colors"
+                className="group inline-flex items-center gap-3 text-noir-500 hover:text-accent-600 transition-colors"
               >
-                <span className="text-sm uppercase tracking-wider border-b border-current pb-1">
+                <span className="text-sm font-semibold uppercase tracking-wider">
                   {t('projects.viewAll')}
                 </span>
                 <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
@@ -575,65 +469,62 @@ export default function HomePage() {
           </AnimatedSection>
 
           {/* Projects grid - Editorial layout */}
-          <div className="grid md:grid-cols-12 gap-8">
+          <div className="grid md:grid-cols-12 gap-6 lg:gap-8">
             {/* Large featured project */}
             <AnimatedSection className="md:col-span-7">
-              <Link href={{ pathname: '/projecten/[slug]', params: { slug: projects[0].slug } }} className="group block relative">
-                <div className="relative aspect-[4/3] overflow-hidden">
+              <Link href={{ pathname: '/projecten/[slug]', params: { slug: projects[0].slug } }} className="group block">
+                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden">
                   <Image
                     src={projects[0].image}
                     alt={projects[0].title}
                     fill
-                    className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-noir-950/90 via-noir-950/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-noir-950/80 via-noir-950/20 to-transparent" />
 
                   {/* Content */}
-                  <div className="absolute inset-0 p-8 flex flex-col justify-end">
-                    <span className="inline-block self-start px-3 py-1 bg-accent-500 text-white text-xs uppercase tracking-wider mb-4">
+                  <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end">
+                    <span className="inline-block self-start px-3 py-1 bg-accent-600 text-white text-xs font-semibold uppercase tracking-wider rounded-full mb-3">
                       {projects[0].category}
                     </span>
-                    <h3 className="text-3xl md:text-4xl font-display font-medium text-white mb-3">
+                    <h3 className="text-2xl md:text-3xl font-display font-bold text-white mb-2">
                       {projects[0].title}
                     </h3>
                     <div className="flex items-center gap-4 text-white/60 text-sm">
-                      <div className="flex items-center gap-2">
-                        <MapPin className="h-4 w-4" />
+                      <div className="flex items-center gap-1.5">
+                        <MapPin className="h-3.5 w-3.5" />
                         {projects[0].location}
                       </div>
-                      <span>|</span>
+                      <span className="text-white/30">|</span>
                       <span>{projects[0].year}</span>
                     </div>
                   </div>
-
-                  {/* Hover overlay */}
-                  <div className="absolute inset-0 border-2 border-accent-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500 m-4 pointer-events-none" />
                 </div>
               </Link>
             </AnimatedSection>
 
             {/* Smaller projects */}
-            <div className="md:col-span-5 grid gap-8">
+            <div className="md:col-span-5 grid gap-6 lg:gap-8">
               {projects.slice(1).map((project, index) => (
                 <AnimatedSection key={project.title} delay={(index + 1) * 150}>
-                  <Link href={{ pathname: '/projecten/[slug]', params: { slug: project.slug } }} className="group block relative">
-                    <div className="relative aspect-[3/2] overflow-hidden">
+                  <Link href={{ pathname: '/projecten/[slug]', params: { slug: project.slug } }} className="group block">
+                    <div className="relative aspect-[3/2] rounded-2xl overflow-hidden">
                       <Image
                         src={project.image}
                         alt={project.title}
                         fill
                         className="object-cover transition-transform duration-700 group-hover:scale-105"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-noir-950/80 via-noir-950/20 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-noir-950/70 via-noir-950/10 to-transparent" />
 
-                      <div className="absolute inset-0 p-6 flex flex-col justify-end">
-                        <span className="text-xs text-accent-400 uppercase tracking-wider mb-2">
+                      <div className="absolute inset-0 p-5 md:p-6 flex flex-col justify-end">
+                        <span className="inline-block self-start px-2.5 py-0.5 bg-accent-600 text-white text-xs font-semibold uppercase tracking-wider rounded-full mb-2">
                           {project.category}
                         </span>
-                        <h3 className="text-xl font-display font-medium text-white mb-1">
+                        <h3 className="text-lg md:text-xl font-display font-bold text-white mb-1">
                           {project.title}
                         </h3>
-                        <div className="flex items-center gap-2 text-white/50 text-sm">
+                        <div className="flex items-center gap-1.5 text-white/50 text-sm">
                           <MapPin className="h-3 w-3" />
                           {project.location}
                         </div>
@@ -647,54 +538,37 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ===== CTA SECTION - Bold, full-width, SINGLE FOCUS ===== */}
-      <section className="relative py-32 overflow-hidden">
-        {/* Background image with overlay */}
-        <div className="absolute inset-0">
-          <Image
-            src={homepageImages.ctaBackground}
-            alt="Modern gerenoveerd interieur"
-            fill
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-accent-600/90" />
-        </div>
-
+      {/* ===== CTA SECTION - Solid navy background ===== */}
+      <section className="section-padding bg-noir-900 relative overflow-hidden">
         <div className="container-wide relative">
           <AnimatedSection>
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-display-lg md:text-display-xl font-display font-medium text-white mb-6">
+              <h2 className="text-display-lg md:text-display-xl font-display font-bold text-white mb-6">
                 {t('cta.title')}
               </h2>
-              <p className="text-xl text-white/80 mb-12">
+              <p className="text-lg md:text-xl text-noir-400 mb-10 leading-relaxed">
                 {t('cta.description')}
               </p>
 
-              {/* Single Primary CTA - No competing options */}
-              <TrackedCTA
-                href="/offerte"
-                location="cta_banner"
-                label={t('cta.button')}
-                className="group relative inline-flex items-center justify-center gap-3 px-12 py-6 bg-white text-accent-700 font-medium overflow-hidden transition-all duration-500 hover:shadow-2xl"
-              >
-                <span className="absolute inset-0 bg-noir-900 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-                <span className="relative z-10 uppercase tracking-wider group-hover:text-white transition-colors duration-500">{t('cta.button')}</span>
-                <ArrowUpRight className="relative z-10 h-5 w-5 transition-all duration-300 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </TrackedCTA>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <TrackedCTA
+                  href="/offerte"
+                  location="cta_banner"
+                  label={t('cta.button')}
+                  className="group inline-flex items-center justify-center gap-3 px-10 py-5 bg-accent-600 text-white font-semibold rounded-full hover:bg-accent-500 transition-all duration-300"
+                >
+                  <span>{t('cta.button')}</span>
+                  <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </TrackedCTA>
 
-              {/* Alternative contact - NOT competing conversion, just contact option */}
-              <div className="mt-12 pt-8 border-t border-white/20">
-                <p className="text-white/60 text-sm mb-4">{t('cta.phoneLabel')}</p>
                 <TrackedCTA
                   href="tel:+32493812789"
                   location="cta_banner"
                   label={tCommon('callUs')}
-                  className="inline-flex items-center gap-3 text-white hover:text-accent-200 transition-colors text-lg group"
+                  className="group inline-flex items-center justify-center gap-3 px-10 py-5 border-2 border-noir-700 text-white font-semibold rounded-full hover:bg-white hover:text-noir-900 hover:border-white transition-all duration-300"
                 >
-                  <div className="w-12 h-12 rounded-full border-2 border-white/30 flex items-center justify-center group-hover:border-accent-300 group-hover:bg-white/10 transition-all">
-                    <Phone className="h-5 w-5" />
-                  </div>
-                  <span className="font-display">+32 493 81 27 89</span>
+                  <Phone className="h-4 w-4" />
+                  <span>+32 493 81 27 89</span>
                 </TrackedCTA>
               </div>
             </div>

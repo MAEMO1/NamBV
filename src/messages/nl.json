@@ -44,7 +44,13 @@
       "subtitle": "Vakmanschap met respect voor elk detail. Van concept tot oplevering, wij realiseren uw droomwoning.",
       "ctaPrimary": "Gratis offerte aanvragen",
       "ctaSecondary": "of bekijk ons werk",
-      "scroll": "Scroll"
+      "scroll": "Scroll",
+      "stats": {
+        "years": "Jaar ervaring",
+        "projects": "Projecten afgerond",
+        "satisfaction": "Klanttevredenheid",
+        "certified": "Gecertificeerd"
+      }
     },
     "whyUs": {
       "badge": "Waarom NAM Construction",
@@ -316,15 +322,11 @@
     "ctaPrimary": "Offerte aanvragen",
     "ctaSecondary": "Gratis adviesgesprek",
     "categories": {
-      "Alle": "Alle",
-      "Totaalrenovatie": "Totaalrenovatie",
-      "Renovatie & Afwerking": "Renovatie & Afwerking",
       "Badkamerrenovatie": "Badkamerrenovatie",
       "Keukenrenovatie": "Keukenrenovatie",
-      "Renovatie & Technieken": "Renovatie & Technieken",
-      "Renovatie": "Renovatie",
-      "Afwerking": "Afwerking",
-      "Ruwbouw": "Ruwbouw"
+      "Dakwerken": "Dakwerken",
+      "Elektriciteit": "Elektriciteit",
+      "Sanitair": "Sanitair"
     }
   },
   "contactPage": {

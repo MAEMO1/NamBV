@@ -298,17 +298,16 @@ export default function OfferteFormulier() {
   // Success state
   if (isSubmitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-noir-950 via-noir-900 to-accent-900 flex items-center justify-center p-6">
+      <div className="min-h-screen bg-noir-900 flex items-center justify-center p-6">
         <div className="max-w-lg w-full text-center">
           {/* Animated success icon */}
           <div className="relative mb-10">
-            <div className="w-24 h-24 bg-accent-500 rounded-2xl flex items-center justify-center mx-auto animate-scale-in shadow-glow">
+            <div className="w-24 h-24 bg-accent-600 rounded-full flex items-center justify-center mx-auto animate-scale-in shadow-glow">
               <CheckCircle2 className="h-12 w-12 text-white" />
             </div>
-            <div className="absolute inset-0 bg-accent-500/30 rounded-2xl blur-xl animate-pulse" />
           </div>
 
-          <h1 className="text-3xl md:text-4xl font-display font-medium text-white mb-4 animate-fade-up">
+          <h1 className="text-3xl md:text-4xl font-display font-bold text-white mb-4 animate-fade-up">
             {t('successTitle')}
           </h1>
           <p className="text-lg text-white/70 mb-10 animate-fade-up" style={{ animationDelay: '100ms' }}>
@@ -316,15 +315,15 @@ export default function OfferteFormulier() {
           </p>
 
           {referenceNumber && (
-            <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-6 mb-10 animate-fade-up" style={{ animationDelay: '200ms' }}>
+            <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 mb-10 animate-fade-up" style={{ animationDelay: '200ms' }}>
               <span className="text-sm text-white/50 uppercase tracking-wider">{t('referenceLabel')}</span>
-              <p className="text-2xl text-white font-display font-medium mt-2">{referenceNumber}</p>
+              <p className="text-2xl text-white font-display font-bold mt-2">{referenceNumber}</p>
             </div>
           )}
 
           <Link
             href="/"
-            className="inline-flex items-center gap-3 px-8 py-4 bg-white text-noir-900 font-medium rounded-lg hover:bg-accent-100 transition-all duration-500 animate-fade-up"
+            className="inline-flex items-center gap-3 px-8 py-4 bg-white text-noir-900 font-semibold rounded-full hover:bg-accent-100 transition-all duration-500 animate-fade-up"
             style={{ animationDelay: '300ms' }}
           >
             <Home className="h-5 w-5" />
@@ -336,7 +335,7 @@ export default function OfferteFormulier() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-ivory-100 via-ivory-50 to-white">
+    <div className="min-h-screen bg-noir-50">
       {/* Header */}
       <header className="bg-noir-950 px-6 py-5 sticky top-0 z-50">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
@@ -348,7 +347,7 @@ export default function OfferteFormulier() {
             <a
               href="tel:+32493812789"
               onClick={() => trackClickToCall('+32493812789', 'header')}
-              className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg text-sm text-white hover:bg-white/20 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full text-sm text-white hover:bg-white/20 transition-colors"
             >
               <Phone className="h-4 w-4" />
               <span className="hidden sm:inline">+32 493 81 27 89</span>
@@ -367,9 +366,9 @@ export default function OfferteFormulier() {
                 className={`flex items-center gap-3 ${idx < stepLabels.length - 1 ? 'flex-1' : ''}`}
               >
                 <div
-                  className={`w-10 h-10 rounded-xl flex items-center justify-center text-sm font-medium transition-all duration-500 ${
+                  className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-500 ${
                     step > idx + 1
-                      ? 'bg-accent-500 text-white shadow-lg shadow-accent-500/30'
+                      ? 'bg-accent-600 text-white shadow-lg shadow-accent-600/30'
                       : step === idx + 1
                       ? 'bg-noir-900 text-white shadow-lg'
                       : 'bg-noir-100 text-noir-400'
@@ -377,7 +376,7 @@ export default function OfferteFormulier() {
                 >
                   {step > idx + 1 ? <Check className="h-5 w-5" /> : idx + 1}
                 </div>
-                <span className={`hidden sm:block text-sm font-medium transition-colors ${
+                <span className={`hidden sm:block text-sm font-semibold transition-colors ${
                   step === idx + 1 ? 'text-noir-900' : 'text-noir-400'
                 }`}>
                   {label}
@@ -414,7 +413,7 @@ export default function OfferteFormulier() {
                 <div className="w-10 h-10 bg-accent-100 rounded-xl flex items-center justify-center">
                   <Sparkles className="h-5 w-5 text-accent-600" />
                 </div>
-                <h1 className="text-2xl md:text-3xl font-display font-medium text-noir-900">
+                <h1 className="text-2xl md:text-3xl font-display font-bold text-noir-900">
                   {t('step1Title')}
                 </h1>
               </div>
@@ -468,7 +467,7 @@ export default function OfferteFormulier() {
                   <div className="w-10 h-10 bg-noir-100 rounded-xl flex items-center justify-center">
                     <Building2 className="h-5 w-5 text-noir-600" />
                   </div>
-                  <h2 className="text-lg font-display font-medium text-noir-900">
+                  <h2 className="text-lg font-display font-bold text-noir-900">
                     {t('propertyTypeTitle')}
                   </h2>
                 </div>
@@ -508,7 +507,7 @@ export default function OfferteFormulier() {
                 <div className="w-10 h-10 bg-accent-100 rounded-xl flex items-center justify-center">
                   <Layers className="h-5 w-5 text-accent-600" />
                 </div>
-                <h1 className="text-2xl md:text-3xl font-display font-medium text-noir-900">
+                <h1 className="text-2xl md:text-3xl font-display font-bold text-noir-900">
                   {t('step2Title')}
                 </h1>
               </div>
@@ -525,7 +524,7 @@ export default function OfferteFormulier() {
                   onChange={(e) => updateField('description', e.target.value)}
                   placeholder={t('descriptionPlaceholder')}
                   rows={5}
-                  className={`w-full p-4 rounded-xl border-2 bg-ivory-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all ${
+                  className={`w-full p-4 rounded-xl border-2 bg-noir-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all ${
                     errors.description ? 'border-red-500' : 'border-noir-200'
                   }`}
                 />
@@ -580,7 +579,7 @@ export default function OfferteFormulier() {
                             updateField('preferredStart', '')
                           }
                         }}
-                        className="w-full p-4 rounded-xl border-2 border-noir-200 bg-ivory-50 text-noir-800 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all appearance-none cursor-pointer"
+                        className="w-full p-4 rounded-xl border-2 border-noir-200 bg-noir-50 text-noir-800 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all appearance-none cursor-pointer"
                       >
                         <option value="">{t('selectMonth')}</option>
                         {monthNames.map((month, idx) => {
@@ -617,7 +616,7 @@ export default function OfferteFormulier() {
                             updateField('preferredStart', month ? `${month}-` : '')
                           }
                         }}
-                        className="w-full p-4 rounded-xl border-2 border-noir-200 bg-ivory-50 text-noir-800 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all appearance-none cursor-pointer"
+                        className="w-full p-4 rounded-xl border-2 border-noir-200 bg-noir-50 text-noir-800 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all appearance-none cursor-pointer"
                       >
                         <option value="">{t('selectYear')}</option>
                         {availableYears.map(year => (
@@ -686,7 +685,7 @@ export default function OfferteFormulier() {
                 <div className="w-10 h-10 bg-accent-100 rounded-xl flex items-center justify-center">
                   <User className="h-5 w-5 text-accent-600" />
                 </div>
-                <h1 className="text-2xl md:text-3xl font-display font-medium text-noir-900">
+                <h1 className="text-2xl md:text-3xl font-display font-bold text-noir-900">
                   {t('step3Title')}
                 </h1>
               </div>
@@ -705,7 +704,7 @@ export default function OfferteFormulier() {
                     value={formData.fullName}
                     onChange={(e) => updateField('fullName', e.target.value)}
                     placeholder={t('namePlaceholder')}
-                    className={`w-full p-4 rounded-xl border-2 bg-ivory-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all ${
+                    className={`w-full p-4 rounded-xl border-2 bg-noir-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all ${
                       errors.fullName ? 'border-red-500' : 'border-noir-200'
                     }`}
                   />
@@ -724,7 +723,7 @@ export default function OfferteFormulier() {
                     value={formData.email}
                     onChange={(e) => updateField('email', e.target.value)}
                     placeholder={t('emailPlaceholder')}
-                    className={`w-full p-4 rounded-xl border-2 bg-ivory-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all ${
+                    className={`w-full p-4 rounded-xl border-2 bg-noir-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all ${
                       errors.email ? 'border-red-500' : 'border-noir-200'
                     }`}
                   />
@@ -743,7 +742,7 @@ export default function OfferteFormulier() {
                     value={formData.phone}
                     onChange={(e) => updateField('phone', e.target.value)}
                     placeholder={t('phonePlaceholder')}
-                    className={`w-full p-4 rounded-xl border-2 bg-ivory-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all ${
+                    className={`w-full p-4 rounded-xl border-2 bg-noir-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all ${
                       errors.phone ? 'border-red-500' : 'border-noir-200'
                     }`}
                   />
@@ -762,7 +761,7 @@ export default function OfferteFormulier() {
                     value={formData.postalCode}
                     onChange={(e) => updateField('postalCode', e.target.value)}
                     placeholder={t('postalCodePlaceholder')}
-                    className={`w-full p-4 rounded-xl border-2 bg-ivory-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all ${
+                    className={`w-full p-4 rounded-xl border-2 bg-noir-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all ${
                       errors.postalCode ? 'border-red-500' : 'border-noir-200'
                     }`}
                   />
@@ -781,7 +780,7 @@ export default function OfferteFormulier() {
                 <div className="w-10 h-10 bg-accent-100 rounded-xl flex items-center justify-center">
                   <CheckCircle2 className="h-5 w-5 text-accent-600" />
                 </div>
-                <h1 className="text-2xl md:text-3xl font-display font-medium text-noir-900">
+                <h1 className="text-2xl md:text-3xl font-display font-bold text-noir-900">
                   {t('step4Title')}
                 </h1>
               </div>
@@ -789,7 +788,7 @@ export default function OfferteFormulier() {
                 {t('step4Subtitle')}
               </p>
 
-              <div className="bg-gradient-to-br from-ivory-100 to-ivory-50 rounded-2xl p-6 md:p-8 mb-8 border border-noir-100">
+              <div className="bg-noir-50 rounded-2xl p-6 md:p-8 mb-8 border border-noir-100">
                 <div className="grid gap-6">
                   <div className="flex items-start gap-4">
                     <div className="w-10 h-10 bg-accent-100 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -909,7 +908,7 @@ export default function OfferteFormulier() {
               <button
                 type="button"
                 onClick={prevStep}
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border-2 border-noir-200 text-noir-700 font-medium hover:bg-noir-50 hover:border-noir-300 transition-all"
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border-2 border-noir-200 text-noir-700 font-semibold hover:bg-noir-50 hover:border-noir-300 transition-all"
               >
                 <ArrowLeft className="h-4 w-4" />
                 {t('prevButton')}
@@ -920,7 +919,7 @@ export default function OfferteFormulier() {
               <button
                 type="button"
                 onClick={nextStep}
-                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-noir-900 text-white font-medium hover:bg-accent-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-accent-500/20"
+                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-noir-900 text-white font-semibold hover:bg-accent-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-accent-600/20"
               >
                 {t('nextButton')}
                 <ArrowRight className="h-4 w-4" />
@@ -930,7 +929,7 @@ export default function OfferteFormulier() {
                 type="button"
                 onClick={handleSubmit}
                 disabled={isSubmitting}
-                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-accent-500 text-white font-medium hover:bg-accent-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-accent-500/30 disabled:opacity-70 disabled:cursor-not-allowed"
+                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-accent-600 text-white font-semibold hover:bg-accent-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-accent-600/30 disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? (
                   <>

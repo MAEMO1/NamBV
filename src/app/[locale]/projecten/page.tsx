@@ -84,8 +84,6 @@ const fallbackProjects: Project[] = [
   }
 ];
 
-// Category keys for translation lookup (values match database categories)
-const fallbackCategoryKeys = ['Alle', 'Totaalrenovatie', 'Renovatie', 'Afwerking', 'Ruwbouw'];
 
 // Scroll animation hook
 function useScrollAnimation() {
@@ -125,26 +123,11 @@ function AnimatedSection({ children, className = '', delay = 0 }: { children: Re
 export default function ProjectenPage() {
   const t = useTranslations('projectsPage');
   const [heroLoaded, setHeroLoaded] = useState(false);
-  const [activeCategory, setActiveCategory] = useState('Alle');
-  const [scrollY, setScrollY] = useState(0);
   const [projects, setProjects] = useState<Project[]>([]);
-  const [categoryKeys, setCategoryKeys] = useState<string[]>(fallbackCategoryKeys);
-
-  // Helper to translate category
-  const getCategoryLabel = (categoryKey: string) => {
-    try {
-      return t(`categories.${categoryKey}`);
-    } catch {
-      return categoryKey;
-    }
-  };
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setHeroLoaded(true);
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // Fetch projects from API
@@ -157,10 +140,8 @@ export default function ProjectenPage() {
           // Use fetched projects if available, otherwise use fallback
           if (data.projects && data.projects.length > 0) {
             setProjects(data.projects);
-            setCategoryKeys(data.categories || fallbackCategoryKeys);
           } else {
             setProjects(fallbackProjects);
-            setCategoryKeys(fallbackCategoryKeys);
           }
         } else {
           setProjects(fallbackProjects);
@@ -176,63 +157,36 @@ export default function ProjectenPage() {
     fetchProjects();
   }, []);
 
-  // Filter uses the category key (Dutch original), which matches database values
-  const filteredProjects = activeCategory === 'Alle'
-    ? projects
-    : projects.filter(p => p.category === activeCategory);
-
   return (
     <>
-      {/* Hero Section - Dark cinematic style */}
-      <section className="relative min-h-[70vh] flex items-end overflow-hidden">
-        {/* Background image with parallax */}
-        <div
-          className="absolute inset-0 scale-110"
-          style={{ transform: `scale(1.1) translateY(${scrollY * 0.15}px)` }}
-        >
-          <Image
-            src={siteImages.heroHome}
-            alt={t('titleHighlight')}
-            fill
-            className="object-cover"
-            priority
-          />
-        </div>
-
-        {/* Dark overlay */}
-        <div className="absolute inset-0 bg-noir-950/70" />
-        <div className="absolute inset-0 bg-gradient-to-t from-noir-950 via-noir-950/50 to-transparent" />
-
-        {/* Content */}
-        <div className="container-wide relative z-10 pb-20 pt-40">
+      {/* Hero Section */}
+      <section className="relative pt-32 pb-16 md:pt-40 md:pb-20 bg-noir-50 overflow-hidden">
+        <div className="container-wide relative">
           <div className="max-w-3xl">
             {/* Badge */}
-            <div
-              className={`flex items-center gap-3 mb-6 transition-all duration-1000 ${
+            <span
+              className={`inline-block px-4 py-1.5 bg-accent-100 text-accent-700 text-xs font-semibold uppercase tracking-[0.15em] rounded-full mb-6 transition-all duration-700 ${
                 heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
             >
-              <div className="w-12 h-px bg-accent-400" />
-              <span className="text-sm font-medium text-accent-400 uppercase tracking-[0.2em]">
-                {t('badge')}
-              </span>
-            </div>
+              {t('badge')}
+            </span>
 
             <h1
-              className={`text-display-lg md:text-display-xl font-display font-medium text-white mb-6 transition-all duration-1000 ${
+              className={`text-display-lg md:text-display-xl font-display font-bold text-noir-900 mb-6 transition-all duration-700 ${
                 heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
               }`}
-              style={{ transitionDelay: '200ms' }}
+              style={{ transitionDelay: '150ms' }}
             >
               {t('title')}{' '}
-              <span className="text-accent-400 italic">{t('titleHighlight')}</span>
+              <span className="text-accent-600">{t('titleHighlight')}</span>
             </h1>
 
             <p
-              className={`text-xl text-white/70 leading-relaxed transition-all duration-1000 ${
+              className={`text-lg md:text-xl text-noir-500 leading-relaxed transition-all duration-700 ${
                 heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
-              style={{ transitionDelay: '400ms' }}
+              style={{ transitionDelay: '300ms' }}
             >
               {t('description')}
             </p>
@@ -240,45 +194,24 @@ export default function ProjectenPage() {
         </div>
       </section>
 
-      {/* Filter Bar */}
-      <section className="bg-noir-900 border-b border-white/10 py-6 sticky top-20 z-30">
-        <div className="container-wide">
-          <div className="flex flex-wrap gap-3">
-            {categoryKeys.map((categoryKey) => (
-              <button
-                key={categoryKey}
-                onClick={() => setActiveCategory(categoryKey)}
-                className={`px-5 py-2.5 text-sm font-medium uppercase tracking-wider transition-all duration-300 ${
-                  activeCategory === categoryKey
-                    ? 'bg-accent-500 text-white'
-                    : 'bg-white/5 text-white/60 hover:bg-white/10 hover:text-white border border-white/10'
-                }`}
-              >
-                {getCategoryLabel(categoryKey)}
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Projects Grid */}
-      <section className="py-20 md:py-28 bg-ivory-100">
+      <section className="section-padding bg-white">
         <div className="container-wide">
           {loading ? (
-            <div className="grid md:grid-cols-12 gap-8">
+            <div className="grid md:grid-cols-12 gap-6 lg:gap-8">
               {[1, 2, 3, 4].map((i) => (
                 <div key={i} className={i === 1 || i === 4 ? 'md:col-span-7' : 'md:col-span-5'}>
-                  <div className="aspect-[4/3] bg-noir-100 animate-pulse" />
+                  <div className="aspect-[4/3] bg-noir-100 rounded-2xl animate-pulse" />
                 </div>
               ))}
             </div>
-          ) : filteredProjects.length === 0 ? (
+          ) : projects.length === 0 ? (
             <div className="text-center py-20">
               <p className="text-noir-500 text-lg">{t('noProjects')}</p>
             </div>
           ) : (
-            <div className="grid md:grid-cols-12 gap-8">
-              {filteredProjects.map((project, index) => {
+            <div className="grid md:grid-cols-12 gap-6 lg:gap-8">
+              {projects.map((project, index) => {
                 const isLarge = index === 0 || index === 3;
                 const gridSpan = isLarge ? 'md:col-span-7' : 'md:col-span-5';
 
@@ -288,51 +221,36 @@ export default function ProjectenPage() {
                     delay={index * 100}
                     className={gridSpan}
                   >
-                    <Link href={{ pathname: '/projecten/[slug]', params: { slug: project.slug || project.id } }} className="group block relative h-full">
-                      <div className={`relative overflow-hidden ${isLarge ? 'aspect-[4/3]' : 'aspect-square'}`}>
+                    <Link href={{ pathname: '/projecten/[slug]', params: { slug: project.slug || project.id } }} className="group block h-full">
+                      <div className={`relative rounded-2xl overflow-hidden ${isLarge ? 'aspect-[4/3]' : 'aspect-square'}`}>
                         <Image
                           src={project.image}
                           alt={project.title}
                           fill
-                          className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                          className="object-cover transition-transform duration-700 group-hover:scale-105"
                         />
 
                         {/* Overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-noir-950/90 via-noir-950/40 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-500" />
-
-                        {/* Category tag */}
-                        <div className="absolute top-6 left-6">
-                          <span className="px-4 py-2 bg-accent-500 text-white text-xs font-medium uppercase tracking-wider">
-                            {getCategoryLabel(project.category)}
-                          </span>
-                        </div>
-
-                        {/* Hover border */}
-                        <div className="absolute inset-4 border-2 border-accent-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-noir-950/80 via-noir-950/20 to-transparent" />
 
                         {/* Content overlay */}
-                        <div className="absolute bottom-0 left-0 right-0 p-8">
-                          <h3 className="text-2xl md:text-3xl font-display font-medium text-white mb-3 group-hover:-translate-y-2 transition-transform duration-500">
+                        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                          <h3 className="text-xl md:text-2xl font-display font-bold text-white mb-2">
                             {project.title}
                           </h3>
 
-                          <div className="flex items-center gap-4 text-white/60 text-sm mb-4">
-                            <div className="flex items-center gap-2">
-                              <MapPin className="h-4 w-4" />
+                          <div className="flex items-center gap-3 text-white/60 text-sm mb-3">
+                            <div className="flex items-center gap-1.5">
+                              <MapPin className="h-3.5 w-3.5" />
                               {project.location}
                             </div>
-                            <span>|</span>
+                            <span className="text-white/30">|</span>
                             <span>{project.year}</span>
                           </div>
 
-                          {/* Description - visible on hover */}
-                          <p className="text-white/70 text-sm mb-4 max-h-0 overflow-hidden group-hover:max-h-20 transition-all duration-500">
-                            {project.description}
-                          </p>
-
                           {/* CTA */}
-                          <div className="flex items-center gap-2 text-accent-400 font-medium opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
-                            <span className="text-sm uppercase tracking-wider">{t('viewProject')}</span>
+                          <div className="flex items-center gap-2 text-accent-400 font-semibold opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                            <span className="text-sm">{t('viewProject')}</span>
                             <ArrowRight className="h-4 w-4" />
                           </div>
                         </div>
@@ -347,37 +265,30 @@ export default function ProjectenPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 md:py-28 bg-accent-500 relative overflow-hidden">
-        {/* Decorative circles */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-white/10 rounded-full" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] border border-white/10 rounded-full" />
-
+      <section className="section-padding bg-noir-900 relative overflow-hidden">
         <div className="container-wide relative">
           <AnimatedSection>
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-display-lg font-display font-medium text-white mb-6">
+              <h2 className="text-display-lg font-display font-bold text-white mb-6">
                 {t('ctaTitle')}
               </h2>
-              <p className="text-xl text-white/80 mb-10">
+              <p className="text-lg md:text-xl text-noir-400 mb-10 leading-relaxed">
                 {t('ctaDescription')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   href="/offerte"
-                  className="group relative inline-flex items-center justify-center gap-3 px-10 py-5 bg-white text-accent-700 font-medium overflow-hidden transition-all duration-500 hover:shadow-xl"
+                  className="group inline-flex items-center justify-center gap-3 px-10 py-5 bg-accent-600 text-white font-semibold rounded-full hover:bg-accent-500 transition-all duration-300"
                 >
-                  <span className="absolute inset-0 bg-noir-900 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-                  <span className="relative z-10 uppercase tracking-wider text-sm group-hover:text-white transition-colors">
-                    {t('ctaPrimary')}
-                  </span>
-                  <ArrowUpRight className="relative z-10 h-5 w-5 group-hover:text-white transition-colors" />
+                  <span>{t('ctaPrimary')}</span>
+                  <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </Link>
                 <Link
                   href="/afspraak"
-                  className="inline-flex items-center justify-center gap-3 px-10 py-5 border-2 border-white/30 text-white font-medium hover:bg-white/10 transition-all duration-300"
+                  className="group inline-flex items-center justify-center gap-3 px-10 py-5 border-2 border-noir-700 text-white font-semibold rounded-full hover:bg-white hover:text-noir-900 hover:border-white transition-all duration-300"
                 >
-                  <span className="uppercase tracking-wider text-sm">{t('ctaSecondary')}</span>
-                  <ArrowRight className="h-5 w-5" />
+                  <span>{t('ctaSecondary')}</span>
+                  <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </Link>
               </div>
             </div>

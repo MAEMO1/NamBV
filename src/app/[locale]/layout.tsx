@@ -77,9 +77,6 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <>
-      {/* Subtle noise texture overlay */}
-      <div className="noise-overlay" aria-hidden="true" />
-
       <NextIntlClientProvider messages={messages}>
         <Analytics>
           <Header />

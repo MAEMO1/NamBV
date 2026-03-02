@@ -42,9 +42,6 @@ interface Project {
 }
 
 const categories = [
-  'Totaalrenovatie',
-  'Renovatie',
-  'Afwerking',
   'Badkamerrenovatie',
   'Keukenrenovatie',
   'Dakwerken',

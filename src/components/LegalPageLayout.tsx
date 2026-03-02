@@ -44,8 +44,8 @@ function parseMarkdown(markdown: string): { html: string; sections: Section[] } 
       html += `
         <section id="${id}" class="legal-section scroll-mt-32 mb-16 group">
           <div class="flex items-start gap-6 mb-6">
-            <span class="legal-section-number flex-shrink-0 w-14 h-14 flex items-center justify-center bg-accent-600/5 text-accent-600 font-display text-xl border border-accent-600/10 transition-all duration-500 group-hover:bg-accent-600 group-hover:text-white group-hover:border-accent-600">${number}</span>
-            <h2 class="text-2xl md:text-3xl font-display text-noir-900 pt-2 leading-tight">${title}</h2>
+            <span class="legal-section-number flex-shrink-0 w-14 h-14 rounded-full flex items-center justify-center bg-accent-600/5 text-accent-600 font-display text-xl border border-accent-600/10 transition-all duration-500 group-hover:bg-accent-600 group-hover:text-white group-hover:border-accent-600">${number}</span>
+            <h2 class="text-2xl md:text-3xl font-display font-bold text-noir-900 pt-2 leading-tight">${title}</h2>
           </div>
           <div class="legal-section-content pl-0 md:pl-20">
       `
@@ -145,7 +145,7 @@ export default function LegalPageLayout({
   const Icon = icon === 'privacy' ? Shield : FileText
 
   return (
-    <main className="min-h-screen bg-ivory-100 print:bg-white">
+    <main className="min-h-screen bg-noir-50 print:bg-white">
       {/* Architectural Header */}
       <header className="relative bg-noir-950 text-white overflow-hidden">
         {/* Background Pattern */}
@@ -160,9 +160,6 @@ export default function LegalPageLayout({
           </svg>
         </div>
 
-        {/* Diagonal Accent Line */}
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-accent-600/10 transform skew-x-12 translate-x-20 print:hidden" />
-
         <div className="container-wide relative">
           <div className="py-20 md:py-28 lg:py-32">
             {/* Breadcrumb */}
@@ -174,12 +171,12 @@ export default function LegalPageLayout({
 
             <div className="flex items-start gap-8">
               {/* Icon */}
-              <div className="hidden md:flex w-20 h-20 lg:w-24 lg:h-24 bg-accent-600/20 items-center justify-center animate-scale-in print:hidden">
+              <div className="hidden md:flex w-20 h-20 lg:w-24 lg:h-24 bg-accent-600/20 rounded-2xl items-center justify-center animate-scale-in print:hidden">
                 <Icon className="w-10 h-10 lg:w-12 lg:h-12 text-accent-400" strokeWidth={1.5} />
               </div>
 
               <div className="flex-1">
-                <h1 className="text-display-lg lg:text-display-xl font-display mb-4 animate-fade-up"
+                <h1 className="text-display-lg lg:text-display-xl font-display font-bold mb-4 animate-fade-up"
                     style={{ animationDelay: '0.1s' }}>
                   {title}
                 </h1>
@@ -219,7 +216,7 @@ export default function LegalPageLayout({
           {/* Sticky Table of Contents */}
           <aside className="lg:w-72 flex-shrink-0 print:hidden">
             <div className="lg:sticky lg:top-28">
-              <div className="bg-white/80 backdrop-blur-sm border border-noir-100 p-6 animate-fade-in">
+              <div className="bg-white/80 backdrop-blur-sm border border-noir-100 rounded-2xl p-6 animate-fade-in">
                 <h3 className="text-xs font-semibold text-noir-500 uppercase tracking-wider mb-6 flex items-center gap-2">
                   <span className="w-6 h-px bg-accent-500" />
                   {t('tableOfContents')}
@@ -280,12 +277,9 @@ export default function LegalPageLayout({
           <article className="flex-1 min-w-0">
             <div
               ref={contentRef}
-              className="bg-white border border-noir-100 p-8 md:p-12 lg:p-16 animate-fade-up print:border-none print:p-0"
+              className="bg-white border border-noir-100 rounded-2xl p-8 md:p-12 lg:p-16 animate-fade-up print:border-none print:p-0"
               style={{ animationDelay: '0.2s' }}
             >
-              {/* Decorative Corner */}
-              <div className="absolute -top-px -left-px w-16 h-16 border-t-2 border-l-2 border-accent-500 print:hidden" />
-
               <div
                 className="legal-content prose-custom"
                 dangerouslySetInnerHTML={{ __html: html }}
@@ -323,7 +317,7 @@ export default function LegalPageLayout({
       {/* Back to Top Button */}
       <button
         onClick={scrollToTop}
-        className={`fixed bottom-8 right-8 w-12 h-12 bg-noir-900 text-white flex items-center justify-center shadow-lg transition-all duration-500 hover:bg-accent-600 print:hidden ${
+        className={`fixed bottom-8 right-8 w-12 h-12 bg-noir-900 text-white rounded-full flex items-center justify-center shadow-lg transition-all duration-500 hover:bg-accent-600 print:hidden ${
           showBackToTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
         }`}
         aria-label={t('backToTop')}

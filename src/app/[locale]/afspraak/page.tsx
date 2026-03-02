@@ -35,7 +35,7 @@ export default function AfspraakPage() {
   return (
     <>
       {/* Hero with booking - Clean, professional */}
-      <section className="relative bg-ivory-50 pt-28 md:pt-32 pb-16 md:pb-20">
+      <section className="relative bg-white pt-28 md:pt-32 pb-16 md:pb-20">
         <div className="container-wide">
           {/* Header */}
           <div className="max-w-2xl mb-10 md:mb-12">
@@ -51,13 +51,13 @@ export default function AfspraakPage() {
             </div>
 
             <h1
-              className={`text-3xl md:text-4xl lg:text-5xl font-display font-medium text-noir-900 mb-4 leading-tight transition-all duration-700 ${
+              className={`text-3xl md:text-4xl lg:text-5xl font-display font-bold text-noir-900 mb-4 leading-tight transition-all duration-700 ${
                 loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
               }`}
               style={{ transitionDelay: '100ms' }}
             >
               {t('title')}{' '}
-              <span className="text-accent-600 italic">{t('titleHighlight')}</span>
+              <span className="text-accent-600">{t('titleHighlight')}</span>
             </h1>
 
             <p
@@ -77,20 +77,20 @@ export default function AfspraakPage() {
             }`}
             style={{ transitionDelay: '300ms' }}
           >
-            <div className="bg-white border border-noir-100 shadow-sm">
+            <div className="bg-white border border-noir-100 shadow-sm rounded-2xl overflow-hidden">
               <BookingFlow />
             </div>
           </div>
 
           {/* Quick contact below form */}
           <div
-            className={`mt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-6 bg-noir-900 transition-all duration-700 ${
+            className={`mt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-6 bg-noir-900 rounded-2xl transition-all duration-700 ${
               loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             }`}
             style={{ transitionDelay: '400ms' }}
           >
             <div className="flex items-center gap-4">
-              <div className="w-10 h-10 bg-accent-500 flex items-center justify-center">
+              <div className="w-10 h-10 bg-accent-600 rounded-full flex items-center justify-center">
                 <Phone className="h-5 w-5 text-white" />
               </div>
               <div>
@@ -123,11 +123,11 @@ export default function AfspraakPage() {
                 key={point.title}
                 className="flex items-start gap-4"
               >
-                <div className="w-12 h-12 bg-accent-500/10 flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 bg-accent-100 rounded-xl flex items-center justify-center flex-shrink-0">
                   <point.icon className="h-5 w-5 text-accent-600" />
                 </div>
                 <div>
-                  <h3 className="font-medium text-noir-900 mb-1">{point.title}</h3>
+                  <h3 className="font-bold text-noir-900 mb-1">{point.title}</h3>
                   <p className="text-sm text-noir-500">{point.description}</p>
                 </div>
               </div>

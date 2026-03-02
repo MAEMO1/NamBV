@@ -9,19 +9,19 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Warm charcoal palette - softer than pure black
+        // Cool slate palette - clean, modern
         noir: {
-          50: '#fafaf9',
-          100: '#f5f5f4',
-          200: '#e7e5e4',
-          300: '#d6d3d1',
-          400: '#a8a29e',
-          500: '#78716c',
-          600: '#57534e',
-          700: '#44403c',
-          800: '#292524',
-          900: '#1c1917',
-          950: '#0c0a09',
+          50: '#f8fafc',
+          100: '#f1f5f9',
+          200: '#e2e8f0',
+          300: '#cbd5e1',
+          400: '#94a3b8',
+          500: '#64748b',
+          600: '#475569',
+          700: '#334155',
+          800: '#1e293b',
+          900: '#0f172a',
+          950: '#020617',
         },
         // Official brand colors - forest green palette
         accent: {
@@ -37,19 +37,19 @@ export default {
           900: '#182726',
           950: '#0d1716',
         },
-        // Warm cream for backgrounds
+        // Clean white/gray for backgrounds
         ivory: {
           50: '#ffffff',
-          100: '#fdfcfb',
-          200: '#faf8f5',
-          300: '#f5f2ed',
-          400: '#ebe6de',
-          500: '#ddd5c8',
+          100: '#ffffff',
+          200: '#f8fafc',
+          300: '#f1f5f9',
+          400: '#e2e8f0',
+          500: '#cbd5e1',
         },
       },
       fontFamily: {
         sans: ['var(--font-dm-sans)', 'system-ui', 'sans-serif'],
-        display: ['var(--font-playfair)', 'Georgia', 'serif'],
+        display: ['var(--font-playfair)', 'system-ui', 'sans-serif'],
       },
       fontSize: {
         // Dramatic display sizes for hero statements

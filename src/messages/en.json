@@ -44,7 +44,13 @@
       "subtitle": "Craftsmanship with respect for every detail. From concept to delivery, we realize your dream home.",
       "ctaPrimary": "Get a free quote",
       "ctaSecondary": "or view our work",
-      "scroll": "Scroll"
+      "scroll": "Scroll",
+      "stats": {
+        "years": "Years experience",
+        "projects": "Projects completed",
+        "satisfaction": "Client satisfaction",
+        "certified": "Certified"
+      }
     },
     "whyUs": {
       "badge": "Why NAM Construction",
@@ -316,15 +322,11 @@
     "ctaPrimary": "Request quote",
     "ctaSecondary": "Free consultation",
     "categories": {
-      "Alle": "All",
-      "Totaalrenovatie": "Full Renovation",
-      "Renovatie & Afwerking": "Renovation & Finishing",
       "Badkamerrenovatie": "Bathroom Renovation",
       "Keukenrenovatie": "Kitchen Renovation",
-      "Renovatie & Technieken": "Renovation & Technical",
-      "Renovatie": "Renovation",
-      "Afwerking": "Finishing",
-      "Ruwbouw": "Structural Work"
+      "Dakwerken": "Roofing",
+      "Elektriciteit": "Electrical",
+      "Sanitair": "Plumbing"
     }
   },
   "contactPage": {

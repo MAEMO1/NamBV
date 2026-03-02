@@ -3,12 +3,9 @@
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link, usePathname } from '@/i18n/routing';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Phone } from 'lucide-react';
 import Logo from './Logo';
 import LanguageSwitcher from './LanguageSwitcher';
-
-// Pages with dark hero backgrounds where transparent header with white text works
-const darkHeroPages: string[] = ['/', '/projecten'];
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -30,9 +27,6 @@ export default function Header() {
     return null;
   }
 
-  // Check if current page has a dark hero
-  const hasDarkHero = darkHeroPages.includes(pathname);
-
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -53,24 +47,18 @@ export default function Header() {
     };
   }, [mobileMenuOpen]);
 
-  // Determine if we should use dark text (scrolled OR on light pages)
-  const useDarkText = scrolled || !hasDarkHero;
-  const logoColor = (useDarkText || mobileMenuOpen) ? 'dark' : 'light';
-
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-smooth ${
-          scrolled || !hasDarkHero
-            ? 'bg-white/95 backdrop-blur-md shadow-soft'
-            : 'bg-transparent'
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-white ${
+          scrolled ? 'shadow-soft' : 'shadow-sm'
         }`}
       >
         <nav className="container-wide" aria-label="Global">
           <div className="flex items-center justify-between h-20 md:h-24">
             {/* Logo */}
             <Link href="/" className="relative z-10 group">
-              <Logo color={logoColor} showTagline={!scrolled} />
+              <Logo color="dark" showTagline={!scrolled} />
             </Link>
 
             {/* Desktop Navigation */}
@@ -81,20 +69,13 @@ export default function Header() {
                   <Link
                     key={item.name}
                     href={item.href}
-                    className={`relative px-4 py-2 text-sm font-medium tracking-wide uppercase transition-all duration-300 ${
-                      useDarkText
-                        ? isActive
-                          ? 'text-accent-600'
-                          : 'text-noir-600 hover:text-noir-900'
-                        : isActive
-                          ? 'text-accent-400'
-                          : 'text-white/80 hover:text-white'
+                    className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 ${
+                      isActive
+                        ? 'text-accent-600'
+                        : 'text-noir-600 hover:text-noir-900'
                     }`}
                   >
                     {item.name}
-                    {isActive && (
-                      <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-accent-500" />
-                    )}
                   </Link>
                 );
               })}
@@ -102,29 +83,27 @@ export default function Header() {
 
             {/* CTA Button & Language Switcher - Desktop */}
             <div className="hidden lg:flex lg:items-center lg:gap-4">
-              <LanguageSwitcher variant={useDarkText ? 'dark' : 'light'} />
+              <LanguageSwitcher variant="dark" />
+              <a
+                href="tel:+32493812789"
+                className="hidden xl:flex items-center gap-2 text-sm text-noir-600 hover:text-noir-900 transition-colors"
+              >
+                <Phone className="h-4 w-4" />
+                +32 493 81 27 89
+              </a>
               <Link
                 href="/offerte"
-                className={`group relative inline-flex items-center gap-2 px-6 py-3 text-sm font-medium uppercase tracking-wide overflow-hidden transition-all duration-500 ${
-                  useDarkText
-                    ? 'bg-accent-500 text-white hover:bg-accent-600'
-                    : 'bg-white text-noir-900 hover:bg-accent-500 hover:text-white'
-                }`}
+                className="inline-flex items-center gap-2 px-6 py-2.5 border-2 border-accent-600 text-accent-600 rounded-full text-sm font-semibold hover:bg-accent-600 hover:text-white transition-all duration-300"
               >
-                <span className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-full transition-transform duration-700 skew-x-12" />
-                <span className="relative z-10">{tHeader('ctaButton')}</span>
-                <ArrowUpRight className="relative z-10 h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <span>{tHeader('ctaButton')}</span>
+                <ArrowUpRight className="h-4 w-4" />
               </Link>
             </div>
 
             {/* Mobile menu button */}
             <button
               type="button"
-              className={`relative z-10 lg:hidden w-12 h-12 flex items-center justify-center transition-colors duration-300 ${
-                useDarkText || mobileMenuOpen
-                  ? 'text-noir-900'
-                  : 'text-white'
-              }`}
+              className="relative z-10 lg:hidden w-12 h-12 flex items-center justify-center text-noir-900 transition-colors duration-300"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label={mobileMenuOpen ? tHeader('menuClose') : tHeader('menuOpen')}
             >
@@ -183,13 +162,13 @@ export default function Header() {
                   }`}
                   style={{ transitionDelay: mobileMenuOpen ? `${150 + index * 75}ms` : '0ms' }}
                 >
-                  <span className={`text-3xl md:text-4xl font-display font-medium transition-colors duration-300 ${
-                    isActive ? 'text-accent-600' : 'text-noir-900 group-hover:text-accent-500'
+                  <span className={`text-3xl md:text-4xl font-display font-bold transition-colors duration-300 ${
+                    isActive ? 'text-accent-600' : 'text-noir-900 group-hover:text-accent-600'
                   }`}>
                     {item.name}
                   </span>
                   <ArrowUpRight className={`h-6 w-6 transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 ${
-                    isActive ? 'text-accent-500' : 'text-noir-300 group-hover:text-accent-500'
+                    isActive ? 'text-accent-600' : 'text-noir-300 group-hover:text-accent-600'
                   }`} />
                 </Link>
               );
@@ -208,7 +187,7 @@ export default function Header() {
             <Link
               href="/offerte"
               onClick={() => setMobileMenuOpen(false)}
-              className="block w-full py-5 text-center text-lg font-medium uppercase tracking-wide bg-accent-500 text-white hover:bg-accent-600 transition-colors duration-300"
+              className="block w-full py-5 text-center text-lg font-semibold bg-accent-600 text-white rounded-full hover:bg-accent-700 transition-colors duration-300"
             >
               {tHeader('ctaButton')}
             </Link>

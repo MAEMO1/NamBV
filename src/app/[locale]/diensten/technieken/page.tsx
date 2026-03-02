@@ -80,37 +80,33 @@ export default function TechniekenPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-cream-50 via-stone-50 to-forest-50/20 py-20 md:py-28 overflow-hidden">
-        <div className="absolute top-0 right-0 w-1/2 h-full pointer-events-none">
-          <div className="absolute top-20 right-20 w-96 h-96 bg-stone-100/50 rounded-full blur-3xl" />
-        </div>
-
+      <section className="relative bg-noir-50 py-20 md:py-28 overflow-hidden">
         <div className="container-custom relative">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <Link
                 href="/diensten"
-                className="inline-flex items-center text-forest-600 hover:text-forest-700 mb-6 group"
+                className="inline-flex items-center text-accent-600 hover:text-accent-700 mb-6 group"
               >
                 <ArrowRight className="h-4 w-4 mr-2 rotate-180 transition-transform group-hover:-translate-x-1" />
                 {t('backToServices')}
               </Link>
 
               {/* Badge */}
-              <span className="inline-flex items-center gap-2 px-4 py-2 bg-stone-100 rounded-full text-sm font-medium text-stone-700 mb-6">
+              <span className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 bg-accent-100 text-accent-700 text-xs font-semibold uppercase tracking-[0.15em] mb-6">
                 <Zap className="h-4 w-4" />
                 {tPage('badge')}
               </span>
 
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-semibold text-stone-900 mb-6">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-noir-900 mb-6">
                 {tPage('title')}
               </h1>
-              <p className="text-xl text-stone-600 leading-relaxed mb-8">
+              <p className="text-xl text-noir-600 leading-relaxed mb-8">
                 {tPage('description')}
               </p>
               <Link
                 href="/contact"
-                className="group inline-flex items-center justify-center px-8 py-4 bg-forest-600 text-white rounded-full font-medium hover:bg-forest-700 transition-all duration-300 hover:shadow-lg hover:shadow-forest-600/25"
+                className="group inline-flex items-center justify-center px-8 py-4 bg-accent-600 text-white rounded-full font-semibold hover:bg-accent-700 transition-all duration-300 hover:shadow-lg hover:shadow-accent-600/25"
               >
                 <Calendar className="h-5 w-5 mr-2" />
                 {t('freeConsultation')}
@@ -120,7 +116,7 @@ export default function TechniekenPage() {
 
             {/* Image */}
             <div className="relative">
-              <div className="relative h-80 lg:h-[500px] rounded-3xl overflow-hidden shadow-2xl">
+              <div className="relative h-80 lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
                 <Image
                   src={servicePageImages.technieken.hero}
                   alt={tPage('title')}
@@ -128,9 +124,8 @@ export default function TechniekenPage() {
                   className="object-cover"
                   priority
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-stone-900/30 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-noir-900/30 via-transparent to-transparent" />
               </div>
-              <div className="absolute -z-10 -bottom-4 -right-4 w-full h-full rounded-3xl bg-stone-100" />
             </div>
           </div>
         </div>
@@ -148,35 +143,35 @@ export default function TechniekenPage() {
             {services.map((service) => (
               <div
                 key={service.title}
-                className="relative bg-cream-50 rounded-3xl p-8 border border-sand-100 hover:shadow-lg transition-all duration-300"
+                className="relative bg-noir-50 rounded-2xl p-8 border border-noir-100 hover:shadow-lg transition-all duration-300"
               >
                 {/* Icon */}
                 <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-5 ${
-                  service.color === 'forest' ? 'bg-forest-100' :
-                  service.color === 'terracotta' ? 'bg-terracotta-100' :
-                  service.color === 'sand' ? 'bg-sand-100' :
-                  'bg-stone-100'
+                  service.color === 'forest' ? 'bg-accent-100' :
+                  service.color === 'terracotta' ? 'bg-accent-100' :
+                  service.color === 'sand' ? 'bg-accent-100' :
+                  'bg-noir-100'
                 }`}>
                   <service.icon className={`h-7 w-7 ${
-                    service.color === 'forest' ? 'text-forest-600' :
-                    service.color === 'terracotta' ? 'text-terracotta-600' :
-                    service.color === 'sand' ? 'text-sand-700' :
-                    'text-stone-600'
+                    service.color === 'forest' ? 'text-accent-600' :
+                    service.color === 'terracotta' ? 'text-accent-600' :
+                    service.color === 'sand' ? 'text-accent-700' :
+                    'text-noir-600'
                   }`} />
                 </div>
 
-                <h3 className="text-2xl font-display font-semibold text-stone-900 mb-3">{service.title}</h3>
-                <p className="text-stone-600 mb-6">{service.description}</p>
+                <h3 className="text-2xl font-display font-bold text-noir-900 mb-3">{service.title}</h3>
+                <p className="text-noir-600 mb-6">{service.description}</p>
                 <div className="space-y-2">
                   {service.items.map((item) => (
                     <div key={item} className="flex items-center gap-3">
                       <CheckCircle2 className={`h-4 w-4 flex-shrink-0 ${
-                        service.color === 'forest' ? 'text-forest-600' :
-                        service.color === 'terracotta' ? 'text-terracotta-600' :
-                        service.color === 'sand' ? 'text-sand-700' :
-                        'text-stone-600'
+                        service.color === 'forest' ? 'text-accent-600' :
+                        service.color === 'terracotta' ? 'text-accent-600' :
+                        service.color === 'sand' ? 'text-accent-700' :
+                        'text-noir-600'
                       }`} />
-                      <span className="text-stone-700">{item}</span>
+                      <span className="text-noir-700">{item}</span>
                     </div>
                   ))}
                 </div>
@@ -189,7 +184,7 @@ export default function TechniekenPage() {
       {/* Certifications */}
       <section className="relative py-24 md:py-32 overflow-hidden">
         {/* Background */}
-        <div className="absolute inset-0 bg-forest-900">
+        <div className="absolute inset-0 bg-noir-900">
           <div className="absolute inset-0 opacity-20">
             <Image
               src={servicePageImages.technieken.certBackground}
@@ -198,33 +193,30 @@ export default function TechniekenPage() {
               className="object-cover"
             />
           </div>
-          <div className="absolute top-0 left-0 w-1/2 h-full">
-            <div className="absolute top-20 left-20 w-96 h-96 bg-forest-800/50 rounded-full blur-3xl" />
-          </div>
         </div>
 
         <div className="container-custom relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div>
               {/* Badge */}
-              <span className="inline-flex items-center gap-2 px-4 py-2 bg-forest-800 rounded-full text-forest-300 text-sm font-medium mb-8">
+              <span className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 bg-noir-800 text-noir-300 text-xs font-semibold uppercase tracking-[0.15em] mb-8">
                 <ShieldCheck className="h-4 w-4" />
                 {tPage('certBadge')}
               </span>
 
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-semibold text-white mb-6">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-white mb-6">
                 {tPage('certTitle')}
               </h2>
-              <p className="text-forest-200 text-lg mb-10">
+              <p className="text-noir-300 text-lg mb-10">
                 {tPage('certDescription')}
               </p>
               <div className="space-y-4">
                 {certifications.map((item) => (
                   <div key={item} className="flex items-center gap-4">
-                    <div className="w-6 h-6 rounded-full bg-terracotta-500 flex items-center justify-center flex-shrink-0">
+                    <div className="w-6 h-6 rounded-full bg-accent-600 flex items-center justify-center flex-shrink-0">
                       <CheckCircle2 className="h-4 w-4 text-white" />
                     </div>
-                    <span className="text-forest-100">{item}</span>
+                    <span className="text-noir-100">{item}</span>
                   </div>
                 ))}
               </div>
@@ -232,7 +224,7 @@ export default function TechniekenPage() {
 
             {/* Image */}
             <div className="relative hidden lg:block">
-              <div className="relative h-[450px] rounded-3xl overflow-hidden shadow-2xl">
+              <div className="relative h-[450px] rounded-2xl overflow-hidden shadow-2xl">
                 <Image
                   src={servicePageImages.technieken.certifications}
                   alt={tPage('certTitle')}

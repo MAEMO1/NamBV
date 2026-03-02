@@ -325,20 +325,19 @@ export default function BookingFlow() {
   // Success state - Premium design
   if (isSubmitted) {
     return (
-      <div className="bg-gradient-to-br from-noir-950 via-noir-900 to-accent-900 p-8 md:p-12 text-center rounded-2xl">
+      <div className="bg-noir-900 p-8 md:p-12 text-center rounded-2xl">
         {/* Animated success icon */}
         <div className="relative mb-10">
-          <div className="w-24 h-24 bg-accent-500 rounded-2xl flex items-center justify-center mx-auto shadow-lg shadow-accent-500/30">
+          <div className="w-24 h-24 bg-accent-600 rounded-full flex items-center justify-center mx-auto shadow-lg shadow-accent-600/30">
             <CheckCircle2 className="h-12 w-12 text-white" />
           </div>
-          <div className="absolute inset-0 bg-accent-500/30 rounded-2xl blur-xl animate-pulse" />
         </div>
 
-        <h3 className="text-2xl md:text-3xl font-display font-medium text-white mb-4">
+        <h3 className="text-2xl md:text-3xl font-display font-bold text-white mb-4">
           {t('success.title')}
         </h3>
 
-        <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-6 mb-8 max-w-sm mx-auto">
+        <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 mb-8 max-w-sm mx-auto">
           <div className="flex items-center gap-3 mb-4 text-white justify-center">
             <Calendar className="h-5 w-5 text-accent-400" />
             <span className="font-medium">{formatSelectedDateDisplay()}</span>
@@ -365,7 +364,7 @@ export default function BookingFlow() {
               selectedDate: '', selectedTime: '', message: '',
             });
           }}
-          className="inline-flex items-center gap-3 px-8 py-4 bg-white text-noir-900 font-medium rounded-xl hover:bg-accent-100 transition-all duration-500"
+          className="inline-flex items-center gap-3 px-8 py-4 bg-white text-noir-900 font-semibold rounded-full hover:bg-accent-100 transition-all duration-500"
         >
           <Sparkles className="h-5 w-5" />
           {t('success.newAppointment')}
@@ -382,9 +381,9 @@ export default function BookingFlow() {
           {stepLabels.map((label, idx) => (
             <div key={label} className={`flex items-center gap-2 ${idx < stepLabels.length - 1 ? 'flex-1' : ''}`}>
               <div
-                className={`w-10 h-10 rounded-xl flex items-center justify-center text-sm font-medium transition-all duration-500 ${
+                className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-500 ${
                   step > idx + 1
-                    ? 'bg-accent-500 text-white shadow-lg shadow-accent-500/30'
+                    ? 'bg-accent-600 text-white shadow-lg shadow-accent-600/30'
                     : step === idx + 1
                     ? 'bg-white text-noir-900 shadow-lg'
                     : 'bg-noir-800 text-noir-500'
@@ -392,7 +391,7 @@ export default function BookingFlow() {
               >
                 {step > idx + 1 ? <Check className="h-5 w-5" /> : idx + 1}
               </div>
-              <span className={`hidden md:block text-sm font-medium transition-colors ${
+              <span className={`hidden md:block text-sm font-semibold transition-colors ${
                 step === idx + 1 ? 'text-white' : 'text-noir-500'
               }`}>
                 {label}
@@ -426,7 +425,7 @@ export default function BookingFlow() {
               <div className="w-10 h-10 bg-accent-100 rounded-xl flex items-center justify-center">
                 <Sparkles className="h-5 w-5 text-accent-600" />
               </div>
-              <h3 className="text-2xl md:text-3xl font-display font-medium text-noir-900">
+              <h3 className="text-2xl md:text-3xl font-display font-bold text-noir-900">
                 {t('step1.title')}
               </h3>
             </div>
@@ -475,7 +474,7 @@ export default function BookingFlow() {
                 <div className="w-10 h-10 bg-accent-100 rounded-xl flex items-center justify-center">
                   <Building2 className="h-5 w-5 text-accent-600" />
                 </div>
-                <h3 className="text-2xl md:text-3xl font-display font-medium text-noir-900">
+                <h3 className="text-2xl md:text-3xl font-display font-bold text-noir-900">
                   {t('step2.title')}
                 </h3>
               </div>
@@ -538,7 +537,7 @@ export default function BookingFlow() {
                 <div className="w-10 h-10 bg-accent-100 rounded-xl flex items-center justify-center">
                   <Target className="h-5 w-5 text-accent-600" />
                 </div>
-                <h3 className="text-2xl md:text-3xl font-display font-medium text-noir-900">
+                <h3 className="text-2xl md:text-3xl font-display font-bold text-noir-900">
                   {t('step3.title')}
                 </h3>
               </div>
@@ -656,7 +655,7 @@ export default function BookingFlow() {
                 <div className="w-10 h-10 bg-accent-100 rounded-xl flex items-center justify-center">
                   <Wallet className="h-5 w-5 text-accent-600" />
                 </div>
-                <h3 className="text-2xl md:text-3xl font-display font-medium text-noir-900">
+                <h3 className="text-2xl md:text-3xl font-display font-bold text-noir-900">
                   {t('step4.title')}
                 </h3>
               </div>
@@ -730,7 +729,7 @@ export default function BookingFlow() {
                           updateFormData('timing', '');
                         }
                       }}
-                      className="w-full p-4 rounded-xl border-2 border-noir-200 bg-ivory-50 text-noir-800 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all appearance-none cursor-pointer"
+                      className="w-full p-4 rounded-xl border-2 border-noir-200 bg-noir-50 text-noir-800 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all appearance-none cursor-pointer"
                     >
                       <option value="">{t('step4.selectMonth')}</option>
                       {monthNames.map((month, idx) => {
@@ -767,7 +766,7 @@ export default function BookingFlow() {
                           updateFormData('timing', month ? `${month}-` : '');
                         }
                       }}
-                      className="w-full p-4 rounded-xl border-2 border-noir-200 bg-ivory-50 text-noir-800 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all appearance-none cursor-pointer"
+                      className="w-full p-4 rounded-xl border-2 border-noir-200 bg-noir-50 text-noir-800 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all appearance-none cursor-pointer"
                     >
                       <option value="">{t('step4.selectYear')}</option>
                       {timingAvailableYears.map(year => (
@@ -861,7 +860,7 @@ export default function BookingFlow() {
                 <div className="w-10 h-10 bg-accent-100 rounded-xl flex items-center justify-center">
                   <Calendar className="h-5 w-5 text-accent-600" />
                 </div>
-                <h3 className="text-2xl md:text-3xl font-display font-medium text-noir-900">
+                <h3 className="text-2xl md:text-3xl font-display font-bold text-noir-900">
                   {t('step5.title')}
                 </h3>
               </div>
@@ -879,7 +878,7 @@ export default function BookingFlow() {
                   type="text"
                   value={formData.name}
                   onChange={(e) => updateFormData('name', e.target.value)}
-                  className="w-full p-4 rounded-xl border-2 border-noir-200 bg-ivory-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all"
+                  className="w-full p-4 rounded-xl border-2 border-noir-200 bg-noir-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all"
                   placeholder={t('step5.namePlaceholder')}
                 />
               </div>
@@ -892,7 +891,7 @@ export default function BookingFlow() {
                   type="email"
                   value={formData.email}
                   onChange={(e) => updateFormData('email', e.target.value)}
-                  className="w-full p-4 rounded-xl border-2 border-noir-200 bg-ivory-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all"
+                  className="w-full p-4 rounded-xl border-2 border-noir-200 bg-noir-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all"
                   placeholder={t('step5.emailPlaceholder')}
                 />
               </div>
@@ -905,7 +904,7 @@ export default function BookingFlow() {
                   type="tel"
                   value={formData.phone}
                   onChange={(e) => updateFormData('phone', e.target.value)}
-                  className="w-full p-4 rounded-xl border-2 border-noir-200 bg-ivory-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all"
+                  className="w-full p-4 rounded-xl border-2 border-noir-200 bg-noir-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all"
                   placeholder={t('step5.phonePlaceholder')}
                 />
               </div>
@@ -918,14 +917,14 @@ export default function BookingFlow() {
                   type="text"
                   value={formData.gemeente}
                   onChange={(e) => updateFormData('gemeente', e.target.value)}
-                  className="w-full p-4 rounded-xl border-2 border-noir-200 bg-ivory-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all"
+                  className="w-full p-4 rounded-xl border-2 border-noir-200 bg-noir-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all"
                   placeholder={t('step5.municipalityPlaceholder')}
                 />
               </div>
             </div>
 
             {/* Calendar */}
-            <div className="bg-gradient-to-br from-ivory-100 to-ivory-50 rounded-2xl p-6 border border-noir-100">
+            <div className="bg-noir-50 rounded-2xl p-6 border border-noir-100">
               <div className="flex items-center justify-between mb-6">
                 <button
                   onClick={() => navigateMonth('prev')}
@@ -937,7 +936,7 @@ export default function BookingFlow() {
                   <ChevronLeft className="h-5 w-5" />
                 </button>
                 <div className="flex items-center gap-2">
-                  <h4 className="text-lg font-display font-medium text-noir-900">
+                  <h4 className="text-lg font-display font-bold text-noir-900">
                     {monthNames[currentMonth.month]} {currentMonth.year}
                   </h4>
                   {loadingAvailability && (
@@ -1050,7 +1049,7 @@ export default function BookingFlow() {
                 value={formData.message}
                 onChange={(e) => updateFormData('message', e.target.value)}
                 rows={3}
-                className="w-full p-4 rounded-xl border-2 border-noir-200 bg-ivory-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all resize-none"
+                className="w-full p-4 rounded-xl border-2 border-noir-200 bg-noir-50 text-noir-800 placeholder:text-noir-400 focus:outline-none focus:border-accent-500 focus:ring-4 focus:ring-accent-500/10 transition-all resize-none"
                 placeholder={t('step5.messagePlaceholder')}
               />
             </div>
@@ -1059,11 +1058,11 @@ export default function BookingFlow() {
       </div>
 
       {/* Navigation - Premium design */}
-      <div className="px-8 md:px-12 py-6 bg-gradient-to-br from-ivory-100 to-ivory-50 border-t border-noir-100 flex justify-between">
+      <div className="px-8 md:px-12 py-6 bg-noir-50 border-t border-noir-100 flex justify-between">
         {step > 1 ? (
           <button
             onClick={() => setStep(step - 1)}
-            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border-2 border-noir-200 text-noir-700 font-medium hover:bg-white hover:border-noir-300 transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border-2 border-noir-200 text-noir-700 font-semibold hover:bg-white hover:border-noir-300 transition-all"
           >
             <ArrowLeft className="h-4 w-4" />
             {t('navigation.previous')}
@@ -1078,9 +1077,9 @@ export default function BookingFlow() {
             <button
               onClick={() => setStep(step + 1)}
               disabled={!canProceed()}
-              className={`inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-medium transition-all duration-300 ${
+              className={`inline-flex items-center gap-2 px-8 py-3.5 rounded-full font-semibold transition-all duration-300 ${
                 canProceed()
-                  ? 'bg-noir-900 text-white hover:bg-accent-600 shadow-lg hover:shadow-xl hover:shadow-accent-500/20'
+                  ? 'bg-noir-900 text-white hover:bg-accent-600 shadow-lg hover:shadow-xl hover:shadow-accent-600/20'
                   : 'bg-noir-200 text-noir-400 cursor-not-allowed'
               }`}
             >
@@ -1091,9 +1090,9 @@ export default function BookingFlow() {
             <button
               onClick={handleSubmit}
               disabled={!canProceed() || isSubmitting}
-              className={`inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-medium transition-all duration-300 ${
+              className={`inline-flex items-center gap-2 px-8 py-3.5 rounded-full font-semibold transition-all duration-300 ${
                 canProceed() && !isSubmitting
-                  ? 'bg-accent-500 text-white hover:bg-accent-600 shadow-lg hover:shadow-xl hover:shadow-accent-500/30'
+                  ? 'bg-accent-600 text-white hover:bg-accent-700 shadow-lg hover:shadow-xl hover:shadow-accent-600/30'
                   : 'bg-noir-200 text-noir-400 cursor-not-allowed'
               }`}
             >

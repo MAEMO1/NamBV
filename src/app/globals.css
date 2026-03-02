@@ -12,7 +12,7 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display text-noir-900;
+    @apply font-display text-noir-900 font-bold;
   }
 
   ::selection {
@@ -38,54 +38,48 @@
     @apply py-16 md:py-20 lg:py-24;
   }
 
-  /* Buttons - Refined, minimal */
+  /* Buttons - Rounded, modern */
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-medium text-white bg-noir-900 hover:bg-noir-800 transition-all duration-500 ease-smooth;
+    @apply inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold text-white bg-accent-600 hover:bg-accent-700 rounded-full transition-all duration-300;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-medium text-noir-900 bg-transparent border border-noir-300 hover:bg-noir-900 hover:text-white hover:border-noir-900 transition-all duration-500 ease-smooth;
+    @apply inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold text-noir-900 bg-transparent border-2 border-noir-200 hover:border-accent-600 hover:text-accent-600 rounded-full transition-all duration-300;
   }
 
   .btn-accent {
-    @apply inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-medium text-white bg-accent-500 hover:bg-accent-600 transition-all duration-500 ease-smooth;
+    @apply inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold text-white bg-accent-600 hover:bg-accent-700 rounded-full transition-all duration-300;
   }
 
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-medium text-noir-600 hover:text-noir-900 bg-transparent transition-all duration-300;
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-medium text-noir-600 hover:text-accent-600 bg-transparent rounded-full transition-all duration-300;
   }
 
   /* Typography */
   .section-title {
-    @apply text-display-lg font-display font-medium text-noir-900;
+    @apply text-display-lg font-display font-bold text-noir-900;
   }
 
   .section-subtitle {
     @apply text-lg md:text-xl text-noir-500 max-w-2xl leading-relaxed;
   }
 
-  /* Cards - Clean, minimal */
+  /* Cards - Rounded, clean */
   .card {
-    @apply bg-white overflow-hidden transition-all duration-500 ease-smooth;
+    @apply bg-white rounded-2xl overflow-hidden transition-all duration-500 ease-smooth;
   }
 
   .card-bordered {
-    @apply bg-white border border-noir-100 overflow-hidden transition-all duration-500 ease-smooth hover:border-noir-300;
-  }
-
-  /* Noise texture overlay */
-  .noise-overlay {
-    @apply pointer-events-none fixed inset-0 z-50 opacity-[0.02];
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    @apply bg-white rounded-2xl border border-noir-100 overflow-hidden transition-all duration-500 ease-smooth hover:border-noir-300 hover:shadow-soft;
   }
 
   /* Form elements - Clean, modern */
   .input-field {
-    @apply w-full px-0 py-4 text-noir-800 bg-transparent border-0 border-b border-noir-200 transition-all duration-300 ease-smooth focus:border-noir-900 focus:ring-0 focus:outline-none placeholder:text-noir-400;
+    @apply w-full px-5 py-4 text-noir-800 bg-noir-50 border border-noir-200 rounded-xl transition-all duration-300 ease-smooth focus:border-accent-600 focus:ring-2 focus:ring-accent-600/20 focus:outline-none placeholder:text-noir-400;
   }
 
   .input-field-boxed {
-    @apply w-full px-5 py-4 text-noir-800 bg-ivory-200 border border-noir-100 transition-all duration-300 ease-smooth focus:border-noir-400 focus:ring-0 focus:outline-none placeholder:text-noir-400;
+    @apply w-full px-5 py-4 text-noir-800 bg-noir-50 border border-noir-200 rounded-xl transition-all duration-300 ease-smooth focus:border-accent-600 focus:ring-2 focus:ring-accent-600/20 focus:outline-none placeholder:text-noir-400;
   }
 
   .input-label {

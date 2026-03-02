@@ -59,13 +59,9 @@ export default function ProjectDetailPage() {
   const t = useTranslations('projectDetail');
 
   const [heroLoaded, setHeroLoaded] = useState(false);
-  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
     setHeroLoaded(true);
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // Find the project by slug
@@ -96,15 +92,15 @@ export default function ProjectDetailPage() {
     return (
       <section className="min-h-screen bg-noir-950 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-display-lg font-display font-medium text-white mb-6">
+          <h1 className="text-display-lg font-display font-bold text-white mb-6">
             Project niet gevonden
           </h1>
-          <p className="text-ivory-300 text-lg mb-10">
+          <p className="text-noir-300 text-lg mb-10">
             Het project dat u zoekt bestaat niet of is verplaatst.
           </p>
           <Link
             href="/projecten"
-            className="inline-flex items-center gap-3 px-8 py-4 bg-accent-400 text-noir-900 font-medium hover:bg-accent-300 transition-colors duration-300"
+            className="inline-flex items-center gap-3 px-8 py-4 bg-accent-600 text-white rounded-full font-semibold hover:bg-accent-500 transition-colors duration-300"
           >
             <ArrowLeft className="h-5 w-5" />
             <span className="uppercase tracking-wider text-sm">{t('backToProjects')}</span>
@@ -120,11 +116,8 @@ export default function ProjectDetailPage() {
       {/* Section 1: Hero */}
       {/* ============================================ */}
       <section className="relative min-h-[80vh] flex items-end overflow-hidden">
-        {/* Background image with parallax */}
-        <div
-          className="absolute inset-0 scale-110"
-          style={{ transform: `scale(1.1) translateY(${scrollY * 0.15}px)` }}
-        >
+        {/* Background image */}
+        <div className="absolute inset-0">
           <Image
             src={project.mainImage}
             alt={project.title}
@@ -167,7 +160,7 @@ export default function ProjectDetailPage() {
 
             {/* Title */}
             <h1
-              className={`text-display-lg md:text-display-xl font-display font-medium text-white mb-6 transition-all duration-1000 ${
+              className={`text-display-lg md:text-display-xl font-display font-bold text-white mb-6 transition-all duration-1000 ${
                 heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
               }`}
               style={{ transitionDelay: '200ms' }}
@@ -199,7 +192,7 @@ export default function ProjectDetailPage() {
             <div className="lg:col-span-7 xl:col-span-8 order-2 lg:order-1">
               {/* Short description */}
               <AnimatedSection>
-                <p className="text-xl md:text-2xl text-ivory-300 leading-relaxed mb-16 font-light">
+                <p className="text-xl md:text-2xl text-noir-300 leading-relaxed mb-16 font-light">
                   {project.shortDescription}
                 </p>
               </AnimatedSection>
@@ -214,7 +207,7 @@ export default function ProjectDetailPage() {
                     {t('challengeTitle')}
                   </h2>
                 </div>
-                <p className="text-ivory-300 text-lg leading-relaxed">
+                <p className="text-noir-300 text-lg leading-relaxed">
                   {project.challengeText}
                 </p>
               </AnimatedSection>
@@ -234,7 +227,7 @@ export default function ProjectDetailPage() {
                     {/* Before images */}
                     {beforeImages.map((img, idx) => (
                       <div key={`before-${idx}`} className="relative group">
-                        <div className="relative aspect-[4/3] overflow-hidden">
+                        <div className="relative aspect-[4/3] rounded-xl overflow-hidden">
                           <Image
                             src={img}
                             alt={`${project.title} - ${t('before')} ${idx + 1}`}
@@ -244,7 +237,7 @@ export default function ProjectDetailPage() {
                           <div className="absolute inset-0 bg-gradient-to-t from-noir-950/60 to-transparent" />
                         </div>
                         <div className="absolute bottom-4 left-4">
-                          <span className="px-3 py-1.5 bg-noir-900/90 text-ivory-100 text-xs font-medium uppercase tracking-wider">
+                          <span className="px-3 py-1.5 rounded-full bg-noir-900/90 text-white text-xs font-semibold uppercase tracking-wider">
                             {t('before')}
                           </span>
                         </div>
@@ -253,7 +246,7 @@ export default function ProjectDetailPage() {
                     {/* After images */}
                     {afterImages.map((img, idx) => (
                       <div key={`after-${idx}`} className="relative group">
-                        <div className="relative aspect-[4/3] overflow-hidden">
+                        <div className="relative aspect-[4/3] rounded-xl overflow-hidden">
                           <Image
                             src={img}
                             alt={`${project.title} - ${t('after')} ${idx + 1}`}
@@ -263,7 +256,7 @@ export default function ProjectDetailPage() {
                           <div className="absolute inset-0 bg-gradient-to-t from-noir-950/60 to-transparent" />
                         </div>
                         <div className="absolute bottom-4 left-4">
-                          <span className="px-3 py-1.5 bg-accent-500/90 text-white text-xs font-medium uppercase tracking-wider">
+                          <span className="px-3 py-1.5 rounded-full bg-accent-600/90 text-white text-xs font-semibold uppercase tracking-wider">
                             {t('after')}
                           </span>
                         </div>
@@ -283,7 +276,7 @@ export default function ProjectDetailPage() {
                     {t('approachTitle')}
                   </h2>
                 </div>
-                <p className="text-ivory-300 text-lg leading-relaxed">
+                <p className="text-noir-300 text-lg leading-relaxed">
                   {project.approachText}
                 </p>
               </AnimatedSection>
@@ -303,7 +296,7 @@ export default function ProjectDetailPage() {
                     {allImages.map((img, idx) => (
                       <div
                         key={`gallery-${idx}`}
-                        className="relative group overflow-hidden"
+                        className="relative group overflow-hidden rounded-xl"
                       >
                         <div className="relative aspect-[4/3]">
                           <Image
@@ -330,7 +323,7 @@ export default function ProjectDetailPage() {
                     {t('resultTitle')}
                   </h2>
                 </div>
-                <p className="text-ivory-300 text-lg leading-relaxed">
+                <p className="text-noir-300 text-lg leading-relaxed">
                   {project.resultText}
                 </p>
               </AnimatedSection>
@@ -340,74 +333,74 @@ export default function ProjectDetailPage() {
             <div className="lg:col-span-5 xl:col-span-4 order-1 lg:order-2">
               <div className="lg:sticky lg:top-28">
                 <AnimatedSection delay={200}>
-                  <div className="bg-noir-900 border border-white/10 p-8">
-                    <h3 className="text-lg font-display font-medium text-white mb-6">
+                  <div className="bg-noir-900 border border-white/10 rounded-2xl p-8">
+                    <h3 className="text-lg font-display font-bold text-white mb-6">
                       {t('projectInfo')}
                     </h3>
 
                     <div className="space-y-5">
                       {/* Location */}
                       <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 bg-accent-400/10 flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 bg-accent-600/10 rounded-xl flex items-center justify-center flex-shrink-0">
                           <MapPin className="h-5 w-5 text-accent-400" />
                         </div>
                         <div>
-                          <p className="text-xs text-ivory-300/60 uppercase tracking-wider mb-0.5">
+                          <p className="text-xs text-noir-300/60 uppercase tracking-wider mb-0.5">
                             {t('location')}
                           </p>
-                          <p className="text-ivory-100 font-medium">{project.location}</p>
+                          <p className="text-white font-medium">{project.location}</p>
                         </div>
                       </div>
 
                       {/* Year */}
                       <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 bg-accent-400/10 flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 bg-accent-600/10 rounded-xl flex items-center justify-center flex-shrink-0">
                           <Calendar className="h-5 w-5 text-accent-400" />
                         </div>
                         <div>
-                          <p className="text-xs text-ivory-300/60 uppercase tracking-wider mb-0.5">
+                          <p className="text-xs text-noir-300/60 uppercase tracking-wider mb-0.5">
                             {t('year')}
                           </p>
-                          <p className="text-ivory-100 font-medium">{project.year}</p>
+                          <p className="text-white font-medium">{project.year}</p>
                         </div>
                       </div>
 
                       {/* Type */}
                       <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 bg-accent-400/10 flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 bg-accent-600/10 rounded-xl flex items-center justify-center flex-shrink-0">
                           <ChevronRight className="h-5 w-5 text-accent-400" />
                         </div>
                         <div>
-                          <p className="text-xs text-ivory-300/60 uppercase tracking-wider mb-0.5">
+                          <p className="text-xs text-noir-300/60 uppercase tracking-wider mb-0.5">
                             {t('type')}
                           </p>
-                          <p className="text-ivory-100 font-medium">{project.projectType}</p>
+                          <p className="text-white font-medium">{project.projectType}</p>
                         </div>
                       </div>
 
                       {/* Duration */}
                       <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 bg-accent-400/10 flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 bg-accent-600/10 rounded-xl flex items-center justify-center flex-shrink-0">
                           <Clock className="h-5 w-5 text-accent-400" />
                         </div>
                         <div>
-                          <p className="text-xs text-ivory-300/60 uppercase tracking-wider mb-0.5">
+                          <p className="text-xs text-noir-300/60 uppercase tracking-wider mb-0.5">
                             {t('duration')}
                           </p>
-                          <p className="text-ivory-100 font-medium">{project.duration}</p>
+                          <p className="text-white font-medium">{project.duration}</p>
                         </div>
                       </div>
 
                       {/* Surface */}
                       <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 bg-accent-400/10 flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 bg-accent-600/10 rounded-xl flex items-center justify-center flex-shrink-0">
                           <Ruler className="h-5 w-5 text-accent-400" />
                         </div>
                         <div>
-                          <p className="text-xs text-ivory-300/60 uppercase tracking-wider mb-0.5">
+                          <p className="text-xs text-noir-300/60 uppercase tracking-wider mb-0.5">
                             {t('surface')}
                           </p>
-                          <p className="text-ivory-100 font-medium">{project.surface}</p>
+                          <p className="text-white font-medium">{project.surface}</p>
                         </div>
                       </div>
                     </div>
@@ -416,7 +409,7 @@ export default function ProjectDetailPage() {
                     <div className="mt-8 pt-6 border-t border-white/10">
                       <Link
                         href="/offerte"
-                        className="group flex items-center justify-center gap-3 w-full px-6 py-4 bg-accent-400 text-noir-900 font-medium hover:bg-accent-300 transition-colors duration-300"
+                        className="group flex items-center justify-center gap-3 w-full px-6 py-4 bg-accent-600 text-white rounded-full font-semibold hover:bg-accent-500 transition-colors duration-300"
                       >
                         <span className="uppercase tracking-wider text-sm">
                           {t('ctaTitle').split('?')[0]}?
@@ -450,19 +443,19 @@ export default function ProjectDetailPage() {
                   <p className="text-sm text-accent-400 uppercase tracking-[0.2em] mb-4">
                     {t('nextProject')}
                   </p>
-                  <h2 className="text-display-md md:text-display-lg font-display font-medium text-white mb-4 group-hover:text-accent-400 transition-colors duration-500">
+                  <h2 className="text-display-md md:text-display-lg font-display font-bold text-white mb-4 group-hover:text-accent-400 transition-colors duration-500">
                     {nextProject.title}
                   </h2>
-                  <div className="flex items-center gap-3 text-ivory-300/60">
+                  <div className="flex items-center gap-3 text-noir-300/60">
                     <span className="text-sm uppercase tracking-wider">
                       {nextProject.category}
                     </span>
-                    <span className="w-1 h-1 rounded-full bg-ivory-300/40" />
+                    <span className="w-1 h-1 rounded-full bg-noir-500" />
                     <span className="text-sm">{nextProject.location}</span>
                   </div>
                 </div>
                 <div className="md:col-span-5">
-                  <div className="relative aspect-[16/10] overflow-hidden">
+                  <div className="relative aspect-[16/10] rounded-xl overflow-hidden">
                     <Image
                       src={nextProject.mainImage}
                       alt={nextProject.title}
@@ -472,7 +465,7 @@ export default function ProjectDetailPage() {
                     <div className="absolute inset-0 bg-noir-950/30 group-hover:bg-noir-950/10 transition-colors duration-500" />
 
                     {/* Arrow indicator */}
-                    <div className="absolute bottom-6 right-6 w-12 h-12 bg-accent-400 flex items-center justify-center group-hover:bg-accent-300 transition-colors duration-300">
+                    <div className="absolute bottom-6 right-6 w-12 h-12 bg-accent-600 rounded-full flex items-center justify-center group-hover:bg-accent-500 transition-colors duration-300">
                       <ArrowRight className="h-5 w-5 text-noir-900" />
                     </div>
                   </div>
@@ -486,36 +479,29 @@ export default function ProjectDetailPage() {
       {/* ============================================ */}
       {/* Section 9: CTA */}
       {/* ============================================ */}
-      <section className="py-20 md:py-28 bg-accent-500 relative overflow-hidden">
-        {/* Decorative circles */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-white/10 rounded-full" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] border border-white/10 rounded-full" />
-
+      <section className="py-20 md:py-28 bg-noir-900 relative overflow-hidden">
         <div className="container-wide relative">
           <AnimatedSection>
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-display-lg font-display font-medium text-white mb-6">
+              <h2 className="text-display-lg font-display font-bold text-white mb-6">
                 {t('ctaTitle')}
               </h2>
-              <p className="text-xl text-white/80 mb-10">
+              <p className="text-xl text-noir-400 mb-10">
                 {t('ctaDescription')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   href="/offerte"
-                  className="group relative inline-flex items-center justify-center gap-3 px-10 py-5 bg-white text-accent-700 font-medium overflow-hidden transition-all duration-500 hover:shadow-xl"
+                  className="inline-flex items-center justify-center gap-3 px-10 py-5 bg-accent-600 text-white rounded-full font-semibold hover:bg-accent-500 transition-all duration-300"
                 >
-                  <span className="absolute inset-0 bg-noir-900 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-                  <span className="relative z-10 uppercase tracking-wider text-sm group-hover:text-white transition-colors">
-                    Offerte aanvragen
-                  </span>
-                  <ArrowRight className="relative z-10 h-5 w-5 group-hover:text-white transition-colors" />
+                  Offerte aanvragen
+                  <ArrowRight className="h-5 w-5" />
                 </Link>
                 <Link
                   href="/afspraak"
-                  className="inline-flex items-center justify-center gap-3 px-10 py-5 border-2 border-white/30 text-white font-medium hover:bg-white/10 transition-all duration-300"
+                  className="inline-flex items-center justify-center gap-3 px-10 py-5 border-2 border-noir-700 text-white rounded-full font-semibold hover:bg-white hover:text-noir-900 hover:border-white transition-all duration-300"
                 >
-                  <span className="uppercase tracking-wider text-sm">{t('backToProjects')}</span>
+                  {t('backToProjects')}
                   <ArrowLeft className="h-5 w-5" />
                 </Link>
               </div>

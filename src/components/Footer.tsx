@@ -47,7 +47,7 @@ export default function Footer() {
             {/* CTA Button */}
             <Link
               href="/offerte"
-              className="group inline-flex items-center gap-3 px-8 py-4 bg-accent-500 text-white font-medium uppercase tracking-wide hover:bg-accent-400 transition-all duration-500"
+              className="group inline-flex items-center gap-3 px-8 py-4 bg-accent-600 text-white font-semibold rounded-full hover:bg-accent-500 transition-all duration-300"
             >
               {t('ctaButton')}
               <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -126,7 +126,7 @@ export default function Footer() {
                 href="https://wa.me/32493812789"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 flex items-center justify-center border border-noir-700 text-noir-400 hover:bg-accent-500 hover:border-accent-500 hover:text-white transition-all duration-300"
+                className="w-10 h-10 flex items-center justify-center rounded-full border border-noir-700 text-noir-400 hover:bg-accent-600 hover:border-accent-600 hover:text-white transition-all duration-300"
                 aria-label="WhatsApp"
               >
                 <Phone className="h-4 w-4" />
@@ -135,14 +135,14 @@ export default function Footer() {
                 href="https://www.instagram.com/namconstruction.be/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 flex items-center justify-center border border-noir-700 text-noir-400 hover:bg-accent-500 hover:border-accent-500 hover:text-white transition-all duration-300"
+                className="w-10 h-10 flex items-center justify-center rounded-full border border-noir-700 text-noir-400 hover:bg-accent-600 hover:border-accent-600 hover:text-white transition-all duration-300"
                 aria-label="Instagram"
               >
                 <Instagram className="h-4 w-4" />
               </a>
               <a
                 href="mailto:info@namconstruction.be"
-                className="w-10 h-10 flex items-center justify-center border border-noir-700 text-noir-400 hover:bg-accent-500 hover:border-accent-500 hover:text-white transition-all duration-300"
+                className="w-10 h-10 flex items-center justify-center rounded-full border border-noir-700 text-noir-400 hover:bg-accent-600 hover:border-accent-600 hover:text-white transition-all duration-300"
                 aria-label="Email"
               >
                 <Mail className="h-4 w-4" />
