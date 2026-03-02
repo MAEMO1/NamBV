@@ -73,20 +73,6 @@ export default function ProjectDetailPage() {
     ? realProjects[(projectIndex + 1) % realProjects.length]
     : null;
 
-  // Collect all images
-  const allImages = project
-    ? [
-        ...(project.images.before || []),
-        ...(project.images.after || []),
-        ...((project.images as { photos?: string[] }).photos || []),
-      ]
-    : [];
-
-  const hasBefore = project && project.images.before && project.images.before.length > 0;
-  const hasAfter = project && project.images.after && project.images.after.length > 0;
-  const beforeImages = project?.images.before || [];
-  const afterImages = project?.images.after || [];
-
   // 404-style message if project not found
   if (!project) {
     return (
@@ -213,61 +199,7 @@ export default function ProjectDetailPage() {
               </AnimatedSection>
 
               {/* ============================================ */}
-              {/* Section 4: Before/After Gallery */}
-              {/* ============================================ */}
-              {hasBefore && hasAfter && (
-                <AnimatedSection className="mb-16">
-                  <div className="flex items-center gap-3 mb-8">
-                    <div className="w-10 h-px bg-accent-400" />
-                    <h2 className="text-sm font-medium text-accent-400 uppercase tracking-[0.2em]">
-                      {t('before')} / {t('after')}
-                    </h2>
-                  </div>
-                  <div className="grid md:grid-cols-2 gap-6">
-                    {/* Before images */}
-                    {beforeImages.map((img, idx) => (
-                      <div key={`before-${idx}`} className="relative group">
-                        <div className="relative aspect-[4/3] rounded-xl overflow-hidden">
-                          <Image
-                            src={img}
-                            alt={`${project.title} - ${t('before')} ${idx + 1}`}
-                            fill
-                            className="object-cover transition-transform duration-700 group-hover:scale-105"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-noir-950/60 to-transparent" />
-                        </div>
-                        <div className="absolute bottom-4 left-4">
-                          <span className="px-3 py-1.5 rounded-full bg-noir-900/90 text-white text-xs font-semibold uppercase tracking-wider">
-                            {t('before')}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                    {/* After images */}
-                    {afterImages.map((img, idx) => (
-                      <div key={`after-${idx}`} className="relative group">
-                        <div className="relative aspect-[4/3] rounded-xl overflow-hidden">
-                          <Image
-                            src={img}
-                            alt={`${project.title} - ${t('after')} ${idx + 1}`}
-                            fill
-                            className="object-cover transition-transform duration-700 group-hover:scale-105"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-noir-950/60 to-transparent" />
-                        </div>
-                        <div className="absolute bottom-4 left-4">
-                          <span className="px-3 py-1.5 rounded-full bg-accent-600/90 text-white text-xs font-semibold uppercase tracking-wider">
-                            {t('after')}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </AnimatedSection>
-              )}
-
-              {/* ============================================ */}
-              {/* Section 5: "Onze Aanpak" */}
+              {/* Section 4: "Onze Aanpak" */}
               {/* ============================================ */}
               <AnimatedSection className="mb-16">
                 <div className="flex items-center gap-3 mb-6">
@@ -282,39 +214,7 @@ export default function ProjectDetailPage() {
               </AnimatedSection>
 
               {/* ============================================ */}
-              {/* Section 6: Photo Gallery */}
-              {/* ============================================ */}
-              {allImages.length > 0 && (
-                <AnimatedSection className="mb-16">
-                  <div className="flex items-center gap-3 mb-8">
-                    <div className="w-10 h-px bg-accent-400" />
-                    <h2 className="text-sm font-medium text-accent-400 uppercase tracking-[0.2em]">
-                      {t('gallery')}
-                    </h2>
-                  </div>
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {allImages.map((img, idx) => (
-                      <div
-                        key={`gallery-${idx}`}
-                        className="relative group overflow-hidden rounded-xl"
-                      >
-                        <div className="relative aspect-[4/3]">
-                          <Image
-                            src={img}
-                            alt={`${project.title} - ${idx + 1}`}
-                            fill
-                            className="object-cover transition-transform duration-700 group-hover:scale-110"
-                          />
-                          <div className="absolute inset-0 bg-noir-950/0 group-hover:bg-noir-950/20 transition-colors duration-500" />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </AnimatedSection>
-              )}
-
-              {/* ============================================ */}
-              {/* Section 7: "Het Resultaat" */}
+              {/* Section 5: "Het Resultaat" */}
               {/* ============================================ */}
               <AnimatedSection>
                 <div className="flex items-center gap-3 mb-6">

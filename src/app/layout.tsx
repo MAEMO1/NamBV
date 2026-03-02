@@ -24,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html className={`${dmSans.variable} ${plusJakarta.variable}`}>
+    <html lang="nl" className={`${dmSans.variable} ${plusJakarta.variable}`}>
       <body className="font-sans">
         {children}
       </body>

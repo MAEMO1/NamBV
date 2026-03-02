@@ -37,7 +37,7 @@ export const projectImages = {
       `${STORAGE_BASE}/oostende/04-dakwerken-osb.webp`,
       `${STORAGE_BASE}/oostende/05-woonkamer-haard.webp`,
     ],
-    main: `${STORAGE_BASE}/oostende/01-woonkamer-plafond-spots.webp`,
+    main: `${STORAGE_BASE}/oostende/02-eetkamer-design.webp`,
   },
   parijs: {
     before: [
@@ -49,7 +49,7 @@ export const projectImages = {
       `${STORAGE_BASE}/parijs/after/02-groene-muur-salon.webp`,
       `${STORAGE_BASE}/parijs/after/03-rail-verlichting.webp`,
     ],
-    main: `${STORAGE_BASE}/parijs/after/02-groene-muur-salon.webp`,
+    main: `${STORAGE_BASE}/parijs/after/03-rail-verlichting.webp`,
   },
   reginaldWarneford: {
     photos: [
@@ -67,7 +67,7 @@ export const projectImages = {
       `${STORAGE_BASE}/gavere/03-gestripte-kamers.webp`,
       `${STORAGE_BASE}/gavere/04-vloer-uitgebroken.webp`,
     ],
-    main: `${STORAGE_BASE}/gavere/02-afbraak-interieur.webp`,
+    main: `${STORAGE_BASE}/gavere/01-zolder-balken.webp`,
   },
   visitatiestraat: {
     photos: [
@@ -76,7 +76,7 @@ export const projectImages = {
       `${STORAGE_BASE}/visitatiestraat/03-afbraak-binnenplaats.webp`,
       `${STORAGE_BASE}/visitatiestraat/04-leidingwerk-muren.webp`,
     ],
-    main: `${STORAGE_BASE}/visitatiestraat/01-ruwbouw-opening.webp`,
+    main: `${STORAGE_BASE}/visitatiestraat/02-funderingswerk-dpc.webp`,
   },
 }
 
