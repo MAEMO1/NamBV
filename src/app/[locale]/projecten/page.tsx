@@ -64,16 +64,6 @@ const fallbackProjects: Project[] = [
   },
   {
     id: '5',
-    title: 'Markt 6 Gavere',
-    slug: 'markt-gavere',
-    category: 'Ruwbouw',
-    location: 'Gavere',
-    year: '2023',
-    description: 'Ruwbouwwerken voor een volledige heropbouw in het centrum.',
-    image: projectImages.gavere.main
-  },
-  {
-    id: '6',
     title: 'Wasstraat',
     slug: 'wasstraat',
     category: 'Totaalrenovatie',
