@@ -26,7 +26,7 @@ const fallbackProjects: Project[] = [
     title: 'Meulemanstraat 34',
     slug: 'meulemanstraat-34',
     category: 'Totaalrenovatie',
-    location: 'Gavere',
+    location: 'Sint-Lievens-Houtem',
     year: '2024',
     description: 'Volledige renovatie van een karaktervol herenhuis met behoud van authentieke elementen.',
     image: projectImages.meulemanstraat.main,
@@ -38,7 +38,7 @@ const fallbackProjects: Project[] = [
     slug: 'renovatie-oostende',
     category: 'Renovatie',
     location: 'Oostende',
-    year: '2024',
+    year: '2023',
     description: 'Grondige renovatie met nieuwe indeling en moderne afwerking.',
     image: projectImages.oostende.main
   },
@@ -46,9 +46,9 @@ const fallbackProjects: Project[] = [
     id: '3',
     title: 'Afwerking Parijs',
     slug: 'afwerking-parijs',
-    category: 'Afwerking',
+    category: 'Renovatie',
     location: 'Parijs',
-    year: '2024',
+    year: '2025',
     description: 'Complete afwerking met hoogwaardige materialen en stijlvol design.',
     image: projectImages.parijs.main
   },
@@ -58,7 +58,7 @@ const fallbackProjects: Project[] = [
     slug: 'reginald-warnefordstraat',
     category: 'Totaalrenovatie',
     location: 'Gent',
-    year: '2023',
+    year: '2022',
     description: 'Totaalrenovatie van een stadswoning met focus op modern comfort.',
     image: projectImages.reginaldWarneford.main
   },
@@ -74,13 +74,13 @@ const fallbackProjects: Project[] = [
   },
   {
     id: '6',
-    title: 'Visitatiestraat',
-    slug: 'visitatiestraat',
+    title: 'Wasstraat',
+    slug: 'wasstraat',
     category: 'Totaalrenovatie',
     location: 'Gent',
-    year: '2023',
+    year: '2025',
     description: 'Volledige vernieuwing van een historisch pand met moderne technieken.',
-    image: projectImages.visitatiestraat.main
+    image: projectImages.wasstraat.main
   }
 ];
 

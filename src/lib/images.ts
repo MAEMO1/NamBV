@@ -69,7 +69,7 @@ export const projectImages = {
     ],
     main: `${STORAGE_BASE}/gavere/01-zolder-balken.webp`,
   },
-  visitatiestraat: {
+  wasstraat: {
     photos: [
       `${STORAGE_BASE}/visitatiestraat/01-ruwbouw-opening.webp`,
       `${STORAGE_BASE}/visitatiestraat/02-funderingswerk-dpc.webp`,
@@ -94,7 +94,7 @@ export const servicePageImages = {
     types: [
       projectImages.gavere.photos[0],
       projectImages.reginaldWarneford.photos[0],
-      projectImages.visitatiestraat.photos[3],
+      projectImages.wasstraat.photos[3],
       projectImages.oostende.photos[1],
     ],
     benefits: projectImages.oostende.photos[0],
@@ -107,8 +107,8 @@ export const servicePageImages = {
   },
   technieken: {
     hero: projectImages.oostende.photos[2],
-    certifications: projectImages.visitatiestraat.photos[1],
-    certBackground: projectImages.visitatiestraat.photos[1],
+    certifications: projectImages.wasstraat.photos[1],
+    certBackground: projectImages.wasstraat.photos[1],
     card: projectImages.oostende.photos[2],
   },
 }
