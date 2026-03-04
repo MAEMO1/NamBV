@@ -326,43 +326,24 @@ export default function ProjectDetailPage() {
       </section>
 
       {/* ============================================ */}
-      {/* Section 6: Photo Gallery */}
+      {/* Section 6: Second Photo */}
       {/* ============================================ */}
-      {(() => {
-        const allPhotos = [
-          ...(project.images.photos || []),
-          ...(project.images.after || []),
-        ].filter((url) => url !== project.mainImage);
-        if (allPhotos.length === 0) return null;
-        return (
-          <section className="py-20 md:py-28 bg-noir-900">
-            <div className="container-wide">
-              <AnimatedSection>
-                <div className="flex items-center gap-3 mb-10">
-                  <div className="w-10 h-px bg-accent-400" />
-                  <h2 className="text-sm font-medium text-accent-400 uppercase tracking-[0.2em]">
-                    {t('gallery')}
-                  </h2>
-                </div>
-              </AnimatedSection>
-              <div className="grid md:grid-cols-2 gap-6">
-                {allPhotos.map((url, i) => (
-                  <AnimatedSection key={url} delay={i * 100}>
-                    <div className="relative aspect-[4/3] rounded-xl overflow-hidden group">
-                      <Image
-                        src={url}
-                        alt={`${project.title} - foto ${i + 1}`}
-                        fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-105"
-                      />
-                    </div>
-                  </AnimatedSection>
-                ))}
+      {project.secondImage && (
+        <section className="py-20 md:py-28 bg-noir-900">
+          <div className="container-wide">
+            <AnimatedSection>
+              <div className="relative aspect-[16/9] rounded-xl overflow-hidden group">
+                <Image
+                  src={project.secondImage}
+                  alt={`${project.title} - detail`}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                />
               </div>
-            </div>
-          </section>
-        );
-      })()}
+            </AnimatedSection>
+          </div>
+        </section>
+      )}
 
       {/* ============================================ */}
       {/* Section 8: Next Project Navigation */}

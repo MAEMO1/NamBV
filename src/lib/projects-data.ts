@@ -18,6 +18,7 @@ export const realProjects = [
     approachText: 'We pakten dit project aan als een volledige totaalrenovatie. Eerst werd het interieur volledig gestript tot op de ruwbouw. Vervolgens volgde een grondige heropbouw: nieuwe vloeren in eiken parket en grijze tegels, strakke witte wanden met ingebouwde spots, en moderne deuren. De gevel werd volledig vernieuwd met een strakke witte afwerking en een nieuw donker dak. De oprit werd heraangelegd met moderne klinkers en er kwam een nieuwe garage.',
     resultText: 'Het resultaat is een woning die niet meer te herkennen is. De witte gevel straalt moderniteit uit, terwijl het interieur warmte en comfort biedt dankzij de eiken vloeren en strakke afwerking. Een totaaltransformatie waar de eigenaar trots op mag zijn.',
     mainImage: projectImages.meulemanstraat.main,
+    secondImage: projectImages.meulemanstraat.secondImage,
     images: {
       before: projectImages.meulemanstraat.before,
       after: projectImages.meulemanstraat.after,
@@ -40,6 +41,7 @@ export const realProjects = [
     approachText: 'We startten met de dakwerken: nieuwe pannen, onderdak met OSB-platen en waterdichting. Parallel werkten we aan het interieur. Vloerverwarming werd ingestoken en de ganse woning werd gerenoveerd volgens de eisen van de klant. De woonkamer kreeg een warme eiken vloer met ingebouwde spots. De eetkamer werd voorzien van designverlichting en nieuwe vloer. Een ingebouwde gashaard zorgt voor sfeer.',
     resultText: 'De woning is getransformeerd tot een moderne, warme leefomgeving. Het nieuwe dak garandeert jarenlange bescherming, terwijl het interieur nu de uitstraling heeft die past bij een kustresidentie. De combinatie van eiken vloeren, designmeubilair en sfeerverlichting maakt het geheel af.',
     mainImage: projectImages.oostende.main,
+    secondImage: projectImages.oostende.secondImage,
     images: {
       photos: projectImages.oostende.photos,
     },
@@ -83,6 +85,7 @@ export const realProjects = [
     approachText: 'We kozen voor een minimalistische aanpak met sterke materialen. Een moderne witte keuken met zwarte handgrepen en inbouwtoestellen vormt het hart van de woning. Stalen deuren met glas zorgen voor lichtinval en een industriële toets. De betonvloer geeft het geheel een stoere, eigentijdse uitstraling. Een apart keukeneiland met barkrukken maakt de leefruimte compleet.',
     resultText: 'Het resultaat is een woning die industrieel design combineert met huiselijk comfort. De witte keuken, stalen deuren en betonvloer vormen een harmonieus geheel. Dit project bewijst dat minimalisme en warmte perfect samengaan.',
     mainImage: projectImages.reginaldWarneford.main,
+    secondImage: projectImages.reginaldWarneford.secondImage,
     images: {
       photos: projectImages.reginaldWarneford.photos,
     },
@@ -104,6 +107,7 @@ export const realProjects = [
     approachText: 'Na de afbraak en het uitgraven startten we met nieuwe funderingswerken inclusief DPC-folie en wapening. De ruwbouw wordt opgetrokken in rode baksteen. Alle leidingwerk voor sanitair en elektriciteit wordt in de muren ingewerkt. Dit project wordt gefaseerd uitgevoerd met aandacht voor de omliggende bebouwing.',
     resultText: 'Dit project is momenteel in uitvoering. De funderingen zijn gelegd, de ruwbouw is gevorderd en het leidingwerk wordt aangelegd. De voltooiing is gepland in 2025, wanneer deze stadswoning getransformeerd zal zijn tot een moderne gezinswoning.',
     mainImage: projectImages.wasstraat.main,
+    secondImage: projectImages.wasstraat.secondImage,
     images: {
       photos: projectImages.wasstraat.photos,
     },

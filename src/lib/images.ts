@@ -26,8 +26,11 @@ export const projectImages = {
       `${STORAGE_BASE}/meulemanstraat/after/01-gerenoveerde-gevel.webp`,
       `${STORAGE_BASE}/meulemanstraat/after/02-modern-interieur-eik.webp`,
       `${STORAGE_BASE}/meulemanstraat/after/03-moderne-kamer-tegels.webp`,
+      `${STORAGE_BASE}/meulemanstraat/after/04-moderne-keuken-wit.jpg`,
+      `${STORAGE_BASE}/meulemanstraat/after/05-badkamer-luxe.jpg`,
     ],
-    main: `${STORAGE_BASE}/meulemanstraat/after/01-gerenoveerde-gevel.webp`,
+    main: `${STORAGE_BASE}/meulemanstraat/after/04-moderne-keuken-wit.jpg`,
+    secondImage: `${STORAGE_BASE}/meulemanstraat/after/05-badkamer-luxe.jpg`,
   },
   oostende: {
     photos: [
@@ -40,6 +43,7 @@ export const projectImages = {
       `${STORAGE_BASE}/oostende/07-vloerverwarming-installatie.jpg`,
     ],
     main: `${STORAGE_BASE}/oostende/06-eetkamer-eiken-design.jpg`,
+    secondImage: `${STORAGE_BASE}/oostende/07-vloerverwarming-installatie.jpg`,
   },
   parijs: {
     before: [
@@ -63,6 +67,7 @@ export const projectImages = {
       `${STORAGE_BASE}/reginald-warnefordstraat/06-inkomhal-trap.png`,
     ],
     main: `${STORAGE_BASE}/reginald-warnefordstraat/05-woonkamer-betonvloer.png`,
+    secondImage: `${STORAGE_BASE}/reginald-warnefordstraat/06-inkomhal-trap.png`,
   },
   gavere: {
     photos: [
@@ -83,6 +88,7 @@ export const projectImages = {
       `${STORAGE_BASE}/wasstraat/02-inbouwhaard-wit.jpg`,
     ],
     main: `${STORAGE_BASE}/wasstraat/01-modern-interieur-tegels.jpg`,
+    secondImage: `${STORAGE_BASE}/wasstraat/02-inbouwhaard-wit.jpg`,
   },
 }
 
