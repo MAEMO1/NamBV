@@ -106,8 +106,10 @@ function AnimatedSection({
 
 export default function HomePage() {
   const [heroLoaded, setHeroLoaded] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
   const t = useTranslations('home');
   const tCommon = useTranslations('common');
+  const heroSlides = homepageImages.heroSlides;
 
   // Translated data
   const kernwaarden = [
@@ -174,19 +176,32 @@ export default function HomePage() {
     return () => clearTimeout(timer);
   }, []);
 
+  // Auto-rotate hero slides
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [heroSlides.length]);
+
   return (
     <>
       {/* ===== HERO SECTION - Clean, full-screen ===== */}
       <section className="relative min-h-screen flex items-center overflow-hidden">
-        {/* Background image */}
+        {/* Background image slider */}
         <div className="absolute inset-0">
-          <Image
-            src={homepageImages.hero}
-            alt="Gerenoveerde gevel Meulemanstraat"
-            fill
-            className="object-cover"
-            priority
-          />
+          {heroSlides.map((slide, index) => (
+            <Image
+              key={slide}
+              src={slide}
+              alt={`NAM Construction project ${index + 1}`}
+              fill
+              className={`object-cover transition-opacity duration-1000 ease-in-out ${
+                index === currentSlide ? 'opacity-100' : 'opacity-0'
+              }`}
+              priority={index === 0}
+            />
+          ))}
           {/* Single clean overlay */}
           <div className="absolute inset-0 bg-gradient-to-r from-noir-950/80 via-noir-950/50 to-noir-950/30" />
         </div>
@@ -252,6 +267,27 @@ export default function HomePage() {
               </TrackedCTA>
             </div>
           </div>
+        </div>
+
+        {/* Slide indicators */}
+        <div
+          className={`absolute bottom-[88px] md:bottom-[80px] left-0 right-0 z-10 flex justify-center gap-2 transition-all duration-700 ${
+            heroLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
+          style={{ transitionDelay: '1000ms' }}
+        >
+          {heroSlides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentSlide(index)}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                index === currentSlide
+                  ? 'bg-white w-6'
+                  : 'bg-white/40 hover:bg-white/60'
+              }`}
+              aria-label={`Slide ${index + 1}`}
+            />
+          ))}
         </div>
 
         {/* Stats bar */}

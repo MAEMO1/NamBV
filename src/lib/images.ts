@@ -36,8 +36,10 @@ export const projectImages = {
       `${STORAGE_BASE}/oostende/03-dakwerken-pannen.webp`,
       `${STORAGE_BASE}/oostende/04-dakwerken-osb.webp`,
       `${STORAGE_BASE}/oostende/05-woonkamer-haard.webp`,
+      `${STORAGE_BASE}/oostende/06-eetkamer-eiken-design.jpg`,
+      `${STORAGE_BASE}/oostende/07-vloerverwarming-installatie.jpg`,
     ],
-    main: `${STORAGE_BASE}/oostende/02-eetkamer-design.webp`,
+    main: `${STORAGE_BASE}/oostende/06-eetkamer-eiken-design.jpg`,
   },
   parijs: {
     before: [
@@ -57,8 +59,10 @@ export const projectImages = {
       `${STORAGE_BASE}/reginald-warnefordstraat/02-stalen-deur-glas.webp`,
       `${STORAGE_BASE}/reginald-warnefordstraat/03-keuken-bar-eiland.webp`,
       `${STORAGE_BASE}/reginald-warnefordstraat/04-woonkamer-beton.webp`,
+      `${STORAGE_BASE}/reginald-warnefordstraat/05-woonkamer-betonvloer.png`,
+      `${STORAGE_BASE}/reginald-warnefordstraat/06-inkomhal-trap.png`,
     ],
-    main: `${STORAGE_BASE}/reginald-warnefordstraat/01-moderne-keuken-wit.webp`,
+    main: `${STORAGE_BASE}/reginald-warnefordstraat/05-woonkamer-betonvloer.png`,
   },
   gavere: {
     photos: [
@@ -75,8 +79,10 @@ export const projectImages = {
       `${STORAGE_BASE}/visitatiestraat/02-funderingswerk-dpc.webp`,
       `${STORAGE_BASE}/visitatiestraat/03-afbraak-binnenplaats.webp`,
       `${STORAGE_BASE}/visitatiestraat/04-leidingwerk-muren.webp`,
+      `${STORAGE_BASE}/wasstraat/01-modern-interieur-tegels.jpg`,
+      `${STORAGE_BASE}/wasstraat/02-inbouwhaard-wit.jpg`,
     ],
-    main: `${STORAGE_BASE}/visitatiestraat/02-funderingswerk-dpc.webp`,
+    main: `${STORAGE_BASE}/wasstraat/01-modern-interieur-tegels.jpg`,
   },
 }
 
@@ -118,6 +124,11 @@ export const servicePageImages = {
 // ============================================================================
 export const homepageImages = {
   hero: siteImages.heroHome,
+  heroSlides: [
+    '/hero/slide-1.jpg',
+    '/hero/slide-2.jpg',
+    '/hero/slide-3.jpg',
+  ],
   whyUs: siteImages.whyUsSection,
   ctaBackground: siteImages.ctaBackground,
   services: [
