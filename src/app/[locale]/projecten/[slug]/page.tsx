@@ -79,10 +79,10 @@ export default function ProjectDetailPage() {
       <section className="min-h-screen bg-noir-950 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-display-lg font-display font-bold text-white mb-6">
-            Project niet gevonden
+            {t('notFoundTitle')}
           </h1>
           <p className="text-noir-300 text-lg mb-10">
-            Het project dat u zoekt bestaat niet of is verplaatst.
+            {t('notFoundDescription')}
           </p>
           <Link
             href="/projecten"
@@ -399,27 +399,28 @@ export default function ProjectDetailPage() {
       {/* ============================================ */}
       {/* Section 9: CTA */}
       {/* ============================================ */}
-      <section className="py-20 md:py-28 bg-noir-900 relative overflow-hidden">
+      <section className="py-20 md:py-28 bg-accent-700 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.03] bg-noise mix-blend-overlay pointer-events-none" />
         <div className="container-wide relative">
           <AnimatedSection>
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="text-display-lg font-display font-bold text-white mb-6">
                 {t('ctaTitle')}
               </h2>
-              <p className="text-xl text-noir-400 mb-10">
+              <p className="text-xl text-white/70 mb-10">
                 {t('ctaDescription')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   href="/offerte"
-                  className="inline-flex items-center justify-center gap-3 px-10 py-5 bg-accent-600 text-white rounded-full font-semibold hover:bg-accent-500 transition-all duration-300"
+                  className="inline-flex items-center justify-center gap-3 px-10 py-5 bg-white text-accent-700 rounded-full font-semibold hover:bg-white/90 transition-all duration-300"
                 >
-                  Offerte aanvragen
+                  {t('ctaButton')}
                   <ArrowRight className="h-5 w-5" />
                 </Link>
                 <Link
-                  href="/afspraak"
-                  className="inline-flex items-center justify-center gap-3 px-10 py-5 border-2 border-noir-700 text-white rounded-full font-semibold hover:bg-white hover:text-noir-900 hover:border-white transition-all duration-300"
+                  href="/projecten"
+                  className="inline-flex items-center justify-center gap-3 px-10 py-5 border-2 border-white/30 text-white rounded-full font-semibold hover:bg-white hover:text-accent-700 hover:border-white transition-all duration-300"
                 >
                   {t('backToProjects')}
                   <ArrowLeft className="h-5 w-5" />

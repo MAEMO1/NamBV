@@ -14,6 +14,9 @@ export default function Header() {
   const t = useTranslations('navigation');
   const tHeader = useTranslations('header');
 
+  // Pages with full-screen dark heroes get a transparent header
+  const hasTransparentHero = pathname === '/' || (pathname.startsWith('/projecten/') && pathname !== '/projecten');
+
   const navigation = [
     { name: t('home'), href: '/' as const },
     { name: t('services'), href: '/diensten' as const },
@@ -50,29 +53,32 @@ export default function Header() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-white ${
-          scrolled ? 'shadow-soft' : 'shadow-sm'
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+          hasTransparentHero && !scrolled && !mobileMenuOpen
+            ? 'bg-transparent'
+            : 'bg-white ' + (scrolled ? 'shadow-soft' : 'shadow-sm')
         }`}
       >
         <nav className="container-wide" aria-label="Global">
           <div className="flex items-center justify-between h-20 md:h-24">
             {/* Logo */}
             <Link href="/" className="relative z-10 group">
-              <Logo color="dark" showTagline={!scrolled} />
+              <Logo color={hasTransparentHero && !scrolled && !mobileMenuOpen ? 'light' : 'dark'} showTagline={!scrolled} />
             </Link>
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex lg:items-center lg:gap-x-1">
               {navigation.map((item) => {
                 const isActive = pathname === item.href;
+                const isTransparent = hasTransparentHero && !scrolled;
                 return (
                   <Link
                     key={item.name}
                     href={item.href}
                     className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 ${
-                      isActive
-                        ? 'text-accent-600'
-                        : 'text-noir-600 hover:text-noir-900'
+                      isTransparent
+                        ? isActive ? 'text-white' : 'text-white/70 hover:text-white'
+                        : isActive ? 'text-accent-600' : 'text-noir-600 hover:text-noir-900'
                     }`}
                   >
                     {item.name}
@@ -83,17 +89,25 @@ export default function Header() {
 
             {/* CTA Button & Language Switcher - Desktop */}
             <div className="hidden lg:flex lg:items-center lg:gap-4">
-              <LanguageSwitcher variant="dark" />
+              <LanguageSwitcher variant={hasTransparentHero && !scrolled ? 'light' : 'dark'} />
               <a
                 href="tel:+32493812789"
-                className="hidden xl:flex items-center gap-2 text-sm text-noir-600 hover:text-noir-900 transition-colors"
+                className={`hidden xl:flex items-center gap-2 text-sm transition-colors ${
+                  hasTransparentHero && !scrolled
+                    ? 'text-white/70 hover:text-white'
+                    : 'text-noir-600 hover:text-noir-900'
+                }`}
               >
                 <Phone className="h-4 w-4" />
                 +32 493 81 27 89
               </a>
               <Link
                 href="/offerte"
-                className="inline-flex items-center gap-2 px-6 py-2.5 border-2 border-accent-600 text-accent-600 rounded-full text-sm font-semibold hover:bg-accent-600 hover:text-white transition-all duration-300"
+                className={`inline-flex items-center gap-2 px-6 py-2.5 border-2 rounded-full text-sm font-semibold transition-all duration-300 ${
+                  hasTransparentHero && !scrolled
+                    ? 'border-white/40 text-white hover:bg-white hover:text-noir-900'
+                    : 'border-accent-600 text-accent-600 hover:bg-accent-600 hover:text-white'
+                }`}
               >
                 <span>{tHeader('ctaButton')}</span>
                 <ArrowUpRight className="h-4 w-4" />
@@ -103,7 +117,9 @@ export default function Header() {
             {/* Mobile menu button */}
             <button
               type="button"
-              className="relative z-10 lg:hidden w-12 h-12 flex items-center justify-center text-noir-900 transition-colors duration-300"
+              className={`relative z-10 lg:hidden w-12 h-12 flex items-center justify-center transition-colors duration-300 ${
+                hasTransparentHero && !scrolled && !mobileMenuOpen ? 'text-white' : 'text-noir-900'
+              }`}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label={mobileMenuOpen ? tHeader('menuClose') : tHeader('menuOpen')}
             >

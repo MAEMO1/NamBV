@@ -1159,6 +1159,9 @@
     "nextProject": "Volgend project",
     "backToProjects": "Terug naar projecten",
     "ctaTitle": "Geïnspireerd door dit project?",
-    "ctaDescription": "Neem contact op voor een gratis adviesgesprek over uw eigen renovatieproject."
+    "ctaDescription": "Neem contact op voor een gratis adviesgesprek over uw eigen renovatieproject.",
+    "ctaButton": "Offerte aanvragen",
+    "notFoundTitle": "Project niet gevonden",
+    "notFoundDescription": "Het project dat u zoekt bestaat niet of is verplaatst."
   }
 }

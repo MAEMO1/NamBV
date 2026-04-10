@@ -177,8 +177,8 @@ export default function CommunicatiePage() {
 
             <div className="space-y-6">
               {timelineItems.map((item, index) => (
-                <div key={index} className="flex gap-6">
-                  <div className="w-28 text-right text-noir-400 text-sm pt-4 uppercase tracking-wide">{item.week}</div>
+                <div key={index} className="flex flex-col sm:flex-row gap-2 sm:gap-6">
+                  <div className="sm:w-28 sm:text-right text-accent-600 sm:text-noir-400 text-sm sm:pt-4 uppercase tracking-wide font-semibold sm:font-normal">{item.week}</div>
                   <div className="flex-1 bg-noir-50 p-6 rounded-xl">
                     <h4 className="font-bold text-noir-900 mb-2">{item.title}</h4>
                     <p className="text-noir-500 text-sm">{item.description}</p>

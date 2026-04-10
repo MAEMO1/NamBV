@@ -89,7 +89,7 @@ export default function ContactPage() {
             <p className="text-xs text-noir-400 font-semibold uppercase tracking-[0.15em] mb-2">
               {t('email')}
             </p>
-            <p className="text-2xl md:text-3xl font-display font-bold text-noir-900 mb-1 group-hover:text-accent-600 transition-colors break-all">
+            <p className="text-2xl md:text-3xl font-display font-bold text-noir-900 mb-1 group-hover:text-accent-600 transition-colors break-words">
               info@namconstruction.be
             </p>
             <p className="text-noir-500 text-sm">

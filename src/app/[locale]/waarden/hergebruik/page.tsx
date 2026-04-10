@@ -228,7 +228,7 @@ export default function HergebruikPage() {
 
           {/* Stats */}
           <div className="bg-noir-900 p-10 rounded-2xl">
-            <div className="grid grid-cols-3 gap-8 text-center">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
               <div>
                 <p className="text-4xl md:text-5xl font-display font-bold text-white mb-2">70%</p>
                 <p className="text-noir-400 uppercase tracking-wide text-sm">{t('stats.lessWaste')}</p>

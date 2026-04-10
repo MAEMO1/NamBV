@@ -207,7 +207,7 @@ export default function AanpakPage() {
       </section>
 
       {/* CTA */}
-      <CTABanner variant="dark" />
+      <CTABanner variant="accent" />
     </>
   );
 }

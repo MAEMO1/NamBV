@@ -1159,6 +1159,9 @@
     "nextProject": "Projet suivant",
     "backToProjects": "Retour aux projets",
     "ctaTitle": "Inspiré par ce projet?",
-    "ctaDescription": "Contactez-nous pour un entretien gratuit sur votre propre projet de rénovation."
+    "ctaDescription": "Contactez-nous pour un entretien gratuit sur votre propre projet de rénovation.",
+    "ctaButton": "Demander un devis",
+    "notFoundTitle": "Projet non trouvé",
+    "notFoundDescription": "Le projet que vous recherchez n'existe pas ou a été déplacé."
   }
 }

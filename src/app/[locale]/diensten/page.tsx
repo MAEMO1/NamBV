@@ -322,27 +322,28 @@ export default function DienstenPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="section-padding bg-noir-900 relative overflow-hidden">
+      <section className="section-padding bg-accent-700 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.03] bg-noise mix-blend-overlay pointer-events-none" />
         <div className="container-wide relative">
           <AnimatedSection>
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="text-display-lg font-display font-bold text-white mb-6">
                 {t('cta.title')}
               </h2>
-              <p className="text-lg md:text-xl text-noir-400 mb-10 leading-relaxed">
+              <p className="text-lg md:text-xl text-white/70 mb-10 leading-relaxed">
                 {t('cta.description')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   href="/offerte"
-                  className="group inline-flex items-center justify-center gap-3 px-10 py-5 bg-accent-600 text-white font-semibold rounded-full hover:bg-accent-500 transition-all duration-300"
+                  className="group inline-flex items-center justify-center gap-3 px-10 py-5 bg-white text-accent-700 font-semibold rounded-full hover:bg-white/90 transition-all duration-300"
                 >
                   <span>{t('cta.buttonPrimary')}</span>
                   <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </Link>
                 <Link
                   href="/afspraak"
-                  className="group inline-flex items-center justify-center gap-3 px-10 py-5 border-2 border-noir-700 text-white font-semibold rounded-full hover:bg-white hover:text-noir-900 hover:border-white transition-all duration-300"
+                  className="group inline-flex items-center justify-center gap-3 px-10 py-5 border-2 border-white/30 text-white font-semibold rounded-full hover:bg-white hover:text-accent-700 hover:border-white transition-all duration-300"
                 >
                   <span>{t('cta.buttonSecondary')}</span>
                   <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />

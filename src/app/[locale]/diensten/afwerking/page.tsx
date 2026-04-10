@@ -199,7 +199,7 @@ export default function AfwerkingPage() {
       </section>
 
       {/* CTA */}
-      <CTABanner variant="dark" />
+      <CTABanner variant="accent" />
     </>
   );
 }

@@ -190,20 +190,29 @@ export default function HomePage() {
       <section className="relative min-h-screen flex items-center overflow-hidden">
         {/* Background image slider */}
         <div className="absolute inset-0">
-          {heroSlides.map((slide, index) => (
-            <Image
-              key={slide}
-              src={slide}
-              alt={`NAM Construction project ${index + 1}`}
-              fill
-              className={`object-cover transition-opacity duration-1000 ease-in-out ${
-                index === currentSlide ? 'opacity-100' : 'opacity-0'
-              }`}
-              priority={index === 0}
-            />
-          ))}
-          {/* Single clean overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-noir-950/80 via-noir-950/50 to-noir-950/30" />
+          {heroSlides.map((slide, index) => {
+            // Per-image focal points for mobile cropping
+            const positions = [
+              'object-[40%_50%] md:object-center',   // slide-1: arch is center-left
+              'object-[60%_60%] md:object-center',   // slide-2: bathtub bottom-right focus
+              'object-[50%_40%] md:object-center',   // slide-3: house upper-center
+            ];
+            return (
+              <Image
+                key={slide}
+                src={slide}
+                alt={`NAM Construction project ${index + 1}`}
+                fill
+                className={`object-cover ${positions[index] || 'object-center'} transition-opacity duration-1000 ease-in-out ${
+                  index === currentSlide ? 'opacity-100' : 'opacity-0'
+                }`}
+                priority={index <= 1}
+                loading={index <= 1 ? 'eager' : 'lazy'}
+              />
+            );
+          })}
+          {/* Responsive overlay: vertical on mobile for even readability, horizontal on desktop */}
+          <div className="absolute inset-0 bg-gradient-to-b from-noir-950/70 via-noir-950/50 to-noir-950/60 md:bg-gradient-to-r md:from-noir-950/80 md:via-noir-950/50 md:to-noir-950/30" />
         </div>
 
         {/* Content */}
@@ -269,9 +278,9 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Slide indicators */}
+        {/* Slide indicators — 44px touch targets for mobile a11y */}
         <div
-          className={`absolute bottom-[88px] md:bottom-[80px] left-0 right-0 z-10 flex justify-center gap-2 transition-all duration-700 ${
+          className={`absolute bottom-[88px] md:bottom-[80px] left-0 right-0 z-10 flex justify-center gap-1 transition-all duration-700 ${
             heroLoaded ? 'opacity-100' : 'opacity-0'
           }`}
           style={{ transitionDelay: '1000ms' }}
@@ -280,44 +289,18 @@ export default function HomePage() {
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                index === currentSlide
-                  ? 'bg-white w-6'
-                  : 'bg-white/40 hover:bg-white/60'
-              }`}
+              className="relative flex items-center justify-center w-11 h-11"
               aria-label={`Slide ${index + 1}`}
-            />
+            >
+              <span className={`block rounded-full transition-all duration-300 ${
+                index === currentSlide
+                  ? 'bg-white w-6 h-2'
+                  : 'bg-white/40 hover:bg-white/60 w-2 h-2'
+              }`} />
+            </button>
           ))}
         </div>
 
-        {/* Stats bar */}
-        <div
-          className={`absolute bottom-0 left-0 right-0 z-10 bg-noir-950/60 backdrop-blur-md border-t border-white/10 transition-all duration-700 ${
-            heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-          style={{ transitionDelay: '900ms' }}
-        >
-          <div className="container-wide py-6">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-12">
-              <div className="text-center">
-                <span className="block text-2xl md:text-3xl font-display font-bold text-white">10+</span>
-                <span className="text-xs md:text-sm text-white/50 uppercase tracking-wider">{t('hero.stats.years')}</span>
-              </div>
-              <div className="text-center">
-                <span className="block text-2xl md:text-3xl font-display font-bold text-white">50+</span>
-                <span className="text-xs md:text-sm text-white/50 uppercase tracking-wider">{t('hero.stats.projects')}</span>
-              </div>
-              <div className="text-center">
-                <span className="block text-2xl md:text-3xl font-display font-bold text-white">100%</span>
-                <span className="text-xs md:text-sm text-white/50 uppercase tracking-wider">{t('hero.stats.satisfaction')}</span>
-              </div>
-              <div className="text-center">
-                <span className="block text-2xl md:text-3xl font-display font-bold text-accent-400">&#10003;</span>
-                <span className="text-xs md:text-sm text-white/50 uppercase tracking-wider">{t('hero.stats.certified')}</span>
-              </div>
-            </div>
-          </div>
-        </div>
       </section>
 
       {/* ===== WHY US SECTION - Split layout with image ===== */}
@@ -415,25 +398,27 @@ export default function HomePage() {
 
           {/* Services — split layout */}
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
-            {/* Left: large image */}
+            {/* Left: large image with featured project info */}
             <AnimatedSection direction="left">
-              <div className="relative aspect-[4/5] rounded-2xl overflow-hidden">
-                <Image
-                  src={serviceImages[0]}
-                  alt={services[0].title}
-                  fill
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-noir-950/70 via-transparent to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-8">
-                  <span className="inline-block px-3 py-1 bg-accent-600 text-white text-xs font-semibold uppercase tracking-wider rounded-full mb-3">
-                    {t('services.badge')}
-                  </span>
-                  <h3 className="text-2xl md:text-3xl font-display font-bold text-white">
-                    {t('services.titlePrefix')} {t('services.titleHighlight')}
-                  </h3>
+              <Link href={services[0].href} className="group block">
+                <div className="relative aspect-[4/5] rounded-2xl overflow-hidden">
+                  <Image
+                    src={serviceImages[0]}
+                    alt={services[0].title}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-noir-950/70 via-transparent to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-8">
+                    <span className="inline-block px-3 py-1 bg-accent-600 text-white text-xs font-semibold uppercase tracking-wider rounded-full mb-3">
+                      {services[0].subtitle}
+                    </span>
+                    <h3 className="text-2xl md:text-3xl font-display font-bold text-white">
+                      {services[0].title}
+                    </h3>
+                  </div>
                 </div>
-              </div>
+              </Link>
             </AnimatedSection>
 
             {/* Right: services list with separator lines */}
@@ -574,15 +559,17 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ===== CTA SECTION - Solid navy background ===== */}
-      <section className="section-padding bg-noir-900 relative overflow-hidden">
+      {/* ===== CTA SECTION - Accent background for contrast with footer ===== */}
+      <section className="section-padding bg-accent-700 relative overflow-hidden">
+        {/* Subtle texture */}
+        <div className="absolute inset-0 opacity-[0.03] bg-noise mix-blend-overlay pointer-events-none" />
         <div className="container-wide relative">
           <AnimatedSection>
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="text-display-lg md:text-display-xl font-display font-bold text-white mb-6">
                 {t('cta.title')}
               </h2>
-              <p className="text-lg md:text-xl text-noir-400 mb-10 leading-relaxed">
+              <p className="text-lg md:text-xl text-white/70 mb-10 leading-relaxed">
                 {t('cta.description')}
               </p>
 
@@ -591,7 +578,7 @@ export default function HomePage() {
                   href="/offerte"
                   location="cta_banner"
                   label={t('cta.button')}
-                  className="group inline-flex items-center justify-center gap-3 px-10 py-5 bg-accent-600 text-white font-semibold rounded-full hover:bg-accent-500 transition-all duration-300"
+                  className="group inline-flex items-center justify-center gap-3 px-10 py-5 bg-white text-accent-700 font-semibold rounded-full hover:bg-white/90 transition-all duration-300"
                 >
                   <span>{t('cta.button')}</span>
                   <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -601,7 +588,7 @@ export default function HomePage() {
                   href="tel:+32493812789"
                   location="cta_banner"
                   label={tCommon('callUs')}
-                  className="group inline-flex items-center justify-center gap-3 px-10 py-5 border-2 border-noir-700 text-white font-semibold rounded-full hover:bg-white hover:text-noir-900 hover:border-white transition-all duration-300"
+                  className="group inline-flex items-center justify-center gap-3 px-10 py-5 border-2 border-white/30 text-white font-semibold rounded-full hover:bg-white hover:text-accent-700 hover:border-white transition-all duration-300"
                 >
                   <Phone className="h-4 w-4" />
                   <span>+32 493 81 27 89</span>

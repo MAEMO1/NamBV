@@ -1159,6 +1159,9 @@
     "nextProject": "Next project",
     "backToProjects": "Back to projects",
     "ctaTitle": "Inspired by this project?",
-    "ctaDescription": "Contact us for a free consultation about your own renovation project."
+    "ctaDescription": "Contact us for a free consultation about your own renovation project.",
+    "ctaButton": "Request a quote",
+    "notFoundTitle": "Project not found",
+    "notFoundDescription": "The project you are looking for does not exist or has been moved."
   }
 }

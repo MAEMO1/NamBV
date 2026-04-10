@@ -216,7 +216,7 @@ export default function TotaalrenovatiePage() {
       </section>
 
       {/* CTA */}
-      <CTABanner variant="dark" />
+      <CTABanner variant="accent" />
     </>
   );
 }
