@@ -21,7 +21,7 @@ export default function ContactPage() {
   return (
     <section className="min-h-screen bg-white">
       {/* Hero */}
-      <div className="bg-noir-50 pt-32 pb-20 md:pt-40 md:pb-24">
+      <div className="bg-noir-50 pt-28 pb-12 md:pt-40 md:pb-20">
         <div className="container-wide">
           <div className="max-w-4xl">
             <span
@@ -45,7 +45,7 @@ export default function ContactPage() {
       </div>
 
       {/* Contact Grid */}
-      <div className="container-wide py-16 md:py-20">
+      <div className="container-wide py-10 md:py-16">
         <div className="grid md:grid-cols-2 gap-6">
           {/* Phone */}
           <a

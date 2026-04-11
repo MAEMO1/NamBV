@@ -171,7 +171,7 @@ export default function ProjectDetailPage() {
       {/* ============================================ */}
       {/* Section 2: Project Info Sidebar + Content */}
       {/* ============================================ */}
-      <section className="py-20 md:py-28 bg-noir-950">
+      <section className="py-16 md:py-24 bg-noir-950">
         <div className="container-wide">
           <div className="grid lg:grid-cols-12 gap-12 lg:gap-16">
             {/* Content - Left Column */}
@@ -329,7 +329,7 @@ export default function ProjectDetailPage() {
       {/* Section 6: Second Photo */}
       {/* ============================================ */}
       {project.secondImage && (
-        <section className="py-20 md:py-28 bg-noir-900">
+        <section className="py-16 md:py-24 bg-noir-900">
           <div className="container-wide">
             <AnimatedSection>
               <div className="relative aspect-[16/9] rounded-xl overflow-hidden group">
@@ -399,7 +399,7 @@ export default function ProjectDetailPage() {
       {/* ============================================ */}
       {/* Section 9: CTA */}
       {/* ============================================ */}
-      <section className="py-20 md:py-28 bg-accent-700 relative overflow-hidden">
+      <section className="py-16 md:py-24 bg-accent-700 relative overflow-hidden">
         <div className="absolute inset-0 opacity-[0.03] bg-noise mix-blend-overlay pointer-events-none" />
         <div className="container-wide relative">
           <AnimatedSection>

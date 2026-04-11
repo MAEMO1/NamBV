@@ -582,3 +582,288 @@ model MediaFile {
   @@index([createdAt])
   @@map("media_files")
 }
+
+// ============================================================================
+// V2 - PARALLEL REBUILD FOUNDATION
+// ============================================================================
+
+model V2AdminUser {
+  id            String           @id @default(cuid())
+  email         String           @unique
+  passwordHash  String           @map("password_hash")
+  fullName      String           @map("full_name")
+  isActive      Boolean          @default(true) @map("is_active")
+  lastLoginAt   DateTime?        @map("last_login_at")
+  createdAt     DateTime         @default(now()) @map("created_at")
+  updatedAt     DateTime         @updatedAt @map("updated_at")
+
+  sessions      V2AdminSession[]
+  auditEvents   V2AuditEvent[]
+
+  @@map("v2_admin_users")
+}
+
+model V2AdminSession {
+  id            String       @id @default(cuid())
+  tokenHash     String       @unique @map("token_hash")
+  expiresAt     DateTime     @map("expires_at")
+  lastSeenAt    DateTime     @default(now()) @map("last_seen_at")
+  invalidatedAt DateTime?    @map("invalidated_at")
+  ipAddress     String?      @map("ip_address")
+  userAgent     String?      @map("user_agent")
+  createdAt     DateTime     @default(now()) @map("created_at")
+
+  user          V2AdminUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String       @map("user_id")
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@index([invalidatedAt])
+  @@map("v2_admin_sessions")
+}
+
+model V2LoginAttempt {
+  id            String    @id @default(cuid())
+  email         String
+  ipAddress     String?   @map("ip_address")
+  wasSuccessful Boolean   @default(false) @map("was_successful")
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  @@index([email, createdAt(sort: Desc)])
+  @@index([ipAddress, createdAt(sort: Desc)])
+  @@map("v2_login_attempts")
+}
+
+model V2QuoteRequest {
+  id              String       @id @default(cuid())
+  referenceNumber String       @unique @map("reference_number")
+  status          QuoteStatus  @default(NEW)
+  fullName        String       @map("full_name")
+  email           String
+  phone           String
+  postalCode      String       @map("postal_code")
+  city            String?
+  description     String       @db.Text
+  preferredStart  String?      @map("preferred_start")
+  budgetRange     BudgetRange? @map("budget_range")
+  gdprConsent     Boolean      @default(false) @map("gdpr_consent")
+  adminNotes      String?      @map("admin_notes") @db.Text
+  propertyTypeId  String?      @map("property_type_id")
+  serviceTypeIds  String[]     @default([]) @map("service_type_ids")
+  createdAt       DateTime     @default(now()) @map("created_at")
+  updatedAt       DateTime     @updatedAt @map("updated_at")
+
+  leadEvents      V2LeadEvent[]
+
+  @@index([status])
+  @@index([createdAt(sort: Desc)])
+  @@map("v2_quote_requests")
+}
+
+model V2Appointment {
+  id                 String             @id @default(cuid())
+  referenceNumber    String             @unique @map("reference_number")
+  status             AppointmentStatus  @default(PENDING)
+  fullName           String             @map("full_name")
+  email              String
+  phone              String
+  municipality       String             @map("municipality")
+  appointmentDate    DateTime           @db.Date @map("appointment_date")
+  appointmentTime    String             @map("appointment_time")
+  projectType        String?            @map("project_type")
+  propertyType       String?            @map("property_type")
+  propertyAge        String?            @map("property_age")
+  priorities         String[]           @default([])
+  materialPreference String?            @map("material_preference")
+  budget             String?
+  timing             String?
+  subsidyInterest    Boolean            @default(false) @map("subsidy_interest")
+  paymentSpread      Boolean            @default(false) @map("payment_spread")
+  motivation         String?
+  message            String?            @db.Text
+  adminNotes         String?            @map("admin_notes") @db.Text
+  proposedDate       DateTime?          @db.Date @map("proposed_date")
+  proposedTime       String?            @map("proposed_time")
+  createdAt          DateTime           @default(now()) @map("created_at")
+  updatedAt          DateTime           @updatedAt @map("updated_at")
+  confirmedAt        DateTime?          @map("confirmed_at")
+
+  leadEvents         V2LeadEvent[]
+
+  @@index([status])
+  @@index([appointmentDate])
+  @@index([createdAt(sort: Desc)])
+  @@map("v2_appointments")
+}
+
+model V2AvailabilityRule {
+  id          String    @id @default(cuid())
+  dayOfWeek   Int       @unique @map("day_of_week")
+  timeSlots   String[]  @default([]) @map("time_slots")
+  isActive    Boolean   @default(true) @map("is_active")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  @@map("v2_availability_rules")
+}
+
+model V2AvailabilityException {
+  id          String    @id @default(cuid())
+  date        DateTime  @db.Date
+  blockedTimes String[] @default([]) @map("blocked_times")
+  reason      String?
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  @@unique([date])
+  @@index([date])
+  @@map("v2_availability_exceptions")
+}
+
+model V2PageSection {
+  id           String    @id @default(cuid())
+  pageKey      String    @map("page_key")
+  sectionKey   String    @map("section_key")
+  locale       String
+  schemaKey    String    @map("schema_key")
+  dataJson     Json      @map("data_json")
+  displayOrder Int       @default(0) @map("display_order")
+  published    Boolean   @default(true)
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  @@unique([pageKey, sectionKey, locale, displayOrder])
+  @@index([pageKey, locale])
+  @@map("v2_page_sections")
+}
+
+model V2Project {
+  id              String                 @id @default(cuid())
+  slug            String                 @unique
+  category        String
+  location        String
+  year            Int
+  featured        Boolean                @default(false)
+  isPublished     Boolean                @default(true) @map("is_published")
+  sortOrder       Int                    @default(0) @map("sort_order")
+  coverImageUrl   String?                @map("cover_image_url")
+  createdAt       DateTime               @default(now()) @map("created_at")
+  updatedAt       DateTime               @updatedAt @map("updated_at")
+
+  translations    V2ProjectTranslation[]
+  images          V2ProjectImage[]
+
+  @@index([isPublished, sortOrder])
+  @@index([featured])
+  @@map("v2_projects")
+}
+
+model V2ProjectTranslation {
+  id               String    @id @default(cuid())
+  locale           String
+  title            String
+  shortDescription String?   @map("short_description")
+  description      String?   @db.Text
+  challengeText    String?   @map("challenge_text") @db.Text
+  approachText     String?   @map("approach_text") @db.Text
+  resultText       String?   @map("result_text") @db.Text
+  projectType      String?   @map("project_type")
+  duration         String?
+  surface          String?
+  completionDate   String?   @map("completion_date")
+  seoTitle         String?   @map("seo_title")
+  seoDescription   String?   @map("seo_description")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  project          V2Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId        String    @map("project_id")
+
+  @@unique([projectId, locale])
+  @@index([locale])
+  @@map("v2_project_translations")
+}
+
+model V2ProjectImage {
+  id            String    @id @default(cuid())
+  imageUrl      String    @map("image_url")
+  alt           String?
+  caption       String?
+  sortOrder     Int       @default(0) @map("sort_order")
+  kind          String    @default("gallery")
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  project       V2Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId     String    @map("project_id")
+
+  @@index([projectId, sortOrder])
+  @@map("v2_project_images")
+}
+
+model V2Asset {
+  id            String    @id @default(cuid())
+  filename      String
+  originalName  String    @map("original_name")
+  mimeType      String    @map("mime_type")
+  size          Int
+  bucket        String    @default("project-photos")
+  path          String
+  url           String
+  alt           String?
+  width         Int?
+  height        Int?
+  tags          String[]  @default([])
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  @@index([bucket])
+  @@index([createdAt(sort: Desc)])
+  @@map("v2_assets")
+}
+
+model V2SiteSetting {
+  id            String    @id @default(cuid())
+  key           String    @unique
+  valueJson     Json      @map("value_json")
+  category      String    @default("general")
+  description   String?
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  @@index([category])
+  @@map("v2_site_settings")
+}
+
+model V2LeadEvent {
+  id            String    @id @default(cuid())
+  leadType      String    @map("lead_type")
+  leadId        String    @map("lead_id")
+  eventType     String    @map("event_type")
+  payload       Json?     @map("payload")
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  quote         V2QuoteRequest?  @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  quoteId       String?          @map("quote_id")
+  appointment   V2Appointment?   @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  appointmentId String?          @map("appointment_id")
+
+  @@index([leadType, createdAt(sort: Desc)])
+  @@index([eventType, createdAt(sort: Desc)])
+  @@map("v2_lead_events")
+}
+
+model V2AuditEvent {
+  id            String       @id @default(cuid())
+  action        String
+  entityType    String       @map("entity_type")
+  entityId      String       @map("entity_id")
+  payload       Json?        @map("payload")
+  createdAt     DateTime     @default(now()) @map("created_at")
+
+  actor         V2AdminUser? @relation(fields: [actorId], references: [id], onDelete: SetNull)
+  actorId       String?      @map("actor_id")
+
+  @@index([action, createdAt(sort: Desc)])
+  @@index([entityType, createdAt(sort: Desc)])
+  @@map("v2_audit_events")
+}

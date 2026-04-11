@@ -34,7 +34,7 @@ export default function RenovatiePage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-noir-50 py-20 md:py-28 overflow-hidden">
+      <section className="relative bg-noir-50 py-16 md:py-24 overflow-hidden">
         <div className="container-custom relative">
           <div className="max-w-3xl">
             <Link

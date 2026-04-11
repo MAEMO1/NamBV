@@ -2,29 +2,32 @@ import createMiddleware from 'next-intl/middleware';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { routing } from './src/i18n/routing';
-
-const SESSION_COOKIE_NAME = 'nam_admin_session';
+import {
+  LEGACY_ADMIN_SESSION_COOKIE,
+  verifyLegacyAdminSessionToken,
+} from './src/lib/legacy-session';
 
 // Create next-intl middleware
 const intlMiddleware = createMiddleware(routing);
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // === ADMIN ROUTES: Skip i18n, apply auth ===
   if (pathname.startsWith('/admin')) {
+    const sessionValue = request.cookies.get(LEGACY_ADMIN_SESSION_COOKIE)?.value;
+    const session = await verifyLegacyAdminSessionToken(sessionValue);
+
     // Auth check for admin (except login page)
     if (pathname !== '/admin/login') {
-      const session = request.cookies.get(SESSION_COOKIE_NAME);
-      if (!session?.value) {
+      if (!session) {
         return NextResponse.redirect(new URL('/admin/login', request.url));
       }
     }
 
     // Redirect logged-in users from login to dashboard
     if (pathname === '/admin/login') {
-      const session = request.cookies.get(SESSION_COOKIE_NAME);
-      if (session?.value) {
+      if (session) {
         return NextResponse.redirect(new URL('/admin', request.url));
       }
     }
@@ -42,5 +45,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next|admin|.*\\..*).*)'],
+  matcher: ['/((?!api|_next|admin-v2|v2|.*\\..*).*)'],
 };

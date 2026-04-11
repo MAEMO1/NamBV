@@ -5,6 +5,7 @@ import {
   notifyAdminNewAppointment
 } from '@/lib/notifications'
 import { getCache, setCache, invalidateAppointmentsCache } from '@/lib/cache'
+import { getAuthUser, unauthorizedResponse } from '@/lib/auth'
 
 // Generate reference number for appointments
 async function generateAppointmentReference(): Promise<string> {
@@ -126,6 +127,11 @@ export async function POST(request: NextRequest) {
 
 // GET /api/appointments - List all appointments (admin)
 export async function GET(request: NextRequest) {
+  const user = await getAuthUser(request)
+  if (!user) {
+    return unauthorizedResponse()
+  }
+
   try {
     const searchParams = request.nextUrl.searchParams
     const status = searchParams.get('status')

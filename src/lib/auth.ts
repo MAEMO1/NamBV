@@ -1,8 +1,19 @@
 import { NextRequest } from 'next/server'
 import { db } from '@/lib/db'
 import { UserRole } from '@prisma/client'
+import {
+  LEGACY_ADMIN_SESSION_COOKIE,
+  verifyLegacyAdminSessionToken,
+} from '@/lib/legacy-session'
 
-const SESSION_COOKIE_NAME = 'nam_admin_session'
+export {
+  createLegacyAdminSessionToken,
+  getLegacyAdminLogoutCookie,
+  getLegacyAdminSessionCookie,
+  LEGACY_ADMIN_SESSION_COOKIE,
+  LEGACY_ADMIN_SESSION_MAX_AGE,
+  verifyLegacyAdminSessionToken,
+} from '@/lib/legacy-session'
 
 export interface AuthUser {
   id: string
@@ -11,36 +22,55 @@ export interface AuthUser {
   role: UserRole
 }
 
+async function findLegacyAdminUser(userId: string) {
+  return db.user.findFirst({
+    where: {
+      id: userId,
+      isActive: true,
+      role: { in: [UserRole.ADMIN, UserRole.SUPERADMIN] }
+    },
+    select: {
+      id: true,
+      email: true,
+      fullName: true,
+      role: true
+    }
+  })
+}
+
+export async function getDefaultLegacyAdminUser() {
+  return db.user.findFirst({
+    where: {
+      isActive: true,
+      role: { in: [UserRole.ADMIN, UserRole.SUPERADMIN] }
+    },
+    orderBy: { createdAt: 'asc' },
+    select: {
+      id: true,
+      email: true,
+      fullName: true,
+      role: true
+    }
+  })
+}
+
 /**
  * Auth check - validates session cookie and returns admin user
  */
 export async function getAuthUser(request: NextRequest): Promise<AuthUser | null> {
-  // Check for session cookie
-  const session = request.cookies.get(SESSION_COOKIE_NAME)
+  const session = request.cookies.get(LEGACY_ADMIN_SESSION_COOKIE)
 
   if (!session?.value) {
     return null
   }
 
-  // Session exists - return the default admin user
-  // In a more complex system, you would validate the session token
-  // and look up the associated user
   try {
-    // Get the first active admin user
-    const user = await db.user.findFirst({
-      where: {
-        isActive: true,
-        role: { in: [UserRole.ADMIN, UserRole.SUPERADMIN] }
-      },
-      select: {
-        id: true,
-        email: true,
-        fullName: true,
-        role: true
-      }
-    })
+    const payload = await verifyLegacyAdminSessionToken(session.value)
+    if (!payload) {
+      return null
+    }
 
-    return user
+    return findLegacyAdminUser(payload.sub)
   } catch {
     return null
   }

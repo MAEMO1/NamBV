@@ -337,7 +337,7 @@ export default function OfferteFormulier() {
   return (
     <div className="min-h-screen bg-noir-50">
       {/* Header */}
-      <header className="bg-noir-950 px-6 py-5 sticky top-0 z-50">
+      <header className="bg-noir-950 px-6 py-3 sm:py-5 sticky top-0 z-50">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <Link href="/" className="group">
             <Logo color="light" showTagline={true} />
@@ -357,16 +357,16 @@ export default function OfferteFormulier() {
       </header>
 
       {/* Progress Bar - Premium design */}
-      <div className="bg-white shadow-sm border-b border-noir-100 sticky top-[68px] z-40">
-        <div className="max-w-4xl mx-auto px-6 py-6">
-          <div className="flex justify-between items-center mb-4">
+      <div className="bg-white shadow-sm border-b border-noir-100 sticky top-[56px] sm:top-[68px] z-40">
+        <div className="max-w-4xl mx-auto px-6 py-4 sm:py-6">
+          <div className="flex justify-between items-center mb-3 sm:mb-4">
             {stepLabels.map((label, idx) => (
               <div
                 key={label}
                 className={`flex items-center gap-3 ${idx < stepLabels.length - 1 ? 'flex-1' : ''}`}
               >
                 <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-500 ${
+                  className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-xs sm:text-sm font-semibold transition-all duration-500 ${
                     step > idx + 1
                       ? 'bg-accent-600 text-white shadow-lg shadow-accent-600/30'
                       : step === idx + 1
@@ -403,8 +403,8 @@ export default function OfferteFormulier() {
       </div>
 
       {/* Form Content */}
-      <main className="max-w-4xl mx-auto px-6 py-12">
-        <div className="bg-white rounded-2xl shadow-soft-xl p-8 md:p-12 border border-noir-100">
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        <div className="bg-white rounded-2xl shadow-soft-xl p-5 sm:p-8 md:p-12 border border-noir-100">
 
           {/* Step 1: Project Type */}
           {step === 1 && (

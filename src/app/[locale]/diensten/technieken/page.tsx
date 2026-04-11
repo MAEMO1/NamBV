@@ -80,7 +80,7 @@ export default function TechniekenPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-noir-50 py-20 md:py-28 overflow-hidden">
+      <section className="relative bg-noir-50 py-16 md:py-24 overflow-hidden">
         <div className="container-custom relative">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -182,7 +182,7 @@ export default function TechniekenPage() {
       </section>
 
       {/* Certifications */}
-      <section className="relative py-24 md:py-32 overflow-hidden">
+      <section className="relative py-16 md:py-24 overflow-hidden">
         {/* Background */}
         <div className="absolute inset-0 bg-noir-900">
           <div className="absolute inset-0 opacity-20">

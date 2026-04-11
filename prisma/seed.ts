@@ -1,5 +1,12 @@
 import { PrismaClient, UserRole, QuoteStatus, BudgetRange } from '@prisma/client'
 import { hash } from 'bcryptjs'
+import {
+  defaultAvailabilityRules,
+  defaultPageSections,
+  defaultProjects,
+  defaultSettings,
+} from '../src/lib/v2/defaults'
+import { toInputJsonValue } from '../src/lib/v2/json'
 
 const prisma = new PrismaClient()
 
@@ -193,6 +200,150 @@ async function main() {
 
       console.log(`  ✓ Created quote ${quote.referenceNumber}`)
     }
+  }
+
+  // ============================================================================
+  // 5. Bootstrap v2 admin + CMS
+  // ============================================================================
+  console.log('Bootstrapping v2 foundation...')
+
+  const v2AdminEmail = process.env.V2_ADMIN_EMAIL || 'admin@namconstruction.be'
+  const v2AdminPassword = process.env.V2_ADMIN_PASSWORD || 'ChangeMe123!'
+
+  const v2Admin = await prisma.v2AdminUser.upsert({
+    where: { email: v2AdminEmail },
+    update: {
+      passwordHash: await hash(v2AdminPassword, 12),
+      isActive: true,
+    },
+    create: {
+      email: v2AdminEmail,
+      passwordHash: await hash(v2AdminPassword, 12),
+      fullName: 'V2 Admin',
+      isActive: true,
+    },
+  })
+
+  console.log(`  ✓ Upserted v2 admin ${v2Admin.email}`)
+
+  await prisma.$transaction(async (tx) => {
+    await tx.v2SiteSetting.deleteMany({})
+    if (defaultSettings.length > 0) {
+      await tx.v2SiteSetting.createMany({
+        data: defaultSettings.map((setting) => ({
+          key: setting.key,
+          category: setting.category,
+          description: setting.description || null,
+          valueJson: toInputJsonValue(setting.valueJson),
+        })),
+      })
+    }
+
+    await tx.v2PageSection.deleteMany({})
+    if (defaultPageSections.length > 0) {
+      await tx.v2PageSection.createMany({
+        data: defaultPageSections.map((section) => ({
+          pageKey: section.pageKey,
+          sectionKey: section.sectionKey,
+          locale: section.locale,
+          schemaKey: section.schemaKey,
+          dataJson: toInputJsonValue(section.dataJson),
+          displayOrder: section.displayOrder,
+          published: section.published,
+        })),
+      })
+    }
+
+    await tx.v2AvailabilityRule.deleteMany({})
+    await tx.v2AvailabilityException.deleteMany({})
+    await tx.v2AvailabilityRule.createMany({
+      data: defaultAvailabilityRules.map((rule) => ({
+        dayOfWeek: rule.dayOfWeek,
+        timeSlots: rule.timeSlots,
+        isActive: rule.isActive,
+      })),
+    })
+
+    await tx.v2ProjectImage.deleteMany({})
+    await tx.v2ProjectTranslation.deleteMany({})
+    await tx.v2Project.deleteMany({})
+    for (const project of defaultProjects) {
+      const createdProject = await tx.v2Project.create({
+        data: {
+          slug: project.slug,
+          category: project.category,
+          location: project.location,
+          year: project.year,
+          featured: project.featured,
+          isPublished: project.isPublished,
+          sortOrder: project.sortOrder,
+          coverImageUrl: project.coverImageUrl || null,
+        },
+      })
+
+      await tx.v2ProjectTranslation.createMany({
+        data: project.translations.map((translation) => ({
+          projectId: createdProject.id,
+          locale: translation.locale,
+          title: translation.title,
+          shortDescription: translation.shortDescription || null,
+          description: translation.description || null,
+          challengeText: translation.challengeText || null,
+          approachText: translation.approachText || null,
+          resultText: translation.resultText || null,
+          projectType: translation.projectType || null,
+          duration: translation.duration || null,
+          surface: translation.surface || null,
+          completionDate: translation.completionDate || null,
+        })),
+      })
+
+      await tx.v2ProjectImage.createMany({
+        data: project.images.map((image) => ({
+          projectId: createdProject.id,
+          imageUrl: image.imageUrl,
+          alt: image.alt || null,
+          caption: image.caption || null,
+          sortOrder: image.sortOrder,
+          kind: image.kind || 'gallery',
+        })),
+      })
+    }
+  })
+
+  const sampleV2Quote = await prisma.v2QuoteRequest.findFirst()
+  if (!sampleV2Quote) {
+    await prisma.v2QuoteRequest.create({
+      data: {
+        referenceNumber: 'V2Q-2026-0001',
+        fullName: 'Preview Lead',
+        email: 'preview.lead@example.com',
+        phone: '0493123456',
+        postalCode: '9000',
+        city: 'Gent',
+        propertyTypeId: 'appartement',
+        serviceTypeIds: ['totaalrenovatie'],
+        description: 'Ik wil de v2-flow gebruiken om een totaalrenovatie te bespreken.',
+        budgetRange: BudgetRange.RANGE_50K_100K,
+        gdprConsent: true,
+      },
+    })
+  }
+
+  const sampleV2Appointment = await prisma.v2Appointment.findFirst()
+  if (!sampleV2Appointment) {
+    await prisma.v2Appointment.create({
+      data: {
+        referenceNumber: 'V2A-2026-0001',
+        fullName: 'Preview Appointment',
+        email: 'preview.appointment@example.com',
+        phone: '0493123456',
+        municipality: 'Gent',
+        appointmentDate: new Date('2026-05-20'),
+        appointmentTime: '10:00',
+        status: 'PENDING',
+      },
+    })
   }
 
   console.log('\n✅ Database seeded successfully!')

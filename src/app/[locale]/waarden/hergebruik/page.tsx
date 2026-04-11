@@ -34,7 +34,7 @@ export default function HergebruikPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-noir-50 py-24 md:py-32 overflow-hidden">
+      <section className="relative bg-noir-50 py-16 md:py-24 overflow-hidden">
         <div className="container-wide relative">
           {/* Breadcrumb */}
           <Link href="/" className="inline-flex items-center gap-2 text-noir-500 hover:text-accent-500 transition-colors mb-8 text-sm uppercase tracking-wide">
@@ -82,7 +82,7 @@ export default function HergebruikPage() {
       </section>
 
       {/* Circular approach */}
-      <section className="py-24 md:py-32 bg-white">
+      <section className="py-16 md:py-24 bg-white">
         <div className="container-wide">
           <div className="max-w-2xl mb-16">
             <span className="inline-flex rounded-full px-4 py-1.5 bg-accent-100 text-accent-700 text-xs font-semibold uppercase tracking-[0.15em] mb-4">
@@ -109,7 +109,7 @@ export default function HergebruikPage() {
       </section>
 
       {/* Before/After Examples */}
-      <section className="py-24 md:py-32 bg-noir-50">
+      <section className="py-16 md:py-24 bg-noir-50">
         <div className="container-wide">
           <div className="max-w-2xl mb-16">
             <span className="inline-flex rounded-full px-4 py-1.5 bg-accent-100 text-accent-700 text-xs font-semibold uppercase tracking-[0.15em] mb-4">
@@ -247,7 +247,7 @@ export default function HergebruikPage() {
       </section>
 
       {/* Benefits */}
-      <section className="py-24 md:py-32 bg-white">
+      <section className="py-16 md:py-24 bg-white">
         <div className="container-wide">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>

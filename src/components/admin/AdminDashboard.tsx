@@ -837,7 +837,7 @@ export default function AdminDashboard() {
       ])
 
       // Check for authentication error
-      if (quotesRes.status === 401) {
+      if (quotesRes.status === 401 || appointmentsRes.status === 401) {
         router.push('/admin/login')
         return
       }

@@ -186,40 +186,136 @@ export default function HomePage() {
 
   return (
     <>
-      {/* ===== HERO SECTION - Clean, full-screen ===== */}
-      <section className="relative min-h-screen flex items-center overflow-hidden">
+      {/* ===== HERO SECTION ===== */}
+      {/* Mobile: stacked layout (text + full photo). Desktop: classic fullscreen overlay */}
+
+      {/* --- MOBILE HERO (stacked) --- */}
+      <section className="md:hidden bg-noir-950">
+        {/* Text content */}
+        <div className="container-wide pt-24 pb-8">
+          <h1 className="mb-6">
+            <span
+              className={`block text-[clamp(2.5rem,10vw,3.5rem)] font-display font-bold text-white leading-[1.05] tracking-[-0.02em] transition-all duration-700 ${
+                heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+              }`}
+              style={{ transitionDelay: '300ms' }}
+            >
+              {t('hero.title1')}
+            </span>
+            <span
+              className={`block text-[clamp(2.5rem,10vw,3.5rem)] font-display font-bold leading-[1.05] tracking-[-0.02em] transition-all duration-700 ${
+                heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+              }`}
+              style={{ transitionDelay: '450ms' }}
+            >
+              <span className="text-accent-400">{t('hero.title2')}</span>
+            </span>
+          </h1>
+
+          <p
+            className={`text-base text-white/60 mb-8 max-w-md leading-relaxed transition-all duration-700 ${
+              heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`}
+            style={{ transitionDelay: '600ms' }}
+          >
+            {t('hero.subtitle')}
+          </p>
+
+          <div
+            className={`flex flex-wrap gap-3 transition-all duration-700 ${
+              heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`}
+            style={{ transitionDelay: '750ms' }}
+          >
+            <TrackedCTA
+              href="/offerte"
+              location="hero"
+              label={t('hero.ctaPrimary')}
+              className="group inline-flex items-center gap-3 px-7 py-3.5 bg-accent-600 text-white font-semibold rounded-full hover:bg-accent-500 transition-all duration-300"
+            >
+              <span>{t('hero.ctaPrimary')}</span>
+              <ArrowUpRight className="h-4 w-4" />
+            </TrackedCTA>
+
+            <TrackedCTA
+              href="/projecten"
+              location="hero"
+              label={t('hero.ctaSecondary')}
+              className="group inline-flex items-center gap-3 px-7 py-3.5 border-2 border-white/30 text-white font-semibold rounded-full transition-all duration-300"
+            >
+              <span>{t('hero.ctaSecondary')}</span>
+              <ArrowRight className="h-4 w-4" />
+            </TrackedCTA>
+          </div>
+        </div>
+
+        {/* Full-width photo slider — natural aspect ratio, no cropping */}
+        <div className="relative aspect-[4/3] overflow-hidden">
+          {heroSlides.map((slide, index) => (
+            <Image
+              key={slide}
+              src={slide}
+              alt={`NAM Construction project ${index + 1}`}
+              fill
+              className={`object-cover object-center transition-opacity duration-1000 ease-in-out ${
+                index === currentSlide ? 'opacity-100' : 'opacity-0'
+              }`}
+              priority={index <= 1}
+              loading={index <= 1 ? 'eager' : 'lazy'}
+            />
+          ))}
+          {/* Subtle top gradient for seamless blend with dark bg */}
+          <div className="absolute inset-0 bg-gradient-to-b from-noir-950/40 via-transparent to-transparent h-1/4" />
+
+          {/* Slide indicators */}
+          <div
+            className={`absolute bottom-4 left-0 right-0 z-10 flex justify-center gap-1 transition-all duration-700 ${
+              heroLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
+            style={{ transitionDelay: '1000ms' }}
+          >
+            {heroSlides.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentSlide(index)}
+                className="relative flex items-center justify-center w-11 h-11"
+                aria-label={`Slide ${index + 1}`}
+              >
+                <span className={`block rounded-full transition-all duration-300 ${
+                  index === currentSlide
+                    ? 'bg-white w-6 h-2'
+                    : 'bg-white/40 hover:bg-white/60 w-2 h-2'
+                }`} />
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- DESKTOP HERO (classic fullscreen overlay) --- */}
+      <section className="hidden md:flex relative min-h-screen items-center overflow-hidden">
         {/* Background image slider */}
         <div className="absolute inset-0">
-          {heroSlides.map((slide, index) => {
-            // Per-image focal points for mobile cropping
-            const positions = [
-              'object-[40%_50%] md:object-center',   // slide-1: arch is center-left
-              'object-[60%_60%] md:object-center',   // slide-2: bathtub bottom-right focus
-              'object-[50%_40%] md:object-center',   // slide-3: house upper-center
-            ];
-            return (
-              <Image
-                key={slide}
-                src={slide}
-                alt={`NAM Construction project ${index + 1}`}
-                fill
-                className={`object-cover ${positions[index] || 'object-center'} transition-opacity duration-1000 ease-in-out ${
-                  index === currentSlide ? 'opacity-100' : 'opacity-0'
-                }`}
-                priority={index <= 1}
-                loading={index <= 1 ? 'eager' : 'lazy'}
-              />
-            );
-          })}
-          {/* Responsive overlay: vertical on mobile for even readability, horizontal on desktop */}
-          <div className="absolute inset-0 bg-gradient-to-b from-noir-950/70 via-noir-950/50 to-noir-950/60 md:bg-gradient-to-r md:from-noir-950/80 md:via-noir-950/50 md:to-noir-950/30" />
+          {heroSlides.map((slide, index) => (
+            <Image
+              key={slide}
+              src={slide}
+              alt={`NAM Construction project ${index + 1}`}
+              fill
+              className={`object-cover object-center transition-opacity duration-1000 ease-in-out ${
+                index === currentSlide ? 'opacity-100' : 'opacity-0'
+              }`}
+              priority={index <= 1}
+              loading={index <= 1 ? 'eager' : 'lazy'}
+            />
+          ))}
+          <div className="absolute inset-0 bg-gradient-to-r from-noir-950/75 via-noir-950/40 to-noir-950/20" />
         </div>
 
         {/* Content */}
         <div className="container-wide relative z-10 pt-32 pb-32">
           <div className="max-w-3xl">
-            {/* Main headline */}
-            <h1 className="mb-8">
+            <h1 className="mb-8" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.3)' }}>
               <span
                 className={`block text-[clamp(3rem,8vw,5.5rem)] font-display font-bold text-white leading-[1.05] tracking-[-0.02em] transition-all duration-700 ${
                   heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
@@ -238,17 +334,15 @@ export default function HomePage() {
               </span>
             </h1>
 
-            {/* Subtitle */}
             <p
-              className={`text-lg md:text-xl text-white/70 mb-10 max-w-lg leading-relaxed transition-all duration-700 ${
+              className={`text-xl text-white/70 mb-10 max-w-lg leading-relaxed transition-all duration-700 ${
                 heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
-              style={{ transitionDelay: '600ms' }}
+              style={{ transitionDelay: '600ms', textShadow: '0 1px 10px rgba(0,0,0,0.3)' }}
             >
               {t('hero.subtitle')}
             </p>
 
-            {/* CTA Buttons */}
             <div
               className={`flex flex-wrap gap-4 transition-all duration-700 ${
                 heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
@@ -278,9 +372,9 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Slide indicators — 44px touch targets for mobile a11y */}
+        {/* Slide indicators */}
         <div
-          className={`absolute bottom-[88px] md:bottom-[80px] left-0 right-0 z-10 flex justify-center gap-1 transition-all duration-700 ${
+          className={`absolute bottom-[80px] left-0 right-0 z-10 flex justify-center gap-1 transition-all duration-700 ${
             heroLoaded ? 'opacity-100' : 'opacity-0'
           }`}
           style={{ transitionDelay: '1000ms' }}
@@ -300,15 +394,15 @@ export default function HomePage() {
             </button>
           ))}
         </div>
-
       </section>
 
       {/* ===== WHY US SECTION - Split layout with image ===== */}
+      {/* On mobile: content comes FIRST, image AFTER — avoids two photos colliding under the hero slider */}
       <section className="section-padding bg-white relative overflow-hidden">
         <div className="container-wide">
-          <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             {/* Image side */}
-            <AnimatedSection direction="left">
+            <AnimatedSection direction="left" className="order-2 lg:order-none">
               <div className="relative aspect-[4/5] rounded-2xl overflow-hidden">
                 <Image
                   src={homepageImages.whyUs}
@@ -320,7 +414,7 @@ export default function HomePage() {
             </AnimatedSection>
 
             {/* Content side */}
-            <div>
+            <div className="order-1 lg:order-none">
               <AnimatedSection>
                 <span className="inline-block px-4 py-1.5 bg-accent-100 text-accent-700 text-xs font-semibold uppercase tracking-[0.15em] rounded-full mb-6">
                   {t('whyUs.badge')}
@@ -401,7 +495,7 @@ export default function HomePage() {
             {/* Left: large image with featured project info */}
             <AnimatedSection direction="left">
               <Link href={services[0].href} className="group block">
-                <div className="relative aspect-[4/5] rounded-2xl overflow-hidden">
+                <div className="relative aspect-[3/2] lg:aspect-[4/5] rounded-2xl overflow-hidden">
                   <Image
                     src={serviceImages[0]}
                     alt={services[0].title}
@@ -467,25 +561,25 @@ export default function HomePage() {
         <div className="container-wide">
           {/* Header */}
           <AnimatedSection className="mb-16">
-            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
-              <div>
-                <span className="inline-block px-4 py-1.5 bg-accent-100 text-accent-700 text-xs font-semibold uppercase tracking-[0.15em] rounded-full mb-6">
-                  {t('projects.badge')}
-                </span>
+            <div>
+              <span className="inline-block px-4 py-1.5 bg-accent-100 text-accent-700 text-xs font-semibold uppercase tracking-[0.15em] rounded-full mb-6">
+                {t('projects.badge')}
+              </span>
+              <div className="flex items-end justify-between gap-8">
                 <h2 className="text-display-lg font-display font-bold text-noir-900">
                   {t('projects.titlePrefix')}{' '}
                   <span className="text-accent-600">{t('projects.titleHighlight')}</span>
                 </h2>
+                <Link
+                  href="/projecten"
+                  className="hidden md:inline-flex group items-center gap-3 text-noir-500 hover:text-accent-600 transition-colors flex-shrink-0"
+                >
+                  <span className="text-sm font-semibold uppercase tracking-wider">
+                    {t('projects.viewAll')}
+                  </span>
+                  <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                </Link>
               </div>
-              <Link
-                href="/projecten"
-                className="group inline-flex items-center gap-3 text-noir-500 hover:text-accent-600 transition-colors"
-              >
-                <span className="text-sm font-semibold uppercase tracking-wider">
-                  {t('projects.viewAll')}
-                </span>
-                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-              </Link>
             </div>
           </AnimatedSection>
 
@@ -555,6 +649,19 @@ export default function HomePage() {
                 </AnimatedSection>
               ))}
             </div>
+          </div>
+
+          {/* Mobile-only "View all" link */}
+          <div className="mt-10 text-center md:hidden">
+            <Link
+              href="/projecten"
+              className="group inline-flex items-center gap-3 px-8 py-4 border-2 border-noir-200 text-noir-700 font-semibold rounded-full hover:border-accent-600 hover:text-accent-600 transition-all duration-300"
+            >
+              <span className="text-sm uppercase tracking-wider">
+                {t('projects.viewAll')}
+              </span>
+              <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+            </Link>
           </div>
         </div>
       </section>

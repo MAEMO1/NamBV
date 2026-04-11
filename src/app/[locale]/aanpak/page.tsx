@@ -57,7 +57,7 @@ export default function AanpakPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-white py-20 md:py-28 overflow-hidden">
+      <section className="relative bg-white py-16 md:py-24 overflow-hidden">
         <div className="container-custom relative">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>

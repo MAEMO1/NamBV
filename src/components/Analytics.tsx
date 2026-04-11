@@ -21,10 +21,14 @@ function getSessionId(): string {
   const stored = sessionStorage.getItem('nam_session')
 
   if (stored) {
-    const { id, timestamp } = JSON.parse(stored)
-    if (Date.now() - timestamp < SESSION_DURATION) {
-      sessionStorage.setItem('nam_session', JSON.stringify({ id, timestamp: Date.now() }))
-      return id
+    try {
+      const { id, timestamp } = JSON.parse(stored)
+      if (typeof id === 'string' && typeof timestamp === 'number' && Date.now() - timestamp < SESSION_DURATION) {
+        sessionStorage.setItem('nam_session', JSON.stringify({ id, timestamp: Date.now() }))
+        return id
+      }
+    } catch {
+      sessionStorage.removeItem('nam_session')
     }
   }
 

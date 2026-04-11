@@ -152,7 +152,7 @@ export default function DienstenPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative pt-32 pb-16 md:pt-40 md:pb-20 bg-noir-50 overflow-hidden">
+      <section className="relative pt-28 pb-12 md:pt-36 md:pb-16 bg-noir-50 overflow-hidden">
         <div className="container-wide relative">
           <div className="max-w-3xl">
             {/* Badge */}
@@ -187,7 +187,7 @@ export default function DienstenPage() {
       </section>
 
       {/* Services Grid - Premium cards */}
-      <section className="py-20 md:py-28 bg-white">
+      <section className="py-16 md:py-24 bg-white">
         <div className="container-wide">
           <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
             {services.map((service, index) => (
@@ -254,7 +254,7 @@ export default function DienstenPage() {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-24 md:py-32 bg-noir-950 relative overflow-hidden">
+      <section className="py-16 md:py-24 bg-noir-950 relative overflow-hidden">
         {/* Architectural grid lines */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 left-[25%] w-px h-full bg-white/[0.03]" />

@@ -35,12 +35,12 @@ export default function AfspraakPage() {
   return (
     <>
       {/* Hero with booking - Clean, professional */}
-      <section className="relative bg-white pt-28 md:pt-32 pb-16 md:pb-20">
+      <section className="relative bg-white pt-24 md:pt-32 pb-10 md:pb-16">
         <div className="container-wide">
           {/* Header */}
-          <div className="max-w-2xl mb-10 md:mb-12">
+          <div className="max-w-2xl mb-6 md:mb-12">
             <div
-              className={`flex items-center gap-3 mb-5 transition-all duration-700 ${
+              className={`flex items-center gap-3 mb-4 transition-all duration-700 ${
                 loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
               }`}
             >
