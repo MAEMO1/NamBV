@@ -21,6 +21,7 @@ export default function V2QuoteForm({
     fullName: '',
     email: '',
     phone: '',
+    website: '',
     postalCode: '',
     city: '',
     propertyTypeId: propertyTypes[0]?.id ?? '',
@@ -91,6 +92,7 @@ export default function V2QuoteForm({
         fullName: '',
         email: '',
         phone: '',
+        website: '',
         postalCode: '',
         city: '',
         propertyTypeId: propertyTypes[0]?.id ?? '',
@@ -111,6 +113,19 @@ export default function V2QuoteForm({
 
   return (
     <form onSubmit={submit} className="grid gap-6 rounded-3xl border border-noir-200 bg-white p-6 shadow-soft lg:p-8">
+      <div className="sr-only" aria-hidden="true">
+        <label>
+          Website
+          <input
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            value={formData.website}
+            onChange={(event) => updateField('website', event.target.value)}
+          />
+        </label>
+      </div>
+
       <div className="grid gap-4 md:grid-cols-2">
         <Field label={copy.quote.fields.fullName}>
           <input value={formData.fullName} onChange={(event) => updateField('fullName', event.target.value)} required className={inputClassName} />

@@ -1,14 +1,7 @@
 import { NextResponse } from 'next/server';
-import { getV2QuoteFormOptions, getV2SettingsMap } from '@/lib/v2/public-data';
+import { getV2QuoteFormOptions } from '@/lib/v2/public-data';
 
 export async function GET() {
-  const [formOptions, settings] = await Promise.all([
-    getV2QuoteFormOptions(),
-    getV2SettingsMap(),
-  ]);
-
-  return NextResponse.json({
-    ...formOptions,
-    settings,
-  });
+  const formOptions = await getV2QuoteFormOptions();
+  return NextResponse.json(formOptions);
 }

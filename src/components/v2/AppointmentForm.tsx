@@ -19,6 +19,7 @@ export default function V2AppointmentForm({
     name: '',
     email: '',
     phone: '',
+    website: '',
     gemeente: '',
     selectedTime: '',
     projectType: '',
@@ -91,6 +92,7 @@ export default function V2AppointmentForm({
         name: '',
         email: '',
         phone: '',
+        website: '',
         gemeente: '',
         selectedTime: '',
         projectType: '',
@@ -116,6 +118,19 @@ export default function V2AppointmentForm({
 
   return (
     <form onSubmit={submit} className="grid gap-6 rounded-3xl border border-noir-200 bg-white p-6 shadow-soft lg:p-8">
+      <div className="sr-only" aria-hidden="true">
+        <label>
+          Website
+          <input
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            value={formData.website}
+            onChange={(event) => updateField('website', event.target.value)}
+          />
+        </label>
+      </div>
+
       <div className="grid gap-4 md:grid-cols-2">
         <Field label={copy.appointment.fields.name}>
           <input value={formData.name} onChange={(event) => updateField('name', event.target.value)} required className={inputClassName} />

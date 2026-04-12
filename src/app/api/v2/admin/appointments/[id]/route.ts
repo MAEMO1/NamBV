@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { Prisma } from '@prisma/client';
 import { ZodError } from 'zod';
 import { db } from '@/lib/db';
 import { updateV2Appointment } from '@/lib/v2/mutations';
@@ -32,6 +33,18 @@ export async function PATCH(
   } catch (error) {
     if (error instanceof ZodError) {
       return zodErrorResponse(error);
+    }
+
+    if (error instanceof Error && error.message === 'selected_slot_unavailable') {
+      return NextResponse.json({ error: 'Selected slot is no longer available' }, { status: 409 });
+    }
+
+    if (error instanceof Error && error.message === 'appointment_not_found') {
+      return NextResponse.json({ error: 'Appointment not found' }, { status: 404 });
+    }
+
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+      return NextResponse.json({ error: 'Appointment not found' }, { status: 404 });
     }
 
     console.error('v2 appointment update failed', error);

@@ -208,7 +208,11 @@ async function main() {
   console.log('Bootstrapping v2 foundation...')
 
   const v2AdminEmail = process.env.V2_ADMIN_EMAIL || 'admin@namconstruction.be'
-  const v2AdminPassword = process.env.V2_ADMIN_PASSWORD || 'ChangeMe123!'
+  const v2AdminPassword = process.env.V2_ADMIN_PASSWORD || process.env.ADMIN_PASSWORD
+
+  if (!v2AdminPassword) {
+    throw new Error('Set V2_ADMIN_PASSWORD before running prisma/seed.ts')
+  }
 
   const v2Admin = await prisma.v2AdminUser.upsert({
     where: { email: v2AdminEmail },

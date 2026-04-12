@@ -8,7 +8,13 @@ type LegacySessionPayload = {
 }
 
 function getLegacyAdminSessionSecret() {
-  return process.env.ADMIN_SESSION_SECRET || process.env.ADMIN_PASSWORD || 'admin'
+  const secret = process.env.ADMIN_SESSION_SECRET || process.env.ADMIN_PASSWORD
+
+  if (!secret) {
+    throw new Error('ADMIN_SESSION_SECRET is required for legacy admin sessions')
+  }
+
+  return secret
 }
 
 function bytesToHex(bytes: Uint8Array) {

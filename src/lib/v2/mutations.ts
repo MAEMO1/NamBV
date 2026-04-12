@@ -1,30 +1,146 @@
 import { db } from '@/lib/db';
-import { AppointmentStatus, BudgetRange, QuoteStatus } from '@prisma/client';
+import { AppointmentStatus, BudgetRange, Prisma, QuoteStatus } from '@prisma/client';
 import type { V2AppointmentCreateInput, V2AssetInput, V2PageSectionInput, V2ProjectInput, V2SiteSettingInput } from './schemas';
 import type { V2QuoteCreateInput } from './schemas';
-import { getV2Availability } from './public-data';
 import { recordV2AuditEvent, recordV2LeadEvent } from './audit';
+import { defaultAvailabilityRules } from './defaults';
 import { toInputJsonValue } from './json';
+
+const INACTIVE_APPOINTMENT_STATUSES: AppointmentStatus[] = [
+  AppointmentStatus.CANCELLED,
+  AppointmentStatus.REJECTED,
+];
+const MAX_PRISMA_RETRIES = 3;
+
+export function buildV2ActiveSlotKey(selectedDate: string, selectedTime: string) {
+  return `${selectedDate}T${selectedTime}`;
+}
+
+function shouldReserveAppointmentSlot(status: AppointmentStatus | string) {
+  return status !== AppointmentStatus.CANCELLED && status !== AppointmentStatus.REJECTED;
+}
+
+function toCalendarDate(dateString: string) {
+  const [year, month, day] = dateString.split('-').map(Number);
+  return new Date(year, month - 1, day);
+}
+
+function isRetryablePrismaError(error: unknown) {
+  return error instanceof Prisma.PrismaClientKnownRequestError
+    && (error.code === 'P2002' || error.code === 'P2034');
+}
+
+async function withPrismaRetry<T>(operation: () => Promise<T>, maxAttempts = MAX_PRISMA_RETRIES): Promise<T> {
+  let attempt = 0;
+
+  while (true) {
+    try {
+      return await operation();
+    } catch (error) {
+      attempt += 1;
+      if (!isRetryablePrismaError(error) || attempt >= maxAttempts) {
+        throw error;
+      }
+    }
+  }
+}
 
 async function nextReference(prefix: string, model: 'quote' | 'appointment') {
   const currentYear = new Date().getFullYear();
   const yearlyPrefix = `${prefix}-${currentYear}-`;
+  const counterKey = `${model}:${currentYear}`;
 
-  const current = model === 'quote'
-    ? await db.v2QuoteRequest.findFirst({
-        where: { referenceNumber: { startsWith: yearlyPrefix } },
-        orderBy: { referenceNumber: 'desc' },
-      })
-    : await db.v2Appointment.findFirst({
-        where: { referenceNumber: { startsWith: yearlyPrefix } },
-        orderBy: { referenceNumber: 'desc' },
+  const nextNumber = await withPrismaRetry(async () => {
+    const value = await db.$transaction(async (tx) => {
+      const existingCounter = await tx.v2SequenceCounter.findUnique({
+        where: { key: counterKey },
       });
 
-  const nextNumber = current
-    ? Number.parseInt(current.referenceNumber.split('-')[2] ?? '0', 10) + 1
-    : 1;
+      if (existingCounter) {
+        const updatedCounter = await tx.v2SequenceCounter.update({
+          where: { key: counterKey },
+          data: { value: { increment: 1 } },
+        });
+        return updatedCounter.value;
+      }
+
+      const current = model === 'quote'
+        ? await tx.v2QuoteRequest.findFirst({
+            where: { referenceNumber: { startsWith: yearlyPrefix } },
+            orderBy: { referenceNumber: 'desc' },
+          })
+        : await tx.v2Appointment.findFirst({
+            where: { referenceNumber: { startsWith: yearlyPrefix } },
+            orderBy: { referenceNumber: 'desc' },
+          });
+
+      const initialValue = current
+        ? Number.parseInt(current.referenceNumber.split('-')[2] ?? '0', 10) + 1
+        : 1;
+
+      const createdCounter = await tx.v2SequenceCounter.create({
+        data: {
+          key: counterKey,
+          value: initialValue,
+        },
+      });
+
+      return createdCounter.value;
+    }, {
+      isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
+    });
+
+    return value;
+  });
 
   return `${yearlyPrefix}${String(nextNumber).padStart(4, '0')}`;
+}
+
+async function ensureV2AppointmentSlotAvailable(
+  tx: Prisma.TransactionClient,
+  selectedDate: string,
+  selectedTime: string,
+) {
+  const appointmentDate = toCalendarDate(selectedDate);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  if (appointmentDate < today) {
+    throw new Error('selected_slot_unavailable');
+  }
+
+  const [rule, exception, existingAppointment] = await Promise.all([
+    tx.v2AvailabilityRule.findUnique({
+      where: { dayOfWeek: appointmentDate.getDay() },
+    }),
+    tx.v2AvailabilityException.findUnique({
+      where: { date: appointmentDate },
+    }),
+    tx.v2Appointment.findFirst({
+      where: {
+        appointmentDate,
+        appointmentTime: selectedTime,
+        status: { notIn: INACTIVE_APPOINTMENT_STATUSES },
+      },
+      select: { id: true },
+    }),
+  ]);
+
+  const fallbackRule = defaultAvailabilityRules.find((entry) => entry.dayOfWeek === appointmentDate.getDay());
+  const effectiveRule = rule ?? fallbackRule;
+  const blockedTimes = exception?.blockedTimes ?? [];
+
+  if (!effectiveRule?.isActive || !effectiveRule.timeSlots.includes(selectedTime)) {
+    throw new Error('selected_slot_unavailable');
+  }
+
+  if (blockedTimes.includes('all') || blockedTimes.includes(selectedTime)) {
+    throw new Error('selected_slot_unavailable');
+  }
+
+  if (existingAppointment) {
+    throw new Error('selected_slot_unavailable');
+  }
 }
 
 export async function createV2QuoteRequest(input: V2QuoteCreateInput) {
@@ -62,37 +178,39 @@ export async function createV2QuoteRequest(input: V2QuoteCreateInput) {
 }
 
 export async function createV2Appointment(input: V2AppointmentCreateInput) {
-  const availability = await getV2Availability(input.selectedDate.slice(0, 7));
-  const slot = availability[input.selectedDate];
+  const appointment = await withPrismaRetry(async () => {
+    const referenceNumber = await nextReference('V2A', 'appointment');
+    const appointmentDate = toCalendarDate(input.selectedDate);
 
-  if (!slot?.available.includes(input.selectedTime)) {
-    throw new Error('selected_slot_unavailable');
-  }
+    return db.$transaction(async (tx) => {
+      await ensureV2AppointmentSlotAvailable(tx, input.selectedDate, input.selectedTime);
 
-  const referenceNumber = await nextReference('V2A', 'appointment');
-  const [year, month, day] = input.selectedDate.split('-').map(Number);
-
-  const appointment = await db.v2Appointment.create({
-    data: {
-      referenceNumber,
-      fullName: input.name,
-      email: input.email,
-      phone: input.phone,
-      municipality: input.gemeente,
-      appointmentDate: new Date(year, month - 1, day),
-      appointmentTime: input.selectedTime,
-      projectType: input.projectType || null,
-      propertyType: input.propertyType || null,
-      propertyAge: input.propertyAge || null,
-      priorities: input.priorities,
-      materialPreference: input.materialPreference || null,
-      budget: input.budget || null,
-      timing: input.timing || null,
-      subsidyInterest: input.subsidyInterest,
-      paymentSpread: input.paymentSpread,
-      motivation: input.motivation || null,
-      message: input.message || null,
-    },
+      return tx.v2Appointment.create({
+        data: {
+          referenceNumber,
+          activeSlotKey: buildV2ActiveSlotKey(input.selectedDate, input.selectedTime),
+          fullName: input.name,
+          email: input.email,
+          phone: input.phone,
+          municipality: input.gemeente,
+          appointmentDate,
+          appointmentTime: input.selectedTime,
+          projectType: input.projectType || null,
+          propertyType: input.propertyType || null,
+          propertyAge: input.propertyAge || null,
+          priorities: input.priorities,
+          materialPreference: input.materialPreference || null,
+          budget: input.budget || null,
+          timing: input.timing || null,
+          subsidyInterest: input.subsidyInterest,
+          paymentSpread: input.paymentSpread,
+          motivation: input.motivation || null,
+          message: input.message || null,
+        },
+      });
+    }, {
+      isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
+    });
   });
 
   await recordV2LeadEvent({
@@ -144,10 +262,48 @@ export async function updateV2Appointment(input: {
   proposedDate?: string | null;
   proposedTime?: string | null;
 }) {
+  const currentAppointment = await db.v2Appointment.findUnique({
+    where: { id: input.appointmentId },
+    select: {
+      appointmentDate: true,
+      appointmentTime: true,
+      activeSlotKey: true,
+    },
+  });
+
+  if (!currentAppointment) {
+    throw new Error('appointment_not_found');
+  }
+
+  const nextStatus = input.status as AppointmentStatus;
+  const nextActiveSlotKey = shouldReserveAppointmentSlot(nextStatus)
+    ? (currentAppointment.activeSlotKey ?? buildV2ActiveSlotKey(
+        currentAppointment.appointmentDate.toISOString().slice(0, 10),
+        currentAppointment.appointmentTime,
+      ))
+    : null;
+
+  if (nextActiveSlotKey && !currentAppointment.activeSlotKey) {
+    const conflictingAppointment = await db.v2Appointment.findFirst({
+      where: {
+        id: { not: input.appointmentId },
+        appointmentDate: currentAppointment.appointmentDate,
+        appointmentTime: currentAppointment.appointmentTime,
+        status: { notIn: INACTIVE_APPOINTMENT_STATUSES },
+      },
+      select: { id: true },
+    });
+
+    if (conflictingAppointment) {
+      throw new Error('selected_slot_unavailable');
+    }
+  }
+
   const appointment = await db.v2Appointment.update({
     where: { id: input.appointmentId },
     data: {
-      status: input.status as AppointmentStatus,
+      status: nextStatus,
+      activeSlotKey: nextActiveSlotKey,
       adminNotes: input.adminNotes,
       proposedDate: input.proposedDate ? new Date(input.proposedDate) : null,
       proposedTime: input.proposedTime ?? null,

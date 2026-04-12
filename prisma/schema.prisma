@@ -634,6 +634,31 @@ model V2LoginAttempt {
   @@map("v2_login_attempts")
 }
 
+model V2SubmissionAttempt {
+  id          String    @id @default(cuid())
+  kind        String
+  email       String?
+  ipAddress   String?   @map("ip_address")
+  userAgent   String?   @map("user_agent")
+  wasAccepted Boolean   @default(false) @map("was_accepted")
+  reason      String?
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  @@index([kind, createdAt(sort: Desc)])
+  @@index([kind, email, createdAt(sort: Desc)])
+  @@index([kind, ipAddress, createdAt(sort: Desc)])
+  @@map("v2_submission_attempts")
+}
+
+model V2SequenceCounter {
+  key       String    @id
+  value     Int       @default(0)
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  @@map("v2_sequence_counters")
+}
+
 model V2QuoteRequest {
   id              String       @id @default(cuid())
   referenceNumber String       @unique @map("reference_number")
@@ -663,6 +688,7 @@ model V2QuoteRequest {
 model V2Appointment {
   id                 String             @id @default(cuid())
   referenceNumber    String             @unique @map("reference_number")
+  activeSlotKey      String?            @unique @map("active_slot_key")
   status             AppointmentStatus  @default(PENDING)
   fullName           String             @map("full_name")
   email              String

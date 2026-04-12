@@ -11,14 +11,12 @@ export const metadata = {
 };
 
 export default async function AdminPage() {
-  const [user, snapshot] = await Promise.all([
-    getV2AdminUserFromCookieStore(),
-    getV2AdminConsoleSnapshot(),
-  ]);
+  const user = await getV2AdminUserFromCookieStore();
 
   if (!user) {
     redirect('/admin/login');
   }
 
+  const snapshot = await getV2AdminConsoleSnapshot();
   return <AdminConsole adminName={user.fullName ?? 'admin'} initialData={snapshot} />;
 }

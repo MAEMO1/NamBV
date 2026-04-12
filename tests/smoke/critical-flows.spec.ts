@@ -31,6 +31,8 @@ test('canonical public APIs stay healthy', async ({ request }) => {
     '/api/public/projects?locale=nl',
     '/api/public/quote-form',
     '/api/public/availability',
+    '/robots.txt',
+    '/sitemap.xml',
   ]) {
     const response = await request.get(path);
     expect(response.status(), `unexpected status for ${path}`).toBe(200);
@@ -50,6 +52,11 @@ test('canonical public APIs stay healthy', async ({ request }) => {
 
   const wrongGetAppointments = await request.get('/api/appointments');
   expect(wrongGetAppointments.status()).toBe(405);
+
+  const removedLegacyAnalytics = await request.post('/api/analytics/track', {
+    data: { type: 'event', eventName: 'smoke_test_probe', path: '/nl' },
+  });
+  expect(removedLegacyAnalytics.status()).toBe(410);
 });
 
 test('admin login uses canonical session contract and protects admin data', async ({ page, request }) => {
