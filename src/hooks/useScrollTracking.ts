@@ -49,7 +49,7 @@ export function useScrollTracking() {
  * Hook to track time on page
  */
 export function useTimeOnPage(onUnmount: (seconds: number) => void) {
-  const startTime = useRef(Date.now());
+  const startTime = useRef(0);
 
   useEffect(() => {
     startTime.current = Date.now();

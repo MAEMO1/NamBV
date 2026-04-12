@@ -77,15 +77,116 @@ export const v2AppointmentUpdateSchema = z.object({
   proposedTime: z.string().regex(/^\d{2}:\d{2}$/).nullable().optional(),
 });
 
+export const V2_ADMIN_CONTENT_SCHEMA_KEYS = ['hero', 'feature-list', 'content', 'contact', 'cta', 'legal'] as const;
+
+export const v2AdminContentSchemaKeySchema = z.enum(V2_ADMIN_CONTENT_SCHEMA_KEYS);
+
+const sectionItemSchema = z.object({
+  title: z.string().optional(),
+  description: z.string().optional(),
+  href: z.string().optional(),
+  ctaLabel: z.string().optional(),
+  body: z.string().optional(),
+  items: z.array(z.string()).optional(),
+}).passthrough();
+
+const heroSectionDataSchema = z.object({
+  eyebrow: z.string().optional(),
+  title: z.string().optional(),
+  description: z.string().optional(),
+  primaryCtaLabel: z.string().optional(),
+  primaryCtaHref: z.string().optional(),
+  secondaryCtaLabel: z.string().optional(),
+  secondaryCtaHref: z.string().optional(),
+  image: z.string().optional(),
+}).passthrough();
+
+const featureListSectionDataSchema = z.object({
+  eyebrow: z.string().optional(),
+  title: z.string().optional(),
+  description: z.string().optional(),
+  items: z.array(sectionItemSchema).default([]),
+}).passthrough();
+
+const contentSectionDataSchema = z.object({
+  eyebrow: z.string().optional(),
+  title: z.string().optional(),
+  description: z.string().optional(),
+  paragraphs: z.array(z.string()).default([]),
+  items: z.array(sectionItemSchema).default([]),
+}).passthrough();
+
+const contactSectionDataSchema = z.object({
+  eyebrow: z.string().optional(),
+  title: z.string().optional(),
+  description: z.string().optional(),
+  highlights: z.array(z.string()).default([]),
+  primaryCtaLabel: z.string().optional(),
+  primaryCtaHref: z.string().optional(),
+}).passthrough();
+
+const ctaSectionDataSchema = z.object({
+  title: z.string().optional(),
+  description: z.string().optional(),
+  primaryCtaLabel: z.string().optional(),
+  primaryCtaHref: z.string().optional(),
+}).passthrough();
+
+const legalSectionDataSchema = z.object({
+  updatedAt: z.string().optional(),
+  introduction: z.string().optional(),
+  sections: z.array(sectionItemSchema).default([]),
+}).passthrough();
+
+function getV2AdminContentDataSchema(schemaKey: z.infer<typeof v2AdminContentSchemaKeySchema>) {
+  switch (schemaKey) {
+    case 'hero':
+      return heroSectionDataSchema;
+    case 'feature-list':
+      return featureListSectionDataSchema;
+    case 'content':
+      return contentSectionDataSchema;
+    case 'contact':
+      return contactSectionDataSchema;
+    case 'cta':
+      return ctaSectionDataSchema;
+    case 'legal':
+      return legalSectionDataSchema;
+  }
+}
+
 export const v2PageSectionSchema = z.object({
   id: z.string().optional(),
   pageKey: z.string().min(1).max(100),
-  sectionKey: z.string().min(1).max(100),
+  sectionKey: z.string().min(1).max(100).regex(/^[a-z0-9-]+$/),
   locale: v2LocaleSchema,
-  schemaKey: z.string().min(1).max(100),
+  schemaKey: v2AdminContentSchemaKeySchema,
   displayOrder: z.number().int().min(0).default(0),
   published: z.boolean().default(true),
   dataJson: z.record(z.string(), z.any()),
+}).superRefine((value, ctx) => {
+  const schema = getV2AdminContentDataSchema(value.schemaKey);
+  const result = schema.safeParse(value.dataJson);
+
+  if (!result.success) {
+    const flattened = result.error.flatten();
+    for (const message of flattened.formErrors) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message,
+        path: ['dataJson'],
+      });
+    }
+    for (const [key, messages] of Object.entries(flattened.fieldErrors)) {
+      for (const message of messages ?? []) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message,
+          path: ['dataJson', key],
+        });
+      }
+    }
+  }
 });
 
 export const v2AssetSchema = z.object({
@@ -147,6 +248,43 @@ export const v2SiteSettingSchema = z.object({
   valueJson: z.any(),
 });
 
+const companySettingValueSchema = z.object({
+  name: z.string().min(1),
+  phone: z.string().min(1),
+  email: emailSchema,
+  address: z.string().min(1),
+  instagram: z.string().url().nullable().optional(),
+  whatsapp: z.string().url().nullable().optional(),
+}).passthrough();
+
+const seoSettingValueSchema = z.object({
+  siteName: z.string().min(1),
+  siteUrl: z.string().url(),
+  titleSuffix: z.string().min(1),
+  defaultDescription: z.string().min(1),
+}).passthrough();
+
+const analyticsSettingValueSchema = z.object({
+  gtmId: z.string().nullable().optional(),
+  consentVersion: z.string().min(1),
+  marketingEnabled: z.boolean(),
+}).passthrough();
+
+export const V2_ADMIN_KNOWN_SETTING_KEYS = ['company', 'seo', 'analytics'] as const;
+
+export const v2KnownSettingKeySchema = z.enum(V2_ADMIN_KNOWN_SETTING_KEYS);
+
+export function getV2KnownSettingValueSchema(key: z.infer<typeof v2KnownSettingKeySchema>) {
+  switch (key) {
+    case 'company':
+      return companySettingValueSchema;
+    case 'seo':
+      return seoSettingValueSchema;
+    case 'analytics':
+      return analyticsSettingValueSchema;
+  }
+}
+
 export const v2AvailabilityRuleSchema = z.object({
   dayOfWeek: z.number().int().min(0).max(6),
   timeSlots: z.array(z.string().regex(/^\d{2}:\d{2}$/)),
@@ -156,7 +294,7 @@ export const v2AvailabilityRuleSchema = z.object({
 export const v2AvailabilityExceptionSchema = z.object({
   id: z.string().optional(),
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-  blockedTimes: z.array(z.string().regex(/^\d{2}:\d{2}$/)).default([]),
+  blockedTimes: z.array(z.union([z.string().regex(/^\d{2}:\d{2}$/), z.literal('all')])).default([]),
   reason: z.string().max(255).optional().nullable(),
 });
 
@@ -165,9 +303,32 @@ export const v2AvailabilityPayloadSchema = z.object({
   exceptions: z.array(v2AvailabilityExceptionSchema).default([]),
 });
 
+export const v2PageSectionUpdateSchema = z.object({
+  displayOrder: z.number().int().min(0),
+  published: z.boolean(),
+  dataJson: z.record(z.string(), z.any()),
+});
+
+export const v2ProjectWriteSchema = v2ProjectSchema.omit({ id: true });
+
+export const v2SiteSettingUpdateSchema = z.object({
+  category: z.string().min(1).max(120),
+  description: z.string().max(500).optional().nullable(),
+  valueJson: z.any(),
+});
+
+export const v2AssetUpdateSchema = v2AssetSchema.omit({ id: true });
+
+export const v2AvailabilityExceptionWriteSchema = v2AvailabilityExceptionSchema.omit({ id: true });
+
 export type V2QuoteCreateInput = z.infer<typeof v2QuoteCreateSchema>;
 export type V2AppointmentCreateInput = z.infer<typeof v2AppointmentCreateSchema>;
 export type V2ProjectInput = z.infer<typeof v2ProjectSchema>;
 export type V2PageSectionInput = z.infer<typeof v2PageSectionSchema>;
 export type V2AssetInput = z.infer<typeof v2AssetSchema>;
 export type V2SiteSettingInput = z.infer<typeof v2SiteSettingSchema>;
+export type V2ProjectWriteInput = z.infer<typeof v2ProjectWriteSchema>;
+export type V2PageSectionUpdateInput = z.infer<typeof v2PageSectionUpdateSchema>;
+export type V2SiteSettingUpdateInput = z.infer<typeof v2SiteSettingUpdateSchema>;
+export type V2AssetUpdateInput = z.infer<typeof v2AssetUpdateSchema>;
+export type V2AvailabilityExceptionWriteInput = z.infer<typeof v2AvailabilityExceptionWriteSchema>;

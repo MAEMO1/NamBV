@@ -1,4 +1,4 @@
-import PublicContentPage from '@/components/v2/pages/PublicContentPage';
+import PublicContentPage from '@/components/public/pages/PublicContentPage';
 
 export const dynamic = 'force-dynamic';
 

@@ -1,11 +1,50 @@
 import { PrismaClient } from '@prisma/client'
 
+function getPrismaDatabaseUrl() {
+  const databaseUrl = process.env.DATABASE_URL
+
+  if (!databaseUrl) {
+    return undefined
+  }
+
+  // Local and smoke runs execute as a single long-lived Node process instead of
+  // Vercel's request-isolated runtime. Relax the pool a bit there so SSR/admin
+  // requests don't starve behind a single pgbouncer connection.
+  if (!process.env.VERCEL) {
+    const url = new URL(databaseUrl)
+    const configuredLimit = Number(url.searchParams.get('connection_limit') ?? '0')
+
+    if (!Number.isFinite(configuredLimit) || configuredLimit < 5) {
+      url.searchParams.set('connection_limit', '5')
+    }
+
+    if (!url.searchParams.has('pool_timeout')) {
+      url.searchParams.set('pool_timeout', '30')
+    }
+
+    return url.toString()
+  }
+
+  return databaseUrl
+}
+
 // Prevent multiple instances of Prisma Client in development
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
 
+const prismaDatabaseUrl = getPrismaDatabaseUrl()
+
 export const db = globalForPrisma.prisma ?? new PrismaClient({
+  ...(prismaDatabaseUrl
+    ? {
+        datasources: {
+          db: {
+            url: prismaDatabaseUrl,
+          },
+        },
+      }
+    : {}),
   log: process.env.NODE_ENV === 'development'
     ? ['query', 'error', 'warn']
     : ['error'],

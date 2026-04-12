@@ -1,6 +1,17 @@
 import { db } from '@/lib/db';
 import { AppointmentStatus, BudgetRange, Prisma, QuoteStatus } from '@prisma/client';
-import type { V2AppointmentCreateInput, V2AssetInput, V2PageSectionInput, V2ProjectInput, V2SiteSettingInput } from './schemas';
+import type {
+  V2AppointmentCreateInput,
+  V2AssetInput,
+  V2AssetUpdateInput,
+  V2AvailabilityExceptionWriteInput,
+  V2PageSectionInput,
+  V2PageSectionUpdateInput,
+  V2ProjectInput,
+  V2ProjectWriteInput,
+  V2SiteSettingInput,
+  V2SiteSettingUpdateInput,
+} from './schemas';
 import type { V2QuoteCreateInput } from './schemas';
 import { recordV2AuditEvent, recordV2LeadEvent } from './audit';
 import { defaultAvailabilityRules } from './defaults';
@@ -513,4 +524,477 @@ export async function replaceV2Projects(items: V2ProjectInput[], actorId?: strin
     actorId,
     payload: { count: items.length },
   });
+}
+
+export async function upsertV2PageSection(input: V2PageSectionInput, actorId?: string | null) {
+  const section = await db.v2PageSection.upsert({
+    where: {
+      pageKey_sectionKey_locale_displayOrder: {
+        pageKey: input.pageKey,
+        sectionKey: input.sectionKey,
+        locale: input.locale,
+        displayOrder: input.displayOrder,
+      },
+    },
+    update: {
+      schemaKey: input.schemaKey,
+      dataJson: toInputJsonValue(input.dataJson),
+      published: input.published,
+    },
+    create: {
+      pageKey: input.pageKey,
+      sectionKey: input.sectionKey,
+      locale: input.locale,
+      schemaKey: input.schemaKey,
+      dataJson: toInputJsonValue(input.dataJson),
+      displayOrder: input.displayOrder,
+      published: input.published,
+    },
+  });
+
+  await recordV2AuditEvent({
+    action: 'content.upserted',
+    entityType: 'page-section',
+    entityId: section.id,
+    actorId,
+    payload: {
+      pageKey: section.pageKey,
+      sectionKey: section.sectionKey,
+      locale: section.locale,
+      schemaKey: section.schemaKey,
+    },
+  });
+
+  return section;
+}
+
+export async function updateV2PageSection(
+  sectionId: string,
+  input: V2PageSectionUpdateInput,
+  actorId?: string | null,
+) {
+  const section = await db.v2PageSection.update({
+    where: { id: sectionId },
+    data: {
+      dataJson: toInputJsonValue(input.dataJson),
+      displayOrder: input.displayOrder,
+      published: input.published,
+    },
+  });
+
+  await recordV2AuditEvent({
+    action: 'content.updated',
+    entityType: 'page-section',
+    entityId: section.id,
+    actorId,
+    payload: {
+      pageKey: section.pageKey,
+      sectionKey: section.sectionKey,
+      locale: section.locale,
+      displayOrder: section.displayOrder,
+      published: section.published,
+    },
+  });
+
+  return section;
+}
+
+export async function deleteV2PageSection(sectionId: string, actorId?: string | null) {
+  const section = await db.v2PageSection.delete({
+    where: { id: sectionId },
+  });
+
+  await recordV2AuditEvent({
+    action: 'content.deleted',
+    entityType: 'page-section',
+    entityId: section.id,
+    actorId,
+    payload: {
+      pageKey: section.pageKey,
+      sectionKey: section.sectionKey,
+      locale: section.locale,
+    },
+  });
+
+  return section;
+}
+
+async function createOrReplaceV2Project(
+  tx: Prisma.TransactionClient,
+  projectId: string,
+  input: V2ProjectWriteInput,
+) {
+  await tx.v2Project.update({
+    where: { id: projectId },
+    data: {
+      slug: input.slug,
+      category: input.category,
+      location: input.location,
+      year: input.year,
+      featured: input.featured,
+      isPublished: input.isPublished,
+      sortOrder: input.sortOrder,
+      coverImageUrl: input.coverImageUrl ?? null,
+    },
+  });
+
+  await tx.v2ProjectTranslation.deleteMany({
+    where: { projectId },
+  });
+  await tx.v2ProjectImage.deleteMany({
+    where: { projectId },
+  });
+
+  if (input.translations.length > 0) {
+    await tx.v2ProjectTranslation.createMany({
+      data: input.translations.map((translation) => ({
+        projectId,
+        locale: translation.locale,
+        title: translation.title,
+        shortDescription: translation.shortDescription ?? null,
+        description: translation.description ?? null,
+        challengeText: translation.challengeText ?? null,
+        approachText: translation.approachText ?? null,
+        resultText: translation.resultText ?? null,
+        projectType: translation.projectType ?? null,
+        duration: translation.duration ?? null,
+        surface: translation.surface ?? null,
+        completionDate: translation.completionDate ?? null,
+      })),
+    });
+  }
+
+  if (input.images.length > 0) {
+    await tx.v2ProjectImage.createMany({
+      data: input.images.map((image) => ({
+        projectId,
+        imageUrl: image.imageUrl,
+        alt: image.alt ?? null,
+        caption: image.caption ?? null,
+        sortOrder: image.sortOrder,
+        kind: image.kind ?? 'gallery',
+      })),
+    });
+  }
+}
+
+export async function createV2Project(input: V2ProjectWriteInput, actorId?: string | null) {
+  const project = await db.$transaction(async (tx) => {
+    const created = await tx.v2Project.create({
+      data: {
+        slug: input.slug,
+        category: input.category,
+        location: input.location,
+        year: input.year,
+        featured: input.featured,
+        isPublished: input.isPublished,
+        sortOrder: input.sortOrder,
+        coverImageUrl: input.coverImageUrl ?? null,
+      },
+    });
+
+    await createOrReplaceV2Project(tx, created.id, input);
+
+    return tx.v2Project.findUniqueOrThrow({
+      where: { id: created.id },
+      include: {
+        translations: true,
+        images: { orderBy: { sortOrder: 'asc' } },
+      },
+    });
+  });
+
+  await recordV2AuditEvent({
+    action: 'project.created',
+    entityType: 'project',
+    entityId: project.id,
+    actorId,
+    payload: {
+      slug: project.slug,
+      featured: project.featured,
+      isPublished: project.isPublished,
+    },
+  });
+
+  return project;
+}
+
+export async function updateV2Project(
+  projectId: string,
+  input: V2ProjectWriteInput,
+  actorId?: string | null,
+) {
+  const project = await db.$transaction(async (tx) => {
+    await createOrReplaceV2Project(tx, projectId, input);
+
+    return tx.v2Project.findUniqueOrThrow({
+      where: { id: projectId },
+      include: {
+        translations: true,
+        images: { orderBy: { sortOrder: 'asc' } },
+      },
+    });
+  });
+
+  await recordV2AuditEvent({
+    action: 'project.updated',
+    entityType: 'project',
+    entityId: project.id,
+    actorId,
+    payload: {
+      slug: project.slug,
+      featured: project.featured,
+      isPublished: project.isPublished,
+      sortOrder: project.sortOrder,
+    },
+  });
+
+  return project;
+}
+
+export async function deleteV2Project(projectId: string, actorId?: string | null) {
+  const project = await db.v2Project.delete({
+    where: { id: projectId },
+  });
+
+  await recordV2AuditEvent({
+    action: 'project.deleted',
+    entityType: 'project',
+    entityId: project.id,
+    actorId,
+    payload: {
+      slug: project.slug,
+    },
+  });
+
+  return project;
+}
+
+export async function upsertV2SiteSetting(
+  key: string,
+  input: V2SiteSettingUpdateInput,
+  actorId?: string | null,
+) {
+  const setting = await db.v2SiteSetting.upsert({
+    where: { key },
+    update: {
+      category: input.category,
+      description: input.description ?? null,
+      valueJson: toInputJsonValue(input.valueJson),
+    },
+    create: {
+      key,
+      category: input.category,
+      description: input.description ?? null,
+      valueJson: toInputJsonValue(input.valueJson),
+    },
+  });
+
+  await recordV2AuditEvent({
+    action: 'setting.upserted',
+    entityType: 'site-setting',
+    entityId: setting.id,
+    actorId,
+    payload: {
+      key: setting.key,
+      category: setting.category,
+    },
+  });
+
+  return setting;
+}
+
+export async function upsertV2AvailabilityRule(
+  dayOfWeek: number,
+  timeSlots: string[],
+  isActive: boolean,
+  actorId?: string | null,
+) {
+  const rule = await db.v2AvailabilityRule.upsert({
+    where: { dayOfWeek },
+    update: {
+      timeSlots,
+      isActive,
+    },
+    create: {
+      dayOfWeek,
+      timeSlots,
+      isActive,
+    },
+  });
+
+  await recordV2AuditEvent({
+    action: 'availability.rule.upserted',
+    entityType: 'availability-rule',
+    entityId: rule.id,
+    actorId,
+    payload: {
+      dayOfWeek: rule.dayOfWeek,
+      isActive: rule.isActive,
+      slotCount: rule.timeSlots.length,
+    },
+  });
+
+  return rule;
+}
+
+export async function createV2AvailabilityException(
+  input: V2AvailabilityExceptionWriteInput,
+  actorId?: string | null,
+) {
+  const exception = await db.v2AvailabilityException.create({
+    data: {
+      date: new Date(input.date),
+      blockedTimes: input.blockedTimes,
+      reason: input.reason ?? null,
+    },
+  });
+
+  await recordV2AuditEvent({
+    action: 'availability.exception.created',
+    entityType: 'availability-exception',
+    entityId: exception.id,
+    actorId,
+    payload: {
+      date: input.date,
+      blockedTimes: input.blockedTimes,
+    },
+  });
+
+  return exception;
+}
+
+export async function updateV2AvailabilityException(
+  exceptionId: string,
+  input: V2AvailabilityExceptionWriteInput,
+  actorId?: string | null,
+) {
+  const exception = await db.v2AvailabilityException.update({
+    where: { id: exceptionId },
+    data: {
+      date: new Date(input.date),
+      blockedTimes: input.blockedTimes,
+      reason: input.reason ?? null,
+    },
+  });
+
+  await recordV2AuditEvent({
+    action: 'availability.exception.updated',
+    entityType: 'availability-exception',
+    entityId: exception.id,
+    actorId,
+    payload: {
+      date: input.date,
+      blockedTimes: input.blockedTimes,
+    },
+  });
+
+  return exception;
+}
+
+export async function deleteV2AvailabilityException(exceptionId: string, actorId?: string | null) {
+  const exception = await db.v2AvailabilityException.delete({
+    where: { id: exceptionId },
+  });
+
+  await recordV2AuditEvent({
+    action: 'availability.exception.deleted',
+    entityType: 'availability-exception',
+    entityId: exception.id,
+    actorId,
+    payload: {
+      date: exception.date.toISOString().slice(0, 10),
+    },
+  });
+
+  return exception;
+}
+
+export async function createV2AssetRecord(input: V2AssetInput, actorId?: string | null) {
+  const asset = await db.v2Asset.create({
+    data: {
+      filename: input.filename,
+      originalName: input.originalName,
+      mimeType: input.mimeType,
+      size: input.size,
+      bucket: input.bucket,
+      path: input.path,
+      url: input.url,
+      alt: input.alt ?? null,
+      width: input.width ?? null,
+      height: input.height ?? null,
+      tags: input.tags,
+    },
+  });
+
+  await recordV2AuditEvent({
+    action: 'asset.created',
+    entityType: 'asset',
+    entityId: asset.id,
+    actorId,
+    payload: {
+      bucket: asset.bucket,
+      path: asset.path,
+      mimeType: asset.mimeType,
+    },
+  });
+
+  return asset;
+}
+
+export async function updateV2Asset(
+  assetId: string,
+  input: V2AssetUpdateInput,
+  actorId?: string | null,
+) {
+  const asset = await db.v2Asset.update({
+    where: { id: assetId },
+    data: {
+      filename: input.filename,
+      originalName: input.originalName,
+      mimeType: input.mimeType,
+      size: input.size,
+      bucket: input.bucket,
+      path: input.path,
+      url: input.url,
+      alt: input.alt ?? null,
+      width: input.width ?? null,
+      height: input.height ?? null,
+      tags: input.tags,
+    },
+  });
+
+  await recordV2AuditEvent({
+    action: 'asset.updated',
+    entityType: 'asset',
+    entityId: asset.id,
+    actorId,
+    payload: {
+      bucket: asset.bucket,
+      path: asset.path,
+      mimeType: asset.mimeType,
+      tagCount: asset.tags.length,
+    },
+  });
+
+  return asset;
+}
+
+export async function deleteV2Asset(assetId: string, actorId?: string | null) {
+  const asset = await db.v2Asset.delete({
+    where: { id: assetId },
+  });
+
+  await recordV2AuditEvent({
+    action: 'asset.deleted',
+    entityType: 'asset',
+    entityId: asset.id,
+    actorId,
+    payload: {
+      bucket: asset.bucket,
+      path: asset.path,
+    },
+  });
+
+  return asset;
 }

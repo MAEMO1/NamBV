@@ -1,4 +1,4 @@
-import PublicAppointmentPage from '@/components/v2/pages/PublicAppointmentPage';
+import PublicAppointmentPage from '@/components/public/pages/PublicAppointmentPage';
 
 export const dynamic = 'force-dynamic';
 

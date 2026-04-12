@@ -1,60 +1,23 @@
+import { cache } from 'react';
 import { db } from '@/lib/db';
 import { defaultAvailabilityRules, defaultPageSections, defaultProjects, defaultQuoteFormOptions, defaultSettings } from './defaults';
 import type { V2Locale } from './locale';
+import { getPublishedV2Sections } from './sections';
 
 export async function getV2PageSections(pageKey: string, locale: V2Locale) {
   const stored = await db.v2PageSection.findMany({
     where: {
       pageKey,
       locale,
-      published: true,
     },
     orderBy: [{ displayOrder: 'asc' }, { sectionKey: 'asc' }],
   });
+  const defaults = defaultPageSections.filter((section) => section.pageKey === pageKey && section.locale === locale);
 
-  const defaults = defaultPageSections
-    .filter((section) => section.pageKey === pageKey && section.locale === locale)
-    .map((section) => ({
-      id: `${section.pageKey}-${section.sectionKey}-${section.locale}`,
-      pageKey: section.pageKey,
-      sectionKey: section.sectionKey,
-      locale: section.locale as string,
-      schemaKey: section.schemaKey,
-      dataJson: section.dataJson,
-      displayOrder: section.displayOrder,
-      published: section.published,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }));
-
-  if (stored.length === 0) {
-    return defaults;
-  }
-
-  const map = new Map<string, (typeof defaults)[number] | (typeof stored)[number]>(
-    defaults.map((section) => [
-      `${section.pageKey}:${section.sectionKey}:${section.locale}:${section.displayOrder}`,
-      section,
-    ]),
-  );
-
-  for (const section of stored) {
-    map.set(
-      `${section.pageKey}:${section.sectionKey}:${section.locale}:${section.displayOrder}`,
-      section,
-    );
-  }
-
-  return Array.from(map.values()).sort((left, right) => {
-    if (left.displayOrder !== right.displayOrder) {
-      return left.displayOrder - right.displayOrder;
-    }
-
-    return left.sectionKey.localeCompare(right.sectionKey);
-  });
+  return getPublishedV2Sections(defaults, stored);
 }
 
-export async function getV2SettingsMap() {
+const getCachedV2SettingsMap = cache(async () => {
   const rows = await db.v2SiteSetting.findMany();
   const base = Object.fromEntries(defaultSettings.map((setting) => [setting.key, setting.valueJson]));
   const overrides = Object.fromEntries(rows.map((row) => [row.key, row.valueJson]));
@@ -63,6 +26,10 @@ export async function getV2SettingsMap() {
     ...base,
     ...overrides,
   };
+});
+
+export async function getV2SettingsMap() {
+  return getCachedV2SettingsMap();
 }
 
 function withProjectTranslation<T extends { locale: string }>(translations: T[], locale: V2Locale) {
@@ -158,17 +125,15 @@ export async function getV2ProjectBySlug(slug: string, locale: V2Locale) {
 }
 
 export async function getV2QuoteFormOptions() {
-  const [serviceTypes, propertyTypes] = await Promise.all([
-    db.serviceType.findMany({
-      where: { isActive: true },
-      orderBy: { sortOrder: 'asc' },
-      select: { id: true, name: true, slug: true, icon: true },
-    }),
-    db.propertyType.findMany({
-      orderBy: { sortOrder: 'asc' },
-      select: { id: true, name: true, slug: true },
-    }),
-  ]);
+  const serviceTypes = await db.serviceType.findMany({
+    where: { isActive: true },
+    orderBy: { sortOrder: 'asc' },
+    select: { id: true, name: true, slug: true, icon: true },
+  });
+  const propertyTypes = await db.propertyType.findMany({
+    orderBy: { sortOrder: 'asc' },
+    select: { id: true, name: true, slug: true },
+  });
 
   return {
     serviceTypes: serviceTypes.length > 0 ? serviceTypes : defaultQuoteFormOptions.serviceTypes,
@@ -190,25 +155,23 @@ export async function getV2Availability(month?: string) {
     endDate.setMonth(endDate.getMonth() + 1);
   }
 
-  const [rules, exceptions, appointments] = await Promise.all([
-    db.v2AvailabilityRule.findMany({
-      orderBy: { dayOfWeek: 'asc' },
-    }),
-    db.v2AvailabilityException.findMany({
-      where: { date: { gte: startDate, lte: endDate } },
-      orderBy: { date: 'asc' },
-    }),
-    db.v2Appointment.findMany({
-      where: {
-        appointmentDate: { gte: startDate, lte: endDate },
-        status: { notIn: ['CANCELLED', 'REJECTED'] },
-      },
-      select: {
-        appointmentDate: true,
-        appointmentTime: true,
-      },
-    }),
-  ]);
+  const rules = await db.v2AvailabilityRule.findMany({
+    orderBy: { dayOfWeek: 'asc' },
+  });
+  const exceptions = await db.v2AvailabilityException.findMany({
+    where: { date: { gte: startDate, lte: endDate } },
+    orderBy: { date: 'asc' },
+  });
+  const appointments = await db.v2Appointment.findMany({
+    where: {
+      appointmentDate: { gte: startDate, lte: endDate },
+      status: { notIn: ['CANCELLED', 'REJECTED'] },
+    },
+    select: {
+      appointmentDate: true,
+      appointmentTime: true,
+    },
+  });
 
   const effectiveRules = rules.length > 0 ? rules : defaultAvailabilityRules;
   const rulesByDay = new Map(effectiveRules.map((rule) => [rule.dayOfWeek, rule]));

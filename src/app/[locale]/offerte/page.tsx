@@ -1,4 +1,4 @@
-import PublicQuotePage from '@/components/v2/pages/PublicQuotePage';
+import PublicQuotePage from '@/components/public/pages/PublicQuotePage';
 
 export const dynamic = 'force-dynamic';
 

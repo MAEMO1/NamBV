@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-import AdminLoginForm from '@/components/v2/admin/AdminLoginForm';
+import AdminLoginForm from '@/components/admin/AdminLoginForm';
 import { getV2AdminUserFromCookieStore } from '@/lib/v2/auth';
 
 export const dynamic = 'force-dynamic';

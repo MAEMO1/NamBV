@@ -15,11 +15,15 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 /**
- * Get public URL for a file in the project-photos bucket
+ * Get public URL for a file in a public bucket
  */
-export function getProjectPhotoUrl(path: string): string {
+export function getStoragePublicUrl(bucket: string, path: string): string {
   const { data } = supabase.storage
-    .from('project-photos')
+    .from(bucket)
     .getPublicUrl(path)
   return data.publicUrl
+}
+
+export function getProjectPhotoUrl(path: string): string {
+  return getStoragePublicUrl('project-photos', path)
 }

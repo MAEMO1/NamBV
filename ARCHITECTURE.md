@@ -859,8 +859,8 @@ export function TrackedCTA({
 ```
 POST /api/quotes              # Offerte indienen
 POST /api/appointments        # Afspraak boeken
-GET  /api/projects            # Projecten ophalen
-GET  /api/availability        # Beschikbare tijdslots
+GET  /api/public/projects     # Projecten ophalen
+GET  /api/public/availability # Beschikbare tijdslots
 POST /api/analytics/track     # Analytics events
 
 # Admin (beveiligd)
@@ -1094,7 +1094,7 @@ export default function BookingFlow() {
 
   useEffect(() => {
     // Haal beschikbare data op
-    fetch('/api/availability')
+    fetch('/api/public/availability')
       .then((res) => res.json())
       .then((data) => setAvailableDates(data.dates))
   }, [])

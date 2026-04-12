@@ -8,6 +8,7 @@ export const V2_ADMIN_SESSION_COOKIE = 'nam_v2_admin_session';
 const SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 7;
 const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
 const MAX_FAILED_ATTEMPTS = 5;
+const SESSION_TOUCH_INTERVAL_MS = 5 * 60 * 1000;
 
 type SessionMeta = {
   ipAddress?: string | null;
@@ -128,10 +129,12 @@ export async function getV2AdminUserFromToken(rawToken?: string | null) {
     return null;
   }
 
-  await db.v2AdminSession.update({
-    where: { id: session.id },
-    data: { lastSeenAt: new Date() },
-  });
+  if (!session.lastSeenAt || Date.now() - session.lastSeenAt.getTime() >= SESSION_TOUCH_INTERVAL_MS) {
+    await db.v2AdminSession.update({
+      where: { id: session.id },
+      data: { lastSeenAt: new Date() },
+    });
+  }
 
   return session.user;
 }

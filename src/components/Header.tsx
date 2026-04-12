@@ -13,6 +13,7 @@ export default function Header() {
   const pathname = usePathname();
   const t = useTranslations('navigation');
   const tHeader = useTranslations('header');
+  const isAdminPage = pathname.startsWith('/admin');
 
   // Pages with full-screen dark heroes get a transparent header
   const hasTransparentHero = pathname === '/' || (pathname.startsWith('/projecten/') && pathname !== '/projecten');
@@ -25,18 +26,17 @@ export default function Header() {
     { name: t('contact'), href: '/contact' as const },
   ];
 
-  // Don't render header on admin pages
-  if (pathname.startsWith('/admin')) {
-    return null;
-  }
-
   useEffect(() => {
+    if (isAdminPage) {
+      return;
+    }
+
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isAdminPage]);
 
   // Prevent body scroll when menu is open
   useEffect(() => {
@@ -49,6 +49,10 @@ export default function Header() {
       document.body.style.overflow = '';
     };
   }, [mobileMenuOpen]);
+
+  if (isAdminPage) {
+    return null;
+  }
 
   return (
     <>

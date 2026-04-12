@@ -1,4 +1,4 @@
-import PublicProjectsPage from '@/components/v2/pages/PublicProjectsPage';
+import PublicProjectsPage from '@/components/public/pages/PublicProjectsPage';
 
 export const dynamic = 'force-dynamic';
 

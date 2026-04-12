@@ -3,9 +3,9 @@ import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import type { Metadata } from 'next';
-import V2Header from '@/components/v2/Header';
-import V2Footer from '@/components/v2/Footer';
-import MarketingAnalytics from '@/components/v2/MarketingAnalytics';
+import Footer from '@/components/public/Footer';
+import Header from '@/components/public/Header';
+import MarketingAnalytics from '@/components/public/MarketingAnalytics';
 import { getV2SettingsMap } from '@/lib/v2/public-data';
 
 type Props = {
@@ -90,9 +90,9 @@ export default async function LocaleLayout({ children, params }: Props) {
       <NextIntlClientProvider messages={messages}>
         <div className="min-h-screen bg-noir-50 text-noir-900">
           <MarketingAnalytics gtmId={typeof analytics.gtmId === 'string' ? analytics.gtmId : null} />
-          <V2Header locale={locale as 'nl' | 'fr' | 'en'} company={company} />
+          <Header locale={locale as 'nl' | 'fr' | 'en'} company={company} />
           <main>{children}</main>
-          <V2Footer locale={locale as 'nl' | 'fr' | 'en'} company={company} />
+          <Footer locale={locale as 'nl' | 'fr' | 'en'} company={company} />
         </div>
       </NextIntlClientProvider>
     </>

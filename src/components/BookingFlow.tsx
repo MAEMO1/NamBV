@@ -2,7 +2,6 @@
 
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
-import { Link } from '@/i18n/routing';
 import {
   ArrowRight,
   ArrowLeft,
@@ -165,7 +164,7 @@ export default function BookingFlow() {
     setLoadingAvailability(true);
     try {
       const monthStr = `${year}-${String(month + 1).padStart(2, '0')}`;
-      const response = await fetch(`/api/availability?month=${monthStr}`);
+      const response = await fetch(`/api/public/availability?month=${monthStr}`);
       if (response.ok) {
         const data = await response.json();
         setAvailability(prev => ({ ...prev, ...data.availability }));
