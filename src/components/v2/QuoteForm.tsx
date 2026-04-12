@@ -66,7 +66,7 @@ export default function V2QuoteForm({
     setState({ loading: true, success: null, error: null });
 
     try {
-      const response = await fetch('/api/v2/quotes', {
+      const response = await fetch('/api/quotes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

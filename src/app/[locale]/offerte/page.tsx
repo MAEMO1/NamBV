@@ -1,15 +1,12 @@
-import OfferteFormulier from '@/components/offerte/OfferteFormulier'
-import { getTranslations } from 'next-intl/server'
+import PublicQuotePage from '@/components/v2/pages/PublicQuotePage';
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
-  const { locale } = await params
-  const t = await getTranslations({ locale, namespace: 'offertePage' })
-  return {
-    title: `${t('metaTitle')} | NAM Construction`,
-    description: t('metaDescription'),
-  }
-}
+export const dynamic = 'force-dynamic';
 
-export default function OffertePage() {
-  return <OfferteFormulier />
+export default async function OffertePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  return <PublicQuotePage locale={locale} />;
 }

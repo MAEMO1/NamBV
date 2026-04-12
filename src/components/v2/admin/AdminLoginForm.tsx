@@ -17,7 +17,7 @@ export default function AdminLoginForm() {
     setState({ loading: true, error: null });
 
     try {
-      const response = await fetch('/api/v2/admin/session', {
+      const response = await fetch('/api/admin/session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -28,7 +28,7 @@ export default function AdminLoginForm() {
         throw new Error(data.error || 'Login failed');
       }
 
-      router.push('/admin-v2');
+      router.push('/admin');
       router.refresh();
     } catch (error) {
       setState({

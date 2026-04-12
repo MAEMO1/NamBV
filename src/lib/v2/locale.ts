@@ -17,9 +17,12 @@ export function normalizeV2Locale(value?: string | null): V2Locale {
 type V2UiCopy = {
   nav: {
     home: string;
+    services: string;
+    approach: string;
     projects: string;
     quote: string;
     appointment: string;
+    contact: string;
     admin: string;
   };
   common: {
@@ -65,10 +68,13 @@ export const v2UiCopy: Record<V2Locale, V2UiCopy> = {
   nl: {
     nav: {
       home: 'Home',
+      services: 'Diensten',
+      approach: 'Aanpak',
       projects: 'Projecten',
       quote: 'Offerte',
       appointment: 'Afspraak',
-      admin: 'Admin v2',
+      contact: 'Contact',
+      admin: 'Admin',
     },
     common: {
       loading: 'Laden...',
@@ -150,10 +156,13 @@ export const v2UiCopy: Record<V2Locale, V2UiCopy> = {
   fr: {
     nav: {
       home: 'Accueil',
+      services: 'Services',
+      approach: 'Approche',
       projects: 'Projets',
       quote: 'Devis',
       appointment: 'Rendez-vous',
-      admin: 'Admin v2',
+      contact: 'Contact',
+      admin: 'Admin',
     },
     common: {
       loading: 'Chargement...',
@@ -235,10 +244,13 @@ export const v2UiCopy: Record<V2Locale, V2UiCopy> = {
   en: {
     nav: {
       home: 'Home',
+      services: 'Services',
+      approach: 'Approach',
       projects: 'Projects',
       quote: 'Quote',
       appointment: 'Appointment',
-      admin: 'Admin v2',
+      contact: 'Contact',
+      admin: 'Admin',
     },
     common: {
       loading: 'Loading...',

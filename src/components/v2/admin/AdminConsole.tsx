@@ -103,7 +103,7 @@ export default function AdminConsole({
   }
 
   async function refreshAvailability() {
-    const response = await fetch('/api/v2/admin/availability');
+    const response = await fetch('/api/admin/availability');
     const result = await response.json();
     if (!response.ok) {
       throw new Error(result.error || 'Refresh failed');
@@ -113,26 +113,26 @@ export default function AdminConsole({
   }
 
   async function updateQuote(quoteId: string, status: string, adminNotes: string) {
-    await fetch(`/api/v2/admin/quotes/${quoteId}`, {
+    await fetch(`/api/admin/quotes/${quoteId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status, adminNotes }),
     });
-    await refreshEndpoint('/api/v2/admin/quotes', 'quotes');
+    await refreshEndpoint('/api/admin/quotes', 'quotes');
   }
 
   async function updateAppointment(appointmentId: string, status: string, adminNotes: string) {
-    await fetch(`/api/v2/admin/appointments/${appointmentId}`, {
+    await fetch(`/api/admin/appointments/${appointmentId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status, adminNotes }),
     });
-    await refreshEndpoint('/api/v2/admin/appointments', 'appointments');
+    await refreshEndpoint('/api/admin/appointments', 'appointments');
   }
 
   async function signOut() {
-    await fetch('/api/v2/admin/session', { method: 'DELETE' });
-    window.location.href = '/admin-v2/login';
+    await fetch('/api/admin/session', { method: 'DELETE' });
+    window.location.href = '/admin/login';
   }
 
   return (
@@ -140,8 +140,8 @@ export default function AdminConsole({
       <div className="border-b border-noir-200 bg-white">
         <div className="container-wide flex flex-col gap-4 py-6 md:flex-row md:items-center md:justify-between">
           <div>
-            <h1 className="text-2xl font-display font-bold text-noir-900">Admin v2</h1>
-            <p className="text-sm text-noir-600">Ingelogd als {adminName}. Legacy blijft parallel bestaan.</p>
+            <h1 className="text-2xl font-display font-bold text-noir-900">Admin</h1>
+            <p className="text-sm text-noir-600">Ingelogd als {adminName}. Leads, content en instellingen draaien op de nieuwe v2-contracten.</p>
           </div>
           <button
             type="button"
@@ -224,12 +224,12 @@ export default function AdminConsole({
               title="Beschikbaarheid"
               value={availabilityText || JSON.stringify({ rules: [], exceptions: [] }, null, 2)}
               onChange={setAvailabilityText}
-              status={saveState['/api/v2/admin/availability'] ?? null}
+              status={saveState['/api/admin/availability'] ?? null}
               onRefresh={async () => {
                 await refreshAvailability();
               }}
               onSave={async () => {
-                await saveJson('/api/v2/admin/availability', availabilityText || JSON.stringify({ rules: [], exceptions: [] }), refreshAvailability);
+                await saveJson('/api/admin/availability', availabilityText || JSON.stringify({ rules: [], exceptions: [] }), refreshAvailability);
               }}
             />
           ) : null}
@@ -239,16 +239,16 @@ export default function AdminConsole({
               title="Projecten"
               value={projectsText}
               onChange={setProjectsText}
-              status={saveState['/api/v2/admin/projects'] ?? null}
+              status={saveState['/api/admin/projects'] ?? null}
               onRefresh={async () => {
-                const response = await fetch('/api/v2/admin/projects');
+                const response = await fetch('/api/admin/projects');
                 const result = await response.json();
                 setProjectsText(JSON.stringify(result.projects, null, 2));
                 setData((current) => ({ ...current, projects: result.projects }));
               }}
               onSave={async () => {
-                await saveJson('/api/v2/admin/projects', projectsText, async () => {
-                  const response = await fetch('/api/v2/admin/projects');
+                await saveJson('/api/admin/projects', projectsText, async () => {
+                  const response = await fetch('/api/admin/projects');
                   const result = await response.json();
                   setProjectsText(JSON.stringify(result.projects, null, 2));
                   setData((current) => ({ ...current, projects: result.projects }));
@@ -262,16 +262,16 @@ export default function AdminConsole({
               title="Page sections"
               value={contentText}
               onChange={setContentText}
-              status={saveState['/api/v2/admin/content'] ?? null}
+              status={saveState['/api/admin/content'] ?? null}
               onRefresh={async () => {
-                const response = await fetch('/api/v2/admin/content');
+                const response = await fetch('/api/admin/content');
                 const result = await response.json();
                 setContentText(JSON.stringify(result.sections, null, 2));
                 setData((current) => ({ ...current, sections: result.sections }));
               }}
               onSave={async () => {
-                await saveJson('/api/v2/admin/content', contentText, async () => {
-                  const response = await fetch('/api/v2/admin/content');
+                await saveJson('/api/admin/content', contentText, async () => {
+                  const response = await fetch('/api/admin/content');
                   const result = await response.json();
                   setContentText(JSON.stringify(result.sections, null, 2));
                   setData((current) => ({ ...current, sections: result.sections }));
@@ -285,16 +285,16 @@ export default function AdminConsole({
               title="Assets"
               value={assetsText}
               onChange={setAssetsText}
-              status={saveState['/api/v2/admin/assets'] ?? null}
+              status={saveState['/api/admin/assets'] ?? null}
               onRefresh={async () => {
-                const response = await fetch('/api/v2/admin/assets');
+                const response = await fetch('/api/admin/assets');
                 const result = await response.json();
                 setAssetsText(JSON.stringify(result.assets, null, 2));
                 setData((current) => ({ ...current, assets: result.assets }));
               }}
               onSave={async () => {
-                await saveJson('/api/v2/admin/assets', assetsText, async () => {
-                  const response = await fetch('/api/v2/admin/assets');
+                await saveJson('/api/admin/assets', assetsText, async () => {
+                  const response = await fetch('/api/admin/assets');
                   const result = await response.json();
                   setAssetsText(JSON.stringify(result.assets, null, 2));
                   setData((current) => ({ ...current, assets: result.assets }));
@@ -308,16 +308,16 @@ export default function AdminConsole({
               title="Settings"
               value={settingsText}
               onChange={setSettingsText}
-              status={saveState['/api/v2/admin/settings'] ?? null}
+              status={saveState['/api/admin/settings'] ?? null}
               onRefresh={async () => {
-                const response = await fetch('/api/v2/admin/settings');
+                const response = await fetch('/api/admin/settings');
                 const result = await response.json();
                 setSettingsText(JSON.stringify(result.settings, null, 2));
                 setData((current) => ({ ...current, settings: result.settings }));
               }}
               onSave={async () => {
-                await saveJson('/api/v2/admin/settings', settingsText, async () => {
-                  const response = await fetch('/api/v2/admin/settings');
+                await saveJson('/api/admin/settings', settingsText, async () => {
+                  const response = await fetch('/api/admin/settings');
                   const result = await response.json();
                   setSettingsText(JSON.stringify(result.settings, null, 2));
                   setData((current) => ({ ...current, settings: result.settings }));

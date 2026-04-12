@@ -47,7 +47,7 @@ export default function V2AppointmentForm({
   const selectedMonth = selectedDate ? selectedDate.slice(0, 7) : new Date().toISOString().slice(0, 7);
 
   async function loadMonth(month: string) {
-    const response = await fetch(`/api/v2/public/availability?month=${month}`);
+    const response = await fetch(`/api/public/availability?month=${month}`);
     const data = await response.json();
     if (response.ok) {
       setAvailability((current) => ({ ...current, ...data.availability }));
@@ -65,7 +65,7 @@ export default function V2AppointmentForm({
     setState({ loading: true, success: null, error: null });
 
     try {
-      const response = await fetch('/api/v2/appointments', {
+      const response = await fetch('/api/appointments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

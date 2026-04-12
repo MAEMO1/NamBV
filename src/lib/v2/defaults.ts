@@ -1,5 +1,6 @@
 import { homepageImages, projectImages } from '@/lib/images';
 import type { V2Locale } from './locale';
+import { additionalDefaultPageSections } from './content-defaults';
 
 export type V2DefaultPageSection = {
   pageKey: string;
@@ -269,7 +270,8 @@ const localizedAppointmentHero = {
   },
 } satisfies Record<V2Locale, Record<string, string>>;
 
-export const defaultPageSections: V2DefaultPageSection[] = (['nl', 'fr', 'en'] as const).flatMap((locale) => [
+export const defaultPageSections: V2DefaultPageSection[] = [
+  ...( ['nl', 'fr', 'en'] as const).flatMap((locale) => [
   {
     pageKey: 'home',
     sectionKey: 'hero',
@@ -329,7 +331,9 @@ export const defaultPageSections: V2DefaultPageSection[] = (['nl', 'fr', 'en'] a
     published: true,
     dataJson: localizedAppointmentHero[locale],
   },
-]);
+  ]),
+  ...additionalDefaultPageSections,
+];
 
 export const defaultProjects: V2DefaultProject[] = [
   {

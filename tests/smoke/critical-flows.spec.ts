@@ -1,8 +1,7 @@
 import { expect, test } from '@playwright/test';
 
-const legacyAdminPassword = process.env.ADMIN_PASSWORD ?? '';
-const v2AdminEmail = process.env.V2_ADMIN_EMAIL || 'admin@namconstruction.be';
-const v2AdminPassword = process.env.V2_ADMIN_PASSWORD || legacyAdminPassword;
+const adminEmail = process.env.V2_ADMIN_EMAIL || 'admin@namconstruction.be';
+const adminPassword = process.env.V2_ADMIN_PASSWORD || process.env.ADMIN_PASSWORD || '';
 
 async function expectPageOk(pagePath: string, page: import('@playwright/test').Page) {
   const response = await page.goto(pagePath);
@@ -14,95 +13,81 @@ async function expectVisibleHeading(page: import('@playwright/test').Page) {
   await expect(page.locator('h1:visible').first()).toBeVisible();
 }
 
-test('critical public pages render without error', async ({ page }) => {
-  await expectPageOk('/nl', page);
-  await expectVisibleHeading(page);
+test('canonical public pages render without error', async ({ page, request }) => {
+  for (const path of ['/nl', '/nl/offerte', '/nl/afspraak', '/nl/projecten', '/nl/diensten', '/nl/contact']) {
+    await expectPageOk(path, page);
+    await expectVisibleHeading(page);
+  }
 
-  await expectPageOk('/v2/nl', page);
-  await expectVisibleHeading(page);
-
-  await expectPageOk('/v2/nl/offerte', page);
-  await expectVisibleHeading(page);
-  await expect(page.locator('form')).toBeVisible();
-
-  await expectPageOk('/v2/nl/afspraak', page);
-  await expectVisibleHeading(page);
-  await expect(page.locator('form')).toBeVisible();
+  for (const path of ['/v2/nl', '/v2/nl/offerte', '/v2/nl/projecten', '/admin-v2/login']) {
+    const response = await request.get(path, { maxRedirects: 0 });
+    expect(response.status(), `unexpected redirect status for ${path}`).toBe(308);
+  }
 });
 
-test('legacy admin login protects appointments data', async ({ page }) => {
-  test.skip(!legacyAdminPassword, 'ADMIN_PASSWORD is required for legacy admin smoke tests');
-
-  const unauthResponse = await page.goto('/api/appointments');
-  expect(unauthResponse?.status()).toBe(401);
-
-  await expectPageOk('/admin/login', page);
-  await page.getByLabel('Wachtwoord').fill(legacyAdminPassword);
-  await page.getByRole('button', { name: /inloggen/i }).click();
-
-  await page.waitForURL('**/admin');
-  await expect(page.getByText('Dashboard').first()).toBeVisible();
-
-  const apiCheck = await page.evaluate(async () => {
-    const response = await fetch('/api/appointments');
-    const payload = await response.json();
-    return {
-      status: response.status,
-      hasAppointmentsArray: Array.isArray(payload.appointments),
-    };
-  });
-
-  expect(apiCheck).toEqual({
-    status: 200,
-    hasAppointmentsArray: true,
-  });
-});
-
-test('v2 public APIs and admin login stay healthy', async ({ page, request }) => {
-  test.skip(!v2AdminPassword, 'ADMIN_PASSWORD or V2_ADMIN_PASSWORD is required for v2 admin smoke tests');
-
+test('canonical public APIs stay healthy', async ({ request }) => {
   for (const path of [
-    '/api/v2/public/pages/home?locale=nl',
-    '/api/v2/public/projects?locale=nl',
-    '/api/v2/public/quote-form',
-    '/api/v2/public/availability',
+    '/api/public/pages/home?locale=nl',
+    '/api/public/projects?locale=nl',
+    '/api/public/quote-form',
+    '/api/public/availability',
   ]) {
     const response = await request.get(path);
     expect(response.status(), `unexpected status for ${path}`).toBe(200);
   }
 
-  const unauthAdminSession = await request.get('/api/v2/admin/session');
-  expect(unauthAdminSession.status()).toBe(401);
+  const legacyProjects = await request.get('/api/projects?locale=nl');
+  expect(legacyProjects.status()).toBe(200);
 
-  const invalidQuote = await request.post('/api/v2/quotes', {
-    data: {},
-  });
+  const legacyAvailability = await request.get('/api/availability');
+  expect(legacyAvailability.status()).toBe(200);
+
+  const invalidQuote = await request.post('/api/quotes', { data: {} });
   expect(invalidQuote.status()).toBe(400);
 
-  const invalidAppointment = await request.post('/api/v2/appointments', {
-    data: {},
-  });
+  const invalidAppointment = await request.post('/api/appointments', { data: {} });
   expect(invalidAppointment.status()).toBe(400);
 
-  await expectPageOk('/admin-v2/login', page);
-  await page.getByLabel('E-mail').fill(v2AdminEmail);
-  await page.getByLabel('Wachtwoord').fill(v2AdminPassword);
+  const wrongGetAppointments = await request.get('/api/appointments');
+  expect(wrongGetAppointments.status()).toBe(405);
+});
+
+test('admin login uses canonical session contract and protects admin data', async ({ page, request }) => {
+  test.skip(!adminPassword, 'V2_ADMIN_PASSWORD or ADMIN_PASSWORD is required for admin smoke tests');
+
+  const unauthSession = await request.get('/api/admin/session');
+  expect(unauthSession.status()).toBe(401);
+
+  const unauthAppointments = await request.get('/api/admin/appointments');
+  expect(unauthAppointments.status()).toBe(401);
+
+  await expectPageOk('/admin/login', page);
+  await page.getByLabel('E-mail').fill(adminEmail);
+  await page.getByLabel('Wachtwoord').fill(adminPassword);
   await page.getByRole('button', { name: /inloggen/i }).click();
 
-  await page.waitForURL('**/admin-v2');
+  await page.waitForURL('**/admin');
+
   const sessionCheck = await page.evaluate(async () => {
-    const response = await fetch('/api/v2/admin/session');
-    const payload = await response.json();
+    const sessionResponse = await fetch('/api/admin/session');
+    const sessionPayload = await sessionResponse.json();
+    const appointmentsResponse = await fetch('/api/admin/appointments');
+    const appointmentsPayload = await appointmentsResponse.json();
+
     return {
-      status: response.status,
-      authenticated: payload.authenticated === true,
-      email: payload.user?.email ?? null,
+      sessionStatus: sessionResponse.status,
+      authenticated: sessionPayload.authenticated === true,
+      email: sessionPayload.user?.email ?? null,
+      appointmentsStatus: appointmentsResponse.status,
+      hasAppointmentsArray: Array.isArray(appointmentsPayload.appointments),
     };
   });
 
   expect(sessionCheck).toEqual({
-    status: 200,
+    sessionStatus: 200,
     authenticated: true,
-    email: v2AdminEmail,
+    email: adminEmail,
+    appointmentsStatus: 200,
+    hasAppointmentsArray: true,
   });
 });
