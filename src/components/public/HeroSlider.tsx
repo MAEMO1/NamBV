@@ -28,13 +28,13 @@ export default function HeroSlider({
 
   // Per-image focal points for mobile cropping
   const positions = [
-    'object-[40%_50%] md:object-center',
-    'object-[60%_60%] md:object-center',
-    'object-[50%_40%] md:object-center',
+    'object-[35%_50%] md:object-center',   // Slide 1: arch + staircase is left-of-center
+    'object-[55%_55%] md:object-center',   // Slide 2: bathroom — show tub + shower area
+    'object-[50%_45%] md:object-center',   // Slide 3: house exterior — keep centered, slightly up
   ];
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden">
+    <section className="relative min-h-[75vh] md:min-h-screen flex items-center overflow-hidden">
       {/* Background slides */}
       <div className="absolute inset-0">
         {slides.map((slide, index) => (
@@ -50,12 +50,12 @@ export default function HeroSlider({
             loading={index <= 1 ? 'eager' : 'lazy'}
           />
         ))}
-        {/* Responsive gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-noir-950/70 via-noir-950/50 to-noir-950/60 md:bg-gradient-to-r md:from-noir-950/80 md:via-noir-950/50 md:to-noir-950/30" />
+        {/* Responsive gradient overlay — lighter on mobile so photos show through */}
+        <div className="absolute inset-0 bg-gradient-to-b from-noir-950/65 via-noir-950/35 to-noir-950/50 md:bg-gradient-to-r md:from-noir-950/80 md:via-noir-950/50 md:to-noir-950/30" />
       </div>
 
       {/* Content overlay */}
-      <div className="container-wide relative z-10 pt-32 pb-32">
+      <div className="container-wide relative z-10 pt-24 pb-20 md:pt-32 md:pb-32">
         {children}
       </div>
 
