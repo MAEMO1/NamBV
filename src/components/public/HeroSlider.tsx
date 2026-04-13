@@ -26,42 +26,66 @@ export default function HeroSlider({
     setCurrentSlide(index);
   }, []);
 
-  // Per-image focal points for mobile cropping
-  const positions = [
-    'object-[35%_50%] md:object-center',   // Slide 1: arch + staircase is left-of-center
-    'object-[55%_55%] md:object-center',   // Slide 2: bathroom — show tub + shower area
-    'object-[50%_45%] md:object-center',   // Slide 3: house exterior — keep centered, slightly up
-  ];
-
   return (
-    <section className="relative min-h-[75vh] md:min-h-screen flex items-center overflow-hidden">
-      {/* Background slides */}
-      <div className="absolute inset-0">
+    <section className="relative flex flex-col md:block overflow-hidden">
+      {/* Image container:
+          Mobile  → static with aspect-ratio so the full photo is visible
+          Desktop → absolute fill behind the content overlay */}
+      <div className="relative aspect-[4/3] md:aspect-auto md:absolute md:inset-0">
         {slides.map((slide, index) => (
           <Image
             key={slide}
             src={slide}
             alt={`NAM Construction project ${index + 1}`}
             fill
-            className={`object-cover ${positions[index] || 'object-center'} transition-opacity duration-1000 ease-in-out ${
+            className={`object-cover object-center transition-opacity duration-1000 ease-in-out ${
               index === currentSlide ? 'opacity-100' : 'opacity-0'
             }`}
             priority={index <= 1}
             loading={index <= 1 ? 'eager' : 'lazy'}
           />
         ))}
-        {/* Responsive gradient overlay — lighter on mobile so photos show through */}
-        <div className="absolute inset-0 bg-gradient-to-b from-noir-950/65 via-noir-950/35 to-noir-950/50 md:bg-gradient-to-r md:from-noir-950/80 md:via-noir-950/50 md:to-noir-950/30" />
+
+        {/* Gradient overlay:
+            Mobile  → subtle bottom gradient for indicator visibility
+            Desktop → horizontal gradient for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-noir-950/40 via-transparent to-transparent md:bg-gradient-to-r md:from-noir-950/80 md:via-noir-950/50 md:to-noir-950/30" />
+
+        {/* Slide indicators — inside image area on mobile only */}
+        {slides.length > 1 && (
+          <div className="absolute bottom-3 left-0 right-0 z-10 flex md:hidden justify-center gap-1">
+            {slides.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToSlide(index)}
+                className="relative flex items-center justify-center w-11 h-11"
+                aria-label={`Slide ${index + 1}`}
+              >
+                <span
+                  className={`block rounded-full transition-all duration-300 ${
+                    index === currentSlide
+                      ? 'bg-white w-6 h-2'
+                      : 'bg-white/40 hover:bg-white/60 w-2 h-2'
+                  }`}
+                />
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* Content overlay */}
-      <div className="container-wide relative z-10 pt-24 pb-20 md:pt-32 md:pb-32">
-        {children}
+      {/* Content:
+          Mobile  → dark background strip below the image
+          Desktop → transparent overlay, full-height, vertically centered */}
+      <div className="bg-noir-950 md:bg-transparent md:relative md:z-10 md:min-h-screen md:flex md:items-center">
+        <div className="container-wide py-10 md:pt-32 md:pb-32">
+          {children}
+        </div>
       </div>
 
-      {/* Slide indicators */}
+      {/* Desktop slide indicators — bottom of full section */}
       {slides.length > 1 && (
-        <div className="absolute bottom-20 md:bottom-16 left-0 right-0 z-10 flex justify-center gap-1">
+        <div className="hidden md:flex absolute bottom-16 left-0 right-0 z-10 justify-center gap-1">
           {slides.map((_, index) => (
             <button
               key={index}

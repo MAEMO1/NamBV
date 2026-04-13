@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { ArrowLeft, ArrowUpRight, CheckCircle2, ChevronDown, Shield } from 'lucide-react';
 import { getV2PageSections } from '@/lib/v2/public-data';
 import { isV2Locale, type V2Locale } from '@/lib/v2/locale';
@@ -9,9 +10,18 @@ import {
   type V2RenovatieContent,
   type V2AfwerkingContent,
   type V2TechniekenContent,
+  type V2ServiceKey,
 } from '@/lib/v2/service-content';
+import { servicePageImages } from '@/lib/images';
 import { Link as IntlLink } from '@/i18n/routing';
 import AnimatedSection from '@/components/public/AnimatedSection';
+
+const SERVICE_HERO_IMAGES: Record<V2ServiceKey, string> = {
+  totaalrenovatie: servicePageImages.totaalrenovatie.hero,
+  renovatie: servicePageImages.renovatie.hero,
+  afwerking: servicePageImages.afwerking.hero,
+  technieken: servicePageImages.technieken.hero,
+};
 
 type PageSection = {
   sectionKey: string;
@@ -46,7 +56,14 @@ export default async function ServiceDetailPage({
     <>
       {/* Hero */}
       <section className="relative overflow-hidden bg-noir-950 pt-28 pb-20 md:pt-36 md:pb-28">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(214,122,59,0.28),transparent_35%),linear-gradient(135deg,rgba(8,13,12,1),rgba(8,13,12,0.85))]" />
+        <Image
+          src={SERVICE_HERO_IMAGES[serviceKey]}
+          alt=""
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-noir-950/90 via-noir-950/70 to-noir-950/50" />
         <div className="container-wide relative">
           <AnimatedSection animation="fade-up" delay={0}>
             <IntlLink
