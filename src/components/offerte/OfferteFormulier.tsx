@@ -371,13 +371,13 @@ export default function OfferteFormulier() {
                       ? 'bg-accent-600 text-white shadow-lg shadow-accent-600/30'
                       : step === idx + 1
                       ? 'bg-noir-900 text-white shadow-lg'
-                      : 'bg-noir-100 text-noir-400'
+                      : 'bg-noir-100 text-noir-500'
                   }`}
                 >
                   {step > idx + 1 ? <Check className="h-5 w-5" /> : idx + 1}
                 </div>
                 <span className={`hidden sm:block text-sm font-semibold transition-colors ${
-                  step === idx + 1 ? 'text-noir-900' : 'text-noir-400'
+                  step === idx + 1 ? 'text-noir-900' : 'text-noir-500'
                 }`}>
                   {label}
                 </span>

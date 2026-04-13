@@ -169,7 +169,7 @@ export default function V2Footer({
       {/* Bottom Bar */}
       <div className="border-t border-noir-800">
         <div className="container-wide py-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-noir-500">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-noir-400">
             <div className="flex flex-col md:flex-row items-center gap-2 md:gap-6">
               <span>&copy; {new Date().getFullYear()} {companyName}</span>
               <span className="hidden md:inline">|</span>

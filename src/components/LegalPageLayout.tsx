@@ -180,7 +180,7 @@ export default function LegalPageLayout({
                     style={{ animationDelay: '0.1s' }}>
                   {title}
                 </h1>
-                <p className="text-lg md:text-xl text-noir-400 max-w-2xl animate-fade-up"
+                <p className="text-lg md:text-xl text-noir-500 max-w-2xl animate-fade-up"
                    style={{ animationDelay: '0.2s' }}>
                   {subtitle}
                 </p>

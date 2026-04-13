@@ -41,12 +41,12 @@ export default async function PublicQuotePage({
         <h1 className="text-display-lg font-display font-bold italic text-noir-900">
           {copy.quote.title}
         </h1>
-        <p className="mt-3 text-lg text-noir-400">
+        <p className="mt-3 text-lg text-noir-500">
           {copy.quote.description}
         </p>
 
         {/* Trust signals strip */}
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-8 text-noir-300">
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-8 text-noir-500">
           {signals.map((s, i) => (
             <div key={i} className="flex items-center gap-2 text-xs">
               <s.icon className="h-3.5 w-3.5" />

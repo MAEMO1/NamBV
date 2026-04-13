@@ -128,7 +128,7 @@ export default function V2QuoteForm({
         </div>
         <h2 className="text-display-md font-display font-bold italic text-noir-900">{state.success}</h2>
         {state.referenceNumber && (
-          <p className="mt-4 text-sm text-noir-400">
+          <p className="mt-4 text-sm text-noir-500">
             Ref: <span className="font-mono font-semibold text-noir-700">{state.referenceNumber}</span>
           </p>
         )}
@@ -200,7 +200,7 @@ export default function V2QuoteForm({
           </div>
 
           {/* Service type toggles — grouped by category */}
-          <p className="mt-8 text-sm font-medium text-noir-400">{qc.fields.serviceTypeIds}</p>
+          <p className="mt-8 text-sm font-medium text-noir-500">{qc.fields.serviceTypeIds}</p>
           <div className="mt-3 space-y-5">
             {qc.serviceCategories.map((category) => {
               const categoryServices = category.services
@@ -259,7 +259,7 @@ export default function V2QuoteForm({
           </div>
 
           {/* Budget range pills */}
-          <p className="mt-8 text-sm font-medium text-noir-400">{qc.fields.budgetRange}</p>
+          <p className="mt-8 text-sm font-medium text-noir-500">{qc.fields.budgetRange}</p>
           <div className="mt-3 flex flex-wrap gap-3">
             {budgetOptions.map((option) => {
               const active = formData.budgetRange === option.value;
@@ -347,7 +347,7 @@ function SectionLabel({ number, title }: { number: number; title: string }) {
       <span className="flex h-7 w-7 items-center justify-center rounded-full bg-noir-100 text-xs font-bold text-noir-500">
         {number}
       </span>
-      <h3 className="text-sm font-semibold uppercase tracking-wider text-noir-400">{title}</h3>
+      <h3 className="text-sm font-semibold uppercase tracking-wider text-noir-500">{title}</h3>
     </div>
   );
 }

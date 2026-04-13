@@ -207,7 +207,7 @@ export default function V2AppointmentForm({
           </div>
         )}
         {trustSignals && (
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-6 text-noir-400">
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-6 text-noir-500">
             {trustSignals.map((s, i) => {
               const Icon = TRUST_ICONS[s.icon];
               return (
@@ -248,7 +248,7 @@ export default function V2AppointmentForm({
           <h1 className="text-display-lg font-display font-bold italic text-noir-900">
             {ac.title}
           </h1>
-          <p className="mt-3 text-lg text-noir-400">
+          <p className="mt-3 text-lg text-noir-500">
             {step === 1 && ac.steps.project.subtitle}
             {step === 2 && ac.steps.contact.subtitle}
             {step === 3 && ac.steps.dateTime.subtitle}
@@ -506,7 +506,7 @@ export default function V2AppointmentForm({
 
         {/* Trust signals strip */}
         {trustSignals && step === 1 && (
-          <div className="mt-16 flex flex-wrap items-center justify-center gap-8 text-noir-300">
+          <div className="mt-16 flex flex-wrap items-center justify-center gap-8 text-noir-500">
             {trustSignals.map((s, i) => {
               const Icon = TRUST_ICONS[s.icon];
               return (
@@ -589,7 +589,7 @@ function ReviewRow({ label, value, onClick }: { label: string; value: string; on
       onClick={onClick}
       className="group flex w-full items-center justify-between rounded-lg px-2 py-3 text-left transition hover:bg-noir-50"
     >
-      <span className="text-sm text-noir-400">{label}</span>
+      <span className="text-sm text-noir-500">{label}</span>
       <span className="text-sm font-medium text-noir-800 group-hover:text-accent-600">{value}</span>
     </button>
   );

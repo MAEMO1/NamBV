@@ -194,10 +194,10 @@ function ContentSection({ data }: { data: Record<string, unknown> }) {
   return (
     <section className="container-wide section-padding">
       <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
-        <AnimatedSection animation="fade-up">
+        <AnimatedSection animation="fade-up" className="min-w-0">
           <SectionHeading data={data} />
         </AnimatedSection>
-        <AnimatedSection animation="fade-up" delay={150}>
+        <AnimatedSection animation="fade-up" delay={150} className="min-w-0">
           <div className="grid gap-6">
             {paragraphs.map((paragraph, index) => (
               <p key={index} className="text-base leading-8 text-noir-600">
@@ -258,7 +258,7 @@ function ContactSection({
   return (
     <section className="container-wide section-padding">
       <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr]">
-        <AnimatedSection animation="fade-up">
+        <AnimatedSection animation="fade-up" className="min-w-0">
           <div>
             <SectionHeading data={data} />
             {highlights.length > 0 ? (
@@ -272,20 +272,20 @@ function ContactSection({
             ) : null}
           </div>
         </AnimatedSection>
-        <AnimatedSection animation="fade-up" delay={150}>
-          <div className="rounded-[2rem] border border-noir-200 bg-white p-8 shadow-soft-lg transition-shadow duration-300 hover:shadow-soft-xl">
+        <AnimatedSection animation="fade-up" delay={150} className="min-w-0">
+          <div className="rounded-[2rem] border border-noir-200 bg-white p-5 sm:p-8 shadow-soft-lg transition-shadow duration-300 hover:shadow-soft-xl">
             <div className="grid gap-4">
               {contactItems.map((item) => {
                 const content: ReactNode = item.href ? (
-                  <a href={item.href} className="text-sm leading-6 text-noir-700 transition hover:text-noir-900">
+                  <a href={item.href} className="text-sm leading-6 text-noir-700 transition hover:text-noir-900 break-words">
                     {item.value}
                   </a>
                 ) : (
-                  <p className="text-sm leading-6 text-noir-700">{item.value}</p>
+                  <p className="text-sm leading-6 text-noir-700 break-words">{item.value}</p>
                 );
 
                 return (
-                  <div key={item.label} className="flex gap-4 rounded-2xl border border-noir-200 px-4 py-4 transition-all duration-300 hover:border-accent-600/30 hover:shadow-soft">
+                  <div key={item.label} className="flex gap-3 sm:gap-4 rounded-2xl border border-noir-200 px-3 sm:px-4 py-4 transition-all duration-300 hover:border-accent-600/30 hover:shadow-soft">
                     <div className="w-10 h-10 rounded-full bg-accent-50 flex items-center justify-center flex-shrink-0">
                       <item.icon className="h-5 w-5 text-accent-700" />
                     </div>
