@@ -1,4 +1,4 @@
-import PublicContentPage from '@/components/public/pages/PublicContentPage';
+import ServicesOverviewPage from '@/components/public/ServicesOverviewPage';
 
 export const dynamic = 'force-dynamic';
 
@@ -8,5 +8,5 @@ export default async function DienstenPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  return <PublicContentPage locale={locale} pageKey="services" />;
+  return <ServicesOverviewPage locale={locale} />;
 }

@@ -88,7 +88,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   return (
     <>
       <NextIntlClientProvider messages={messages}>
-        <div className="min-h-screen bg-noir-50 text-noir-900">
+        <div className="min-h-screen bg-white text-noir-900">
           <MarketingAnalytics gtmId={typeof analytics.gtmId === 'string' ? analytics.gtmId : null} />
           <Header locale={locale as 'nl' | 'fr' | 'en'} company={company} />
           <main>{children}</main>

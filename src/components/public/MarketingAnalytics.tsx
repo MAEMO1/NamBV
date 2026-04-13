@@ -81,9 +81,9 @@ export default function MarketingAnalytics({
         <div className="fixed inset-x-4 bottom-4 z-50 rounded-2xl border border-noir-200 bg-white/95 p-4 shadow-soft-lg backdrop-blur">
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="text-sm font-semibold text-noir-900">Marketingcookies voor v2</p>
+              <p className="text-sm font-semibold text-noir-900">Cookies</p>
               <p className="mt-1 max-w-2xl text-sm text-noir-600">
-                GTM en GA4 worden pas geladen na expliciete toestemming. Operationele lead-events blijven server-side gelogd.
+                We gebruiken cookies om uw ervaring te verbeteren en ons websiteverkeer te analyseren. U kiest zelf of u deze toestaat.
               </p>
             </div>
             <div className="flex gap-3">

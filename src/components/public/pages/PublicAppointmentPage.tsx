@@ -1,6 +1,26 @@
-import { getV2PageSections } from '@/lib/v2/public-data';
-import { getV2UiCopy, isV2Locale } from '@/lib/v2/locale';
+import { isV2Locale } from '@/lib/v2/locale';
 import V2AppointmentForm from '@/components/public/AppointmentForm';
+
+const trustSignals = {
+  nl: [
+    { icon: 'Calendar' as const, text: 'Kies uw ideale datum en tijdstip' },
+    { icon: 'Clock' as const, text: 'Consultatie van 30\u201345 minuten' },
+    { icon: 'Shield' as const, text: 'Gratis en vrijblijvend' },
+    { icon: 'Mail' as const, text: 'Bevestiging per e-mail' },
+  ],
+  fr: [
+    { icon: 'Calendar' as const, text: 'Choisissez votre date et heure' },
+    { icon: 'Clock' as const, text: 'Consultation de 30\u201345 minutes' },
+    { icon: 'Shield' as const, text: 'Gratuit et sans engagement' },
+    { icon: 'Mail' as const, text: 'Confirmation par e-mail' },
+  ],
+  en: [
+    { icon: 'Calendar' as const, text: 'Choose your ideal date and time' },
+    { icon: 'Clock' as const, text: '30\u201345 minute consultation' },
+    { icon: 'Shield' as const, text: 'Free and no obligation' },
+    { icon: 'Mail' as const, text: 'Email confirmation' },
+  ],
+};
 
 export default async function PublicAppointmentPage({
   locale,
@@ -11,20 +31,12 @@ export default async function PublicAppointmentPage({
     return null;
   }
 
-  const sections = await getV2PageSections('appointment', locale);
-  const hero = (sections.find((section) => section.sectionKey === 'hero')?.dataJson ?? {}) as Record<string, unknown>;
-  const copy = getV2UiCopy(locale);
+  const signals = trustSignals[locale];
 
   return (
-    <section className="container-wide py-16">
-      <div className="max-w-3xl">
-        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-accent-700">{String(hero.eyebrow ?? '')}</p>
-        <h1 className="mt-4 text-display-lg font-display font-bold text-noir-900">{String(hero.title ?? copy.appointment.title)}</h1>
-        <p className="mt-4 text-lg leading-8 text-noir-600">{String(hero.description ?? copy.appointment.description)}</p>
-      </div>
-      <div className="mt-10">
-        <V2AppointmentForm locale={locale} />
-      </div>
+    <section className="relative min-h-screen bg-white pt-20">
+      {/* Full-page immersive wizard */}
+      <V2AppointmentForm locale={locale} trustSignals={signals} />
     </section>
   );
 }

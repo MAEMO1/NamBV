@@ -106,7 +106,7 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
         section('contact', 'details', 'nl', 'contact', 1, {
           eyebrow: 'Bereikbaarheid',
           title: 'Contactgegevens',
-          description: 'Telefoon, e-mail en adres worden vanuit de site-instellingen beheerd en hier direct weergegeven.',
+          description: 'Klaar om uw renovatieproject te bespreken? Neem contact op voor een gratis en vrijblijvend adviesgesprek. We reageren binnen 24 uur.',
           highlights: ['Reactie binnen 1 werkdag', 'Plaatsbezoeken op afspraak', 'Focus op regio Gent en omgeving'],
           primaryCtaLabel: 'Offerte aanvragen',
           primaryCtaHref: '/offerte',
@@ -500,7 +500,7 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
         section('contact', 'details', 'fr', 'contact', 1, {
           eyebrow: 'Disponibilité',
           title: 'Coordonnées',
-          description: 'Téléphone, e-mail et adresse sont pilotés depuis les réglages du site.',
+          description: 'Envie de discuter de votre projet de renovation? Contactez-nous pour une consultation gratuite et sans engagement. Nous repondons sous 24 heures.',
           highlights: ['Réponse sous 1 jour ouvrable', 'Visites sur rendez-vous', 'Forte présence à Gand et autour'],
           primaryCtaLabel: 'Demander un devis',
           primaryCtaHref: '/offerte',
@@ -715,7 +715,7 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
         section('contact', 'details', 'en', 'contact', 1, {
           eyebrow: 'Availability',
           title: 'Contact details',
-          description: 'Phone, email and address are managed from site settings and rendered directly here.',
+          description: 'Ready to discuss your renovation project? Get in touch for a free, no-obligation consultation. We respond within 24 hours.',
           highlights: ['Reply within 1 business day', 'Site visits by appointment', 'Strong coverage in Ghent and nearby'],
           primaryCtaLabel: 'Request a quote',
           primaryCtaHref: '/offerte',
