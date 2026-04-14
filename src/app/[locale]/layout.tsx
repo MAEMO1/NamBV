@@ -6,6 +6,7 @@ import type { Metadata } from 'next';
 import Footer from '@/components/public/Footer';
 import Header from '@/components/public/Header';
 import MarketingAnalytics from '@/components/public/MarketingAnalytics';
+import MobileStickyCta from '@/components/public/MobileStickyCta';
 import { getV2SettingsMap } from '@/lib/v2/public-data';
 
 type Props = {
@@ -93,6 +94,10 @@ export default async function LocaleLayout({ children, params }: Props) {
           <Header locale={locale as 'nl' | 'fr' | 'en'} company={company} />
           <main>{children}</main>
           <Footer locale={locale as 'nl' | 'fr' | 'en'} company={company} />
+          <MobileStickyCta
+            locale={locale as 'nl' | 'fr' | 'en'}
+            phone={typeof company.phone === 'string' ? company.phone : null}
+          />
         </div>
       </NextIntlClientProvider>
     </>

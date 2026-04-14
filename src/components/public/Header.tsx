@@ -206,6 +206,15 @@ export default function V2Header({
               <span>{copy.common.getQuote}</span>
               <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </Link>
+            <Link
+              href="/afspraak"
+              locale={locale}
+              onClick={() => setMobileMenuOpen(false)}
+              className="group flex items-center justify-center gap-3 w-full px-8 py-4 border-2 border-noir-900 text-noir-900 font-semibold rounded-full hover:bg-noir-900 hover:text-white transition-all duration-300"
+            >
+              <span>{copy.common.bookAppointment}</span>
+              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </Link>
           </div>
         </div>
       </div>

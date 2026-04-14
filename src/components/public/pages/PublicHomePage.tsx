@@ -63,11 +63,11 @@ export default async function PublicHomePage({
                 <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </IntlLink>
               <IntlLink
-                href={String(hero.secondaryCtaHref ?? '/projecten') as '/'}
+                href={String(hero.secondaryCtaHref ?? '/afspraak') as '/'}
                 locale={locale}
                 className="group inline-flex items-center gap-3 px-8 py-4 border-2 border-white/30 text-white font-semibold rounded-full hover:bg-white hover:text-noir-900 transition-all duration-300"
               >
-                <span>{String(hero.secondaryCtaLabel ?? copy.nav.projects)}</span>
+                <span>{String(hero.secondaryCtaLabel ?? copy.common.bookAppointment)}</span>
                 <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </IntlLink>
             </div>

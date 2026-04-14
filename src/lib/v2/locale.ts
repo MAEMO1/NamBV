@@ -39,6 +39,7 @@ type V2UiCopy = {
     viewAllProjects: string;
     getQuote: string;
     bookAppointment: string;
+    callUs: string;
     trustedBy: string;
     leadTime: string;
     noData: string;
@@ -119,6 +120,7 @@ export const v2UiCopy: Record<V2Locale, V2UiCopy> = {
       viewAllProjects: 'Bekijk alle projecten',
       getQuote: 'Vraag een offerte aan',
       bookAppointment: 'Plan een gesprek',
+      callUs: 'Bel ons',
       trustedBy: 'Vertrouwd door renovatieklanten in en rond Gent',
       leadTime: 'Reactie binnen 1 werkdag',
       noData: 'Nog geen gegevens beschikbaar.',
@@ -260,6 +262,7 @@ export const v2UiCopy: Record<V2Locale, V2UiCopy> = {
       viewAllProjects: 'Voir tous les projets',
       getQuote: 'Demander un devis',
       bookAppointment: 'Planifier un rendez-vous',
+      callUs: 'Appelez-nous',
       trustedBy: 'Une équipe de rénovation de confiance à Gand et aux alentours',
       leadTime: 'Réponse sous 1 jour ouvrable',
       noData: 'Aucune donnée disponible.',
@@ -401,6 +404,7 @@ export const v2UiCopy: Record<V2Locale, V2UiCopy> = {
       viewAllProjects: 'View all projects',
       getQuote: 'Request a quote',
       bookAppointment: 'Book a consultation',
+      callUs: 'Call us',
       trustedBy: 'Trusted renovation partner in Ghent and beyond',
       leadTime: 'Reply within 1 business day',
       noData: 'No data available yet.',
