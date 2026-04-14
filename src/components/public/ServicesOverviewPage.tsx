@@ -61,7 +61,7 @@ export default async function ServicesOverviewPage({
           priority
           className="object-cover object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-noir-950/92 via-noir-950/78 to-noir-950/55" />
+        <div className="absolute inset-0 bg-gradient-to-r from-noir-950/95 via-noir-950/80 to-noir-950/60" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(214,122,59,0.25),transparent_40%)]" />
         <div className="container-wide relative">
           <div className="max-w-3xl">
