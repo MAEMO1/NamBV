@@ -93,7 +93,7 @@ export default async function ServiceDetailPage({
               </h1>
             </AnimatedSection>
             <AnimatedSection animation="fade-up" delay={300}>
-              <p className="mt-5 text-lg leading-8 text-white/72">
+              <p className="mt-5 text-lg leading-8 text-white/90">
                 {String(hero.description || service.description)}
               </p>
             </AnimatedSection>

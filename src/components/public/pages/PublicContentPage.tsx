@@ -79,7 +79,7 @@ function HeroSection({
           </AnimatedSection>
           {typeof data.description === 'string' ? (
             <AnimatedSection animation="fade-up" delay={300}>
-              <p className="mt-5 text-lg leading-8 text-white/72">{data.description}</p>
+              <p className="mt-5 text-lg leading-8 text-white/90">{data.description}</p>
             </AnimatedSection>
           ) : null}
           {data.primaryCtaHref || data.secondaryCtaHref ? (
