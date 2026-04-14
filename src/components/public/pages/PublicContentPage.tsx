@@ -1,9 +1,21 @@
 import type { ReactNode } from 'react';
+import Image from 'next/image';
 import { ArrowUpRight, Mail, MapPin, Phone } from 'lucide-react';
 import { getV2PageSections, getV2SettingsMap } from '@/lib/v2/public-data';
 import { getV2UiCopy, isV2Locale, type V2Locale } from '@/lib/v2/locale';
 import { Link as IntlLink } from '@/i18n/routing';
 import AnimatedSection from '@/components/public/AnimatedSection';
+import { aanpakImages, waardenImages, siteImages } from '@/lib/images';
+
+const HERO_IMAGES: Record<string, string> = {
+  approach: aanpakImages.hero,
+  contact: siteImages.heroHome,
+  'value-subsidies': waardenImages.subsidies.hero,
+  'value-certification': waardenImages.attestering.hero,
+  'value-payment-spread': waardenImages.betalingsspreiding.hero,
+  'value-communication': waardenImages.communicatie.hero,
+  'value-reuse': waardenImages.hergebruik.hero,
+};
 
 type PageSection = {
   sectionKey: string;
@@ -39,7 +51,7 @@ export default async function PublicContentPage({
 
   return (
     <>
-      <HeroSection locale={locale} data={hero} />
+      <HeroSection locale={locale} data={hero} heroImage={HERO_IMAGES[pageKey]} />
 
       {sections
         .filter((section) => section.sectionKey !== 'hero')
@@ -60,13 +72,29 @@ export default async function PublicContentPage({
 function HeroSection({
   locale,
   data,
+  heroImage,
 }: {
   locale: V2Locale;
   data: Record<string, unknown>;
+  heroImage?: string;
 }) {
   return (
     <section className="relative overflow-hidden bg-noir-950 pt-28 pb-20 md:pt-36 md:pb-28">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(214,122,59,0.28),transparent_35%),linear-gradient(135deg,rgba(8,13,12,1),rgba(8,13,12,0.85))]" />
+      {heroImage ? (
+        <>
+          <Image
+            src={heroImage}
+            alt=""
+            fill
+            priority
+            className="object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-noir-950/95 via-noir-950/80 to-noir-950/60" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(214,122,59,0.25),transparent_40%)]" />
+        </>
+      ) : (
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(214,122,59,0.28),transparent_35%),linear-gradient(135deg,rgba(8,13,12,1),rgba(8,13,12,0.85))]" />
+      )}
       <div className="container-wide relative">
         <div className="max-w-3xl">
           {typeof data.eyebrow === 'string' ? (
