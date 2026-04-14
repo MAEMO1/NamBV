@@ -1,9 +1,18 @@
+import Image from 'next/image';
 import { ArrowUpRight, CheckCircle2 } from 'lucide-react';
 import { getV2PageSections } from '@/lib/v2/public-data';
 import { isV2Locale, type V2Locale } from '@/lib/v2/locale';
 import { getV2ServicesPageContent, type V2ServicesOverviewEntry } from '@/lib/v2/service-content';
 import { Link as IntlLink } from '@/i18n/routing';
 import AnimatedSection from '@/components/public/AnimatedSection';
+import { servicePageImages, siteImages } from '@/lib/images';
+
+const SERVICE_CARD_IMAGES: Record<string, string> = {
+  fullRenovation: servicePageImages.totaalrenovatie.card,
+  renovation: servicePageImages.renovatie.card,
+  finishing: servicePageImages.afwerking.card,
+  technical: servicePageImages.technieken.card,
+};
 
 type PageSection = {
   sectionKey: string;
@@ -45,7 +54,15 @@ export default async function ServicesOverviewPage({
     <>
       {/* Hero */}
       <section className="relative overflow-hidden bg-noir-950 pt-28 pb-20 md:pt-36 md:pb-28">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(214,122,59,0.28),transparent_35%),linear-gradient(135deg,rgba(8,13,12,1),rgba(8,13,12,0.85))]" />
+        <Image
+          src={siteImages.heroHome}
+          alt=""
+          fill
+          priority
+          className="object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-noir-950/92 via-noir-950/78 to-noir-950/55" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(214,122,59,0.25),transparent_40%)]" />
         <div className="container-wide relative">
           <div className="max-w-3xl">
             <AnimatedSection animation="fade-up" delay={0}>
@@ -59,7 +76,7 @@ export default async function ServicesOverviewPage({
               </h1>
             </AnimatedSection>
             <AnimatedSection animation="fade-up" delay={300}>
-              <p className="mt-5 text-lg leading-8 text-white/72">
+              <p className="mt-5 text-lg leading-8 text-white/90">
                 {String(hero.description || content.hero.description)}
               </p>
             </AnimatedSection>
@@ -100,29 +117,41 @@ export default async function ServicesOverviewPage({
               <IntlLink
                 href={SERVICE_ROUTES[key] as '/'}
                 locale={locale}
-                className="group block h-full rounded-3xl border border-noir-200 bg-white p-6 shadow-soft transition-all duration-300 hover:shadow-soft-lg hover:border-accent-600/30"
+                className="group flex h-full flex-col overflow-hidden rounded-3xl border border-noir-200 bg-white shadow-soft transition-all duration-300 hover:shadow-soft-lg hover:border-accent-600/30"
               >
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    {service.tag ? (
-                      <span className="inline-flex items-center rounded-full bg-accent-50 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent-700 mb-3">
-                        {service.tag}
-                      </span>
-                    ) : null}
-                    <h2 className="text-xl font-display font-bold text-noir-900">{service.title}</h2>
-                    <p className="mt-1 text-sm font-medium text-accent-700">{service.subtitle}</p>
-                  </div>
-                  <ArrowUpRight className="h-5 w-5 flex-shrink-0 text-noir-400 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent-600" />
+                <div className="relative aspect-[16/10] overflow-hidden bg-noir-100">
+                  <Image
+                    src={SERVICE_CARD_IMAGES[key]}
+                    alt={service.title}
+                    fill
+                    sizes="(min-width: 768px) 50vw, 100vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-noir-950/40 via-transparent to-transparent" />
+                  {service.tag ? (
+                    <span className="absolute top-4 left-4 inline-flex items-center rounded-full bg-white/95 backdrop-blur px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent-700 shadow-soft">
+                      {service.tag}
+                    </span>
+                  ) : null}
                 </div>
-                <p className="mt-4 text-sm leading-7 text-noir-600">{service.description}</p>
-                <ul className="mt-5 grid gap-2">
-                  {service.features.map((feature) => (
-                    <li key={feature} className="flex items-center gap-2 text-sm text-noir-700">
-                      <CheckCircle2 className="h-4 w-4 flex-shrink-0 text-accent-600" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
+                <div className="flex flex-1 flex-col p-6">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <h2 className="text-xl font-display font-bold text-noir-900">{service.title}</h2>
+                      <p className="mt-1 text-sm font-medium text-accent-700">{service.subtitle}</p>
+                    </div>
+                    <ArrowUpRight className="h-5 w-5 flex-shrink-0 text-noir-400 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent-600" />
+                  </div>
+                  <p className="mt-4 text-sm leading-7 text-noir-600">{service.description}</p>
+                  <ul className="mt-5 grid gap-2">
+                    {service.features.map((feature) => (
+                      <li key={feature} className="flex items-center gap-2 text-sm text-noir-700">
+                        <CheckCircle2 className="h-4 w-4 flex-shrink-0 text-accent-600" />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </IntlLink>
             </AnimatedSection>
           ))}
