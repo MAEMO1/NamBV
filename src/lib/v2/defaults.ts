@@ -83,6 +83,20 @@ export const defaultSettings = [
     },
   },
   {
+    key: 'companyLegal',
+    category: 'company',
+    description: 'Juridische bedrijfsgegevens voor voorwaarden, privacy en facturatie',
+    valueJson: {
+      legalName: 'NAM BV',
+      legalForm: 'Besloten Vennootschap',
+      enterpriseNumber: '0792.212.559',
+      vatNumber: 'BE0792.212.559',
+      registeredSeat: 'Zwijnaardsesteenweg 683, 9000 Gent',
+      rpr: 'Ondernemingsrechtbank Gent, afdeling Gent',
+      foundedDate: '2022-10-07',
+    },
+  },
+  {
     key: 'seo',
     category: 'seo',
     description: 'Fallback SEO-instellingen voor v2',

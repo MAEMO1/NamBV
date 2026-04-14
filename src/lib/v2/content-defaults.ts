@@ -379,30 +379,96 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
     privacy: {
       hero: {
         eyebrow: 'Privacy',
-        title: 'Hoe we gegevens verwerken voor offerte- en afspraakaanvragen',
+        title: 'Hoe we persoonsgegevens verwerken volgens de AVG',
         description:
-          'Deze pagina beschrijft welke gegevens we verzamelen, waarom we dat doen en hoe we ze beveiligen binnen de commerciële klantreis.',
+          'Deze privacyverklaring beschrijft welke gegevens NAM BV verwerkt, op welke rechtsgrond, hoe lang ze bewaard worden en welke rechten u heeft.',
       },
       sections: [
         section('privacy', 'legal', 'nl', 'legal', 1, {
-          updatedAt: '11 april 2026',
-          introduction: 'Wij beperken gegevensverwerking tot wat nodig is voor contactopname, projectopvolging, afspraakplanning en operationele administratie.',
+          updatedAt: '14 april 2026',
+          introduction:
+            'Deze privacyverklaring geldt voor alle verwerkingen van persoonsgegevens door NAM BV in het kader van offerteaanvragen, projectopvolging, afspraken, facturatie, sollicitaties en website-gebruik. Zij is opgesteld in overeenstemming met de Algemene Verordening Gegevensbescherming (Verordening (EU) 2016/679, "AVG") en de Belgische Wet van 30 juli 2018 betreffende de bescherming van natuurlijke personen met betrekking tot de verwerking van persoonsgegevens.',
           sections: [
             {
-              title: 'Welke gegevens we verwerken',
-              body: 'Naam, contactgegevens, projectinformatie, afspraakvoorkeuren en eventuele aanvullende context die u zelf meestuurt.',
+              title: '1. Verwerkingsverantwoordelijke',
+              body: 'NAM BV (Besloten Vennootschap)\nMaatschappelijke zetel: Zwijnaardsesteenweg 683, 9000 Gent\nOndernemingsnummer: 0792.212.559\nBTW: BE0792.212.559\nRPR: Ondernemingsrechtbank Gent, afdeling Gent\n\nContact voor privacyvragen: info@namconstruction.be · +32 493 81 27 89',
             },
             {
-              title: 'Waarom we deze gegevens gebruiken',
-              body: 'Om uw aanvraag te beantwoorden, een afspraak in te plannen, interne opvolging te doen en relevante communicatie over uw project te sturen.',
+              title: '2. Welke persoonsgegevens we verwerken',
+              body: 'Wij beperken ons tot de gegevens die strikt nodig zijn voor het doel waarvoor we ze verzamelen:',
+              items: [
+                'Identificatiegegevens: naam, voornaam, adres, postcode, woonplaats',
+                'Contactgegevens: e-mailadres, telefoonnummer',
+                'Projectgegevens: woningtype, scope, budget-indicatie, foto\u2019s die u zelf meestuurt',
+                'Facturatiegegevens: factuuradres, KBO-nummer en BTW voor zakelijke klanten',
+                'Afspraakvoorkeuren: gewenste timing, locatie, beschikbaarheid',
+                'Sollicitatiegegevens: CV, motivatiebrief, aanvullende informatie die u zelf verstrekt',
+                'Technische gegevens: IP-adres, sessie- en cookie-informatie indien u deze aanvaardt',
+              ],
             },
             {
-              title: 'Bewaring en beveiliging',
-              body: 'Gegevens worden alleen bewaard zolang dat operationeel of wettelijk nodig is. Toegang is beperkt tot geautoriseerde medewerkers en beheerde systemen.',
+              title: '3. Doeleinden en rechtsgrond (art. 6 AVG)',
+              body: 'We verwerken gegevens uitsluitend voor de hierna opgesomde doeleinden, telkens op basis van een geldige rechtsgrond:',
+              items: [
+                'Beantwoorden van offerteaanvragen, uitvoeren van contracten en projectopvolging \u2014 uitvoering van de overeenkomst (art. 6.1.b)',
+                'Boekhouding, facturatie en fiscale bewaarplicht \u2014 wettelijke verplichting (art. 6.1.c, o.a. art. III.86 WER en BTW-wetgeving)',
+                'Klantopvolging, tevredenheidspeiling en directe communicatie aan bestaande klanten \u2014 gerechtvaardigd belang (art. 6.1.f)',
+                'Nieuwsbrieven, marketingcookies en gerichte advertenties \u2014 toestemming (art. 6.1.a), die u op elk moment kan intrekken',
+                'Beheer van sollicitaties en aanwervingsprocedure \u2014 maatregelen vóór sluiting van een arbeidsovereenkomst (art. 6.1.b)',
+              ],
             },
             {
-              title: 'Uw rechten',
-              body: 'U kunt vragen om inzage, correctie of verwijdering van uw persoonsgegevens door contact op te nemen via de contactgegevens op deze site.',
+              title: '4. Bewaartermijnen',
+              body: 'We bewaren uw gegevens niet langer dan noodzakelijk:',
+              items: [
+                'Klant- en facturatiegegevens: 7 jaar na afsluiting van het boekjaar (fiscale bewaarplicht)',
+                'Offertedossiers zonder opvolging: 5 jaar',
+                'Prospectgegevens (geen klant geworden): 3 jaar na laatste contact',
+                'Sollicitaties: maximaal 2 jaar, tenzij u uitdrukkelijk toestemt voor langere opname in onze kandidatenpool',
+                'Cookies: zie afdeling 7 \u2014 typisch tussen sessieduur en 12 maanden',
+              ],
+            },
+            {
+              title: '5. Ontvangers en verwerkers',
+              body: 'Uw gegevens worden enkel gedeeld met partijen die nodig zijn voor de uitvoering van onze opdracht of op grond van een wettelijke verplichting. Met elke verwerker sluiten we een verwerkersovereenkomst conform art. 28 AVG.',
+              items: [
+                'IT-leveranciers voor hosting, e-mail en website-infrastructuur',
+                'Onze boekhouder, bedrijfsrevisor en fiscaal adviseur',
+                'Onze decennale en BA-verzekeraar bij schadegevallen',
+                'Onderaannemers en architecten binnen de projectscope',
+                'Overheidsdiensten indien wettelijk vereist (RSZ, BTW-administratie, FOD Financiën)',
+              ],
+            },
+            {
+              title: '6. Internationale doorgifte',
+              body: 'We verwerken gegevens in principe binnen de Europese Economische Ruimte (EER). Indien een verwerker gegevens buiten de EER verwerkt, gebeurt dit enkel op basis van een adequaatheidsbesluit van de Europese Commissie of via standaardcontractbepalingen conform art. 45 en 46 AVG.',
+            },
+            {
+              title: '7. Cookies',
+              body: 'Onze website gebruikt drie categorieën cookies. U beheert uw keuze via de cookie-banner.',
+              items: [
+                'Noodzakelijke cookies: sessie, taalkeuze, cookie-voorkeur \u2014 geen toestemming vereist',
+                'Statistiek- en analytics-cookies: gebruiksgedrag anoniem meten \u2014 enkel na toestemming',
+                'Marketing- en tracking-cookies: gepersonaliseerde advertenties \u2014 enkel na toestemming',
+              ],
+            },
+            {
+              title: '8. Uw rechten',
+              body: 'U kunt de volgende rechten uitoefenen via info@namconstruction.be. We reageren binnen 30 dagen. Bij twijfel over uw identiteit kunnen we een bewijs vragen.',
+              items: [
+                'Recht op inzage (art. 15 AVG)',
+                'Recht op rectificatie (art. 16)',
+                'Recht op wissing / "vergetelheid" (art. 17)',
+                'Recht op beperking van de verwerking (art. 18)',
+                'Recht op overdraagbaarheid van gegevens (art. 20)',
+                'Recht van bezwaar tegen een verwerking op basis van gerechtvaardigd belang (art. 21)',
+                'Recht om een gegeven toestemming op elk moment in te trekken (art. 7.3)',
+                'Recht om niet onderworpen te worden aan geautomatiseerde besluitvorming (art. 22) \u2014 wij passen dit niet toe',
+              ],
+            },
+            {
+              title: '9. Klachtrecht',
+              body: 'Bent u niet tevreden over de manier waarop we uw gegevens verwerken? Neem eerst contact met ons op via info@namconstruction.be. U heeft ook het recht om klacht in te dienen bij de toezichthoudende autoriteit:\n\nGegevensbeschermingsautoriteit (GBA)\nDrukpersstraat 35, 1000 Brussel\ncontact@apd-gba.be · +32 2 274 48 00\nwww.gegevensbeschermingsautoriteit.be',
             },
           ],
         }),
@@ -411,29 +477,65 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
     terms: {
       hero: {
         eyebrow: 'Voorwaarden',
-        title: 'Algemene voorwaarden voor samenwerking en uitvoering',
-        description: 'Deze voorwaarden schetsen het contractuele kader voor offertes, planning, uitvoering en oplevering.',
+        title: 'Algemene voorwaarden van NAM BV',
+        description:
+          'Deze voorwaarden gelden voor elke offerte, overeenkomst en uitvoering van renovatiewerken door NAM BV. Versie voor particuliere en zakelijke klanten.',
       },
       sections: [
         section('terms', 'legal', 'nl', 'legal', 1, {
-          updatedAt: '11 april 2026',
-          introduction: 'De algemene voorwaarden verduidelijken de basisregels voor prijsopbouw, uitvoering, wijzigingen, oplevering en aansprakelijkheid.',
+          updatedAt: '14 april 2026',
+          introduction:
+            'Deze algemene voorwaarden regelen de contractuele relatie tussen NAM BV en haar klanten. Waar de tekst onderscheid maakt tussen particuliere (B2C) en zakelijke klanten (B2B), wordt dit uitdrukkelijk vermeld. Door een offerte te ondertekenen of een opdracht te bevestigen, aanvaardt de klant deze voorwaarden.',
           sections: [
             {
-              title: 'Offertes en opdrachtbevestiging',
-              body: 'Een offerte wordt bindend na schriftelijke bevestiging en na eventuele verduidelijking van scope, timing en randvoorwaarden.',
+              title: '1. Identificatie van de aannemer',
+              body: 'NAM BV (Besloten Vennootschap)\nMaatschappelijke zetel: Zwijnaardsesteenweg 683, 9000 Gent\nOndernemingsnummer: 0792.212.559\nBTW: BE0792.212.559\nRPR: Ondernemingsrechtbank Gent, afdeling Gent\nHoofdactiviteit: NACE 41.201 (algemene bouw van residentiële gebouwen) en NACE 43.299 (overige bouwinstallatie)\n\nContact: info@namconstruction.be · +32 493 81 27 89',
             },
             {
-              title: 'Wijzigingen en meerwerk',
-              body: 'Wijzigingen tijdens de uitvoering worden expliciet beoordeeld op impact voor budget, planning en technische samenhang.',
+              title: '2. Toepassingsgebied',
+              body: 'Deze voorwaarden zijn van toepassing op alle offertes, opdrachten, overeenkomsten en werken uitgevoerd door NAM BV, met uitsluiting van de eventuele aankoop- of andere voorwaarden van de klant. Afwijkingen zijn enkel geldig indien schriftelijk aanvaard door NAM BV. De voorwaarden worden ter beschikking gesteld vóór het sluiten van de overeenkomst en maken er integraal deel van uit.',
             },
             {
-              title: 'Planning en oplevering',
-              body: 'Planning is gebaseerd op gekende randvoorwaarden. Verstoringen buiten redelijke controle kunnen timing beïnvloeden.',
+              title: '3. Offerte en totstandkoming van de overeenkomst',
+              body: 'Tenzij anders vermeld, zijn offertes 30 kalenderdagen geldig vanaf de verzenddatum. De overeenkomst komt tot stand na schriftelijke aanvaarding (inclusief e-mail) van de offerte door de klant of na een uitdrukkelijke opdrachtbevestiging. Prijzen worden vermeld exclusief BTW. Het toepasselijke BTW-tarief (6% of 21%) wordt bepaald op basis van een door de klant ondertekende verklaring conform de BTW-wetgeving (KB nr. 20, tabel A, XXXVIII) die bevestigt dat de woning ouder is dan tien jaar en uitsluitend of hoofdzakelijk als privéwoning wordt gebruikt. Onjuiste verklaringen vallen onder de verantwoordelijkheid van de klant.',
             },
             {
-              title: 'Betalingen',
-              body: 'Facturatie gebeurt volgens de overeengekomen betaalmomenten. Betalingstermijnen en eventuele fasering worden schriftelijk vastgelegd.',
+              title: '4. Uitvoering, planning en meerwerk',
+              body: 'De uitvoeringstermijn wordt in de offerte vermeld en is indicatief tenzij uitdrukkelijk als fataal overeengekomen. Overmacht (onder meer pandemie, materiaalschaarste, extreme weersomstandigheden, stakingen, overheidsmaatregelen) verlengt de uitvoeringstermijn met de duur van de verhindering, zonder recht op schadevergoeding. Wijzigingen in de scope, meerwerk of onvoorziene omstandigheden worden schriftelijk vastgelegd, inclusief impact op prijs en timing, alvorens verder uitgevoerd te worden.',
+            },
+            {
+              title: '5. Betaling (zakelijke klanten — B2B)',
+              body: 'Facturen zijn betaalbaar binnen 30 dagen na factuurdatum, tenzij anders overeengekomen. Bij laattijdige betaling is van rechtswege en zonder ingebrekestelling verschuldigd:',
+              items: [
+                'Verwijlinterest van 10% per jaar op het openstaande bedrag',
+                'Een forfaitaire schadevergoeding van 10% van het openstaande bedrag, met een minimum van €125',
+                'Deze bedingen zijn wederkerig: dezelfde vergoeding is verschuldigd door NAM BV bij aantoonbare laattijdige uitvoering buiten overmacht',
+              ],
+            },
+            {
+              title: '6. Betaling (particuliere klanten — B2C)',
+              body: 'Facturen zijn betaalbaar binnen 30 dagen na factuurdatum. Bij laattijdige betaling wordt een eerste gratis ingebrekestelling verstuurd. Indien de betaling niet volgt binnen 14 kalenderdagen na ontvangst, zijn conform Boek XIX WER verschuldigd:',
+              items: [
+                'Verwijlinterest aan de wettelijke rentevoet inzake betalingsachterstand (Wet 2 augustus 2002)',
+                'Een forfaitaire schadevergoeding: €20 indien de schuld niet hoger is dan €150; €30 plus 10% van het deel boven €150 voor schulden tussen €150 en €500; €65 plus 5% van het deel boven €500 voor schulden boven €500, met een totaal maximum van €2.000',
+                'Dezelfde regels gelden wederkerig wanneer NAM BV bedragen aan de klant verschuldigd is',
+              ],
+            },
+            {
+              title: '7. Oplevering, aanvaarding en garantie',
+              body: 'Bij het einde van de werken vindt een voorlopige oplevering plaats. Zichtbare gebreken moeten op dat moment of binnen 8 kalenderdagen schriftelijk gemeld worden. De definitieve oplevering volgt één jaar na de voorlopige oplevering, tenzij anders overeengekomen.\n\nVoor lichte verborgen gebreken die na aanvaarding aan het licht komen, bedraagt de contractuele aansprakelijkheid van NAM BV 2 jaar vanaf de voorlopige oplevering, overeenkomstig de bestendige gebruiken in de bouwsector.\n\nDe tienjarige aansprakelijkheid voor ernstige gebreken die de stabiliteit of stevigheid van het bouwwerk (of een wezenlijk onderdeel daarvan) in gevaar brengen, zoals bepaald in artikel 5.86 van het Burgerlijk Wetboek (voorheen art. 1792), blijft integraal van toepassing en kan door deze voorwaarden niet worden beperkt of uitgesloten.',
+            },
+            {
+              title: '8. Verzekeringen',
+              body: 'NAM BV beschikt over de wettelijk verplichte verzekering voor de tienjarige burgerlijke aansprakelijkheid conform de Wet van 31 mei 2017 (Peeters-Borsus), evenals een BA-uitbatingsverzekering voor werfaansprakelijkheid.\n\nHet verzekeringsattest met vermelding van verzekeraar, polisnummer en dekkingsperiode wordt conform artikel 12 van voormelde wet vóór de aanvang van de werken ter beschikking gesteld van de bouwheer en de eventuele architect.',
+            },
+            {
+              title: '9. Herroepingsrecht (enkel particuliere klanten)',
+              body: 'Voor overeenkomsten gesloten op afstand (bv. online, via e-mail) of buiten onze gebruikelijke vestiging, beschikt u als consument over een herroepingsrecht van 14 kalenderdagen, zoals voorzien in artikel VI.47 en volgende WER.\n\nBelangrijke uitzondering: indien u ons uitdrukkelijk vraagt om de werken binnen deze 14 dagen aan te vatten en de werken vóór het einde van de termijn volledig zijn uitgevoerd, vervalt het herroepingsrecht (art. VI.53, 13° WER). Indien de werken deels zijn uitgevoerd, bent u een vergoeding verschuldigd evenredig met het reeds verrichte werk.\n\nHet modelformulier voor herroeping is op eenvoudig verzoek verkrijgbaar via info@namconstruction.be.',
+            },
+            {
+              title: '10. Klachten, toepasselijk recht en bevoegde rechtbank',
+              body: 'Klachten worden bij voorkeur eerst rechtstreeks gemeld via info@namconstruction.be. Wij reageren binnen 7 werkdagen.\n\nBij aanhoudende geschillen kan een beroep worden gedaan op de Verzoeningscommissie Bouw (www.bouw-verzoeningscommissie.be), die een gratis buitengerechtelijke geschilbeslechting voorziet voor bouwgeschillen.\n\nOp deze overeenkomst is uitsluitend het Belgisch recht van toepassing. Voor alle geschillen zijn, onverminderd de bijzondere bevoegdheden ten aanzien van consumenten, de rechtbanken van het gerechtelijk arrondissement Gent bevoegd, en in het bijzonder de Ondernemingsrechtbank Gent, afdeling Gent.',
             },
           ],
         }),
@@ -631,31 +733,166 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
       sections: [section('value-subsidies', 'content', 'fr', 'content', 1, { eyebrow: 'Soutien', title: 'Relier les subventions aux décisions du projet', description: 'Nous aidons à les intégrer dans le cadrage initial.' })],
     },
     privacy: {
-      hero: { eyebrow: 'Confidentialité', title: 'Comment nous traitons les données de contact et de projet', description: 'Cette page décrit les données utilisées pour les demandes de devis et de rendez-vous.' },
+      hero: {
+        eyebrow: 'Confidentialité',
+        title: 'Traitement des données personnelles selon le RGPD',
+        description:
+          'Cette déclaration de confidentialité décrit quelles données NAM BV traite, sur quelle base juridique, pendant combien de temps et quels sont vos droits.',
+      },
       sections: [
         section('privacy', 'legal', 'fr', 'legal', 1, {
-          updatedAt: '11 avril 2026',
-          introduction: 'Nous limitons le traitement aux données nécessaires pour répondre à une demande, organiser un rendez-vous et suivre le projet.',
+          updatedAt: '14 avril 2026',
+          introduction:
+            'La présente déclaration s’applique à tous les traitements de données personnelles effectués par NAM BV dans le cadre des demandes de devis, du suivi de projets, des rendez-vous, de la facturation, des candidatures et de l’utilisation du site. Elle est établie conformément au Règlement général sur la protection des données (Règlement (UE) 2016/679, « RGPD ») et à la loi belge du 30 juillet 2018 relative à la protection des personnes physiques à l’égard des traitements de données à caractère personnel.',
           sections: [
-            { title: 'Données traitées', body: 'Coordonnées, informations projet, préférences de rendez-vous et contexte complémentaire transmis par le visiteur.' },
-            { title: 'Finalités', body: 'Réponse commerciale, planification, suivi opérationnel et communication liée au projet.' },
-            { title: 'Conservation et sécurité', body: 'Les accès sont limités et les données ne sont conservées que le temps nécessaire au cadre légal ou opérationnel.' },
-            { title: 'Vos droits', body: 'Vous pouvez demander un accès, une correction ou une suppression via les coordonnées publiées sur le site.' },
+            {
+              title: '1. Responsable du traitement',
+              body: 'NAM BV (Société à responsabilité limitée / Besloten Vennootschap)\nSiège social : Zwijnaardsesteenweg 683, 9000 Gand\nNuméro d’entreprise : 0792.212.559\nTVA : BE0792.212.559\nRPM : Tribunal de l’entreprise de Gand, division Gand\n\nContact privacy : info@namconstruction.be · +32 493 81 27 89',
+            },
+            {
+              title: '2. Données traitées',
+              body: 'Nous limitons nos traitements aux données strictement nécessaires au but poursuivi :',
+              items: [
+                'Données d’identification : nom, prénom, adresse, code postal, ville',
+                'Coordonnées : adresse e-mail, numéro de téléphone',
+                'Données de projet : type de logement, périmètre, indication de budget, photos que vous transmettez',
+                'Données de facturation : adresse de facturation, numéro BCE et TVA pour les clients professionnels',
+                'Préférences de rendez-vous : disponibilité, timing et lieu souhaités',
+                'Données de candidature : CV, lettre de motivation et informations complémentaires que vous communiquez',
+                'Données techniques : adresse IP, informations de session et cookies si vous les acceptez',
+              ],
+            },
+            {
+              title: '3. Finalités et base juridique (art. 6 RGPD)',
+              body: 'Nous traitons les données exclusivement pour les finalités énumérées, chaque fois sur une base juridique valable :',
+              items: [
+                'Réponse aux demandes de devis, exécution des contrats et suivi de projet — exécution du contrat (art. 6.1.b)',
+                'Comptabilité, facturation et obligations fiscales — obligation légale (art. 6.1.c, notamment art. III.86 CDE et législation TVA)',
+                'Suivi clientèle, enquêtes de satisfaction et communication directe vers les clients existants — intérêt légitime (art. 6.1.f)',
+                'Newsletters, cookies marketing et publicité ciblée — consentement (art. 6.1.a), révocable à tout moment',
+                'Gestion des candidatures et processus de recrutement — mesures précontractuelles (art. 6.1.b)',
+              ],
+            },
+            {
+              title: '4. Durées de conservation',
+              body: 'Nous ne conservons pas vos données plus longtemps que nécessaire :',
+              items: [
+                'Données clients et de facturation : 7 ans après la clôture de l’exercice (obligation fiscale)',
+                'Dossiers de devis sans suivi : 5 ans',
+                'Données de prospects (non devenus clients) : 3 ans après le dernier contact',
+                'Candidatures : maximum 2 ans, sauf consentement explicite à une conservation plus longue dans notre vivier',
+                'Cookies : voir section 7 — généralement entre la durée de la session et 12 mois',
+              ],
+            },
+            {
+              title: '5. Destinataires et sous-traitants',
+              body: 'Vos données ne sont partagées qu’avec des parties indispensables à notre mission ou en vertu d’une obligation légale. Avec chaque sous-traitant, nous concluons un contrat de sous-traitance conforme à l’art. 28 RGPD.',
+              items: [
+                'Fournisseurs IT pour l’hébergement, la messagerie et l’infrastructure web',
+                'Notre comptable, réviseur d’entreprise et conseiller fiscal',
+                'Notre assureur décennal et RC exploitation en cas de sinistre',
+                'Sous-traitants et architectes dans le cadre du projet',
+                'Administrations publiques si requis par la loi (ONSS, administration TVA, SPF Finances)',
+              ],
+            },
+            {
+              title: '6. Transferts internationaux',
+              body: 'En principe, nous traitons les données au sein de l’Espace économique européen (EEE). Tout transfert en dehors de l’EEE se fait uniquement sur base d’une décision d’adéquation de la Commission européenne ou via des clauses contractuelles types conformes aux art. 45 et 46 RGPD.',
+            },
+            {
+              title: '7. Cookies',
+              body: 'Notre site utilise trois catégories de cookies. Vous gérez vos choix via le bandeau cookies.',
+              items: [
+                'Cookies nécessaires : session, langue, préférence cookies — aucun consentement requis',
+                'Cookies statistiques et d’analyse : mesure anonyme de l’usage — uniquement avec consentement',
+                'Cookies marketing et de tracking : publicité personnalisée — uniquement avec consentement',
+              ],
+            },
+            {
+              title: '8. Vos droits',
+              body: 'Vous pouvez exercer les droits suivants via info@namconstruction.be. Nous répondons dans les 30 jours. Nous pouvons demander une preuve d’identité en cas de doute.',
+              items: [
+                'Droit d’accès (art. 15 RGPD)',
+                'Droit de rectification (art. 16)',
+                'Droit à l’effacement (« droit à l’oubli ») (art. 17)',
+                'Droit à la limitation du traitement (art. 18)',
+                'Droit à la portabilité (art. 20)',
+                'Droit d’opposition à un traitement fondé sur l’intérêt légitime (art. 21)',
+                'Droit de retirer votre consentement à tout moment (art. 7.3)',
+                'Droit de ne pas faire l’objet d’une décision automatisée (art. 22) — non appliqué chez nous',
+              ],
+            },
+            {
+              title: '9. Droit de réclamation',
+              body: 'Si vous n’êtes pas satisfait de la manière dont nous traitons vos données, contactez-nous d’abord via info@namconstruction.be. Vous pouvez également introduire une réclamation auprès de l’autorité de contrôle :\n\nAutorité de protection des données (APD)\nRue de la Presse 35, 1000 Bruxelles\ncontact@apd-gba.be · +32 2 274 48 00\nwww.autoriteprotectiondonnees.be',
+            },
           ],
         }),
       ],
     },
     terms: {
-      hero: { eyebrow: 'Conditions', title: 'Conditions générales de collaboration et d’exécution', description: 'Ces conditions décrivent les règles de base relatives aux offres, à l’exécution et à la facturation.' },
+      hero: {
+        eyebrow: 'Conditions',
+        title: 'Conditions générales de NAM BV',
+        description:
+          'Ces conditions s’appliquent à chaque offre, contrat et exécution de travaux de rénovation par NAM BV. Version à destination des clients particuliers et professionnels.',
+      },
       sections: [
         section('terms', 'legal', 'fr', 'legal', 1, {
-          updatedAt: '11 avril 2026',
-          introduction: 'Les conditions générales encadrent l’offre, les modifications, le planning, la réception et les paiements.',
+          updatedAt: '14 avril 2026',
+          introduction:
+            'Les présentes conditions générales régissent la relation contractuelle entre NAM BV et ses clients. Lorsqu’une distinction est faite entre clients particuliers (B2C) et professionnels (B2B), elle est mentionnée expressément. En signant un devis ou en confirmant une commande, le client accepte ces conditions.',
           sections: [
-            { title: 'Offres et confirmation', body: 'Une offre devient ferme après validation écrite et clarification du périmètre.' },
-            { title: 'Modifications', body: 'Les changements sont évalués explicitement sur le budget, le délai et la faisabilité.' },
-            { title: 'Planning', body: 'Le planning dépend des informations disponibles et des conditions du chantier.' },
-            { title: 'Paiements', body: 'La facturation suit les jalons convenus et les modalités écrites.' },
+            {
+              title: '1. Identification de l’entrepreneur',
+              body: 'NAM BV (Société à responsabilité limitée)\nSiège social : Zwijnaardsesteenweg 683, 9000 Gand\nNuméro d’entreprise : 0792.212.559\nTVA : BE0792.212.559\nRPM : Tribunal de l’entreprise de Gand, division Gand\nActivité principale : NACE 41.201 (construction générale de bâtiments résidentiels) et NACE 43.299 (autres travaux d’installation)\n\nContact : info@namconstruction.be · +32 493 81 27 89',
+            },
+            {
+              title: '2. Champ d’application',
+              body: 'Les présentes conditions s’appliquent à toutes les offres, commandes, contrats et travaux exécutés par NAM BV, à l’exclusion des éventuelles conditions d’achat ou autres du client. Les dérogations ne sont valables que si elles sont acceptées par écrit par NAM BV. Les conditions sont mises à disposition avant la conclusion du contrat et en font partie intégrante.',
+            },
+            {
+              title: '3. Offre et formation du contrat',
+              body: 'Sauf mention contraire, les offres sont valables 30 jours calendrier à partir de leur envoi. Le contrat prend naissance par l’acceptation écrite (y compris par e-mail) de l’offre ou par une confirmation de commande explicite. Les prix sont indiqués hors TVA. Le taux de TVA applicable (6 % ou 21 %) est déterminé sur la base d’une déclaration signée par le client conformément à la législation TVA (AR n° 20, tableau A, XXXVIII), attestant que l’habitation a plus de dix ans et est utilisée exclusivement ou principalement comme logement privé. Toute déclaration inexacte relève de la responsabilité du client.',
+            },
+            {
+              title: '4. Exécution, planning et travaux supplémentaires',
+              body: 'Le délai d’exécution est mentionné dans l’offre et est indicatif, sauf accord explicite contraire. Les cas de force majeure (notamment pandémie, pénurie de matériaux, intempéries, grèves, mesures publiques) prolongent le délai à concurrence de la durée de l’empêchement, sans droit à indemnisation. Les modifications de périmètre, les travaux supplémentaires ou les imprévus sont consignés par écrit, avec leur impact sur le prix et le planning, avant toute exécution.',
+            },
+            {
+              title: '5. Paiement (clients professionnels — B2B)',
+              body: 'Les factures sont payables dans les 30 jours suivant leur date d’émission, sauf accord contraire. En cas de retard de paiement, sont dus de plein droit et sans mise en demeure :',
+              items: [
+                'Un intérêt de retard de 10 % par an sur le montant impayé',
+                'Une indemnité forfaitaire de 10 % du montant impayé, avec un minimum de 125 €',
+                'Ces clauses sont réciproques : la même indemnité est due par NAM BV en cas de retard d’exécution avéré hors force majeure',
+              ],
+            },
+            {
+              title: '6. Paiement (clients particuliers — B2C)',
+              body: 'Les factures sont payables dans les 30 jours suivant leur date d’émission. En cas de retard, une première mise en demeure gratuite est envoyée. Si le paiement n’intervient pas dans les 14 jours suivant sa réception, sont dus conformément au Livre XIX CDE :',
+              items: [
+                'Des intérêts au taux légal en matière de retard de paiement (loi du 2 août 2002)',
+                'Une indemnité forfaitaire : 20 € pour une dette ≤ 150 € ; 30 € + 10 % de la tranche au-dessus de 150 € pour une dette entre 150 € et 500 € ; 65 € + 5 % de la tranche au-dessus de 500 € pour une dette supérieure à 500 €, avec un plafond total de 2 000 €',
+                'Les mêmes règles s’appliquent de manière réciproque lorsque NAM BV doit des montants au client',
+              ],
+            },
+            {
+              title: '7. Réception, acceptation et garantie',
+              body: 'À la fin des travaux, il est procédé à une réception provisoire. Les défauts apparents doivent être signalés à ce moment ou dans les 8 jours calendrier par écrit. La réception définitive intervient un an après la réception provisoire, sauf accord contraire.\n\nPour les vices cachés légers apparus après acceptation, la responsabilité contractuelle de NAM BV est limitée à 2 ans à compter de la réception provisoire, conformément aux usages du secteur de la construction.\n\nLa responsabilité décennale pour les défauts graves mettant en cause la stabilité ou la solidité de l’ouvrage (ou d’une partie essentielle de celui-ci), prévue à l’article 5.86 du Code civil (anciennement art. 1792), reste intégralement applicable et ne peut être limitée ni exclue par les présentes conditions.',
+            },
+            {
+              title: '8. Assurances',
+              body: 'NAM BV dispose de l’assurance obligatoire pour la responsabilité civile décennale conformément à la loi du 31 mai 2017 (Peeters-Borsus), ainsi que d’une assurance RC exploitation pour la responsabilité de chantier.\n\nL’attestation d’assurance, mentionnant l’assureur, le numéro de police et la période de couverture, est mise à disposition du maître d’ouvrage et de l’architecte avant le début des travaux, conformément à l’article 12 de la loi précitée.',
+            },
+            {
+              title: '9. Droit de rétractation (clients particuliers uniquement)',
+              body: 'Pour les contrats conclus à distance (p. ex. en ligne, par e-mail) ou hors établissement, vous disposez en tant que consommateur d’un droit de rétractation de 14 jours calendrier, tel que prévu aux articles VI.47 et suivants du CDE.\n\nException importante : si vous demandez expressément le démarrage des travaux dans ce délai de 14 jours et que ceux-ci ont été entièrement exécutés avant son expiration, le droit de rétractation expire (art. VI.53, 13° CDE). Si les travaux sont partiellement exécutés, vous êtes redevable d’une somme proportionnelle aux prestations déjà fournies.\n\nLe formulaire-type de rétractation est disponible sur simple demande via info@namconstruction.be.',
+            },
+            {
+              title: '10. Réclamations, droit applicable et juridiction compétente',
+              body: 'Les réclamations sont de préférence adressées directement via info@namconstruction.be. Nous répondons dans les 7 jours ouvrables.\n\nEn cas de litige persistant, il peut être recouru à la Commission de conciliation Construction (www.bouw-verzoeningscommissie.be), qui offre un règlement extrajudiciaire gratuit des litiges de construction.\n\nLe présent contrat est régi exclusivement par le droit belge. Tous les litiges sont soumis, sans préjudice des compétences particulières à l’égard des consommateurs, aux tribunaux de l’arrondissement judiciaire de Gand, et en particulier au Tribunal de l’entreprise de Gand, division Gand.',
+            },
           ],
         }),
       ],
@@ -784,31 +1021,166 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
       sections: [section('value-subsidies', 'content', 'en', 'content', 1, { eyebrow: 'Support', title: 'Tie subsidy logic to project decisions', description: 'We help fold subsidy opportunities into the early project frame.' })],
     },
     privacy: {
-      hero: { eyebrow: 'Privacy', title: 'How we process contact and project data', description: 'This page outlines how information is used for quote requests, appointments and project follow-up.' },
+      hero: {
+        eyebrow: 'Privacy',
+        title: 'How we process personal data under the GDPR',
+        description:
+          'This privacy statement describes what data NAM BV processes, on which legal basis, for how long and which rights you have.',
+      },
       sections: [
         section('privacy', 'legal', 'en', 'legal', 1, {
-          updatedAt: 'April 11, 2026',
-          introduction: 'We limit processing to what is needed for contact requests, appointment scheduling, project follow-up and operational administration.',
+          updatedAt: 'April 14, 2026',
+          introduction:
+            'This privacy statement applies to all processing of personal data by NAM BV in the context of quote requests, project follow-up, appointments, invoicing, job applications and website use. It has been drafted in accordance with the General Data Protection Regulation (Regulation (EU) 2016/679, "GDPR") and the Belgian Act of 30 July 2018 on the protection of natural persons with regard to the processing of personal data.',
           sections: [
-            { title: 'What we process', body: 'Name, contact details, project information, appointment preferences and any context you choose to share.' },
-            { title: 'Why we use it', body: 'To answer requests, schedule visits, follow up internally and communicate about the relevant project scope.' },
-            { title: 'Storage and security', body: 'Access is limited to authorised staff and managed systems, and data is retained only as long as operationally or legally required.' },
-            { title: 'Your rights', body: 'You can request access, correction or deletion through the contact details published on this site.' },
+            {
+              title: '1. Data controller',
+              body: 'NAM BV (private limited company / Besloten Vennootschap)\nRegistered office: Zwijnaardsesteenweg 683, 9000 Ghent, Belgium\nEnterprise number: 0792.212.559\nVAT: BE0792.212.559\nRLE: Enterprise Court of Ghent, Ghent division\n\nContact for privacy matters: info@namconstruction.be · +32 493 81 27 89',
+            },
+            {
+              title: '2. Personal data we process',
+              body: 'We limit ourselves to the data that is strictly necessary for the purpose for which we collect it:',
+              items: [
+                'Identification data: surname, first name, address, postal code, city',
+                'Contact data: email address, phone number',
+                'Project data: type of property, scope, budget indication, photos you voluntarily share',
+                'Billing data: invoicing address, enterprise number and VAT for business clients',
+                'Appointment preferences: preferred timing, location, availability',
+                'Job application data: CV, cover letter, additional information you provide',
+                'Technical data: IP address, session and cookie information if you accept them',
+              ],
+            },
+            {
+              title: '3. Purposes and legal basis (art. 6 GDPR)',
+              body: 'We process data exclusively for the following purposes, each time on the basis of a valid legal ground:',
+              items: [
+                'Responding to quote requests, performing contracts and project follow-up \u2014 performance of the contract (art. 6.1.b)',
+                'Accounting, invoicing and statutory retention \u2014 legal obligation (art. 6.1.c, including art. III.86 CEL and VAT legislation)',
+                'Customer follow-up, satisfaction surveys and direct communication to existing clients \u2014 legitimate interest (art. 6.1.f)',
+                'Newsletters, marketing cookies and targeted advertising \u2014 consent (art. 6.1.a), which you can withdraw at any time',
+                'Management of job applications and recruitment \u2014 measures prior to entering into an employment contract (art. 6.1.b)',
+              ],
+            },
+            {
+              title: '4. Retention periods',
+              body: 'We do not keep your data longer than necessary:',
+              items: [
+                'Client and billing data: 7 years after the end of the financial year (tax retention obligation)',
+                'Quote files without follow-up: 5 years',
+                'Prospect data (not converted to client): 3 years after last contact',
+                'Job applications: 2 years maximum, unless you explicitly consent to a longer inclusion in our candidate pool',
+                'Cookies: see section 7 \u2014 typically between session duration and 12 months',
+              ],
+            },
+            {
+              title: '5. Recipients and processors',
+              body: 'Your data is only shared with parties required for the performance of our assignment or on the basis of a legal obligation. With every processor we enter into a data processing agreement in accordance with art. 28 GDPR.',
+              items: [
+                'IT suppliers for hosting, email and website infrastructure',
+                'Our accountant, auditor and tax adviser',
+                'Our decennial and civil liability insurer in case of claims',
+                'Subcontractors and architects within the project scope',
+                'Public authorities where legally required (NSSO, VAT administration, FPS Finance)',
+              ],
+            },
+            {
+              title: '6. International transfers',
+              body: 'As a rule we process data within the European Economic Area (EEA). If a processor processes data outside the EEA, this only happens on the basis of an adequacy decision by the European Commission or through standard contractual clauses in accordance with art. 45 and 46 GDPR.',
+            },
+            {
+              title: '7. Cookies',
+              body: 'Our website uses three categories of cookies. You manage your choice via the cookie banner.',
+              items: [
+                'Strictly necessary cookies: session, language choice, cookie preference \u2014 no consent required',
+                'Statistics and analytics cookies: measuring usage anonymously \u2014 only after consent',
+                'Marketing and tracking cookies: personalised advertising \u2014 only after consent',
+              ],
+            },
+            {
+              title: '8. Your rights',
+              body: 'You can exercise the following rights via info@namconstruction.be. We respond within 30 days. In case of doubt about your identity, we may ask for proof.',
+              items: [
+                'Right of access (art. 15 GDPR)',
+                'Right of rectification (art. 16)',
+                'Right to erasure / "to be forgotten" (art. 17)',
+                'Right to restriction of processing (art. 18)',
+                'Right to data portability (art. 20)',
+                'Right to object to processing based on legitimate interest (art. 21)',
+                'Right to withdraw a given consent at any time (art. 7.3)',
+                'Right not to be subject to automated decision-making (art. 22) \u2014 we do not apply this',
+              ],
+            },
+            {
+              title: '9. Right to lodge a complaint',
+              body: 'Not satisfied with the way we process your data? Please contact us first at info@namconstruction.be. You also have the right to lodge a complaint with the supervisory authority:\n\nData Protection Authority (APD/GBA)\nRue de la Presse 35, 1000 Brussels\ncontact@apd-gba.be · +32 2 274 48 00\nwww.dataprotectionauthority.be',
+            },
           ],
         }),
       ],
     },
     terms: {
-      hero: { eyebrow: 'Terms', title: 'General terms for collaboration and delivery', description: 'These terms define the baseline rules for offers, scope changes, planning, delivery and payments.' },
+      hero: {
+        eyebrow: 'Terms',
+        title: 'General terms and conditions of NAM BV',
+        description:
+          'These terms apply to every quote, agreement and execution of renovation works by NAM BV. Version for private and business clients.',
+      },
       sections: [
         section('terms', 'legal', 'en', 'legal', 1, {
-          updatedAt: 'April 11, 2026',
-          introduction: 'The general terms outline how quotes, changes, planning, delivery and payment milestones are handled.',
+          updatedAt: 'April 14, 2026',
+          introduction:
+            'These general terms and conditions govern the contractual relationship between NAM BV and its clients. Where the text distinguishes between private (B2C) and business clients (B2B), this is expressly indicated. By signing a quote or confirming an assignment, the client accepts these terms.',
           sections: [
-            { title: 'Offers and confirmation', body: 'A quote becomes binding after written confirmation and scope clarification.' },
-            { title: 'Changes and additional work', body: 'Changes are evaluated explicitly for budget, timing and feasibility impact.' },
-            { title: 'Planning and handover', body: 'Schedules depend on known conditions and can shift if site conditions change materially.' },
-            { title: 'Payments', body: 'Invoices follow the written milestone and payment structure agreed with the client.' },
+            {
+              title: '1. Contractor identification',
+              body: 'NAM BV (private limited company / Besloten Vennootschap)\nRegistered office: Zwijnaardsesteenweg 683, 9000 Ghent, Belgium\nEnterprise number: 0792.212.559\nVAT: BE0792.212.559\nRLE: Enterprise Court of Ghent, Ghent division\nMain activity: NACE 41.201 (general construction of residential buildings) and NACE 43.299 (other building installation)\n\nContact: info@namconstruction.be · +32 493 81 27 89',
+            },
+            {
+              title: '2. Scope',
+              body: 'These terms apply to all quotes, assignments, agreements and works carried out by NAM BV, to the exclusion of any purchase or other terms of the client. Deviations are only valid if accepted in writing by NAM BV. The terms are made available before the conclusion of the agreement and form an integral part of it.',
+            },
+            {
+              title: '3. Quote and formation of the agreement',
+              body: 'Unless otherwise stated, quotes are valid for 30 calendar days from the date of issue. The agreement is formed upon written acceptance (including email) of the quote by the client or upon an express order confirmation. Prices are stated excluding VAT. The applicable VAT rate (6% or 21%) is determined on the basis of a declaration signed by the client in accordance with VAT legislation (Royal Decree no. 20, table A, XXXVIII) confirming that the dwelling is older than ten years and is exclusively or predominantly used as a private residence. Incorrect declarations are the client\u2019s responsibility.',
+            },
+            {
+              title: '4. Execution, planning and additional work',
+              body: 'The execution period is stated in the quote and is indicative unless expressly agreed as binding. Force majeure (including pandemic, material shortages, extreme weather, strikes, government measures) extends the execution period by the duration of the impediment, without entitlement to compensation. Changes to scope, additional work or unforeseen circumstances are recorded in writing, including their impact on price and schedule, before any further execution.',
+            },
+            {
+              title: '5. Payment (business clients \u2014 B2B)',
+              body: 'Invoices are payable within 30 days of the invoice date, unless otherwise agreed. In case of late payment, the following is owed by operation of law and without notice of default:',
+              items: [
+                'Default interest of 10% per annum on the outstanding amount',
+                'A fixed compensation of 10% of the outstanding amount, with a minimum of \u20ac125',
+                'These clauses are reciprocal: the same compensation is due by NAM BV in case of demonstrable late performance outside force majeure',
+              ],
+            },
+            {
+              title: '6. Payment (private clients \u2014 B2C)',
+              body: 'Invoices are payable within 30 days of the invoice date. In case of late payment, a first free notice of default is sent. If payment is not made within 14 calendar days of receipt, the following is owed in accordance with Book XIX CEL:',
+              items: [
+                'Default interest at the statutory rate applicable to payment arrears (Act of 2 August 2002)',
+                'A fixed compensation: \u20ac20 if the debt does not exceed \u20ac150; \u20ac30 plus 10% of the portion above \u20ac150 for debts between \u20ac150 and \u20ac500; \u20ac65 plus 5% of the portion above \u20ac500 for debts exceeding \u20ac500, with an overall maximum of \u20ac2,000',
+                'The same rules apply reciprocally when NAM BV owes amounts to the client',
+              ],
+            },
+            {
+              title: '7. Acceptance, reception and warranty',
+              body: 'At the end of the works, a provisional reception takes place. Visible defects must be reported in writing at that time or within 8 calendar days. Final reception follows one year after provisional reception, unless otherwise agreed.\n\nFor minor hidden defects that become apparent after acceptance, NAM BV\u2019s contractual liability is 2 years from the provisional reception, in accordance with established practice in the construction sector.\n\nThe ten-year liability for serious defects that jeopardise the stability or soundness of the works (or an essential part thereof), as set out in article 5.86 of the Civil Code (formerly art. 1792), remains fully applicable and cannot be limited or excluded by these terms.',
+            },
+            {
+              title: '8. Insurance',
+              body: 'NAM BV holds the statutorily required ten-year civil liability insurance in accordance with the Act of 31 May 2017 (Peeters-Borsus), as well as an operational civil liability insurance for site liability.\n\nThe insurance certificate stating the insurer, policy number and coverage period is, in accordance with article 12 of the aforementioned Act, made available to the client and any architect before the start of the works.',
+            },
+            {
+              title: '9. Right of withdrawal (private clients only)',
+              body: 'For contracts concluded at a distance (e.g. online, by email) or outside our usual place of business, you as a consumer have a right of withdrawal of 14 calendar days, as provided for in article VI.47 et seq. CEL.\n\nImportant exception: if you expressly request us to begin the works within this 14-day period and the works are fully performed before the end of that period, the right of withdrawal lapses (art. VI.53, 13\u00b0 CEL). If the works are partly performed, you owe a compensation proportionate to the work already carried out.\n\nThe model withdrawal form is available on simple request at info@namconstruction.be.',
+            },
+            {
+              title: '10. Complaints, applicable law and jurisdiction',
+              body: 'Complaints should preferably be reported first directly via info@namconstruction.be. We respond within 7 working days.\n\nIn case of persistent disputes, recourse may be had to the Construction Conciliation Committee (www.bouw-verzoeningscommissie.be), which provides free out-of-court dispute resolution for construction disputes.\n\nThis agreement is exclusively governed by Belgian law. For all disputes, without prejudice to special consumer jurisdictions, the courts of the judicial district of Ghent have jurisdiction, and in particular the Enterprise Court of Ghent, Ghent division.',
+            },
           ],
         }),
       ],

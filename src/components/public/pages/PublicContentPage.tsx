@@ -63,6 +63,8 @@ export default async function PublicContentPage({
             data={asData(section)}
             company={company}
             fallbackQuoteLabel={copy.common.getQuote}
+            lastUpdatedLabel={copy.common.lastUpdated}
+            lastUpdatedRecentlyLabel={copy.common.lastUpdatedRecently}
           />
         ))}
     </>
@@ -147,12 +149,16 @@ function SectionRenderer({
   data,
   company,
   fallbackQuoteLabel,
+  lastUpdatedLabel,
+  lastUpdatedRecentlyLabel,
 }: {
   locale: V2Locale;
   schemaKey: string;
   data: Record<string, unknown>;
   company: Record<string, unknown>;
   fallbackQuoteLabel: string;
+  lastUpdatedLabel: string;
+  lastUpdatedRecentlyLabel: string;
 }) {
   switch (schemaKey) {
     case 'feature-list':
@@ -164,7 +170,7 @@ function SectionRenderer({
     case 'cta':
       return <CtaSection locale={locale} data={data} />;
     case 'legal':
-      return <LegalSection data={data} />;
+      return <LegalSection data={data} updatedLabel={lastUpdatedLabel} recentlyLabel={lastUpdatedRecentlyLabel} />;
     default:
       return null;
   }
@@ -373,7 +379,15 @@ function CtaSection({
   );
 }
 
-function LegalSection({ data }: { data: Record<string, unknown> }) {
+function LegalSection({
+  data,
+  updatedLabel,
+  recentlyLabel,
+}: {
+  data: Record<string, unknown>;
+  updatedLabel: string;
+  recentlyLabel: string;
+}) {
   const sections = asItems(data.sections);
 
   return (
@@ -382,29 +396,29 @@ function LegalSection({ data }: { data: Record<string, unknown> }) {
         <div className="max-w-4xl rounded-[2rem] border border-noir-200 bg-white p-8 shadow-soft-lg lg:p-10">
           <div className="flex flex-wrap items-center gap-3 text-sm text-noir-500">
             <span className="rounded-full bg-noir-100 px-3 py-1">
-              {typeof data.updatedAt === 'string' ? `Updated ${data.updatedAt}` : 'Updated recently'}
+              {typeof data.updatedAt === 'string' ? `${updatedLabel} ${data.updatedAt}` : recentlyLabel}
             </span>
           </div>
           {typeof data.introduction === 'string' ? (
             <p className="mt-6 text-base leading-8 text-noir-600">{data.introduction}</p>
           ) : null}
-          <div className="mt-10 grid gap-8">
-            {sections.map((section, index) => (
-              <article key={`${String(section.title ?? 'section')}-${index}`} className="rounded-3xl border border-noir-200 bg-noir-50 p-6">
-                <h2 className="text-xl font-display font-bold text-noir-900">{String(section.title ?? '')}</h2>
-                <p className="mt-3 text-sm leading-7 text-noir-600">{String(section.body ?? '')}</p>
-                {Array.isArray(section.items) ? (
-                  <ul className="mt-4 grid gap-2 text-sm leading-6 text-noir-600">
-                    {section.items.map((item, itemIndex) => (
-                      <li key={itemIndex}>&bull; {String(item)}</li>
-                    ))}
-                  </ul>
-                ) : null}
-              </article>
-            ))}
-          </div>
         </div>
       </AnimatedSection>
+      <div className="mt-8 grid max-w-4xl gap-8">
+        {sections.map((section, index) => (
+          <article key={`${String(section.title ?? 'section')}-${index}`} className="rounded-3xl border border-noir-200 bg-noir-50 p-6">
+            <h2 className="text-xl font-display font-bold text-noir-900 break-words hyphens-auto">{String(section.title ?? '')}</h2>
+            <p className="mt-3 whitespace-pre-line text-sm leading-7 text-noir-600">{String(section.body ?? '')}</p>
+            {Array.isArray(section.items) ? (
+              <ul className="mt-4 grid gap-2 text-sm leading-6 text-noir-600">
+                {section.items.map((item, itemIndex) => (
+                  <li key={itemIndex}>&bull; {String(item)}</li>
+                ))}
+              </ul>
+            ) : null}
+          </article>
+        ))}
+      </div>
     </section>
   );
 }
