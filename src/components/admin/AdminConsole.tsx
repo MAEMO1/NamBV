@@ -1,349 +1,54 @@
 'use client';
 
-import type { HTMLAttributes, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { useEffect, useMemo, useState } from 'react';
+
 import AdminShell, { type AdminShellModule } from './AdminShell';
+import { moduleOrder } from './icons';
+import {
+  buildPreviewUrl,
+  createEmptyProject,
+  createEmptySectionData,
+  createNewSection,
+  deepCopy,
+  ensureItemArray,
+  ensureString,
+  ensureStringArray,
+  fetchJson,
+  formatDate,
+  getSelectionKey,
+  parseTags,
+} from './lib';
 import { AnalyticsModule } from './modules/AnalyticsModule';
+import type {
+  AnalyticsOverview,
+  AppointmentRecord,
+  AssetRecord,
+  AssetResponseMeta,
+  AvailabilityException,
+  AvailabilityRule,
+  ContentSchemaKey,
+  ContentSection,
+  ModuleKey,
+  PageOption,
+  ProjectImage,
+  ProjectRecord,
+  ProjectTranslation,
+  QuoteRecord,
+  SettingRecord,
+} from './types';
+import {
+  appointmentStatusOptions,
+  contentSchemaOptions,
+  locales,
+  quoteStatusOptions,
+  weekdays,
+} from './types';
 import { Banner } from './ui/Banner';
-
-type ModuleKey =
-  | 'analytics'
-  | 'quotes'
-  | 'appointments'
-  | 'content'
-  | 'projects'
-  | 'assets'
-  | 'settings'
-  | 'availability';
-
-type AnalyticsOverview = {
-  totals: {
-    quotes: number;
-    appointments: number;
-  };
-  quoteStatuses: Array<{ status: string; _count: number | { _all?: number } }>;
-  appointmentStatuses: Array<{ status: string; _count: number | { _all?: number } }>;
-};
-
-type QuoteRecord = {
-  id: string;
-  referenceNumber: string;
-  fullName: string;
-  email: string;
-  phone: string;
-  status: string;
-  adminNotes: string | null;
-  createdAt: string;
-};
-
-type AppointmentRecord = {
-  id: string;
-  referenceNumber: string;
-  fullName: string;
-  email: string;
-  phone: string;
-  municipality: string;
-  appointmentDate: string;
-  appointmentTime: string;
-  status: string;
-  adminNotes: string | null;
-  proposedDate: string | null;
-  proposedTime: string | null;
-  createdAt: string;
-};
-
-type ContentSchemaKey = 'hero' | 'feature-list' | 'content' | 'contact' | 'cta' | 'legal';
-
-type ContentSection = {
-  id: string | null;
-  pageKey: string;
-  sectionKey: string;
-  locale: 'nl' | 'fr' | 'en';
-  schemaKey: ContentSchemaKey;
-  displayOrder: number;
-  published: boolean;
-  dataJson: Record<string, unknown>;
-  hasStoredValue: boolean;
-  isDefault: boolean;
-  previewPath: string;
-};
-
-type ProjectTranslation = {
-  locale: 'nl' | 'fr' | 'en';
-  title: string;
-  shortDescription?: string | null;
-  description?: string | null;
-  challengeText?: string | null;
-  approachText?: string | null;
-  resultText?: string | null;
-  projectType?: string | null;
-  duration?: string | null;
-  surface?: string | null;
-  completionDate?: string | null;
-};
-
-type ProjectImage = {
-  imageUrl: string;
-  alt?: string | null;
-  caption?: string | null;
-  sortOrder: number;
-  kind?: string | null;
-};
-
-type ProjectRecord = {
-  id: string | null;
-  slug: string;
-  category: string;
-  location: string;
-  year: number;
-  featured: boolean;
-  isPublished: boolean;
-  sortOrder: number;
-  coverImageUrl?: string | null;
-  translations: ProjectTranslation[];
-  images: ProjectImage[];
-  hasStoredValue: boolean;
-};
-
-type AssetRecord = {
-  id: string;
-  filename: string;
-  originalName: string;
-  mimeType: string;
-  size: number;
-  bucket: string;
-  path: string;
-  url: string;
-  alt?: string | null;
-  width?: number | null;
-  height?: number | null;
-  tags: string[];
-  createdAt?: string;
-  updatedAt?: string;
-};
-
-type SettingRecord = {
-  id: string | null;
-  key: string;
-  category: string;
-  description?: string | null;
-  valueJson: Record<string, unknown>;
-  hasStoredValue: boolean;
-  isKnownKey: boolean;
-};
-
-type AvailabilityRule = {
-  id?: string;
-  dayOfWeek: number;
-  timeSlots: string[];
-  isActive: boolean;
-};
-
-type AvailabilityException = {
-  id: string;
-  date: string;
-  blockedTimes: string[];
-  reason?: string | null;
-};
-
-type PageOption = {
-  key: string;
-  previewPath: string;
-};
-
-type AssetResponseMeta = {
-  storageEnabled: boolean;
-  uploadBucket: string;
-};
-
-const modules: Array<{ key: ModuleKey; label: string }> = [
-  { key: 'analytics', label: 'Analytics' },
-  { key: 'quotes', label: 'Offertes' },
-  { key: 'appointments', label: 'Afspraken' },
-  { key: 'content', label: 'Content' },
-  { key: 'projects', label: 'Projecten' },
-  { key: 'assets', label: 'Assets' },
-  { key: 'settings', label: 'Instellingen' },
-  { key: 'availability', label: 'Beschikbaarheid' },
-];
-
-const locales: Array<{ value: 'nl' | 'fr' | 'en'; label: string }> = [
-  { value: 'nl', label: 'NL' },
-  { value: 'fr', label: 'FR' },
-  { value: 'en', label: 'EN' },
-];
-
-const contentSchemaOptions: Array<{ value: ContentSchemaKey; label: string }> = [
-  { value: 'hero', label: 'Hero' },
-  { value: 'feature-list', label: 'Feature list' },
-  { value: 'content', label: 'Content' },
-  { value: 'contact', label: 'Contact' },
-  { value: 'cta', label: 'CTA' },
-  { value: 'legal', label: 'Legal' },
-];
-
-const quoteStatusOptions = ['NEW', 'CONTACTED', 'SITE_VISIT', 'QUOTE_SENT', 'NEGOTIATING', 'WON', 'LOST', 'CANCELLED'];
-const appointmentStatusOptions = ['PENDING', 'CONFIRMED', 'RESCHEDULED', 'COMPLETED', 'CANCELLED', 'REJECTED', 'NO_SHOW'];
-const weekdays = ['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
-
-async function fetchJson<T>(input: string, init?: RequestInit) {
-  const response = await fetch(input, {
-    cache: 'no-store',
-    ...init,
-  });
-  const payload = await response.json().catch(() => ({}));
-
-  if (!response.ok) {
-    throw new Error((payload as { error?: string }).error || 'Request failed');
-  }
-
-  return payload as T;
-}
-
-function deepCopy<T>(value: T): T {
-  return JSON.parse(JSON.stringify(value)) as T;
-}
-
-function getSelectionKey(value: { id: string | null; pageKey?: string; locale?: string; sectionKey?: string; displayOrder?: number; slug?: string }) {
-  if (value.id) {
-    return value.id;
-  }
-
-  if (value.slug) {
-    return `slug:${value.slug}`;
-  }
-
-  return `${value.pageKey}:${value.locale}:${value.sectionKey}:${value.displayOrder}`;
-}
-
-function ensureString(value: unknown) {
-  return typeof value === 'string' ? value : '';
-}
-
-function ensureStringArray(value: unknown) {
-  return Array.isArray(value) ? value.map((entry) => String(entry ?? '')) : [];
-}
-
-function ensureItemArray(value: unknown) {
-  return Array.isArray(value) ? value.map((entry) => (entry && typeof entry === 'object' ? { ...(entry as Record<string, unknown>) } : {})) : [];
-}
-
-function createEmptySectionData(schemaKey: ContentSchemaKey): Record<string, unknown> {
-  switch (schemaKey) {
-    case 'hero':
-      return {
-        eyebrow: '',
-        title: '',
-        description: '',
-        primaryCtaLabel: '',
-        primaryCtaHref: '',
-        secondaryCtaLabel: '',
-        secondaryCtaHref: '',
-        image: '',
-      };
-    case 'feature-list':
-      return {
-        eyebrow: '',
-        title: '',
-        description: '',
-        items: [],
-      };
-    case 'content':
-      return {
-        eyebrow: '',
-        title: '',
-        description: '',
-        paragraphs: [],
-        items: [],
-      };
-    case 'contact':
-      return {
-        eyebrow: '',
-        title: '',
-        description: '',
-        highlights: [],
-        primaryCtaLabel: '',
-        primaryCtaHref: '',
-      };
-    case 'cta':
-      return {
-        title: '',
-        description: '',
-        primaryCtaLabel: '',
-        primaryCtaHref: '',
-      };
-    case 'legal':
-      return {
-        updatedAt: '',
-        introduction: '',
-        sections: [],
-      };
-  }
-}
-
-function createNewSection(pageKey: string, locale: 'nl' | 'fr' | 'en', sections: ContentSection[]): ContentSection {
-  const maxDisplayOrder = sections.length > 0 ? Math.max(...sections.map((section) => section.displayOrder)) : -1;
-
-  return {
-    id: null,
-    pageKey,
-    sectionKey: `section-${Date.now()}`,
-    locale,
-    schemaKey: 'content',
-    displayOrder: maxDisplayOrder + 1,
-    published: true,
-    dataJson: createEmptySectionData('content'),
-    hasStoredValue: false,
-    isDefault: false,
-    previewPath: '',
-  };
-}
-
-function createEmptyProject(sortOrder: number): ProjectRecord {
-  return {
-    id: null,
-    slug: `nieuw-project-${Date.now()}`,
-    category: '',
-    location: '',
-    year: new Date().getFullYear(),
-    featured: false,
-    isPublished: true,
-    sortOrder,
-    coverImageUrl: '',
-    translations: locales.map((locale) => ({
-      locale: locale.value,
-      title: '',
-      shortDescription: '',
-      description: '',
-      challengeText: '',
-      approachText: '',
-      resultText: '',
-      projectType: '',
-      duration: '',
-      surface: '',
-      completionDate: '',
-    })),
-    images: [],
-    hasStoredValue: false,
-  };
-}
-
-function buildPreviewUrl(locale: string, previewPath: string) {
-  const path = previewPath || '';
-  return path ? `/${locale}${path}` : `/${locale}`;
-}
-
-function parseTags(value: string) {
-  return value.split(',').map((tag) => tag.trim()).filter(Boolean);
-}
-
-function formatDate(value?: string | null) {
-  if (!value) {
-    return '-';
-  }
-
-  return new Date(value).toLocaleDateString('nl-BE');
-}
+import { EmptyState } from './ui/EmptyState';
+import { LabeledInput, LabeledSelect, LabeledTextarea, ToggleField } from './ui/Input';
+import { ItemListEditor, TextListEditor, TimeSlotEditor } from './ui/ListEditors';
+import { SectionHeader } from './ui/SectionHeader';
 
 export default function AdminConsole({ adminName }: { adminName: string }) {
   const [activeModule, setActiveModule] = useState<ModuleKey>('analytics');
@@ -681,12 +386,12 @@ export default function AdminConsole({ adminName }: { adminName: string }) {
     window.location.href = '/admin/login';
   }
 
-  const shellModules: ReadonlyArray<AdminShellModule> = modules.map((module) => ({
-    key: module.key,
+  const shellModules: ReadonlyArray<AdminShellModule> = moduleOrder.map((key) => ({
+    key,
     count:
-      module.key === 'quotes'
+      key === 'quotes'
         ? counts.quotes
-        : module.key === 'appointments'
+        : key === 'appointments'
           ? counts.appointments
           : undefined,
   }));
@@ -804,7 +509,7 @@ function LeadModule<T extends QuoteRecord>({
 }: {
   title: string;
   items: T[];
-  statusOptions: string[];
+  statusOptions: ReadonlyArray<string>;
   onSave: (item: T) => Promise<void>;
   onDelete: (item: T) => Promise<void>;
   getSubtitle: (item: T) => string;
@@ -824,7 +529,7 @@ function LeadModule<T extends QuoteRecord>({
           onDelete={() => onDelete(item)}
         />
       ))}
-      {items.length === 0 ? <EmptyState label="Nog geen items beschikbaar." /> : null}
+      {items.length === 0 ? <EmptyState description="Nog geen items beschikbaar." /> : null}
     </div>
   );
 }
@@ -854,7 +559,7 @@ function AppointmentModule({
           onDelete={() => onDelete(appointment)}
         />
       ))}
-      {appointments.length === 0 ? <EmptyState label="Nog geen afspraken beschikbaar." /> : null}
+      {appointments.length === 0 ? <EmptyState description="Nog geen afspraken beschikbaar." /> : null}
     </div>
   );
 }
@@ -1140,7 +845,7 @@ function ContentModule({
               </div>
             </button>
           ))}
-          {filteredSections.length === 0 ? <EmptyState label="Nog geen secties voor deze pagina/taal." compact /> : null}
+          {filteredSections.length === 0 ? <EmptyState description="Nog geen secties voor deze pagina/taal." compact /> : null}
         </div>
       </div>
 
@@ -1213,7 +918,7 @@ function ContentModule({
             </div>
             {renderSchemaEditor()}
           </div>
-        ) : <EmptyState label="Selecteer of maak een sectie om te bewerken." />}
+        ) : <EmptyState description="Selecteer of maak een sectie om te bewerken." />}
       </div>
 
       {assetPicker ? (
@@ -1351,7 +1056,7 @@ function ProjectsModule({
                 </div>
               </button>
             ))}
-          {projects.length === 0 ? <EmptyState label="Nog geen projecten gevonden." compact /> : null}
+          {projects.length === 0 ? <EmptyState description="Nog geen projecten gevonden." compact /> : null}
         </div>
       </div>
 
@@ -1395,7 +1100,7 @@ function ProjectsModule({
           <div className="admin-card grid gap-6">
             <div className="grid gap-3 sm:grid-cols-2">
               <LabeledInput label="Slug" value={draft.slug} onChange={(value) => setDraft((current) => current ? { ...current, slug: value } : current)} />
-              <LabeledInput label="Categorie" value={draft.category} onChange={(value) => setDraft((current) => current ? { ...current, category: value } : current)} datalistId="project-categories" />
+              <LabeledInput label="Categorie" value={draft.category} onChange={(value) => setDraft((current) => current ? { ...current, category: value } : current)} list="project-categories" />
               <datalist id="project-categories">
                 {categories.map((category) => <option key={category} value={category} />)}
               </datalist>
@@ -1530,7 +1235,7 @@ function ProjectsModule({
               ))}
             </div>
           </div>
-        ) : <EmptyState label="Selecteer of maak een project." />}
+        ) : <EmptyState description="Selecteer of maak een project." />}
       </div>
 
       {assetPicker ? (
@@ -1624,7 +1329,7 @@ function SettingsModule({
 
       {unknown.length > 0 ? (
         <div className="grid gap-3">
-          <SectionHeader title="Read-only keys" description="Onbekende setting-keys blijven read-only tot ze expliciet gemodelleerd zijn." />
+          <SectionHeader as="h2" title="Read-only keys" description="Onbekende setting-keys blijven read-only tot ze expliciet gemodelleerd zijn." />
           {unknown.map((setting) => (
             <details key={setting.key} className="admin-card-muted group">
               <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-sm font-semibold text-noir-900">
@@ -1766,14 +1471,14 @@ function AssetsModule({
                 <p className="mt-1 text-xs text-noir-500">{asset.bucket} · {asset.tags.join(', ') || 'geen tags'}</p>
               </button>
             ))}
-            {filteredAssets.length === 0 ? <EmptyState label="Geen assets gevonden." compact /> : null}
+            {filteredAssets.length === 0 ? <EmptyState description="Geen assets gevonden." compact /> : null}
           </div>
         </div>
       </div>
 
       <div className={`${mobileView === 'detail' ? 'grid' : 'hidden'} min-w-0 gap-4 lg:grid`}>
         <BackToListButton onClick={() => setMobileView('list')} />
-        <SectionHeader title={selectedAsset?.originalName ?? 'Selecteer een asset'} description="Metadata aanpassen en URL kopiëren." />
+        <SectionHeader as="h2" title={selectedAsset?.originalName ?? 'Selecteer een asset'} description="Metadata aanpassen en URL kopiëren." />
         {selectedAsset ? (
           <AssetEditor
             key={selectedAsset.id}
@@ -1781,7 +1486,7 @@ function AssetsModule({
             onSave={onSave}
             onDelete={onDelete}
           />
-        ) : <EmptyState label="Selecteer een asset om metadata te beheren." />}
+        ) : <EmptyState description="Selecteer een asset om metadata te beheren." />}
       </div>
     </div>
   );
@@ -1926,7 +1631,7 @@ function AvailabilityModule({
       </div>
 
       <div className="admin-card grid gap-4">
-        <SectionHeader title="Uitzonderingen" description="Blokkeer specifieke data of volledige dagen." />
+        <SectionHeader as="h2" title="Uitzonderingen" description="Blokkeer specifieke data of volledige dagen." />
 
         <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-[1fr_1fr_auto] md:items-end">
           <LabeledInput label="Datum" value={newException.date} onChange={(value) => setNewException((current) => ({ ...current, date: value }))} type="date" />
@@ -2017,7 +1722,7 @@ function AvailabilityModule({
               </div>
             );
           })}
-          {exceptions.length === 0 ? <EmptyState label="Nog geen uitzonderingen ingesteld." compact /> : null}
+          {exceptions.length === 0 ? <EmptyState description="Nog geen uitzonderingen ingesteld." compact /> : null}
         </div>
       </div>
     </div>
@@ -2037,7 +1742,7 @@ function LeadCard({
   subtitle: string;
   currentStatus: string;
   note: string;
-  statusOptions: string[];
+  statusOptions: ReadonlyArray<string>;
   onSave: (status: string, note: string) => Promise<void>;
   onDelete: () => Promise<void>;
 }) {
@@ -2263,165 +1968,10 @@ function AssetPickerModal({
                 <p className="mt-1 truncate text-xs text-noir-500">{asset.tags.join(', ') || 'geen tags'}</p>
               </button>
             ))}
-            {filtered.length === 0 ? <EmptyState label="Geen assets gevonden." compact /> : null}
+            {filtered.length === 0 ? <EmptyState description="Geen assets gevonden." compact /> : null}
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-function ItemListEditor({
-  label,
-  items,
-  onChange,
-  fields,
-}: {
-  label: string;
-  items: Array<Record<string, unknown>>;
-  onChange: (items: Array<Record<string, unknown>>) => void;
-  fields: Array<{ key: string; label: string; multiline?: boolean; isStringList?: boolean }>;
-}) {
-  return (
-    <div className="grid gap-3">
-      <div className="flex items-center justify-between gap-3">
-        <p className="text-sm font-semibold text-noir-900">{label}</p>
-        <button
-          type="button"
-          onClick={() => onChange([...items, {}])}
-          className="admin-btn-secondary admin-btn-sm"
-        >
-          Item toevoegen
-        </button>
-      </div>
-      {items.map((item, index) => (
-        <div key={index} className="admin-card-muted">
-          <div className="grid gap-4">
-            {fields.map((field) => (
-              field.multiline ? (
-                <LabeledTextarea
-                  key={field.key}
-                  label={field.label}
-                  value={field.isStringList ? ensureStringArray(item[field.key]).join('\n') : ensureString(item[field.key])}
-                  onChange={(value) => onChange(items.map((entry, entryIndex) => (
-                    entryIndex === index
-                      ? {
-                          ...entry,
-                          [field.key]: field.isStringList ? value.split('\n').map((row) => row.trim()).filter(Boolean) : value,
-                        }
-                      : entry
-                  )))}
-                  rows={field.isStringList ? 4 : 5}
-                />
-              ) : (
-                <LabeledInput
-                  key={field.key}
-                  label={field.label}
-                  value={ensureString(item[field.key])}
-                  onChange={(value) => onChange(items.map((entry, entryIndex) => (
-                    entryIndex === index ? { ...entry, [field.key]: value } : entry
-                  )))}
-                />
-              )
-            ))}
-          </div>
-          <button
-            type="button"
-            onClick={() => onChange(items.filter((_, entryIndex) => entryIndex !== index))}
-            className="admin-btn-danger admin-btn-sm mt-3"
-          >
-            Verwijderen
-          </button>
-        </div>
-      ))}
-      {items.length === 0 ? <EmptyState label="Nog geen items toegevoegd." compact /> : null}
-    </div>
-  );
-}
-
-function TextListEditor({
-  label,
-  items,
-  onChange,
-}: {
-  label: string;
-  items: string[];
-  onChange: (items: string[]) => void;
-}) {
-  return (
-    <div className="grid gap-3">
-      <div className="flex items-center justify-between gap-3">
-        <p className="text-sm font-semibold text-noir-900">{label}</p>
-        <button
-          type="button"
-          onClick={() => onChange([...items, ''])}
-          className="admin-btn-secondary admin-btn-sm"
-        >
-          Regel toevoegen
-        </button>
-      </div>
-      {items.map((item, index) => (
-        <div key={index} className="flex items-center gap-2">
-          <input
-            value={item}
-            onChange={(event) => onChange(items.map((entry, entryIndex) => entryIndex === index ? event.target.value : entry))}
-            className={inputClassName}
-          />
-          <button
-            type="button"
-            onClick={() => onChange(items.filter((_, entryIndex) => entryIndex !== index))}
-            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-red-200 text-red-700 transition hover:border-red-300 hover:bg-red-50"
-            aria-label="Verwijderen"
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <polyline points="3 6 5 6 21 6" />
-              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-            </svg>
-          </button>
-        </div>
-      ))}
-      {items.length === 0 ? <EmptyState label="Nog geen regels toegevoegd." compact /> : null}
-    </div>
-  );
-}
-
-function TimeSlotEditor({
-  slots,
-  onChange,
-}: {
-  slots: string[];
-  onChange: (slots: string[]) => void;
-}) {
-  return (
-    <div className="mt-4 grid gap-2">
-      {slots.map((slot, index) => (
-        <div key={`${slot}-${index}`} className="flex items-center gap-2">
-          <input
-            type="time"
-            value={slot}
-            onChange={(event) => onChange(slots.map((entry, entryIndex) => entryIndex === index ? event.target.value : entry))}
-            className={inputClassName}
-          />
-          <button
-            type="button"
-            onClick={() => onChange(slots.filter((_, entryIndex) => entryIndex !== index))}
-            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-red-200 text-red-700 transition hover:border-red-300 hover:bg-red-50"
-            aria-label="Verwijderen"
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <polyline points="3 6 5 6 21 6" />
-              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-            </svg>
-          </button>
-        </div>
-      ))}
-      <button
-        type="button"
-        onClick={() => onChange([...slots, '09:00'])}
-        className="admin-btn-secondary admin-btn-sm justify-self-start"
-      >
-        Tijdslot toevoegen
-      </button>
     </div>
   );
 }
@@ -2443,124 +1993,6 @@ function SettingsCard({
       </div>
       {children}
     </div>
-  );
-}
-
-function SectionHeader({ title, description }: { title: string; description: string }) {
-  return (
-    <div>
-      <h2 className="admin-section-title">{title}</h2>
-      <p className="mt-1 text-sm text-noir-500">{description}</p>
-    </div>
-  );
-}
-
-function EmptyState({ label, compact = false }: { label: string; compact?: boolean }) {
-  return (
-    <div className={`rounded-2xl border border-dashed border-noir-200 bg-noir-50 text-center text-sm text-noir-500 ${compact ? 'p-4' : 'p-8 md:p-10'}`}>
-      {label}
-    </div>
-  );
-}
-
-function LabeledInput({
-  label,
-  value,
-  onChange,
-  type = 'text',
-  inputMode,
-  datalistId,
-}: {
-  label: string;
-  value: string;
-  onChange: (value: string) => void;
-  type?: string;
-  inputMode?: HTMLAttributes<HTMLInputElement>['inputMode'];
-  datalistId?: string;
-}) {
-  return (
-    <label className="grid gap-2 text-sm text-noir-700">
-      <span className="font-medium">{label}</span>
-      <input
-        type={type}
-        value={value}
-        inputMode={inputMode}
-        list={datalistId}
-        onChange={(event) => onChange(event.target.value)}
-        className={inputClassName}
-      />
-    </label>
-  );
-}
-
-function LabeledTextarea({
-  label,
-  value,
-  onChange,
-  rows,
-}: {
-  label: string;
-  value: string;
-  onChange: (value: string) => void;
-  rows: number;
-}) {
-  return (
-    <label className="grid gap-2 text-sm text-noir-700">
-      <span className="font-medium">{label}</span>
-      <textarea
-        value={value}
-        rows={rows}
-        onChange={(event) => onChange(event.target.value)}
-        className={`${inputClassName} min-h-[120px] resize-y`}
-      />
-    </label>
-  );
-}
-
-function LabeledSelect({
-  label,
-  value,
-  options,
-  onChange,
-}: {
-  label: string;
-  value: string;
-  options: Array<{ value: string; label: string }>;
-  onChange: (value: string) => void;
-}) {
-  return (
-    <label className="grid gap-2 text-sm text-noir-700">
-      <span className="font-medium">{label}</span>
-      <select value={value} onChange={(event) => onChange(event.target.value)} className={inputClassName}>
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-    </label>
-  );
-}
-
-function ToggleField({
-  label,
-  checked,
-  onChange,
-}: {
-  label: string;
-  checked: boolean;
-  onChange: (checked: boolean) => void;
-}) {
-  return (
-    <label className="flex min-h-[44px] cursor-pointer items-center gap-3 rounded-xl border border-noir-200 bg-white px-3.5 py-2.5 text-sm text-noir-700 transition hover:border-noir-300">
-      <input
-        type="checkbox"
-        checked={checked}
-        onChange={(event) => onChange(event.target.checked)}
-        className="h-4 w-4 rounded border-noir-300 text-accent-600 focus:ring-accent-600/30"
-      />
-      <span className="font-medium">{label}</span>
-    </label>
   );
 }
 
@@ -2588,8 +2020,6 @@ function ImageUrlInput({
     </div>
   );
 }
-
-const inputClassName = 'admin-input';
 
 function BackToListButton({ onClick }: { onClick: () => void }) {
   return (

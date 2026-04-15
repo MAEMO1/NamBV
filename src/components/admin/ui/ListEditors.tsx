@@ -21,7 +21,7 @@ export function ItemListEditor({
   return (
     <div className="grid gap-3">
       <div className="flex items-center justify-between gap-3">
-        <p className="admin-display text-base font-medium text-noir-900">{label}</p>
+        <p className="text-sm font-semibold text-slate-900">{label}</p>
         <Button
           variant="secondary"
           size="sm"
@@ -34,7 +34,7 @@ export function ItemListEditor({
       {items.map((item, index) => (
         <div
           key={index}
-          className="rounded-2xl border border-taupe-100 bg-parchment-100/60 p-4"
+          className="rounded-md border border-slate-200 bg-slate-50 p-4"
         >
           <div className="grid gap-4">
             {fields.map((field) =>
@@ -112,7 +112,7 @@ export function TextListEditor({
   return (
     <div className="grid gap-3">
       <div className="flex items-center justify-between gap-3">
-        <p className="admin-display text-base font-medium text-noir-900">{label}</p>
+        <p className="text-sm font-semibold text-slate-900">{label}</p>
         <Button
           variant="secondary"
           size="sm"
@@ -140,7 +140,7 @@ export function TextListEditor({
             onClick={() =>
               onChange(items.filter((_, entryIndex) => entryIndex !== index))
             }
-            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-rose-200 bg-white text-rose-700 transition hover:border-rose-300 hover:bg-rose-50"
+            className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-rose-200 bg-white text-rose-700 transition hover:border-rose-300 hover:bg-rose-50"
             aria-label="Verwijderen"
           >
             <Trash2 size={15} strokeWidth={1.75} />
@@ -182,7 +182,7 @@ export function TimeSlotEditor({
             onClick={() =>
               onChange(slots.filter((_, entryIndex) => entryIndex !== index))
             }
-            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-rose-200 bg-white text-rose-700 transition hover:border-rose-300 hover:bg-rose-50"
+            className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-rose-200 bg-white text-rose-700 transition hover:border-rose-300 hover:bg-rose-50"
             aria-label="Verwijderen"
           >
             <Trash2 size={15} strokeWidth={1.75} />

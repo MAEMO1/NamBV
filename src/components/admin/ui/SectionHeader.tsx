@@ -5,7 +5,12 @@ type SectionHeaderProps = {
   title: string;
   description?: string;
   action?: ReactNode;
-  hairline?: boolean;
+  /**
+   * Heading level. Default h1 so each module has one page-level heading
+   * (used as the stable smoke-test locator). Use h2 for secondary
+   * SectionHeaders within a module (e.g. Beschikbaarheid → Uitzonderingen).
+   */
+  as?: 'h1' | 'h2';
 };
 
 export function SectionHeader({
@@ -13,7 +18,9 @@ export function SectionHeader({
   title,
   description,
   action,
+  as = 'h1',
 }: SectionHeaderProps) {
+  const Heading = as;
   return (
     <header className="flex flex-wrap items-start justify-between gap-3 border-b border-slate-200 pb-4">
       <div className="min-w-0">
@@ -22,9 +29,12 @@ export function SectionHeader({
             {eyebrow}
           </p>
         ) : null}
-        <h2 className="admin-display mt-0.5 text-lg font-semibold text-slate-900 md:text-xl">
+        <Heading
+          data-testid={as === 'h1' ? 'admin-page-title' : undefined}
+          className="mt-0.5 text-lg font-semibold text-slate-900 md:text-xl"
+        >
           {title}
-        </h2>
+        </Heading>
         {description ? (
           <p className="mt-1 max-w-prose text-xs leading-relaxed text-slate-500 md:text-sm">
             {description}
