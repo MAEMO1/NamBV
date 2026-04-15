@@ -135,7 +135,7 @@ test('admin login uses canonical session contract and protects admin data', asyn
   expect(unauthAppointments.status).toBe(401);
 
   await loginAsAdmin(page);
-  await expect(page.getByRole('heading', { name: /admin console/i })).toBeVisible();
+  await expect(page.getByTestId('admin-page-title')).toBeVisible();
   await expect(page.getByRole('button', { name: /content/i })).toBeVisible();
   await expect(page.getByRole('button', { name: /projecten/i })).toBeVisible();
 

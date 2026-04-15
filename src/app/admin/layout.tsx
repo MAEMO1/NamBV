@@ -1,4 +1,4 @@
-import { dmSans, plusJakarta } from '@/lib/fonts';
+import { dmSans, playfair } from '@/lib/fonts';
 
 export default function AdminLayout({
   children,
@@ -6,8 +6,14 @@ export default function AdminLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="nl" className={`${dmSans.variable} ${plusJakarta.variable}`}>
-      <body className="font-sans">{children}</body>
+    <html
+      lang="nl"
+      className={`${dmSans.variable} ${playfair.variable}`}
+    >
+      <body className="admin-body font-sans">
+        <div className="admin-body-grain" aria-hidden="true" />
+        {children}
+      </body>
     </html>
   );
 }

@@ -1,6 +1,12 @@
 'use client';
 
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import {
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type ReactNode,
+} from 'react';
 
 type Animation = 'fade-up' | 'fade-down' | 'scale-in' | 'slide-up' | 'slide-left' | 'reveal';
 
@@ -12,6 +18,22 @@ const animationClasses: Record<Animation, string> = {
   'slide-left': 'animate-slide-left',
   'reveal': 'animate-reveal',
 };
+
+const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
+
+function subscribeReducedMotion(onChange: () => void) {
+  const mq = window.matchMedia(REDUCED_MOTION_QUERY);
+  mq.addEventListener('change', onChange);
+  return () => mq.removeEventListener('change', onChange);
+}
+
+function getReducedMotionSnapshot() {
+  return window.matchMedia(REDUCED_MOTION_QUERY).matches;
+}
+
+function getReducedMotionServerSnapshot() {
+  return false;
+}
 
 export default function AnimatedSection({
   children,
@@ -27,23 +49,15 @@ export default function AnimatedSection({
   threshold?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const prefersReducedMotion = useSyncExternalStore(
+    subscribeReducedMotion,
+    getReducedMotionSnapshot,
+    getReducedMotionServerSnapshot,
+  );
+  const [isIntersecting, setIsIntersecting] = useState(false);
 
   useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReducedMotion(mq.matches);
-
-    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
-  }, []);
-
-  useEffect(() => {
-    if (prefersReducedMotion) {
-      setIsVisible(true);
-      return;
-    }
+    if (prefersReducedMotion) return;
 
     const el = ref.current;
     if (!el) return;
@@ -51,7 +65,7 @@ export default function AnimatedSection({
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsVisible(true);
+          setIsIntersecting(true);
           observer.disconnect();
         }
       },
@@ -69,9 +83,9 @@ export default function AnimatedSection({
   return (
     <div
       ref={ref}
-      className={`${isVisible ? animationClasses[animation] : ''} ${className}`}
+      className={`${isIntersecting ? animationClasses[animation] : ''} ${className}`}
       style={{
-        opacity: isVisible ? undefined : 0,
+        opacity: isIntersecting ? undefined : 0,
         animationDelay: delay ? `${delay}ms` : undefined,
         animationFillMode: 'both',
       }}

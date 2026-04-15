@@ -99,7 +99,7 @@ export default function V2Header({
                 </a>
               )}
               <Link
-                href="/offerte"
+                href="/afspraak"
                 locale={locale}
                 className={`inline-flex items-center gap-2 px-6 py-2.5 border-2 rounded-full text-sm font-semibold transition-all duration-300 ${
                   isTransparent
@@ -107,7 +107,7 @@ export default function V2Header({
                     : 'border-accent-600 text-accent-600 hover:bg-accent-600 hover:text-white'
                 }`}
               >
-                <span>{copy.common.getQuote}</span>
+                <span>{copy.common.bookAppointment}</span>
                 <ArrowUpRight className="h-4 w-4" />
               </Link>
             </div>

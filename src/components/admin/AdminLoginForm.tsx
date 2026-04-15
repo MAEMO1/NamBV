@@ -1,11 +1,15 @@
 'use client';
 
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+
+import { Banner } from './ui/Banner';
+import { Button } from './ui/Button';
+import { LabeledInput } from './ui/Input';
 
 export default function AdminLoginForm() {
   const router = useRouter();
-  const [email, setEmail] = useState('admin@namconstruction.be');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [state, setState] = useState<{ loading: boolean; error: string | null }>({
     loading: false,
@@ -42,44 +46,30 @@ export default function AdminLoginForm() {
   };
 
   return (
-    <form
-      onSubmit={submit}
-      className="grid gap-5 rounded-3xl border border-noir-200 bg-white p-6 shadow-soft-lg sm:p-8"
-    >
-      <label className="grid gap-2 text-sm text-noir-700">
-        <span className="font-medium">E-mail</span>
-        <input
-          type="email"
-          autoComplete="email"
-          inputMode="email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          className="admin-input"
-        />
-      </label>
+    <form onSubmit={submit} className="grid gap-4 rounded-lg border border-slate-200 bg-white p-5">
+      <LabeledInput
+        label="E-mail"
+        type="email"
+        autoComplete="email"
+        inputMode="email"
+        value={email}
+        onChange={setEmail}
+        placeholder="naam@voorbeeld.be"
+      />
 
-      <label className="grid gap-2 text-sm text-noir-700">
-        <span className="font-medium">Wachtwoord</span>
-        <input
-          type="password"
-          autoComplete="current-password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-          className="admin-input"
-        />
-      </label>
+      <LabeledInput
+        label="Wachtwoord"
+        type="password"
+        autoComplete="current-password"
+        value={password}
+        onChange={setPassword}
+      />
 
-      {state.error ? (
-        <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{state.error}</p>
-      ) : null}
+      {state.error ? <Banner variant="danger">{state.error}</Banner> : null}
 
-      <button
-        type="submit"
-        disabled={state.loading}
-        className="admin-btn-primary w-full sm:w-auto sm:justify-self-start"
-      >
+      <Button type="submit" disabled={state.loading} className="w-full">
         {state.loading ? 'Bezig...' : 'Inloggen'}
-      </button>
+      </Button>
     </form>
   );
 }
