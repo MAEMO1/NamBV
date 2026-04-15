@@ -1,4 +1,4 @@
-import { geist, geistMono } from '@/lib/fonts';
+import { geistMono } from '@/lib/fonts';
 
 export default function AdminLayout({
   children,
@@ -8,8 +8,20 @@ export default function AdminLayout({
   return (
     <html
       lang="nl"
-      className={`${geist.variable} ${geistMono.variable}`}
+      className={geistMono.variable}
     >
+      <head>
+        {/* General Sans — admin UI font (Fontshare CDN) */}
+        <link
+          rel="preconnect"
+          href="https://api.fontshare.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="stylesheet"
+          href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap"
+        />
+      </head>
       <body className="admin-body font-sans">
         {children}
       </body>
