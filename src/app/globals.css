@@ -107,6 +107,103 @@
   .divider-accent {
     @apply w-12 h-px bg-accent-500;
   }
+
+  /* ============================================================
+     Admin console — mobile-first tooling aesthetic
+     Denser rhythm than marketing site; 44px touch targets.
+     ============================================================ */
+
+  .admin-shell {
+    @apply min-h-screen bg-noir-50;
+  }
+
+  .admin-container {
+    @apply mx-auto w-full max-w-[1600px] px-4 sm:px-6 lg:px-10;
+  }
+
+  .admin-card {
+    @apply rounded-2xl border border-noir-200 bg-white p-4 md:p-6;
+  }
+
+  .admin-card-muted {
+    @apply rounded-2xl border border-noir-200 bg-noir-50 p-4;
+  }
+
+  .admin-section-title {
+    @apply text-lg font-display font-bold text-noir-900;
+  }
+
+  .admin-eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.18em] text-noir-500;
+  }
+
+  /* Inputs — 44px min height, legible base text, soft focus ring. */
+  .admin-input {
+    @apply w-full min-h-[44px] rounded-xl border border-noir-200 bg-white px-3.5 py-2.5 text-sm text-noir-900 outline-none transition
+           placeholder:text-noir-400 focus:border-accent-600 focus:ring-2 focus:ring-accent-600/15 disabled:opacity-60;
+  }
+
+  /* Buttons — pill shaped, 44px min tap height, consistent sizing. */
+  .admin-btn {
+    @apply inline-flex items-center justify-center gap-2 min-h-[44px] rounded-full px-5 py-2.5 text-sm font-semibold transition
+           disabled:cursor-not-allowed disabled:opacity-60 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-600/40;
+  }
+
+  .admin-btn-primary {
+    @apply admin-btn bg-accent-600 text-white hover:bg-accent-700 active:bg-accent-800;
+  }
+
+  .admin-btn-secondary {
+    @apply admin-btn border border-noir-200 bg-white text-noir-700 hover:border-noir-300 hover:text-noir-900;
+  }
+
+  .admin-btn-ghost {
+    @apply admin-btn bg-transparent text-noir-700 hover:bg-noir-100;
+  }
+
+  .admin-btn-danger {
+    @apply admin-btn border border-red-200 bg-white text-red-700 hover:border-red-300 hover:bg-red-50;
+  }
+
+  .admin-btn-sm {
+    @apply min-h-[36px] px-3.5 py-1.5 text-xs;
+  }
+
+  /* Status chip — colored pill shared by quote / appointment statuses. */
+  .admin-chip {
+    @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium;
+  }
+
+  .admin-chip-neutral  { @apply admin-chip bg-noir-100 text-noir-700; }
+  .admin-chip-info     { @apply admin-chip bg-sky-50 text-sky-700; }
+  .admin-chip-success  { @apply admin-chip bg-emerald-50 text-emerald-700; }
+  .admin-chip-warning  { @apply admin-chip bg-amber-50 text-amber-700; }
+  .admin-chip-danger   { @apply admin-chip bg-red-50 text-red-700; }
+  .admin-chip-accent   { @apply admin-chip bg-accent-50 text-accent-700; }
+
+  /* Navigation item shared by drawer + desktop sidebar. */
+  .admin-nav-item {
+    @apply flex min-h-[44px] w-full items-center justify-between gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium text-noir-700 transition
+           hover:bg-noir-100 hover:text-noir-900;
+  }
+
+  .admin-nav-item-active {
+    @apply bg-accent-600 text-white shadow-sm hover:bg-accent-700 hover:text-white;
+  }
+
+  /* Pills row that can scroll horizontally on mobile (for page/locale tabs). */
+  .admin-pill-row {
+    @apply -mx-1 flex gap-2 overflow-x-auto px-1 pb-1 scrollbar-hide;
+  }
+
+  .admin-pill {
+    @apply inline-flex min-h-[36px] shrink-0 items-center rounded-full border border-noir-200 bg-white px-3 py-1.5 text-xs font-medium text-noir-700 transition
+           hover:border-noir-300;
+  }
+
+  .admin-pill-active {
+    @apply border-accent-600 bg-accent-600 text-white hover:border-accent-700;
+  }
 }
 
 @layer utilities {

@@ -42,29 +42,44 @@ export default function AdminLoginForm() {
   };
 
   return (
-    <form onSubmit={submit} className="grid gap-5 rounded-3xl border border-noir-200 bg-white p-8 shadow-soft-lg">
+    <form
+      onSubmit={submit}
+      className="grid gap-5 rounded-3xl border border-noir-200 bg-white p-6 shadow-soft-lg sm:p-8"
+    >
       <label className="grid gap-2 text-sm text-noir-700">
         <span className="font-medium">E-mail</span>
-        <input value={email} onChange={(event) => setEmail(event.target.value)} className={inputClassName} />
+        <input
+          type="email"
+          autoComplete="email"
+          inputMode="email"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+          className="admin-input"
+        />
       </label>
 
       <label className="grid gap-2 text-sm text-noir-700">
         <span className="font-medium">Wachtwoord</span>
-        <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} className={inputClassName} />
+        <input
+          type="password"
+          autoComplete="current-password"
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+          className="admin-input"
+        />
       </label>
 
-      {state.error ? <p className="rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-700">{state.error}</p> : null}
+      {state.error ? (
+        <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{state.error}</p>
+      ) : null}
 
       <button
         type="submit"
         disabled={state.loading}
-        className="rounded-full bg-accent-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-accent-700 disabled:cursor-not-allowed disabled:opacity-60"
+        className="admin-btn-primary w-full sm:w-auto sm:justify-self-start"
       >
         {state.loading ? 'Bezig...' : 'Inloggen'}
       </button>
     </form>
   );
 }
-
-const inputClassName =
-  'w-full rounded-2xl border border-noir-200 bg-white px-4 py-3 text-sm text-noir-900 outline-none transition focus:border-accent-500';

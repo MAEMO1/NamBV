@@ -2,6 +2,7 @@
 
 import type { HTMLAttributes, ReactNode } from 'react';
 import { useEffect, useMemo, useState } from 'react';
+import AdminShell, { type AdminShellModule } from './AdminShell';
 
 type ModuleKey =
   | 'analytics'
@@ -686,130 +687,111 @@ export default function AdminConsole({ adminName }: { adminName: string }) {
     window.location.href = '/admin/login';
   }
 
+  const shellModules: ReadonlyArray<AdminShellModule<ModuleKey>> = modules.map((module) => ({
+    key: module.key,
+    label: module.label,
+    count:
+      module.key === 'quotes'
+        ? counts.quotes
+        : module.key === 'appointments'
+          ? counts.appointments
+          : undefined,
+  }));
+
   return (
-    <div className="min-h-screen bg-noir-50">
-      <div className="border-b border-noir-200 bg-white">
-        <div className="container-wide flex flex-col gap-4 py-6 md:flex-row md:items-center md:justify-between">
-          <div>
-            <h1 className="text-2xl font-display font-bold text-noir-900">Admin console</h1>
-            <p className="text-sm text-noir-600">
-              Ingelogd als {adminName}. Deze backoffice gebruikt typed editors en item-level admin-contracten.
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={signOut}
-            className="rounded-full border border-noir-200 px-4 py-2 text-sm font-medium text-noir-700 transition hover:border-noir-300 hover:text-noir-900"
-          >
-            Uitloggen
-          </button>
+    <AdminShell<ModuleKey>
+      adminName={adminName}
+      modules={shellModules}
+      activeModule={activeModule}
+      onChangeModule={setActiveModule}
+      onSignOut={signOut}
+    >
+      {error ? (
+        <div className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {error}
         </div>
-      </div>
+      ) : null}
 
-      <div className="container-wide grid gap-8 py-8 lg:grid-cols-[240px_1fr]">
-        <aside className="rounded-3xl border border-noir-200 bg-white p-4 shadow-soft">
-          <div className="grid gap-2">
-            {modules.map((module) => (
-              <button
-                key={module.key}
-                type="button"
-                onClick={() => setActiveModule(module.key)}
-                className={`rounded-2xl px-4 py-3 text-left text-sm font-medium transition ${
-                  activeModule === module.key ? 'bg-accent-600 text-white' : 'text-noir-700 hover:bg-noir-100'
-                }`}
-              >
-                {module.label}
-                {module.key === 'quotes' ? <span className="ml-2 text-xs opacity-75">({counts.quotes})</span> : null}
-                {module.key === 'appointments' ? <span className="ml-2 text-xs opacity-75">({counts.appointments})</span> : null}
-              </button>
-            ))}
-          </div>
-        </aside>
+      {loading ? (
+        <div className="grid gap-4">
+          <div className="h-20 animate-pulse rounded-2xl bg-noir-100" />
+          <div className="h-64 animate-pulse rounded-2xl bg-noir-100" />
+          <div className="h-40 animate-pulse rounded-2xl bg-noir-100" />
+        </div>
+      ) : null}
 
-        <main className="rounded-3xl border border-noir-200 bg-white p-6 shadow-soft lg:p-8">
-          {error ? <p className="mb-6 rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p> : null}
+      {!loading && activeModule === 'analytics' && analytics ? (
+        <AnalyticsPanel analytics={analytics} />
+      ) : null}
 
-          {loading ? (
-            <div className="grid gap-4">
-              <div className="h-24 animate-pulse rounded-3xl bg-noir-100" />
-              <div className="h-72 animate-pulse rounded-3xl bg-noir-100" />
-            </div>
-          ) : null}
+      {!loading && activeModule === 'quotes' ? (
+        <LeadModule
+          title="Offertes"
+          items={quotes}
+          statusOptions={quoteStatusOptions}
+          onSave={(item) => saveQuote(item.id, item.status, item.adminNotes ?? '')}
+          onDelete={(item) => deleteQuote(item.id)}
+          getSubtitle={(item) => `${item.fullName} · ${item.email} · ${formatDate(item.createdAt)}`}
+        />
+      ) : null}
 
-          {!loading && activeModule === 'analytics' && analytics ? (
-            <AnalyticsPanel analytics={analytics} />
-          ) : null}
+      {!loading && activeModule === 'appointments' ? (
+        <AppointmentModule
+          appointments={appointments}
+          onSave={saveAppointment}
+          onDelete={(appointment) => deleteAppointment(appointment.id)}
+        />
+      ) : null}
 
-          {!loading && activeModule === 'quotes' ? (
-            <LeadModule
-              title="Offertes"
-              items={quotes}
-              statusOptions={quoteStatusOptions}
-              onSave={(item) => saveQuote(item.id, item.status, item.adminNotes ?? '')}
-              onDelete={(item) => deleteQuote(item.id)}
-              getSubtitle={(item) => `${item.fullName} · ${item.email} · ${formatDate(item.createdAt)}`}
-            />
-          ) : null}
+      {!loading && activeModule === 'content' ? (
+        <ContentModule
+          sections={contentSections}
+          pages={contentPages}
+          assets={assets}
+          onSave={saveContentSection}
+          onDelete={removeContentSection}
+        />
+      ) : null}
 
-          {!loading && activeModule === 'appointments' ? (
-            <AppointmentModule
-              appointments={appointments}
-              onSave={saveAppointment}
-              onDelete={(appointment) => deleteAppointment(appointment.id)}
-            />
-          ) : null}
+      {!loading && activeModule === 'projects' ? (
+        <ProjectsModule
+          projects={projects}
+          categories={projectCategories}
+          assets={assets}
+          onSave={saveProject}
+          onDelete={removeProject}
+        />
+      ) : null}
 
-          {!loading && activeModule === 'content' ? (
-            <ContentModule
-              sections={contentSections}
-              pages={contentPages}
-              assets={assets}
-              onSave={saveContentSection}
-              onDelete={removeContentSection}
-            />
-          ) : null}
+      {!loading && activeModule === 'assets' ? (
+        <AssetsModule
+          assets={assets}
+          storageEnabled={assetMeta.storageEnabled}
+          onUpload={uploadAsset}
+          onSave={saveAsset}
+          onCreateFromUrl={createAssetFromUrl}
+          onDelete={removeAsset}
+        />
+      ) : null}
 
-          {!loading && activeModule === 'projects' ? (
-            <ProjectsModule
-              projects={projects}
-              categories={projectCategories}
-              assets={assets}
-              onSave={saveProject}
-              onDelete={removeProject}
-            />
-          ) : null}
+      {!loading && activeModule === 'settings' ? (
+        <SettingsModule
+          settings={settings}
+          onSave={saveAllSettings}
+        />
+      ) : null}
 
-          {!loading && activeModule === 'assets' ? (
-            <AssetsModule
-              assets={assets}
-              storageEnabled={assetMeta.storageEnabled}
-              onUpload={uploadAsset}
-              onSave={saveAsset}
-              onCreateFromUrl={createAssetFromUrl}
-              onDelete={removeAsset}
-            />
-          ) : null}
-
-          {!loading && activeModule === 'settings' ? (
-            <SettingsModule
-              settings={settings}
-              onSave={saveAllSettings}
-            />
-          ) : null}
-
-          {!loading && activeModule === 'availability' ? (
-            <AvailabilityModule
-              rules={availabilityRules}
-              exceptions={availabilityExceptions}
-              onSaveRules={saveAvailability}
-              onCreateException={createAvailabilityException}
-              onUpdateException={updateAvailabilityException}
-              onDeleteException={deleteAvailabilityException}
-            />
-          ) : null}
-        </main>
-      </div>
-    </div>
+      {!loading && activeModule === 'availability' ? (
+        <AvailabilityModule
+          rules={availabilityRules}
+          exceptions={availabilityExceptions}
+          onSaveRules={saveAvailability}
+          onCreateException={createAvailabilityException}
+          onUpdateException={updateAvailabilityException}
+          onDeleteException={deleteAvailabilityException}
+        />
+      ) : null}
+    </AdminShell>
   );
 }
 
@@ -912,6 +894,7 @@ function ContentModule({
   const [draft, setDraft] = useState<ContentSection | null>(null);
   const [saving, setSaving] = useState(false);
   const [assetPicker, setAssetPicker] = useState<null | { title: string; onSelect: (url: string) => void }>(null);
+  const [mobileView, setMobileView] = useState<'list' | 'detail'>('list');
 
   const filteredSections = useMemo(
     () => sections.filter((section) => section.pageKey === pageKey && section.locale === locale)
@@ -1100,31 +1083,31 @@ function ContentModule({
   }
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[260px_1fr]">
-      <div className="grid gap-4">
+    <div className="grid gap-6 lg:grid-cols-[260px_minmax(0,1fr)]">
+      <div className={`${mobileView === 'list' ? 'grid' : 'hidden'} gap-4 lg:grid`}>
         <SectionHeader title="Content" description="Gestructureerde page sections per pagina en taal." />
-        <div className="rounded-3xl border border-noir-200 bg-noir-50 p-4">
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-noir-500">Pagina</p>
-          <div className="mt-3 flex flex-wrap gap-2">
+        <div className="admin-card-muted">
+          <p className="admin-eyebrow">Pagina</p>
+          <div className="admin-pill-row mt-3">
             {pages.map((page) => (
               <button
                 key={page.key}
                 type="button"
                 onClick={() => setPageKey(page.key)}
-                className={`rounded-full px-3 py-2 text-sm ${pageKey === page.key ? 'bg-accent-600 text-white' : 'bg-white text-noir-700'}`}
+                className={`admin-pill ${pageKey === page.key ? 'admin-pill-active' : ''}`}
               >
                 {page.key}
               </button>
             ))}
           </div>
-          <p className="mt-5 text-xs font-semibold uppercase tracking-[0.16em] text-noir-500">Taal</p>
-          <div className="mt-3 flex gap-2">
+          <p className="admin-eyebrow mt-5">Taal</p>
+          <div className="admin-pill-row mt-3">
             {locales.map((entry) => (
               <button
                 key={entry.value}
                 type="button"
                 onClick={() => setLocale(entry.value)}
-                className={`rounded-full px-3 py-2 text-sm ${locale === entry.value ? 'bg-accent-600 text-white' : 'bg-white text-noir-700'}`}
+                className={`admin-pill ${locale === entry.value ? 'admin-pill-active' : ''}`}
               >
                 {entry.label}
               </button>
@@ -1136,20 +1119,24 @@ function ContentModule({
               const created = createNewSection(pageKey, locale, filteredSections);
               setDraft(created);
               setSelectionKey(`new:${Date.now()}`);
+              setMobileView('detail');
             }}
-            className="mt-5 w-full rounded-full border border-noir-200 px-4 py-3 text-sm font-medium text-noir-700 transition hover:border-noir-300"
+            className="admin-btn-secondary mt-5 w-full"
           >
             Nieuwe sectie
           </button>
         </div>
 
-        <div className="grid gap-3">
+        <div className="grid gap-2">
           {filteredSections.map((section) => (
             <button
               key={getSelectionKey(section)}
               type="button"
-              onClick={() => setSelectionKey(getSelectionKey(section))}
-              className={`rounded-3xl border p-4 text-left transition ${
+              onClick={() => {
+                setSelectionKey(getSelectionKey(section));
+                setMobileView('detail');
+              }}
+              className={`rounded-2xl border p-4 text-left transition ${
                 selectionKey === getSelectionKey(section)
                   ? 'border-accent-600 bg-accent-50'
                   : 'border-noir-200 bg-white hover:border-noir-300'
@@ -1159,11 +1146,11 @@ function ContentModule({
               <p className="mt-1 text-xs uppercase tracking-[0.14em] text-noir-500">
                 {section.schemaKey} · order {section.displayOrder}
               </p>
-              <div className="mt-3 flex flex-wrap gap-2 text-xs text-noir-500">
-                <span className={`rounded-full px-2 py-1 ${section.published ? 'bg-green-50 text-green-700' : 'bg-noir-100 text-noir-600'}`}>
+              <div className="mt-3 flex flex-wrap gap-1.5 text-xs">
+                <span className={section.published ? 'admin-chip-success' : 'admin-chip-neutral'}>
                   {section.published ? 'Published' : 'Hidden'}
                 </span>
-                <span className="rounded-full bg-noir-100 px-2 py-1">
+                <span className="admin-chip-neutral">
                   {section.hasStoredValue ? 'Stored' : 'Default'}
                 </span>
               </div>
@@ -1173,10 +1160,11 @@ function ContentModule({
         </div>
       </div>
 
-      <div className="grid gap-4">
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <h2 className="text-xl font-display font-bold text-noir-900">
+      <div className={`${mobileView === 'detail' ? 'grid' : 'hidden'} min-w-0 gap-4 lg:grid`}>
+        <BackToListButton onClick={() => setMobileView('list')} />
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div className="min-w-0">
+            <h2 className="break-words text-lg font-display font-bold text-noir-900 sm:text-xl">
               {draft ? `${draft.pageKey} / ${draft.locale} / ${draft.sectionKey}` : 'Selecteer een sectie'}
             </h2>
             {draft ? (
@@ -1184,20 +1172,20 @@ function ContentModule({
                 href={buildPreviewUrl(draft.locale, draft.previewPath)}
                 target="_blank"
                 rel="noreferrer"
-                className="mt-2 inline-flex text-sm font-semibold text-accent-700 transition hover:text-accent-900"
+                className="mt-1 inline-flex text-sm font-semibold text-accent-700 transition hover:text-accent-900"
               >
-                Open preview
+                Open preview →
               </a>
             ) : null}
           </div>
-          <div className="flex gap-3">
+          <div className="flex flex-wrap gap-2">
             {selectedSection?.id ? (
               <button
                 type="button"
                 onClick={handleDelete}
-                className="rounded-full border border-red-200 px-4 py-2 text-sm font-medium text-red-700 transition hover:border-red-300"
+                className="admin-btn-danger admin-btn-sm"
               >
-                Reset/delete override
+                Reset override
               </button>
             ) : null}
             <button
@@ -1206,16 +1194,16 @@ function ContentModule({
               onClick={() => {
                 void handleSave();
               }}
-              className="rounded-full bg-accent-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-accent-700 disabled:opacity-60"
+              className="admin-btn-primary admin-btn-sm"
             >
-              {saving ? 'Opslaan...' : 'Opslaan'}
+              {saving ? 'Bezig…' : 'Opslaan'}
             </button>
           </div>
         </div>
 
         {draft ? (
-          <div className="grid gap-4 rounded-3xl border border-noir-200 p-6">
-            <div className="grid gap-4 md:grid-cols-2">
+          <div className="admin-card grid gap-4">
+            <div className="grid gap-3 sm:grid-cols-2">
               <LabeledInput label="Section key" value={draft.sectionKey} onChange={(value) => setDraft((current) => current ? { ...current, sectionKey: value } : current)} />
               <LabeledSelect
                 label="Schema"
@@ -1277,6 +1265,7 @@ function ProjectsModule({
   const [translationLocale, setTranslationLocale] = useState<'nl' | 'fr' | 'en'>('nl');
   const [saving, setSaving] = useState(false);
   const [assetPicker, setAssetPicker] = useState<null | { title: string; onSelect: (url: string) => void }>(null);
+  const [mobileView, setMobileView] = useState<'list' | 'detail'>('list');
 
   useEffect(() => {
     if (projects.length === 0) {
@@ -1328,8 +1317,8 @@ function ProjectsModule({
   }
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
-      <div className="grid gap-4">
+    <div className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
+      <div className={`${mobileView === 'list' ? 'grid' : 'hidden'} gap-4 lg:grid`}>
         <SectionHeader title="Projecten" description="CRUD voor projecten, vertalingen en galerijen." />
         <button
           type="button"
@@ -1339,12 +1328,13 @@ function ProjectsModule({
             setDraft(created);
             setSelectionKey(`new:${Date.now()}`);
             setTranslationLocale('nl');
+            setMobileView('detail');
           }}
-          className="rounded-full border border-noir-200 px-4 py-3 text-sm font-medium text-noir-700 transition hover:border-noir-300"
+          className="admin-btn-secondary"
         >
           Nieuw project
         </button>
-        <div className="grid gap-3">
+        <div className="grid gap-2">
           {projects
             .slice()
             .sort((left, right) => left.sortOrder - right.sortOrder)
@@ -1352,8 +1342,11 @@ function ProjectsModule({
               <button
                 key={getSelectionKey(project)}
                 type="button"
-                onClick={() => setSelectionKey(getSelectionKey(project))}
-                className={`rounded-3xl border p-4 text-left transition ${
+                onClick={() => {
+                  setSelectionKey(getSelectionKey(project));
+                  setMobileView('detail');
+                }}
+                className={`rounded-2xl border p-4 text-left transition ${
                   selectionKey === getSelectionKey(project)
                     ? 'border-accent-600 bg-accent-50'
                     : 'border-noir-200 bg-white hover:border-noir-300'
@@ -1363,12 +1356,12 @@ function ProjectsModule({
                 <p className="mt-1 text-xs uppercase tracking-[0.14em] text-noir-500">
                   {project.category || 'Geen categorie'} · {project.sortOrder}
                 </p>
-                <div className="mt-3 flex gap-2 text-xs">
-                  <span className={`rounded-full px-2 py-1 ${project.isPublished ? 'bg-green-50 text-green-700' : 'bg-noir-100 text-noir-600'}`}>
+                <div className="mt-3 flex flex-wrap gap-1.5 text-xs">
+                  <span className={project.isPublished ? 'admin-chip-success' : 'admin-chip-neutral'}>
                     {project.isPublished ? 'Published' : 'Hidden'}
                   </span>
-                  {project.featured ? <span className="rounded-full bg-amber-50 px-2 py-1 text-amber-700">Featured</span> : null}
-                  <span className="rounded-full bg-noir-100 px-2 py-1 text-noir-600">
+                  {project.featured ? <span className="admin-chip-warning">Featured</span> : null}
+                  <span className="admin-chip-neutral">
                     {project.hasStoredValue ? 'Stored' : 'Default'}
                   </span>
                 </div>
@@ -1378,13 +1371,16 @@ function ProjectsModule({
         </div>
       </div>
 
-      <div className="grid gap-4">
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <h2 className="text-xl font-display font-bold text-noir-900">{draft ? draft.slug : 'Selecteer een project'}</h2>
-            <p className="mt-2 text-sm text-noir-500">Cover, vertalingen en gallery-afbeeldingen blijven URL-based.</p>
+      <div className={`${mobileView === 'detail' ? 'grid' : 'hidden'} min-w-0 gap-4 lg:grid`}>
+        <BackToListButton onClick={() => setMobileView('list')} />
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div className="min-w-0">
+            <h2 className="break-words text-lg font-display font-bold text-noir-900 sm:text-xl">
+              {draft ? draft.slug : 'Selecteer een project'}
+            </h2>
+            <p className="mt-1 text-sm text-noir-500">Cover, vertalingen en gallery-afbeeldingen blijven URL-based.</p>
           </div>
-          <div className="flex gap-3">
+          <div className="flex flex-wrap gap-2">
             {selectedProject?.id ? (
               <button
                 type="button"
@@ -1393,7 +1389,7 @@ function ProjectsModule({
                     void onDelete(selectedProject);
                   }
                 }}
-                className="rounded-full border border-red-200 px-4 py-2 text-sm font-medium text-red-700 transition hover:border-red-300"
+                className="admin-btn-danger admin-btn-sm"
               >
                 Verwijderen
               </button>
@@ -1404,16 +1400,16 @@ function ProjectsModule({
               onClick={() => {
                 void handleSave();
               }}
-              className="rounded-full bg-accent-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-accent-700 disabled:opacity-60"
+              className="admin-btn-primary admin-btn-sm"
             >
-              {saving ? 'Opslaan...' : 'Opslaan'}
+              {saving ? 'Bezig…' : 'Opslaan'}
             </button>
           </div>
         </div>
 
         {draft ? (
-          <div className="grid gap-6 rounded-3xl border border-noir-200 p-6">
-            <div className="grid gap-4 md:grid-cols-2">
+          <div className="admin-card grid gap-6">
+            <div className="grid gap-3 sm:grid-cols-2">
               <LabeledInput label="Slug" value={draft.slug} onChange={(value) => setDraft((current) => current ? { ...current, slug: value } : current)} />
               <LabeledInput label="Categorie" value={draft.category} onChange={(value) => setDraft((current) => current ? { ...current, category: value } : current)} datalistId="project-categories" />
               <datalist id="project-categories">
@@ -1436,14 +1432,15 @@ function ProjectsModule({
               })}
             />
 
-            <div className="rounded-3xl border border-noir-200 p-4">
-              <div className="flex flex-wrap gap-2">
+            <div className="admin-card-muted">
+              <p className="admin-eyebrow">Taal</p>
+              <div className="admin-pill-row mt-3">
                 {locales.map((entry) => (
                   <button
                     key={entry.value}
                     type="button"
                     onClick={() => setTranslationLocale(entry.value)}
-                    className={`rounded-full px-3 py-2 text-sm ${translationLocale === entry.value ? 'bg-accent-600 text-white' : 'bg-noir-50 text-noir-700'}`}
+                    className={`admin-pill ${translationLocale === entry.value ? 'admin-pill-active' : ''}`}
                   >
                     {entry.label}
                   </button>
@@ -1451,14 +1448,14 @@ function ProjectsModule({
               </div>
 
               {activeTranslation ? (
-                <div className="mt-4 grid gap-4">
+                <div className="mt-4 grid gap-3">
                   <LabeledInput label="Titel" value={activeTranslation.title} onChange={(value) => updateTranslation('title', value)} />
                   <LabeledTextarea label="Korte beschrijving" value={activeTranslation.shortDescription ?? ''} onChange={(value) => updateTranslation('shortDescription', value)} rows={3} />
                   <LabeledTextarea label="Beschrijving" value={activeTranslation.description ?? ''} onChange={(value) => updateTranslation('description', value)} rows={5} />
                   <LabeledTextarea label="Challenge" value={activeTranslation.challengeText ?? ''} onChange={(value) => updateTranslation('challengeText', value)} rows={4} />
                   <LabeledTextarea label="Approach" value={activeTranslation.approachText ?? ''} onChange={(value) => updateTranslation('approachText', value)} rows={4} />
                   <LabeledTextarea label="Result" value={activeTranslation.resultText ?? ''} onChange={(value) => updateTranslation('resultText', value)} rows={4} />
-                  <div className="grid gap-4 md:grid-cols-2">
+                  <div className="grid gap-3 sm:grid-cols-2">
                     <LabeledInput label="Project type" value={activeTranslation.projectType ?? ''} onChange={(value) => updateTranslation('projectType', value)} />
                     <LabeledInput label="Duration" value={activeTranslation.duration ?? ''} onChange={(value) => updateTranslation('duration', value)} />
                     <LabeledInput label="Surface" value={activeTranslation.surface ?? ''} onChange={(value) => updateTranslation('surface', value)} />
@@ -1468,23 +1465,23 @@ function ProjectsModule({
               ) : null}
             </div>
 
-            <div className="grid gap-4">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-noir-900">Gallery</h3>
+            <div className="grid gap-3">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <h3 className="admin-section-title">Gallery</h3>
                 <button
                   type="button"
                   onClick={() => setDraft((current) => current ? {
                     ...current,
                     images: [...current.images, { imageUrl: '', alt: '', caption: '', sortOrder: current.images.length, kind: 'gallery' }],
                   } : current)}
-                  className="rounded-full border border-noir-200 px-4 py-2 text-sm font-medium text-noir-700 transition hover:border-noir-300"
+                  className="admin-btn-secondary admin-btn-sm"
                 >
                   Afbeelding toevoegen
                 </button>
               </div>
               {draft.images.map((image, index) => (
-                <div key={`${image.imageUrl}-${index}`} className="rounded-3xl border border-noir-200 p-4">
-                  <div className="grid gap-4 md:grid-cols-2">
+                <div key={`${image.imageUrl}-${index}`} className="admin-card-muted grid gap-3">
+                  <div className="grid gap-3 sm:grid-cols-2">
                     <ImageUrlInput
                       label="Image URL"
                       value={image.imageUrl}
@@ -1541,7 +1538,7 @@ function ProjectsModule({
                       ...current,
                       images: current.images.filter((_, entryIndex) => entryIndex !== index),
                     } : current)}
-                    className="mt-3 rounded-full border border-red-200 px-4 py-2 text-sm font-medium text-red-700 transition hover:border-red-300"
+                    className="admin-btn-danger admin-btn-sm justify-self-start"
                   >
                     Verwijderen
                   </button>
@@ -1596,7 +1593,7 @@ function SettingsModule({
 
   return (
     <div className="grid gap-6">
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-wrap items-start justify-between gap-3">
         <SectionHeader title="Instellingen" description="Typed editors voor company, SEO en analytics." />
         <button
           type="button"
@@ -1605,9 +1602,9 @@ function SettingsModule({
             setSaving(true);
             void onSave(drafts).finally(() => setSaving(false));
           }}
-          className="rounded-full bg-accent-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-accent-700 disabled:opacity-60"
+          className="admin-btn-primary admin-btn-sm"
         >
-          {saving ? 'Opslaan...' : 'Alle settings opslaan'}
+          {saving ? 'Bezig…' : 'Alles opslaan'}
         </button>
       </div>
 
@@ -1642,13 +1639,18 @@ function SettingsModule({
       ) : null}
 
       {unknown.length > 0 ? (
-        <div className="grid gap-4">
+        <div className="grid gap-3">
           <SectionHeader title="Read-only keys" description="Onbekende setting-keys blijven read-only tot ze expliciet gemodelleerd zijn." />
           {unknown.map((setting) => (
-            <div key={setting.key} className="rounded-3xl border border-noir-200 bg-noir-50 p-5">
-              <p className="text-sm font-semibold text-noir-900">{setting.key}</p>
-              <pre className="mt-3 overflow-x-auto rounded-2xl bg-noir-950 p-4 text-xs text-white">{JSON.stringify(setting.valueJson, null, 2)}</pre>
-            </div>
+            <details key={setting.key} className="admin-card-muted group">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-sm font-semibold text-noir-900">
+                <span className="truncate">{setting.key}</span>
+                <span className="admin-eyebrow shrink-0 transition group-open:rotate-180">▾</span>
+              </summary>
+              <pre className="mt-3 max-w-full overflow-hidden whitespace-pre-wrap break-all rounded-xl bg-noir-950 p-4 text-xs text-white">
+                {JSON.stringify(setting.valueJson, null, 2)}
+              </pre>
+            </details>
           ))}
         </div>
       ) : null}
@@ -1678,6 +1680,7 @@ function AssetsModule({
   const [uploadTags, setUploadTags] = useState('');
   const [manualUrl, setManualUrl] = useState('');
   const [manualName, setManualName] = useState('');
+  const [mobileView, setMobileView] = useState<'list' | 'detail'>('list');
 
   const filteredAssets = useMemo(
     () => assets.filter((asset) => asset.originalName.toLowerCase().includes(search.toLowerCase())),
@@ -1687,16 +1690,24 @@ function AssetsModule({
   const selectedAsset = activeSelectionId ? assets.find((asset) => asset.id === activeSelectionId) ?? null : null;
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
-      <div className="grid gap-4">
+    <div className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
+      <div className={`${mobileView === 'list' ? 'grid' : 'hidden'} gap-4 lg:grid`}>
         <SectionHeader title="Assets" description="Upload naar Supabase storage en koppel URLs in content/projecten." />
-        <div className="rounded-3xl border border-noir-200 p-4">
-          <p className={`text-sm ${storageEnabled ? 'text-green-700' : 'text-amber-700'}`}>
+        <div className="admin-card">
+          <p className={`text-sm font-medium ${storageEnabled ? 'text-emerald-700' : 'text-amber-700'}`}>
             {storageEnabled ? 'Supabase upload is actief.' : 'Upload is niet geconfigureerd. Je kunt wel externe URLs registreren.'}
           </p>
           {storageEnabled ? (
-            <>
-              <input type="file" accept="image/*" className="mt-4 block w-full text-sm text-noir-700" onChange={(event) => setUploadFile(event.target.files?.[0] ?? null)} />
+            <div className="mt-4 grid gap-3">
+              <label className="grid gap-2 text-sm text-noir-700">
+                <span className="font-medium">Bestand</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="block w-full rounded-xl border border-noir-200 bg-white px-3 py-2 text-sm text-noir-700 file:mr-3 file:rounded-full file:border-0 file:bg-accent-600 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-white hover:file:bg-accent-700"
+                  onChange={(event) => setUploadFile(event.target.files?.[0] ?? null)}
+                />
+              </label>
               <LabeledInput label="Alt" value={uploadAlt} onChange={setUploadAlt} />
               <LabeledInput label="Tags (comma separated)" value={uploadTags} onChange={setUploadTags} />
               <button
@@ -1711,14 +1722,14 @@ function AssetsModule({
                     });
                   }
                 }}
-                className="mt-3 rounded-full bg-accent-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-accent-700 disabled:opacity-60"
+                className="admin-btn-primary admin-btn-sm justify-self-start"
               >
                 Upload asset
               </button>
-            </>
+            </div>
           ) : null}
 
-          <div className="mt-6 border-t border-noir-200 pt-6">
+          <div className="mt-5 border-t border-noir-200 pt-5 grid gap-3">
             <p className="text-sm font-semibold text-noir-900">Externe URL registreren</p>
             <LabeledInput label="Naam" value={manualName} onChange={setManualName} />
             <LabeledInput label="URL" value={manualUrl} onChange={setManualUrl} />
@@ -1745,26 +1756,29 @@ function AssetsModule({
                   setManualUrl('');
                 });
               }}
-              className="mt-3 rounded-full border border-noir-200 px-4 py-2 text-sm font-medium text-noir-700 transition hover:border-noir-300 disabled:opacity-60"
+              className="admin-btn-secondary admin-btn-sm justify-self-start"
             >
               Registreer URL
             </button>
           </div>
         </div>
 
-        <div className="rounded-3xl border border-noir-200 bg-noir-50 p-4">
+        <div className="admin-card-muted">
           <LabeledInput label="Zoeken" value={search} onChange={setSearch} />
-          <div className="mt-4 grid gap-3">
+          <div className="mt-4 grid gap-2">
             {filteredAssets.map((asset) => (
               <button
                 key={asset.id}
                 type="button"
-                onClick={() => setSelectionId(asset.id)}
-                className={`rounded-3xl border p-4 text-left transition ${
+                onClick={() => {
+                  setSelectionId(asset.id);
+                  setMobileView('detail');
+                }}
+                className={`rounded-2xl border p-3 text-left transition ${
                   activeSelectionId === asset.id ? 'border-accent-600 bg-accent-50' : 'border-noir-200 bg-white hover:border-noir-300'
                 }`}
               >
-                <p className="text-sm font-semibold text-noir-900">{asset.originalName}</p>
+                <p className="break-words text-sm font-semibold text-noir-900">{asset.originalName}</p>
                 <p className="mt-1 text-xs text-noir-500">{asset.bucket} · {asset.tags.join(', ') || 'geen tags'}</p>
               </button>
             ))}
@@ -1773,7 +1787,8 @@ function AssetsModule({
         </div>
       </div>
 
-      <div className="grid gap-4">
+      <div className={`${mobileView === 'detail' ? 'grid' : 'hidden'} min-w-0 gap-4 lg:grid`}>
+        <BackToListButton onClick={() => setMobileView('list')} />
         <SectionHeader title={selectedAsset?.originalName ?? 'Selecteer een asset'} description="Metadata aanpassen en URL kopiëren." />
         {selectedAsset ? (
           <AssetEditor
@@ -1801,12 +1816,16 @@ function AssetEditor({
   const [copyState, setCopyState] = useState(false);
 
   return (
-    <div className="grid gap-4 rounded-3xl border border-noir-200 p-6">
+    <div className="admin-card grid gap-4">
       {draft.mimeType.startsWith('image/') ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={draft.url} alt={draft.alt ?? draft.originalName} className="h-64 w-full rounded-3xl object-cover" />
+        <img
+          src={draft.url}
+          alt={draft.alt ?? draft.originalName}
+          className="h-48 w-full rounded-xl bg-noir-100 object-contain md:h-64"
+        />
       ) : null}
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-3 sm:grid-cols-2">
         <LabeledInput label="Original name" value={draft.originalName} onChange={(value) => setDraft((current) => ({ ...current, originalName: value }))} />
         <LabeledInput label="Filename" value={draft.filename} onChange={(value) => setDraft((current) => ({ ...current, filename: value }))} />
         <LabeledInput label="Bucket" value={draft.bucket} onChange={(value) => setDraft((current) => ({ ...current, bucket: value }))} />
@@ -1817,7 +1836,7 @@ function AssetEditor({
         <LabeledInput label="Alt" value={draft.alt ?? ''} onChange={(value) => setDraft((current) => ({ ...current, alt: value }))} />
       </div>
       <LabeledInput label="Tags (comma separated)" value={draft.tags.join(', ')} onChange={(value) => setDraft((current) => ({ ...current, tags: parseTags(value) }))} />
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-2">
         <button
           type="button"
           onClick={() => {
@@ -1825,16 +1844,16 @@ function AssetEditor({
             setCopyState(true);
             window.setTimeout(() => setCopyState(false), 1200);
           }}
-          className="rounded-full border border-noir-200 px-4 py-2 text-sm font-medium text-noir-700 transition hover:border-noir-300"
+          className="admin-btn-secondary admin-btn-sm"
         >
-          {copyState ? 'Gekopieerd' : 'Kopieer URL'}
+          {copyState ? 'Gekopieerd ✓' : 'Kopieer URL'}
         </button>
         <button
           type="button"
           onClick={() => {
             void onSave(draft);
           }}
-          className="rounded-full bg-accent-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-accent-700"
+          className="admin-btn-primary admin-btn-sm"
         >
           Asset opslaan
         </button>
@@ -1845,7 +1864,7 @@ function AssetEditor({
               void onDelete(draft.id);
             }
           }}
-          className="rounded-full border border-red-200 px-4 py-2 text-sm font-medium text-red-700 transition hover:border-red-300"
+          className="admin-btn-danger admin-btn-sm"
         >
           Asset verwijderen
         </button>
@@ -1884,7 +1903,7 @@ function AvailabilityModule({
 
   return (
     <div className="grid gap-6">
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-wrap items-start justify-between gap-3">
         <SectionHeader title="Beschikbaarheid" description="Weekrooster per dag en aparte uitzonderingen." />
         <button
           type="button"
@@ -1893,16 +1912,16 @@ function AvailabilityModule({
             setSavingRules(true);
             void onSaveRules(ruleDrafts).finally(() => setSavingRules(false));
           }}
-          className="rounded-full bg-accent-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-accent-700 disabled:opacity-60"
+          className="admin-btn-primary admin-btn-sm"
         >
-          {savingRules ? 'Opslaan...' : 'Rooster opslaan'}
+          {savingRules ? 'Bezig…' : 'Rooster opslaan'}
         </button>
       </div>
 
-      <div className="grid gap-4">
+      <div className="grid gap-3">
         {ruleDrafts.map((rule) => (
-          <div key={rule.dayOfWeek} className="rounded-3xl border border-noir-200 p-5">
-            <div className="flex items-center justify-between gap-4">
+          <div key={rule.dayOfWeek} className="admin-card">
+            <div className="flex flex-wrap items-center justify-between gap-3">
               <p className="text-sm font-semibold text-noir-900">{weekdays[rule.dayOfWeek]}</p>
               <ToggleField
                 label="Actief"
@@ -1922,10 +1941,10 @@ function AvailabilityModule({
         ))}
       </div>
 
-      <div className="grid gap-4 rounded-3xl border border-noir-200 p-6">
+      <div className="admin-card grid gap-4">
         <SectionHeader title="Uitzonderingen" description="Blokkeer specifieke data of volledige dagen." />
 
-        <div className="grid gap-4 md:grid-cols-[1fr_1fr_auto]">
+        <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-[1fr_1fr_auto] md:items-end">
           <LabeledInput label="Datum" value={newException.date} onChange={(value) => setNewException((current) => ({ ...current, date: value }))} type="date" />
           <LabeledInput
             label="Reason"
@@ -1939,13 +1958,13 @@ function AvailabilityModule({
                 setNewException({ date: '', blockedTimes: [], reason: '' });
               });
             }}
-            className="mt-7 rounded-full bg-accent-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-accent-700"
+            className="admin-btn-primary sm:col-span-2 md:col-span-1"
           >
             Uitzondering toevoegen
           </button>
         </div>
 
-        <div className="rounded-2xl border border-noir-200 p-4">
+        <div className="admin-card-muted">
           <ToggleField
             label="Hele dag blokkeren"
             checked={newException.blockedTimes.includes('all')}
@@ -1968,12 +1987,12 @@ function AvailabilityModule({
             const source = isEditing ? editingException : exception;
 
             return (
-              <div key={exception.id} className="rounded-3xl border border-noir-200 p-4">
-                <div className="grid gap-4 md:grid-cols-2">
+              <div key={exception.id} className="admin-card-muted">
+                <div className="grid gap-3 sm:grid-cols-2">
                   <LabeledInput label="Datum" value={source.date} onChange={(value) => setEditingException({ ...source, date: value })} type="date" />
                   <LabeledInput label="Reason" value={source.reason ?? ''} onChange={(value) => setEditingException({ ...source, reason: value })} />
                 </div>
-                <div className="mt-4 rounded-2xl border border-noir-200 p-4">
+                <div className="mt-4 rounded-xl border border-noir-200 bg-white p-4">
                   <ToggleField
                     label="Hele dag blokkeren"
                     checked={source.blockedTimes.includes('all')}
@@ -1989,13 +2008,13 @@ function AvailabilityModule({
                     />
                   ) : null}
                 </div>
-                <div className="mt-4 flex flex-wrap gap-3">
+                <div className="mt-4 flex flex-wrap gap-2">
                   <button
                     type="button"
                     onClick={() => {
                       void onUpdateException(source);
                     }}
-                    className="rounded-full bg-accent-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-accent-700"
+                    className="admin-btn-primary admin-btn-sm"
                   >
                     Uitzondering opslaan
                   </button>
@@ -2006,7 +2025,7 @@ function AvailabilityModule({
                         void onDeleteException(exception.id);
                       }
                     }}
-                    className="rounded-full border border-red-200 px-4 py-2 text-sm font-medium text-red-700 transition hover:border-red-300"
+                    className="admin-btn-danger admin-btn-sm"
                   >
                     Verwijderen
                   </button>
@@ -2043,20 +2062,30 @@ function LeadCard({
   const [saving, setSaving] = useState(false);
 
   return (
-    <div className="grid gap-4 rounded-3xl border border-noir-200 p-5">
-      <div>
-        <p className="text-sm font-semibold text-noir-900">{title}</p>
-        <p className="text-sm text-noir-500">{subtitle}</p>
+    <div className="admin-card grid gap-4">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="text-sm font-semibold text-noir-900">{title}</p>
+          <p className="mt-0.5 break-words text-sm text-noir-500">{subtitle}</p>
+        </div>
+        <StatusChip status={currentStatus} />
       </div>
-      <div className="grid gap-4 md:grid-cols-[200px_1fr_auto_auto]">
-        <select value={status} onChange={(event) => setStatus(event.target.value)} className={inputClassName}>
+      <div className="grid gap-3 sm:grid-cols-[minmax(0,180px)_1fr]">
+        <select value={status} onChange={(event) => setStatus(event.target.value)} className="admin-input">
           {statusOptions.map((option) => (
             <option key={option} value={option}>
               {option}
             </option>
           ))}
         </select>
-        <input value={internalNote} onChange={(event) => setInternalNote(event.target.value)} placeholder="Admin note" className={inputClassName} />
+        <input
+          value={internalNote}
+          onChange={(event) => setInternalNote(event.target.value)}
+          placeholder="Admin note"
+          className="admin-input"
+        />
+      </div>
+      <div className="flex flex-wrap gap-2">
         <button
           type="button"
           disabled={saving}
@@ -2065,9 +2094,9 @@ function LeadCard({
             await onSave(status, internalNote);
             setSaving(false);
           }}
-          className="rounded-full bg-accent-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-accent-700 disabled:opacity-60"
+          className="admin-btn-primary flex-1 sm:flex-none"
         >
-          {saving ? 'Saving...' : 'Save'}
+          {saving ? 'Bezig…' : 'Opslaan'}
         </button>
         <button
           type="button"
@@ -2076,13 +2105,28 @@ function LeadCard({
               void onDelete();
             }
           }}
-          className="rounded-full border border-red-200 px-5 py-3 text-sm font-medium text-red-700 transition hover:border-red-300"
+          className="admin-btn-danger flex-1 sm:flex-none"
         >
-          Delete
+          Verwijderen
         </button>
       </div>
     </div>
   );
+}
+
+function StatusChip({ status }: { status: string }) {
+  const upper = status.toUpperCase();
+  const variant =
+    upper === 'NEW' || upper === 'PENDING'
+      ? 'admin-chip-info'
+      : upper === 'CONFIRMED' || upper === 'WON' || upper === 'COMPLETED'
+        ? 'admin-chip-success'
+        : upper === 'RESCHEDULED' || upper === 'NEGOTIATING' || upper === 'CONTACTED' || upper === 'SITE_VISIT' || upper === 'QUOTE_SENT'
+          ? 'admin-chip-warning'
+          : upper === 'REJECTED' || upper === 'CANCELLED' || upper === 'LOST' || upper === 'NO_SHOW'
+            ? 'admin-chip-danger'
+            : 'admin-chip-neutral';
+  return <span className={variant}>{status}</span>;
 }
 
 function AppointmentCard({
@@ -2106,30 +2150,41 @@ function AppointmentCard({
   const [saving, setSaving] = useState(false);
 
   return (
-    <div className="grid gap-4 rounded-3xl border border-noir-200 p-5">
-      <div>
-        <p className="text-sm font-semibold text-noir-900">{appointment.referenceNumber}</p>
-        <p className="text-sm text-noir-500">
-          {appointment.fullName} · {appointment.email} · {formatDate(appointment.appointmentDate)} {appointment.appointmentTime}
-        </p>
+    <div className="admin-card grid gap-4">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="text-sm font-semibold text-noir-900">{appointment.referenceNumber}</p>
+          <p className="mt-0.5 break-words text-sm text-noir-500">
+            {appointment.fullName} · {appointment.email}
+          </p>
+          <p className="mt-0.5 text-xs text-noir-500">
+            {formatDate(appointment.appointmentDate)} · {appointment.appointmentTime}
+          </p>
+        </div>
+        <StatusChip status={appointment.status} />
       </div>
-      <div className="grid gap-4 md:grid-cols-[200px_1fr]">
-        <select value={status} onChange={(event) => setStatus(event.target.value)} className={inputClassName}>
+      <div className="grid gap-3 sm:grid-cols-[minmax(0,180px)_1fr]">
+        <select value={status} onChange={(event) => setStatus(event.target.value)} className="admin-input">
           {appointmentStatusOptions.map((option) => (
             <option key={option} value={option}>
               {option}
             </option>
           ))}
         </select>
-        <input value={internalNote} onChange={(event) => setInternalNote(event.target.value)} placeholder="Admin note" className={inputClassName} />
+        <input
+          value={internalNote}
+          onChange={(event) => setInternalNote(event.target.value)}
+          placeholder="Admin note"
+          className="admin-input"
+        />
       </div>
       {status === 'RESCHEDULED' ? (
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-3 sm:grid-cols-2">
           <LabeledInput label="Voorgestelde datum" value={proposedDate} onChange={setProposedDate} type="date" />
           <LabeledInput label="Voorgestelde tijd" value={proposedTime} onChange={setProposedTime} type="time" />
         </div>
       ) : null}
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-2">
         <button
           type="button"
           disabled={saving}
@@ -2143,9 +2198,9 @@ function AppointmentCard({
             });
             setSaving(false);
           }}
-          className="rounded-full bg-accent-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-accent-700 disabled:opacity-60"
+          className="admin-btn-primary flex-1 sm:flex-none"
         >
-          {saving ? 'Saving...' : 'Save'}
+          {saving ? 'Bezig…' : 'Opslaan'}
         </button>
         <button
           type="button"
@@ -2154,9 +2209,9 @@ function AppointmentCard({
               void onDelete();
             }
           }}
-          className="rounded-full border border-red-200 px-5 py-3 text-sm font-medium text-red-700 transition hover:border-red-300"
+          className="admin-btn-danger flex-1 sm:flex-none"
         >
-          Delete
+          Verwijderen
         </button>
       </div>
     </div>
@@ -2181,33 +2236,47 @@ function AssetPickerModal({
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="max-h-[90vh] w-full max-w-4xl overflow-hidden rounded-[2rem] bg-white shadow-soft-lg">
-        <div className="flex items-center justify-between border-b border-noir-200 px-6 py-4">
-          <div>
-            <p className="text-lg font-display font-bold text-noir-900">{title}</p>
-            <p className="text-sm text-noir-500">Kies een bestaande asset-URL.</p>
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={title}
+      className="fixed inset-0 z-[60] flex items-end justify-center bg-black/40 p-0 sm:items-center sm:p-4"
+    >
+      <div className="flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-t-3xl bg-white shadow-soft-lg sm:rounded-3xl">
+        <div className="flex items-center justify-between gap-3 border-b border-noir-200 px-4 py-3 sm:px-6 sm:py-4">
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-base font-display font-bold text-noir-900 sm:text-lg">{title}</p>
+            <p className="mt-0.5 text-xs text-noir-500 sm:text-sm">Kies een bestaande asset.</p>
           </div>
-          <button type="button" onClick={onClose} className="rounded-full border border-noir-200 px-4 py-2 text-sm text-noir-700">
+          <button
+            type="button"
+            onClick={onClose}
+            className="admin-btn-secondary admin-btn-sm"
+            aria-label="Sluiten"
+          >
             Sluiten
           </button>
         </div>
-        <div className="p-6">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6">
           <LabeledInput label="Zoeken" value={search} onChange={setSearch} />
-          <div className="mt-4 grid max-h-[60vh] gap-4 overflow-y-auto md:grid-cols-3">
+          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((asset) => (
               <button
                 key={asset.id}
                 type="button"
                 onClick={() => onSelect(asset)}
-                className="rounded-3xl border border-noir-200 p-4 text-left transition hover:border-accent-600 hover:bg-accent-50"
+                className="group rounded-2xl border border-noir-200 bg-white p-3 text-left transition hover:border-accent-600 hover:bg-accent-50"
               >
                 {asset.mimeType.startsWith('image/') ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={asset.url} alt={asset.alt ?? asset.originalName} className="h-40 w-full rounded-2xl object-cover" />
+                  <img
+                    src={asset.url}
+                    alt={asset.alt ?? asset.originalName}
+                    className="h-32 w-full rounded-xl bg-noir-100 object-cover sm:h-40"
+                  />
                 ) : null}
-                <p className="mt-3 text-sm font-semibold text-noir-900">{asset.originalName}</p>
-                <p className="mt-1 text-xs text-noir-500">{asset.tags.join(', ') || 'geen tags'}</p>
+                <p className="mt-3 truncate text-sm font-semibold text-noir-900">{asset.originalName}</p>
+                <p className="mt-1 truncate text-xs text-noir-500">{asset.tags.join(', ') || 'geen tags'}</p>
               </button>
             ))}
             {filtered.length === 0 ? <EmptyState label="Geen assets gevonden." compact /> : null}
@@ -2231,18 +2300,18 @@ function ItemListEditor({
 }) {
   return (
     <div className="grid gap-3">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-3">
         <p className="text-sm font-semibold text-noir-900">{label}</p>
         <button
           type="button"
           onClick={() => onChange([...items, {}])}
-          className="rounded-full border border-noir-200 px-4 py-2 text-sm font-medium text-noir-700 transition hover:border-noir-300"
+          className="admin-btn-secondary admin-btn-sm"
         >
           Item toevoegen
         </button>
       </div>
       {items.map((item, index) => (
-        <div key={index} className="rounded-3xl border border-noir-200 p-4">
+        <div key={index} className="admin-card-muted">
           <div className="grid gap-4">
             {fields.map((field) => (
               field.multiline ? (
@@ -2275,7 +2344,7 @@ function ItemListEditor({
           <button
             type="button"
             onClick={() => onChange(items.filter((_, entryIndex) => entryIndex !== index))}
-            className="mt-3 rounded-full border border-red-200 px-4 py-2 text-sm font-medium text-red-700 transition hover:border-red-300"
+            className="admin-btn-danger admin-btn-sm mt-3"
           >
             Verwijderen
           </button>
@@ -2297,18 +2366,18 @@ function TextListEditor({
 }) {
   return (
     <div className="grid gap-3">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-3">
         <p className="text-sm font-semibold text-noir-900">{label}</p>
         <button
           type="button"
           onClick={() => onChange([...items, ''])}
-          className="rounded-full border border-noir-200 px-4 py-2 text-sm font-medium text-noir-700 transition hover:border-noir-300"
+          className="admin-btn-secondary admin-btn-sm"
         >
           Regel toevoegen
         </button>
       </div>
       {items.map((item, index) => (
-        <div key={index} className="flex gap-3">
+        <div key={index} className="flex items-center gap-2">
           <input
             value={item}
             onChange={(event) => onChange(items.map((entry, entryIndex) => entryIndex === index ? event.target.value : entry))}
@@ -2317,9 +2386,13 @@ function TextListEditor({
           <button
             type="button"
             onClick={() => onChange(items.filter((_, entryIndex) => entryIndex !== index))}
-            className="rounded-full border border-red-200 px-4 py-2 text-sm font-medium text-red-700 transition hover:border-red-300"
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-red-200 text-red-700 transition hover:border-red-300 hover:bg-red-50"
+            aria-label="Verwijderen"
           >
-            Verwijderen
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <polyline points="3 6 5 6 21 6" />
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+            </svg>
           </button>
         </div>
       ))}
@@ -2336,9 +2409,9 @@ function TimeSlotEditor({
   onChange: (slots: string[]) => void;
 }) {
   return (
-    <div className="mt-4 grid gap-3">
+    <div className="mt-4 grid gap-2">
       {slots.map((slot, index) => (
-        <div key={`${slot}-${index}`} className="flex gap-3">
+        <div key={`${slot}-${index}`} className="flex items-center gap-2">
           <input
             type="time"
             value={slot}
@@ -2348,16 +2421,20 @@ function TimeSlotEditor({
           <button
             type="button"
             onClick={() => onChange(slots.filter((_, entryIndex) => entryIndex !== index))}
-            className="rounded-full border border-red-200 px-4 py-2 text-sm font-medium text-red-700 transition hover:border-red-300"
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-red-200 text-red-700 transition hover:border-red-300 hover:bg-red-50"
+            aria-label="Verwijderen"
           >
-            Verwijderen
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <polyline points="3 6 5 6 21 6" />
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+            </svg>
           </button>
         </div>
       ))}
       <button
         type="button"
         onClick={() => onChange([...slots, '09:00'])}
-        className="rounded-full border border-noir-200 px-4 py-2 text-sm font-medium text-noir-700 transition hover:border-noir-300"
+        className="admin-btn-secondary admin-btn-sm justify-self-start"
       >
         Tijdslot toevoegen
       </button>
@@ -2375,9 +2452,9 @@ function SettingsCard({
   children: ReactNode;
 }) {
   return (
-    <div className="grid gap-4 rounded-3xl border border-noir-200 p-6">
+    <div className="admin-card grid gap-4">
       <div>
-        <p className="text-lg font-display font-bold text-noir-900">{title}</p>
+        <p className="admin-section-title">{title}</p>
         <p className="mt-1 text-sm text-noir-500">{description}</p>
       </div>
       {children}
@@ -2387,8 +2464,8 @@ function SettingsCard({
 
 function StatCard({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-3xl border border-noir-200 bg-noir-50 p-5">
-      <p className="text-sm text-noir-500">{label}</p>
+    <div className="admin-card-muted">
+      <p className="admin-eyebrow">{label}</p>
       <p className="mt-2 text-3xl font-display font-bold text-noir-900">{value}</p>
     </div>
   );
@@ -2402,12 +2479,12 @@ function StatusList({
   items: Array<{ status: string; _count: number | { _all?: number } }>;
 }) {
   return (
-    <div className="rounded-3xl border border-noir-200 p-5">
+    <div className="admin-card">
       <p className="text-sm font-semibold text-noir-900">{title}</p>
-      <div className="mt-4 grid gap-3">
+      <div className="mt-4 grid gap-2">
         {items.map((item, index) => (
-          <div key={`${title}-${index}`} className="flex items-center justify-between rounded-2xl bg-noir-50 px-4 py-3 text-sm text-noir-700">
-            <span>{String(item.status ?? 'unknown')}</span>
+          <div key={`${title}-${index}`} className="flex items-center justify-between rounded-xl bg-noir-50 px-3.5 py-2.5 text-sm text-noir-700">
+            <span className="truncate">{String(item.status ?? 'unknown')}</span>
             <span className="font-semibold">{getStatusCountValue(item._count)}</span>
           </div>
         ))}
@@ -2419,7 +2496,7 @@ function StatusList({
 function SectionHeader({ title, description }: { title: string; description: string }) {
   return (
     <div>
-      <h2 className="text-lg font-display font-bold text-noir-900">{title}</h2>
+      <h2 className="admin-section-title">{title}</h2>
       <p className="mt-1 text-sm text-noir-500">{description}</p>
     </div>
   );
@@ -2427,7 +2504,7 @@ function SectionHeader({ title, description }: { title: string; description: str
 
 function EmptyState({ label, compact = false }: { label: string; compact?: boolean }) {
   return (
-    <div className={`rounded-3xl border border-dashed border-noir-200 bg-noir-50 text-center text-sm text-noir-500 ${compact ? 'p-4' : 'p-10'}`}>
+    <div className={`rounded-2xl border border-dashed border-noir-200 bg-noir-50 text-center text-sm text-noir-500 ${compact ? 'p-4' : 'p-8 md:p-10'}`}>
       {label}
     </div>
   );
@@ -2522,8 +2599,13 @@ function ToggleField({
   onChange: (checked: boolean) => void;
 }) {
   return (
-    <label className="flex items-center gap-3 rounded-2xl border border-noir-200 px-4 py-3 text-sm text-noir-700">
-      <input type="checkbox" checked={checked} onChange={(event) => onChange(event.target.checked)} />
+    <label className="flex min-h-[44px] cursor-pointer items-center gap-3 rounded-xl border border-noir-200 bg-white px-3.5 py-2.5 text-sm text-noir-700 transition hover:border-noir-300">
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={(event) => onChange(event.target.checked)}
+        className="h-4 w-4 rounded border-noir-300 text-accent-600 focus:ring-accent-600/30"
+      />
       <span className="font-medium">{label}</span>
     </label>
   );
@@ -2546,7 +2628,7 @@ function ImageUrlInput({
       <button
         type="button"
         onClick={onPickAsset}
-        className="justify-self-start rounded-full border border-noir-200 px-4 py-2 text-sm font-medium text-noir-700 transition hover:border-noir-300"
+        className="admin-btn-secondary admin-btn-sm justify-self-start"
       >
         Kies uit assets
       </button>
@@ -2554,5 +2636,19 @@ function ImageUrlInput({
   );
 }
 
-const inputClassName =
-  'w-full rounded-2xl border border-noir-200 bg-white px-4 py-3 text-sm text-noir-900 outline-none transition focus:border-accent-500';
+const inputClassName = 'admin-input';
+
+function BackToListButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="admin-btn-ghost admin-btn-sm lg:hidden"
+    >
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <polyline points="15 18 9 12 15 6" />
+      </svg>
+      Terug naar overzicht
+    </button>
+  );
+}
