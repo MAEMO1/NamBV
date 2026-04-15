@@ -131,9 +131,9 @@ export const servicePageImages = {
 export const homepageImages = {
   hero: siteImages.heroHome,
   heroSlides: [
-    '/hero/slide-1.jpg',
-    '/hero/slide-2.jpg',
-    '/hero/slide-3.jpg',
+    '/hero/slide-1.webp',
+    '/hero/slide-2.webp',
+    '/hero/slide-3.webp',
   ],
   whyUs: siteImages.whyUsSection,
   ctaBackground: siteImages.ctaBackground,

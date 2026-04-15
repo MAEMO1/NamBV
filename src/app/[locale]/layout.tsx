@@ -7,6 +7,8 @@ import Footer from '@/components/public/Footer';
 import Header from '@/components/public/Header';
 import MarketingAnalytics from '@/components/public/MarketingAnalytics';
 import MobileStickyCta from '@/components/public/MobileStickyCta';
+import { MobileMenuProvider } from '@/components/public/MobileMenuContext';
+import { ConsentProvider } from '@/components/public/ConsentContext';
 import { getV2SettingsMap } from '@/lib/v2/public-data';
 
 type Props = {
@@ -89,16 +91,20 @@ export default async function LocaleLayout({ children, params }: Props) {
   return (
     <>
       <NextIntlClientProvider messages={messages}>
-        <div className="min-h-screen bg-white text-noir-900">
-          <MarketingAnalytics gtmId={typeof analytics.gtmId === 'string' ? analytics.gtmId : null} />
-          <Header locale={locale as 'nl' | 'fr' | 'en'} company={company} />
-          <main>{children}</main>
-          <Footer locale={locale as 'nl' | 'fr' | 'en'} company={company} />
-          <MobileStickyCta
-            locale={locale as 'nl' | 'fr' | 'en'}
-            phone={typeof company.phone === 'string' ? company.phone : null}
-          />
-        </div>
+        <ConsentProvider>
+          <MobileMenuProvider>
+            <div className="min-h-screen bg-white text-noir-900">
+              <MarketingAnalytics gtmId={typeof analytics.gtmId === 'string' ? analytics.gtmId : null} />
+              <Header locale={locale as 'nl' | 'fr' | 'en'} company={company} />
+              <main>{children}</main>
+              <Footer locale={locale as 'nl' | 'fr' | 'en'} company={company} />
+              <MobileStickyCta
+                locale={locale as 'nl' | 'fr' | 'en'}
+                phone={typeof company.phone === 'string' ? company.phone : null}
+              />
+            </div>
+          </MobileMenuProvider>
+        </ConsentProvider>
       </NextIntlClientProvider>
     </>
   );

@@ -4,7 +4,7 @@ import { defaultAvailabilityRules, defaultPageSections, defaultProjects, default
 import type { V2Locale } from './locale';
 import { getPublishedV2Sections } from './sections';
 
-export async function getV2PageSections(pageKey: string, locale: V2Locale) {
+export const getV2PageSections = cache(async (pageKey: string, locale: V2Locale) => {
   const stored = await db.v2PageSection.findMany({
     where: {
       pageKey,
@@ -15,9 +15,9 @@ export async function getV2PageSections(pageKey: string, locale: V2Locale) {
   const defaults = defaultPageSections.filter((section) => section.pageKey === pageKey && section.locale === locale);
 
   return getPublishedV2Sections(defaults, stored);
-}
+});
 
-const getCachedV2SettingsMap = cache(async () => {
+const getStoredV2SettingsMap = cache(async () => {
   const rows = await db.v2SiteSetting.findMany();
   const base = Object.fromEntries(defaultSettings.map((setting) => [setting.key, setting.valueJson]));
   const overrides = Object.fromEntries(rows.map((row) => [row.key, row.valueJson]));
@@ -28,9 +28,9 @@ const getCachedV2SettingsMap = cache(async () => {
   };
 });
 
-export async function getV2SettingsMap() {
-  return getCachedV2SettingsMap();
-}
+export const getV2SettingsMap = cache(async () => {
+  return getStoredV2SettingsMap();
+});
 
 function withProjectTranslation<T extends { locale: string }>(translations: T[], locale: V2Locale) {
   return translations.find((translation) => translation.locale === locale)
@@ -38,7 +38,7 @@ function withProjectTranslation<T extends { locale: string }>(translations: T[],
     ?? translations[0];
 }
 
-export async function getV2Projects(locale: V2Locale) {
+export const getV2Projects = cache(async (locale: V2Locale) => {
   const projects = await db.v2Project.findMany({
     where: { isPublished: true },
     include: {
@@ -81,11 +81,14 @@ export async function getV2Projects(locale: V2Locale) {
       });
 
   return source;
-}
+});
 
-export async function getV2ProjectBySlug(slug: string, locale: V2Locale) {
-  const project = await db.v2Project.findUnique({
-    where: { slug },
+export const getV2ProjectBySlug = cache(async (slug: string, locale: V2Locale) => {
+  const project = await db.v2Project.findFirst({
+    where: {
+      slug,
+      isPublished: true,
+    },
     include: {
       translations: true,
       images: {
@@ -102,7 +105,7 @@ export async function getV2ProjectBySlug(slug: string, locale: V2Locale) {
   }
 
   const fallback = defaultProjects.find((entry) => entry.slug === slug);
-  if (!fallback) {
+  if (!fallback || !fallback.isPublished) {
     return null;
   }
 
@@ -122,7 +125,7 @@ export async function getV2ProjectBySlug(slug: string, locale: V2Locale) {
     translations: fallback.translations,
     translation: withProjectTranslation(fallback.translations, locale),
   };
-}
+});
 
 export async function getV2QuoteFormOptions() {
   const serviceTypes = await db.serviceType.findMany({
@@ -165,6 +168,7 @@ export async function getV2Availability(month?: string) {
   const appointments = await db.v2Appointment.findMany({
     where: {
       appointmentDate: { gte: startDate, lte: endDate },
+      deletedAt: null,
       status: { notIn: ['CANCELLED', 'REJECTED'] },
     },
     select: {
@@ -226,13 +230,19 @@ export async function getV2Availability(month?: string) {
 
 export async function getV2AnalyticsOverview() {
   const [quotes, appointments, quoteStatuses, appointmentStatuses] = await Promise.all([
-    db.v2QuoteRequest.count(),
-    db.v2Appointment.count(),
+    db.v2QuoteRequest.count({
+      where: { deletedAt: null },
+    }),
+    db.v2Appointment.count({
+      where: { deletedAt: null },
+    }),
     db.v2QuoteRequest.groupBy({
+      where: { deletedAt: null },
       by: ['status'],
       _count: true,
     }),
     db.v2Appointment.groupBy({
+      where: { deletedAt: null },
       by: ['status'],
       _count: true,
     }),
@@ -251,10 +261,12 @@ export async function getV2AnalyticsOverview() {
 export async function getV2AdminConsoleSnapshot() {
   const [quotes, appointments, sections, projects, assets, settings, analytics, availabilityRules, availabilityExceptions] = await Promise.all([
     db.v2QuoteRequest.findMany({
+      where: { deletedAt: null },
       orderBy: { createdAt: 'desc' },
       take: 100,
     }),
     db.v2Appointment.findMany({
+      where: { deletedAt: null },
       orderBy: { createdAt: 'desc' },
       take: 100,
     }),

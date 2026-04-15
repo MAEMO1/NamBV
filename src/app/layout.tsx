@@ -1,33 +1,14 @@
-import type { Metadata } from "next";
-import { dmSans, plusJakarta } from "@/lib/fonts";
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: {
-    default: "Nam Construction | Vakkundige Renovatie in Gent",
-    template: "%s | Nam Construction"
-  },
-  description: "Vakkundige renovatie in Gent met oog voor detail en duurzaamheid. Van totaalrenovatie tot afwerking. Vraag een gratis adviesgesprek aan.",
-  keywords: ["renovatie Gent", "aannemer Gent", "totaalrenovatie", "verbouwing", "renovatiebedrijf"],
-  authors: [{ name: "Nam Construction" }],
-  icons: {
-    icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
-    ],
-    apple: "/favicon.svg",
-  },
-};
-
+// The real <html>/<body> wrappers live in nested layouts so that `lang` can
+// reflect the active locale: see src/app/[locale]/layout.tsx and
+// src/app/admin/layout.tsx. This root layout intentionally just passes
+// children through — this is the pattern documented by next-intl for
+// i18n routing with dynamic locale prefixes.
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="nl" className={`${dmSans.variable} ${plusJakarta.variable}`}>
-      <body className="font-sans">
-        {children}
-      </body>
-    </html>
-  );
+  return children;
 }
