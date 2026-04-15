@@ -3,8 +3,20 @@ import { NextRequest, NextResponse } from 'next/server';
 import { captureRouteException } from '@/lib/monitoring';
 import { createV2AssetRecord } from '@/lib/v2/mutations';
 import { requireV2AdminRequest } from '@/lib/v2/request';
-import { getSupabaseAdminClient, hasSupabaseAdminStorage } from '@/lib/supabase-admin';
+import {
+  getSupabaseAdminClient,
+  hasSupabaseAdminStorage,
+  isSupabaseManagedBucket,
+} from '@/lib/supabase-admin';
 import { getStoragePublicUrl } from '@/lib/supabase';
+
+const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
+const ALLOWED_UPLOAD_MIME_TYPES = new Set([
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/avif',
+]);
 
 function sanitizeFileName(value: string) {
   return value
@@ -43,6 +55,18 @@ export async function POST(request: NextRequest) {
           .filter(Boolean)
       : [];
 
+    if (!isSupabaseManagedBucket(bucket)) {
+      return NextResponse.json({ error: 'Unsupported upload bucket' }, { status: 400 });
+    }
+
+    if (!file.type || !ALLOWED_UPLOAD_MIME_TYPES.has(file.type)) {
+      return NextResponse.json({ error: 'Unsupported file type' }, { status: 400 });
+    }
+
+    if (file.size <= 0 || file.size > MAX_UPLOAD_BYTES) {
+      return NextResponse.json({ error: 'File exceeds upload limits' }, { status: 400 });
+    }
+
     const fileName = sanitizeFileName(file.name) || `asset-${Date.now()}`;
     const path = `${new Date().toISOString().slice(0, 10)}/${randomUUID()}-${fileName}`;
     const buffer = Buffer.from(await file.arrayBuffer());
@@ -60,21 +84,37 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Asset upload failed' }, { status: 500 });
     }
 
-    const asset = await createV2AssetRecord({
-      filename: fileName,
-      originalName: file.name,
-      mimeType: file.type || 'application/octet-stream',
-      size: file.size,
-      bucket,
-      path,
-      url: getStoragePublicUrl(bucket, path),
-      alt,
-      width: null,
-      height: null,
-      tags,
-    }, auth.user?.id);
+    try {
+      const asset = await createV2AssetRecord({
+        filename: fileName,
+        originalName: file.name,
+        mimeType: file.type || 'application/octet-stream',
+        size: file.size,
+        bucket,
+        path,
+        url: getStoragePublicUrl(bucket, path),
+        alt,
+        width: null,
+        height: null,
+        tags,
+      }, auth.user?.id);
 
-    return NextResponse.json({ asset }, { status: 201 });
+      return NextResponse.json({ asset }, { status: 201 });
+    } catch (error) {
+      const removal = await supabase.storage.from(bucket).remove([path]);
+      if (removal.error) {
+        captureRouteException(removal.error, {
+          action: 'admin.asset-upload.cleanup',
+          route: '/api/admin/assets/upload',
+          extra: {
+            bucket,
+            path,
+          },
+        });
+      }
+
+      throw error;
+    }
   } catch (error) {
     captureRouteException(error, {
       action: 'admin.asset-upload',
