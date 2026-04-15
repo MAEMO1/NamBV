@@ -675,12 +675,14 @@ model V2QuoteRequest {
   adminNotes      String?      @map("admin_notes") @db.Text
   propertyTypeId  String?      @map("property_type_id")
   serviceTypeIds  String[]     @default([]) @map("service_type_ids")
+  deletedAt       DateTime?    @map("deleted_at")
   createdAt       DateTime     @default(now()) @map("created_at")
   updatedAt       DateTime     @updatedAt @map("updated_at")
 
   leadEvents      V2LeadEvent[]
 
   @@index([status])
+  @@index([deletedAt])
   @@index([createdAt(sort: Desc)])
   @@map("v2_quote_requests")
 }
@@ -710,6 +712,7 @@ model V2Appointment {
   adminNotes         String?            @map("admin_notes") @db.Text
   proposedDate       DateTime?          @db.Date @map("proposed_date")
   proposedTime       String?            @map("proposed_time")
+  deletedAt          DateTime?          @map("deleted_at")
   createdAt          DateTime           @default(now()) @map("created_at")
   updatedAt          DateTime           @updatedAt @map("updated_at")
   confirmedAt        DateTime?          @map("confirmed_at")
@@ -717,6 +720,7 @@ model V2Appointment {
   leadEvents         V2LeadEvent[]
 
   @@index([status])
+  @@index([deletedAt])
   @@index([appointmentDate])
   @@index([createdAt(sort: Desc)])
   @@map("v2_appointments")
