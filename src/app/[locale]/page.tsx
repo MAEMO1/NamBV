@@ -10,13 +10,13 @@ export async function generateMetadata({
   params: Promise<{ locale: Locale }>;
 }) {
   const { locale } = await params;
-  return buildPageMetadata({
+  const metadata = await buildPageMetadata({
     href: '/',
     locale,
     titles: {
-      nl: 'Nam Construction | Vakkundige renovatie in Gent',
-      fr: 'Nam Construction | Rénovation experte à Gand',
-      en: 'Nam Construction | Expert renovation in Ghent',
+      nl: 'Nam Construction',
+      fr: 'Nam Construction',
+      en: 'Nam Construction',
     },
     descriptions: {
       nl: 'Nam Construction is jouw aannemer voor totaalrenovatie, afwerking en technieken in Gent en Oost-Vlaanderen. Transparant, vakkundig en duurzaam.',
@@ -24,6 +24,9 @@ export async function generateMetadata({
       en: 'Nam Construction — your contractor for full renovation, finishing and technical works in Ghent and East Flanders. Transparent, skilled, sustainable.',
     },
   });
+  // Bypass the parent layout's `%s | Nam Construction` template on the home page
+  // so the browser tab reads "Nam Construction" and not "Nam Construction | Nam Construction".
+  return { ...metadata, title: { absolute: 'Nam Construction' } };
 }
 
 export default async function HomePage({
