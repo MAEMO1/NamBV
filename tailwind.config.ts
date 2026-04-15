@@ -67,7 +67,7 @@ export default {
       },
       fontFamily: {
         sans: ['var(--font-dm-sans)', 'system-ui', 'sans-serif'],
-        display: ['var(--font-playfair)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-playfair)', 'Georgia', 'serif'],
       },
       fontSize: {
         // Dramatic display sizes for hero statements

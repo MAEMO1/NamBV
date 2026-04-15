@@ -1,4 +1,4 @@
-import { DM_Sans, Plus_Jakarta_Sans } from 'next/font/google';
+import { DM_Sans, Playfair_Display } from 'next/font/google';
 
 // Primary sans-serif - clean, modern, professional (body text, UI)
 export const dmSans = DM_Sans({
@@ -8,10 +8,10 @@ export const dmSans = DM_Sans({
   weight: ['400', '500', '600', '700'],
 });
 
-// Display font for the public site - bold geometric sans-serif for headlines
-export const plusJakarta = Plus_Jakarta_Sans({
+// Display font for the public site - elegant serif for headlines
+export const playfair = Playfair_Display({
   subsets: ['latin'],
   variable: '--font-playfair',
   display: 'swap',
-  weight: ['400', '500', '600', '700', '800'],
+  weight: ['400', '500', '600', '700'],
 });

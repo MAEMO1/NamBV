@@ -1,4 +1,4 @@
-import { dmSans, plusJakarta } from '@/lib/fonts';
+import { dmSans, playfair } from '@/lib/fonts';
 
 export default function AdminLayout({
   children,
@@ -8,7 +8,7 @@ export default function AdminLayout({
   return (
     <html
       lang="nl"
-      className={`${dmSans.variable} ${plusJakarta.variable}`}
+      className={`${dmSans.variable} ${playfair.variable}`}
     >
       <body className="admin-body font-sans">
         <div className="admin-body-grain" aria-hidden="true" />
