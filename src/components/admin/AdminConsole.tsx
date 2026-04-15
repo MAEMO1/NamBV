@@ -31,7 +31,6 @@ import type {
   ContentSection,
   ModuleKey,
   PageOption,
-  ProjectImage,
   ProjectRecord,
   ProjectTranslation,
   QuoteRecord,
