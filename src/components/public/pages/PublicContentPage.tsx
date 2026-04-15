@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import Image from 'next/image';
-import { ArrowUpRight, Mail, MapPin, Phone } from 'lucide-react';
+import { ArrowUpRight, ChevronDown, Mail, MapPin, Phone } from 'lucide-react';
 import { getV2PageSections, getV2SettingsMap } from '@/lib/v2/public-data';
 import { getV2UiCopy, isV2Locale, type V2Locale } from '@/lib/v2/locale';
 import { Link as IntlLink } from '@/i18n/routing';
@@ -169,6 +169,8 @@ function SectionRenderer({
       return <ContactSection locale={locale} data={data} company={company} fallbackQuoteLabel={fallbackQuoteLabel} />;
     case 'cta':
       return <CtaSection locale={locale} data={data} />;
+    case 'faq':
+      return <FaqSection data={data} />;
     case 'legal':
       return <LegalSection data={data} updatedLabel={lastUpdatedLabel} recentlyLabel={lastUpdatedRecentlyLabel} />;
     default:
@@ -201,6 +203,16 @@ function FeatureListSection({
                 <div>
                   <h2 className="text-xl font-display font-bold text-noir-900">{String(item.title ?? '')}</h2>
                   <p className="mt-3 text-sm leading-7 text-noir-600">{String(item.description ?? '')}</p>
+                  {Array.isArray(item.items) && item.items.length > 0 ? (
+                    <ul className="mt-4 grid gap-2 text-sm leading-6 text-noir-600">
+                      {item.items.map((detail, detailIndex) => (
+                        <li key={detailIndex} className="flex gap-2">
+                          <span className="text-accent-700">&bull;</span>
+                          <span>{String(detail)}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
                   {typeof item.href === 'string' ? (
                     <IntlLink
                       href={item.href as '/'}
@@ -214,6 +226,33 @@ function FeatureListSection({
                 </div>
               </div>
             </div>
+          </AnimatedSection>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function FaqSection({ data }: { data: Record<string, unknown> }) {
+  const items = asItems(data.items);
+
+  return (
+    <section className="container-wide section-padding">
+      <AnimatedSection animation="fade-up">
+        <SectionHeading data={data} />
+      </AnimatedSection>
+      <div className="mt-10 grid max-w-3xl gap-3">
+        {items.map((item, index) => (
+          <AnimatedSection key={`${String(item.question ?? 'faq')}-${index}`} animation="fade-up" delay={index * 80}>
+            <details className="group rounded-2xl border border-noir-200 bg-white transition-all duration-300 hover:border-accent-600/30 hover:shadow-soft open:border-accent-600/30 open:shadow-soft-lg">
+              <summary className="flex cursor-pointer items-center justify-between gap-4 px-6 py-5 text-base font-semibold text-noir-900 marker:content-[''] [&::-webkit-details-marker]:hidden">
+                <span>{String(item.question ?? '')}</span>
+                <ChevronDown className="h-5 w-5 flex-shrink-0 text-noir-400 transition-transform duration-300 group-open:rotate-180" />
+              </summary>
+              <div className="px-6 pb-5">
+                <p className="whitespace-pre-line text-sm leading-7 text-noir-600">{String(item.answer ?? '')}</p>
+              </div>
+            </details>
           </AnimatedSection>
         ))}
       </div>

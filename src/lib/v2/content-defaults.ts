@@ -26,10 +26,10 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
   nl: {
     approach: {
       hero: {
-        eyebrow: 'Aanpak',
-        title: 'Een beheerste renovatie, van eerste gesprek tot oplevering',
+        eyebrow: 'Werkwijze',
+        title: 'Onze aanpak',
         description:
-          'We structureren elke opdracht in duidelijke stappen, met vaste communicatie, realistische planning en scherpe verantwoordelijkheid per fase.',
+          'Van eerste contact tot oplevering: een helder proces met duidelijke communicatie. Zodat u weet wat u mag verwachten en geen verrassingen tegenkomt.',
         primaryCtaLabel: 'Plan een gesprek',
         primaryCtaHref: '/afspraak',
         secondaryCtaLabel: 'Vraag een offerte aan',
@@ -37,25 +37,49 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
       },
       sections: [
         section('approach', 'steps', 'nl', 'feature-list', 1, {
-          eyebrow: 'Werkwijze',
-          title: 'Vier vaste bouwstenen',
-          description: 'Zo blijft scope, timing en uitvoering ook bij complexere renovaties controleerbaar.',
+          eyebrow: 'Stappen',
+          title: 'Het proces in 4 stappen',
+          description: 'Zo verloopt een project bij Nam Construction. Overzichtelijk en voorspelbaar.',
           items: [
             {
-              title: '1. Intake en plaatsbezoek',
-              description: 'We begrijpen eerst de woning, uw prioriteiten en de technische randvoorwaarden.',
+              title: 'Intake & Kennismaking',
+              description: 'We starten met een gratis en vrijblijvend adviesgesprek. Telefonisch, via video of bij u thuis. We luisteren naar uw wensen, bekijken de situatie en bespreken de mogelijkheden.',
+              items: [
+                'Vrijblijvend en gratis',
+                'Uw wensen en prioriteiten',
+                'Eerste inschatting haalbaarheid',
+                'Kennismaking met onze aanpak',
+              ],
             },
             {
-              title: '2. Scope en budgetkader',
-              description: 'We maken helder wat inbegrepen is, welke keuzes openstaan en waar budgetdruk ontstaat.',
+              title: 'Voorstel & Offerte',
+              description: 'Na het plaatsbezoek stellen we een gedetailleerd voorstel op. Met duidelijke scope, materiaalopties en premie-proof offerte. Geen verrassingen achteraf.',
+              items: [
+                'Gedetailleerde scope',
+                'Materiaalopties met prijzen',
+                'Premie-proof opmaak',
+                'Duidelijke planning',
+              ],
             },
             {
-              title: '3. Planning en uitvoering',
-              description: 'Werkpakketten, leveranciers en beslismomenten worden vooraf op elkaar afgestemd.',
+              title: 'Uitvoering',
+              description: 'Tijdens de uitvoering bent u altijd op de hoogte. Regelmatige updates, één aanspreekpunt en vakkundige uitvoering door ons team en vaste partners.',
+              items: [
+                'Eén vast aanspreekpunt',
+                'Regelmatige updates',
+                'Gecoördineerde planning',
+                'Kwaliteitscontrole',
+              ],
             },
             {
-              title: '4. Oplevering en nazorg',
-              description: 'We sluiten af met een gecontroleerde oplevering en een duidelijke lijst van restpunten.',
+              title: 'Oplevering & Nazorg',
+              description: 'Bij oplevering lopen we alles samen door. We zorgen voor de nodige attesten en begeleiden u bij premieaanvragen. Ook na oplevering staan we paraat.',
+              items: [
+                'Grondige oplevering',
+                'Attesten en documenten',
+                'Ondersteuning premies',
+                'Nazorg en garantie',
+              ],
             },
           ],
         }),
@@ -83,7 +107,61 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
             },
           ],
         }),
-        section('approach', 'cta', 'nl', 'cta', 3, {
+        section('approach', 'guarantees', 'nl', 'feature-list', 3, {
+          eyebrow: 'Garanties',
+          title: 'Wat u mag verwachten',
+          description: 'Onze garanties voor een zorgeloze samenwerking.',
+          items: [
+            {
+              title: 'Kwaliteitsgarantie',
+              description: 'We staan achter ons werk. Bij problemen lossen we die op, ook na oplevering.',
+            },
+            {
+              title: 'Heldere planning',
+              description: 'Duidelijke mijlpalen en realistische timing. U weet waar u aan toe bent.',
+            },
+            {
+              title: 'Eén aanspreekpunt',
+              description: 'Geen gedoe met verschillende contactpersonen. U heeft één vaste contactpersoon.',
+            },
+            {
+              title: 'Transparante prijs',
+              description: 'Gedetailleerde offerte zonder verborgen kosten. Meerwerk alleen in overleg.',
+            },
+          ],
+        }),
+        section('approach', 'faq', 'nl', 'faq', 4, {
+          eyebrow: 'FAQ',
+          title: 'Veelgestelde vragen',
+          description: 'Antwoorden op de meest voorkomende vragen over onze werkwijze.',
+          items: [
+            {
+              question: 'Hoe lang duurt het voor ik een offerte krijg?',
+              answer: 'Na het plaatsbezoek ontvangt u binnen 1 à 2 weken een gedetailleerde offerte. Voor complexere projecten kan dit iets langer duren.',
+            },
+            {
+              question: 'Werken jullie met vaste prijzen of nacalculatie?',
+              answer: 'We werken met een gedetailleerde offerte op basis van vaste prijzen. Meerwerk wordt altijd vooraf besproken en goedgekeurd.',
+            },
+            {
+              question: 'Hoe verloopt de communicatie tijdens het project?',
+              answer: 'U heeft één vast aanspreekpunt. We geven regelmatige updates (telefonisch, per mail of via WhatsApp) en zijn bereikbaar voor vragen.',
+            },
+            {
+              question: 'Wat als er iets misgaat of niet naar wens is?',
+              answer: 'We lossen problemen snel en correct op. Bij oplevering lopen we alles samen door en puntjes worden aangepakt voor finale goedkeuring.',
+            },
+            {
+              question: 'Helpen jullie met vergunningen?',
+              answer: 'We adviseren over vergunningsplicht en kunnen doorverwijzen naar architecten indien nodig. De vergunningsaanvraag zelf valt buiten onze scope.',
+            },
+            {
+              question: 'Kunnen jullie ook enkel een deel van de werken uitvoeren?',
+              answer: 'Ja, we doen ook gerichte renovaties en afwerking. Bespreek uw specifieke wensen tijdens het adviesgesprek.',
+            },
+          ],
+        }),
+        section('approach', 'cta', 'nl', 'cta', 5, {
           title: 'Wilt u eerst scherpte op planning en haalbaarheid?',
           description: 'Gebruik een eerste gesprek om scope, timing en budgetkader vroeg te structureren.',
           primaryCtaLabel: 'Plan een gesprek',
@@ -545,10 +623,10 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
   fr: {
     approach: {
       hero: {
-        eyebrow: 'Approche',
-        title: 'Une rénovation pilotée avec méthode, du premier échange à la livraison',
+        eyebrow: 'Notre processus',
+        title: 'Notre approche',
         description:
-          'Chaque mission est structurée en étapes claires avec une communication compacte, un planning réaliste et des responsabilités nettes.',
+          'Du premier contact à la livraison : un processus clair avec une communication transparente. Pour que vous sachiez à quoi vous attendre et que vous n’ayez pas de surprises.',
         primaryCtaLabel: 'Planifier un entretien',
         primaryCtaHref: '/afspraak',
         secondaryCtaLabel: 'Demander un devis',
@@ -556,14 +634,50 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
       },
       sections: [
         section('approach', 'steps', 'fr', 'feature-list', 1, {
-          eyebrow: 'Méthode',
-          title: 'Quatre repères fixes',
-          description: 'Ils permettent de garder la portée, le budget et l’exécution lisibles.',
+          eyebrow: 'Étapes',
+          title: 'Le processus en 4 étapes',
+          description: 'Comment se déroule un projet chez Nam Construction. Clair et prévisible.',
           items: [
-            { title: '1. Intake et visite', description: 'Nous cadrons d’abord le lieu, vos priorités et les contraintes techniques.' },
-            { title: '2. Périmètre et budget', description: 'Le cadre du projet et les choix ouverts sont explicités très tôt.' },
-            { title: '3. Planning et chantier', description: 'Lots, fournisseurs et moments de décision sont synchronisés.' },
-            { title: '4. Livraison et suivi', description: 'Nous clôturons par une réception contrôlée et une liste de points restants.' },
+            {
+              title: 'Prise de contact',
+              description: 'Nous commençons par une consultation gratuite et sans engagement. Par téléphone, vidéo ou chez vous. Nous écoutons vos souhaits, évaluons la situation et discutons des possibilités.',
+              items: [
+                'Gratuit et sans engagement',
+                'Vos souhaits et priorités',
+                'Première évaluation de faisabilité',
+                'Présentation de notre approche',
+              ],
+            },
+            {
+              title: 'Proposition & Devis',
+              description: 'Après la visite sur site, nous préparons une proposition détaillée. Avec une portée claire, des options de matériaux et un devis conforme aux primes. Pas de surprises par la suite.',
+              items: [
+                'Portée détaillée',
+                'Options de matériaux avec prix',
+                'Format conforme aux primes',
+                'Planning clair',
+              ],
+            },
+            {
+              title: 'Exécution',
+              description: 'Pendant l’exécution, vous êtes toujours informé. Mises à jour régulières, un interlocuteur unique et travail expert par notre équipe et partenaires de confiance.',
+              items: [
+                'Un interlocuteur fixe',
+                'Mises à jour régulières',
+                'Planning coordonné',
+                'Contrôle qualité',
+              ],
+            },
+            {
+              title: 'Livraison & Suivi',
+              description: 'À la livraison, nous passons tout en revue ensemble. Nous fournissons les certificats nécessaires et vous accompagnons pour les demandes de primes. Nous restons disponibles après la livraison.',
+              items: [
+                'Livraison approfondie',
+                'Certificats et documents',
+                'Soutien aux primes',
+                'Suivi et garantie',
+              ],
+            },
           ],
         }),
         section('approach', 'principles', 'fr', 'content', 2, {
@@ -580,7 +694,49 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
             { title: 'Responsabilité', description: 'Les décisions gardent un propriétaire clair et un effet identifiable.' },
           ],
         }),
-        section('approach', 'cta', 'fr', 'cta', 3, {
+        section('approach', 'guarantees', 'fr', 'feature-list', 3, {
+          eyebrow: 'Garanties',
+          title: 'Ce que vous pouvez attendre',
+          description: 'Nos garanties pour une collaboration sans souci.',
+          items: [
+            { title: 'Garantie qualité', description: 'Nous assumons notre travail. Nous résolvons les problèmes même après livraison.' },
+            { title: 'Planning clair', description: 'Des jalons clairs et un timing réaliste. Vous savez où vous en êtes.' },
+            { title: 'Un interlocuteur', description: 'Pas de tracas avec différents contacts. Vous avez un interlocuteur fixe.' },
+            { title: 'Prix transparent', description: 'Devis détaillé sans frais cachés. Travaux supplémentaires uniquement sur accord.' },
+          ],
+        }),
+        section('approach', 'faq', 'fr', 'faq', 4, {
+          eyebrow: 'FAQ',
+          title: 'Questions fréquentes',
+          description: 'Réponses aux questions les plus courantes sur notre approche.',
+          items: [
+            {
+              question: 'Combien de temps avant de recevoir un devis ?',
+              answer: 'Après la visite sur site, vous recevrez un devis détaillé dans 1 à 2 semaines. Pour les projets plus complexes, cela peut prendre un peu plus de temps.',
+            },
+            {
+              question: 'Travaillez-vous avec des prix fixes ou des calculs a posteriori ?',
+              answer: 'Nous travaillons avec un devis détaillé basé sur des prix fixes. Les travaux supplémentaires sont toujours discutés et approuvés à l’avance.',
+            },
+            {
+              question: 'Comment se passe la communication pendant le projet ?',
+              answer: 'Vous avez un interlocuteur fixe. Nous donnons des mises à jour régulières (par téléphone, e-mail ou WhatsApp) et sommes disponibles pour les questions.',
+            },
+            {
+              question: 'Et si quelque chose ne va pas ou n’est pas à votre goût ?',
+              answer: 'Nous résolvons les problèmes rapidement et correctement. À la livraison, nous passons tout en revue ensemble et les points sont traités avant l’approbation finale.',
+            },
+            {
+              question: 'Aidez-vous avec les permis ?',
+              answer: 'Nous conseillons sur les exigences de permis et pouvons référer à des architectes si nécessaire. La demande de permis elle-même est en dehors de notre périmètre.',
+            },
+            {
+              question: 'Pouvez-vous faire seulement une partie des travaux ?',
+              answer: 'Oui, nous faisons aussi des rénovations ciblées et des finitions. Discutez de vos besoins spécifiques lors de la consultation.',
+            },
+          ],
+        }),
+        section('approach', 'cta', 'fr', 'cta', 5, {
           title: 'Besoin d’abord de clarté sur la faisabilité ?',
           description: 'Un premier entretien permet de cadrer le projet avant d’entrer en exécution.',
           primaryCtaLabel: 'Planifier un entretien',
@@ -901,10 +1057,10 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
   en: {
     approach: {
       hero: {
-        eyebrow: 'Approach',
-        title: 'A renovation process with clear ownership from first call to handover',
+        eyebrow: 'Our Process',
+        title: 'Our Approach',
         description:
-          'We organise each project in fixed stages with a tighter information flow, realistic planning and explicit responsibility.',
+          'From first contact to delivery: a clear process with transparent communication. So you know what to expect and won’t encounter surprises.',
         primaryCtaLabel: 'Book a consultation',
         primaryCtaHref: '/afspraak',
         secondaryCtaLabel: 'Request a quote',
@@ -912,14 +1068,50 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
       },
       sections: [
         section('approach', 'steps', 'en', 'feature-list', 1, {
-          eyebrow: 'Process',
-          title: 'Four fixed stages',
-          description: 'This keeps scope, timing and delivery understandable even when the renovation grows more complex.',
+          eyebrow: 'Steps',
+          title: 'The process in 4 steps',
+          description: 'How a project works at Nam Construction. Clear and predictable.',
           items: [
-            { title: '1. Intake and site visit', description: 'We start by understanding the building, your priorities and the technical constraints.' },
-            { title: '2. Scope and budget frame', description: 'Inclusions, open choices and budget pressure points are made explicit early.' },
-            { title: '3. Planning and delivery', description: 'Work packages, suppliers and decision moments are aligned before execution.' },
-            { title: '4. Handover and follow-up', description: 'We close with a controlled handover and a visible list of remaining points.' },
+            {
+              title: 'Intake & Introduction',
+              description: 'We start with a free, no-obligation consultation. By phone, video, or at your home. We listen to your wishes, assess the situation, and discuss the possibilities.',
+              items: [
+                'Free and no-obligation',
+                'Your wishes and priorities',
+                'Initial feasibility assessment',
+                'Introduction to our approach',
+              ],
+            },
+            {
+              title: 'Proposal & Quote',
+              description: 'After the site visit, we prepare a detailed proposal. With clear scope, material options, and subsidy-ready quote. No surprises afterwards.',
+              items: [
+                'Detailed scope',
+                'Material options with prices',
+                'Subsidy-ready format',
+                'Clear planning',
+              ],
+            },
+            {
+              title: 'Execution',
+              description: 'During execution, you’re always informed. Regular updates, one point of contact, and expert work by our team and trusted partners.',
+              items: [
+                'One fixed contact person',
+                'Regular updates',
+                'Coordinated planning',
+                'Quality control',
+              ],
+            },
+            {
+              title: 'Delivery & Aftercare',
+              description: 'At delivery, we go through everything together. We provide the necessary certificates and guide you with subsidy applications. We’re available even after delivery.',
+              items: [
+                'Thorough delivery',
+                'Certificates and documents',
+                'Subsidy support',
+                'Aftercare and warranty',
+              ],
+            },
           ],
         }),
         section('approach', 'principles', 'en', 'content', 2, {
@@ -935,6 +1127,54 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
             { title: 'Pragmatic', description: 'We choose solutions that are technically sound and actually buildable.' },
             { title: 'Accountable', description: 'Every relevant decision keeps a visible owner and impact.' },
           ],
+        }),
+        section('approach', 'guarantees', 'en', 'feature-list', 3, {
+          eyebrow: 'Guarantees',
+          title: 'What you can expect',
+          description: 'Our guarantees for a worry-free collaboration.',
+          items: [
+            { title: 'Quality guarantee', description: 'We stand behind our work. We solve problems even after delivery.' },
+            { title: 'Clear planning', description: 'Clear milestones and realistic timing. You know where you stand.' },
+            { title: 'One contact person', description: 'No hassle with different contacts. You have one fixed contact person.' },
+            { title: 'Transparent pricing', description: 'Detailed quote without hidden costs. Additional work only by agreement.' },
+          ],
+        }),
+        section('approach', 'faq', 'en', 'faq', 4, {
+          eyebrow: 'FAQ',
+          title: 'Frequently asked questions',
+          description: 'Answers to the most common questions about our approach.',
+          items: [
+            {
+              question: 'How long until I receive a quote?',
+              answer: 'After the site visit, you will receive a detailed quote within 1 to 2 weeks. For more complex projects, this may take a bit longer.',
+            },
+            {
+              question: 'Do you work with fixed prices or post-calculation?',
+              answer: 'We work with a detailed quote based on fixed prices. Additional work is always discussed and approved in advance.',
+            },
+            {
+              question: 'How does communication work during the project?',
+              answer: 'You have one fixed contact person. We provide regular updates (by phone, email, or WhatsApp) and are available for questions.',
+            },
+            {
+              question: 'What if something goes wrong or is not to your liking?',
+              answer: 'We solve problems quickly and correctly. At delivery, we go through everything together and issues are addressed before final approval.',
+            },
+            {
+              question: 'Do you help with permits?',
+              answer: 'We advise on permit requirements and can refer to architects if needed. The permit application itself is outside our scope.',
+            },
+            {
+              question: 'Can you also do just part of the work?',
+              answer: 'Yes, we also do targeted renovations and finishing. Discuss your specific needs during the consultation.',
+            },
+          ],
+        }),
+        section('approach', 'cta', 'en', 'cta', 5, {
+          title: 'Need clarity on feasibility first?',
+          description: 'Use a first consultation to structure scope, timing and budget before execution starts.',
+          primaryCtaLabel: 'Book a consultation',
+          primaryCtaHref: '/afspraak',
         }),
       ],
     },

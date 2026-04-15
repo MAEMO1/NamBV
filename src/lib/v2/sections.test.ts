@@ -54,3 +54,44 @@ test('getAdminV2Sections exposes preview metadata and stored/default origin flag
   assert.equal(hero?.isDefault, true);
   assert.equal(hero?.hasStoredValue, false);
 });
+
+test('legacy approach CTA overrides are normalized to the new display order', () => {
+  const defaults = defaultPageSections.filter((section) => section.pageKey === 'approach' && section.locale === 'nl');
+
+  const published = getPublishedV2Sections(defaults, [
+    {
+      id: 'legacy-approach-cta',
+      pageKey: 'approach',
+      sectionKey: 'cta',
+      locale: 'nl',
+      schemaKey: 'cta',
+      dataJson: { title: 'Stored CTA' },
+      displayOrder: 3,
+      published: true,
+    },
+  ]);
+
+  const ctas = published.filter((section) => section.sectionKey === 'cta');
+
+  assert.equal(ctas.length, 1);
+  assert.equal(ctas[0]?.displayOrder, 5);
+  assert.deepEqual(ctas[0]?.dataJson, { title: 'Stored CTA' });
+
+  const adminSections = getAdminV2Sections([
+    {
+      id: 'legacy-approach-cta',
+      pageKey: 'approach',
+      sectionKey: 'cta',
+      locale: 'nl',
+      schemaKey: 'cta',
+      dataJson: { title: 'Stored CTA' },
+      displayOrder: 3,
+      published: true,
+    },
+  ]);
+
+  const adminCta = adminSections.find((section) => section.id === 'legacy-approach-cta');
+
+  assert.equal(adminCta?.displayOrder, 5);
+  assert.equal(adminCta?.hasStoredValue, true);
+});

@@ -45,7 +45,7 @@ export type AppointmentRecord = {
   createdAt: string;
 };
 
-export type ContentSchemaKey = 'hero' | 'feature-list' | 'content' | 'contact' | 'cta' | 'legal';
+export type ContentSchemaKey = 'hero' | 'feature-list' | 'content' | 'contact' | 'cta' | 'faq' | 'legal';
 
 export type Locale = 'nl' | 'fr' | 'en';
 
@@ -163,6 +163,7 @@ export const contentSchemaOptions: ReadonlyArray<{ value: ContentSchemaKey; labe
   { value: 'content', label: 'Content' },
   { value: 'contact', label: 'Contact' },
   { value: 'cta', label: 'CTA' },
+  { value: 'faq', label: 'FAQ' },
   { value: 'legal', label: 'Legal' },
 ];
 

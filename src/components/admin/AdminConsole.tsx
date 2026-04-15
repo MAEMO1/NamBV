@@ -1092,6 +1092,7 @@ function ContentSchemaFields({
               fields={[
                 { key: 'title', label: 'Titel' },
                 { key: 'description', label: 'Beschrijving', multiline: true },
+                { key: 'items', label: 'Bullets (1 per regel)', multiline: true, isStringList: true },
                 { key: 'href', label: 'Href' },
                 { key: 'ctaLabel', label: 'CTA label' },
               ]}
@@ -1167,6 +1168,27 @@ function ContentSchemaFields({
               onLabelChange={(value) => updateDraftField('primaryCtaLabel', value)}
               hrefValue={ensureString(draft.dataJson.primaryCtaHref)}
               onHrefChange={(value) => updateDraftField('primaryCtaHref', value)}
+            />
+          </FieldGroupBlock>
+        </>
+      );
+    case 'faq':
+      return (
+        <>
+          <FieldGroupBlock label="Kop" hint="FAQ header">
+            <LabeledInput label="Eyebrow" value={ensureString(draft.dataJson.eyebrow)} onChange={(value) => updateDraftField('eyebrow', value)} />
+            <LabeledInput label="Titel" value={ensureString(draft.dataJson.title)} onChange={(value) => updateDraftField('title', value)} />
+            <LabeledTextarea label="Beschrijving" value={ensureString(draft.dataJson.description)} onChange={(value) => updateDraftField('description', value)} rows={3} />
+          </FieldGroupBlock>
+          <FieldGroupBlock label="Vragen" hint="Accordion items">
+            <ItemListEditor
+              label=""
+              items={ensureItemArray(draft.dataJson.items)}
+              onChange={(items) => updateDraftField('items', items)}
+              fields={[
+                { key: 'question', label: 'Vraag' },
+                { key: 'answer', label: 'Antwoord', multiline: true },
+              ]}
             />
           </FieldGroupBlock>
         </>

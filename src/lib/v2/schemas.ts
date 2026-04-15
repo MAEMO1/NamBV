@@ -114,7 +114,7 @@ export const v2AppointmentUpdateSchema = z.object({
   proposedTime: z.string().regex(/^\d{2}:\d{2}$/).nullable().optional(),
 });
 
-export const V2_ADMIN_CONTENT_SCHEMA_KEYS = ['hero', 'feature-list', 'content', 'contact', 'cta', 'legal'] as const;
+export const V2_ADMIN_CONTENT_SCHEMA_KEYS = ['hero', 'feature-list', 'content', 'contact', 'cta', 'faq', 'legal'] as const;
 
 export const v2AdminContentSchemaKeySchema = z.enum(V2_ADMIN_CONTENT_SCHEMA_KEYS);
 
@@ -169,6 +169,16 @@ const ctaSectionDataSchema = z.object({
   primaryCtaHref: z.string().optional(),
 }).passthrough();
 
+const faqSectionDataSchema = z.object({
+  eyebrow: z.string().optional(),
+  title: z.string().optional(),
+  description: z.string().optional(),
+  items: z.array(z.object({
+    question: z.string().min(1),
+    answer: z.string().min(1),
+  })).default([]),
+}).passthrough();
+
 const legalSectionDataSchema = z.object({
   updatedAt: z.string().optional(),
   introduction: z.string().optional(),
@@ -187,6 +197,8 @@ function getV2AdminContentDataSchema(schemaKey: z.infer<typeof v2AdminContentSch
       return contactSectionDataSchema;
     case 'cta':
       return ctaSectionDataSchema;
+    case 'faq':
+      return faqSectionDataSchema;
     case 'legal':
       return legalSectionDataSchema;
   }

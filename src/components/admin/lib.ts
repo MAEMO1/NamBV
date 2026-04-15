@@ -96,6 +96,13 @@ export function createEmptySectionData(schemaKey: ContentSchemaKey): Record<stri
         primaryCtaLabel: '',
         primaryCtaHref: '',
       };
+    case 'faq':
+      return {
+        eyebrow: '',
+        title: '',
+        description: '',
+        items: [],
+      };
     case 'legal':
       return {
         updatedAt: '',
