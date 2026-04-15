@@ -206,7 +206,7 @@ export async function createV2Appointment(input: V2AppointmentCreateInput) {
           municipality: input.gemeente,
           appointmentDate,
           appointmentTime: input.selectedTime,
-          projectType: input.projectType || null,
+          projectType: input.projectTypeId || null,
           propertyType: input.propertyType || null,
           propertyAge: input.propertyAge || null,
           priorities: input.priorities,
@@ -232,6 +232,7 @@ export async function createV2Appointment(input: V2AppointmentCreateInput) {
       referenceNumber: appointment.referenceNumber,
       selectedDate: input.selectedDate,
       selectedTime: input.selectedTime,
+      projectTypeId: input.projectTypeId || null,
     },
   });
 

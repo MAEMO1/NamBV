@@ -33,3 +33,34 @@ test('v2AppointmentCreateSchema rejects invalid phone numbers', () => {
     });
   });
 });
+
+test('v2AppointmentCreateSchema normalizes a localized project type label to a canonical id', () => {
+  const payload = v2AppointmentCreateSchema.parse({
+    locale: 'fr',
+    name: 'Test User',
+    email: 'test@example.com',
+    phone: '0493123456',
+    gemeente: 'Gent',
+    selectedDate: '2026-05-01',
+    selectedTime: '09:00',
+    projectType: 'Rénovation & transformation',
+  });
+
+  assert.equal(payload.locale, 'fr');
+  assert.equal(payload.projectTypeId, 'renovatie');
+});
+
+test('v2AppointmentCreateSchema rejects unknown project type ids', () => {
+  assert.throws(() => {
+    v2AppointmentCreateSchema.parse({
+      locale: 'nl',
+      name: 'Test User',
+      email: 'test@example.com',
+      phone: '0493123456',
+      gemeente: 'Gent',
+      selectedDate: '2026-05-01',
+      selectedTime: '09:00',
+      projectTypeId: 'keuken',
+    });
+  });
+});

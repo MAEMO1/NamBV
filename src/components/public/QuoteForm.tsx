@@ -5,6 +5,7 @@ import { ArrowRight, Check, CheckCircle2, Loader2 } from 'lucide-react';
 import { trackV2Conversion } from './MarketingAnalytics';
 import type { V2Locale } from '@/lib/v2/locale';
 import { getV2UiCopy } from '@/lib/v2/locale';
+import { getTopServiceIdForQuoteServiceSlug, type TopServiceId } from '@/lib/v2/services';
 
 type FormOption = { id: string; name: string; slug: string; icon?: string | null };
 
@@ -52,6 +53,21 @@ export default function V2QuoteForm({
     ],
     [locale],
   );
+
+  const groupedServices = useMemo(() => {
+    const groups = new Map<TopServiceId, FormOption[]>(
+      qc.serviceCategories.map((category) => [category.id, []]),
+    );
+
+    for (const service of serviceTypes) {
+      const categoryId = getTopServiceIdForQuoteServiceSlug(service.slug) ?? 'anders';
+      const current = groups.get(categoryId) ?? [];
+      current.push(service);
+      groups.set(categoryId, current);
+    }
+
+    return groups;
+  }, [qc.serviceCategories, serviceTypes]);
 
   const updateField = (key: keyof typeof formData, value: string | boolean | string[]) => {
     setFormData((current) => ({ ...current, [key]: value }));
@@ -203,12 +219,10 @@ export default function V2QuoteForm({
           <p className="mt-8 text-sm font-medium text-noir-500">{qc.fields.serviceTypeIds}</p>
           <div className="mt-3 space-y-5">
             {qc.serviceCategories.map((category) => {
-              const categoryServices = category.services
-                .map((slug) => serviceTypes.find((s) => s.slug === slug))
-                .filter(Boolean) as FormOption[];
+              const categoryServices = groupedServices.get(category.id) ?? [];
               if (categoryServices.length === 0) return null;
               return (
-                <div key={category.slug}>
+                <div key={category.id}>
                   <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-noir-300">{category.label}</p>
                   <div className="flex flex-wrap gap-2">
                     {categoryServices.map((service) => {
