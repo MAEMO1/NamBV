@@ -1,4 +1,4 @@
-import { dmSans, playfair } from '@/lib/fonts';
+import { fraunces, geist, geistMono } from '@/lib/fonts';
 
 export default function AdminLayout({
   children,
@@ -8,10 +8,9 @@ export default function AdminLayout({
   return (
     <html
       lang="nl"
-      className={`${dmSans.variable} ${playfair.variable}`}
+      className={`${geist.variable} ${geistMono.variable} ${fraunces.variable}`}
     >
       <body className="admin-body font-sans">
-        <div className="admin-body-grain" aria-hidden="true" />
         {children}
       </body>
     </html>

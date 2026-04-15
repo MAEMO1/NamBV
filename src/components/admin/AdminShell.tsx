@@ -1,10 +1,8 @@
 'use client';
 
-import { ChevronDown, LogOut, Menu, X } from 'lucide-react';
+import { LogOut, Menu, X } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useEffect, useRef, useState } from 'react';
-
-import Logo from '@/components/Logo';
 
 import { moduleIcons, moduleLabels } from './icons';
 import type { ModuleKey } from './types';
@@ -20,10 +18,12 @@ type AdminShellProps = {
   activeModule: ModuleKey;
   onChangeModule: (key: ModuleKey) => void;
   onSignOut: () => void;
+  /** When false, the main area is rendered flush to the edges (for modules that manage their own chrome/topbar). */
+  padded?: boolean;
   children: ReactNode;
 };
 
-// Group modules into two logical sections, Voyage-style
+// Group modules into two logical sections
 const moduleGroups: Array<{ label: string; keys: ModuleKey[] }> = [
   {
     label: 'Werk',
@@ -35,12 +35,20 @@ const moduleGroups: Array<{ label: string; keys: ModuleKey[] }> = [
   },
 ];
 
+function avatarInitials(name: string) {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return '•';
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
 export default function AdminShell({
   adminName,
   modules,
   activeModule,
   onChangeModule,
   onSignOut,
+  padded = true,
   children,
 }: AdminShellProps) {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -78,49 +86,25 @@ export default function AdminShell({
   }
 
   const moduleCountMap = new Map(modules.map((module) => [module.key, module.count]));
+  const initials = avatarInitials(adminName);
 
   return (
     <div className="admin-shell">
-      {/* Top bar */}
-      <header className="sticky top-0 z-30 border-b border-slate-200 bg-white lg:static">
-        <div className="flex items-center gap-3 px-4 py-2.5 sm:px-6 lg:px-8">
-          <button
-            type="button"
-            onClick={() => setDrawerOpen(true)}
-            className="inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 lg:hidden"
-            aria-label="Open menu"
-          >
-            <Menu size={18} strokeWidth={2} />
-          </button>
-
-          <div className="flex items-center gap-2 lg:hidden">
-            <Logo variant="icon" className="h-6 w-6" />
-            <span className="text-sm font-semibold text-slate-900">Nam Construction</span>
-          </div>
-
-          <div className="ml-auto flex items-center gap-2">
-            <button
-              type="button"
-              className="hidden items-center gap-2 rounded-md px-2.5 py-1.5 text-sm font-medium text-slate-700 transition hover:bg-slate-100 sm:inline-flex"
-              aria-label="Gebruikersmenu"
-            >
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 text-[10px] font-semibold uppercase text-white">
-                {adminName.charAt(0)}
-              </span>
-              <span className="max-w-[160px] truncate text-slate-800">{adminName}</span>
-              <ChevronDown size={14} strokeWidth={2} className="text-slate-500" />
-            </button>
-            <button
-              type="button"
-              onClick={onSignOut}
-              className="inline-flex items-center gap-1.5 rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-slate-50"
-              aria-label="Uitloggen"
-            >
-              <LogOut size={13} strokeWidth={2} />
-              <span className="hidden sm:inline">Uitloggen</span>
-            </button>
-          </div>
-        </div>
+      {/* Mobile-only top bar — hamburger + brand. Desktop uses sidebar only. */}
+      <header
+        className="sticky top-0 z-30 flex items-center gap-3 border-b px-4 py-2.5 lg:hidden"
+        style={{ background: 'var(--adm-bone-2)', borderColor: 'var(--adm-rule)' }}
+      >
+        <button
+          type="button"
+          onClick={() => setDrawerOpen(true)}
+          className="inline-flex h-8 w-8 items-center justify-center rounded-md transition"
+          style={{ color: 'var(--adm-graphite)' }}
+          aria-label="Open menu"
+        >
+          <Menu size={18} strokeWidth={2} />
+        </button>
+        <BrandMark />
       </header>
 
       {/* Mobile drawer */}
@@ -130,7 +114,8 @@ export default function AdminShell({
             type="button"
             aria-label="Sluit menu"
             onClick={() => setDrawerOpen(false)}
-            className="fixed inset-0 z-40 bg-slate-900/30 backdrop-blur-sm"
+            className="fixed inset-0 z-40 backdrop-blur-sm"
+            style={{ background: 'rgba(15, 13, 9, 0.35)' }}
           />
           <aside
             ref={drawerRef}
@@ -138,17 +123,19 @@ export default function AdminShell({
             aria-modal="true"
             aria-label="Admin navigatie"
             tabIndex={-1}
-            className="fixed inset-y-0 left-0 z-50 flex w-[82vw] max-w-xs flex-col border-r border-slate-200 bg-slate-50 outline-none"
+            className="fixed inset-y-0 left-0 z-50 flex w-[82vw] max-w-xs flex-col border-r outline-none"
+            style={{ background: 'var(--adm-bone-2)', borderColor: 'var(--adm-rule)' }}
           >
-            <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
-              <div className="flex items-center gap-2">
-                <Logo variant="icon" className="h-6 w-6" />
-                <span className="text-sm font-semibold text-slate-900">Nam Construction</span>
-              </div>
+            <div
+              className="flex items-center justify-between border-b px-4 py-3"
+              style={{ borderColor: 'var(--adm-rule)' }}
+            >
+              <BrandMark />
               <button
                 type="button"
                 onClick={() => setDrawerOpen(false)}
-                className="inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
+                className="inline-flex h-8 w-8 items-center justify-center rounded-md transition"
+                style={{ color: 'var(--adm-graphite)' }}
                 aria-label="Sluit menu"
               >
                 <X size={16} strokeWidth={2} />
@@ -161,21 +148,27 @@ export default function AdminShell({
                 onSelect={handleSelect}
               />
             </nav>
+            <SidebarFoot adminName={adminName} initials={initials} onSignOut={onSignOut} />
           </aside>
         </div>
       ) : null}
 
       {/* Main layout */}
-      <div className="grid lg:grid-cols-[220px_1fr]">
+      <div className="grid lg:grid-cols-[216px_1fr]">
         {/* Desktop sidebar */}
-        <aside className="hidden border-r border-slate-200 bg-slate-50 lg:block">
+        <aside
+          className="hidden border-r lg:block"
+          style={{ background: 'var(--adm-bone-2)', borderColor: 'var(--adm-rule)' }}
+        >
           <div className="sticky top-0 flex h-screen flex-col">
-            <div className="flex items-center gap-2 border-b border-slate-200 px-4 py-3">
-              <Logo variant="icon" className="h-6 w-6" />
-              <span className="text-sm font-semibold text-slate-900">Nam Construction</span>
+            <div
+              className="flex items-baseline gap-2 border-b px-5 py-4"
+              style={{ borderColor: 'var(--adm-rule)' }}
+            >
+              <BrandMark />
             </div>
 
-            <nav className="flex-1 overflow-y-auto px-3 py-4">
+            <nav className="flex-1 overflow-y-auto px-3.5 py-4">
               <ModuleNav
                 moduleCountMap={moduleCountMap}
                 activeModule={activeModule}
@@ -183,17 +176,113 @@ export default function AdminShell({
               />
             </nav>
 
-            <div className="border-t border-slate-200 px-4 py-3">
-              <p className="text-[10px] font-medium uppercase tracking-wider text-slate-500">
-                Ingelogd
-              </p>
-              <p className="mt-0.5 truncate text-xs font-medium text-slate-800">{adminName}</p>
-            </div>
+            <SidebarFoot adminName={adminName} initials={initials} onSignOut={onSignOut} />
           </div>
         </aside>
 
         {/* Content body */}
-        <main className="min-w-0 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">{children}</main>
+        <main
+          className={`min-w-0 ${padded ? 'px-4 py-6 sm:px-6 lg:px-8 lg:py-8' : ''}`}
+          style={{ minHeight: 'calc(100vh)', background: 'var(--adm-bone)' }}
+        >
+          {children}
+        </main>
+      </div>
+    </div>
+  );
+}
+
+function BrandMark() {
+  return (
+    <span className="flex items-baseline gap-2">
+      <span
+        style={{
+          fontFamily: 'var(--adm-display)',
+          fontStyle: 'italic',
+          fontWeight: 500,
+          fontSize: 22,
+          letterSpacing: '-0.02em',
+          lineHeight: 1,
+          color: 'var(--adm-ink)',
+        }}
+      >
+        Nam<span style={{ color: 'var(--adm-terra)' }}>.</span>
+      </span>
+      <span
+        style={{
+          fontFamily: 'var(--adm-mono)',
+          fontSize: 9.5,
+          letterSpacing: '0.14em',
+          textTransform: 'uppercase',
+          color: 'var(--adm-stone)',
+          transform: 'translateY(-1px)',
+        }}
+      >
+        Studio · v2
+      </span>
+    </span>
+  );
+}
+
+function SidebarFoot({
+  adminName,
+  initials,
+  onSignOut,
+}: {
+  adminName: string;
+  initials: string;
+  onSignOut: () => void;
+}) {
+  return (
+    <div className="border-t px-3.5 py-3" style={{ borderColor: 'var(--adm-rule)' }}>
+      <div className="flex items-center gap-2.5 px-1.5 py-1">
+        <span
+          className="flex h-7 w-7 items-center justify-center rounded-full text-[11px] font-medium"
+          style={{
+            background: 'var(--adm-ink)',
+            color: 'var(--adm-paper)',
+            fontFamily: 'var(--adm-display)',
+          }}
+        >
+          {initials}
+        </span>
+        <div className="flex min-w-0 flex-col leading-tight">
+          <span
+            className="truncate"
+            style={{ fontSize: 12.5, color: 'var(--adm-ink)', fontWeight: 500 }}
+          >
+            {adminName}
+          </span>
+          <span
+            style={{
+              fontFamily: 'var(--adm-mono)',
+              fontSize: 10,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              color: 'var(--adm-stone)',
+            }}
+          >
+            Eigenaar
+          </span>
+        </div>
+        <button
+          type="button"
+          onClick={onSignOut}
+          className="ml-auto inline-flex h-7 w-7 items-center justify-center rounded-md transition"
+          style={{ color: 'var(--adm-stone)' }}
+          aria-label="Uitloggen"
+          title="Uitloggen"
+          onMouseOver={(event) => {
+            event.currentTarget.style.color = 'var(--adm-terra)';
+            event.currentTarget.style.background = 'var(--adm-terra-tint)';
+          }}
+          onMouseOut={(event) => {
+            event.currentTarget.style.color = 'var(--adm-stone)';
+            event.currentTarget.style.background = 'transparent';
+          }}
+        >
+          <LogOut size={14} strokeWidth={1.8} />
+        </button>
       </div>
     </div>
   );
@@ -209,10 +298,19 @@ function ModuleNav({
   onSelect: (key: ModuleKey) => void;
 }) {
   return (
-    <div className="grid gap-5">
+    <div className="grid gap-4">
       {moduleGroups.map((group) => (
         <div key={group.label}>
-          <p className="mb-1.5 px-2.5 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+          <p
+            className="mb-1.5 px-2.5"
+            style={{
+              fontFamily: 'var(--adm-mono)',
+              fontSize: 9.5,
+              letterSpacing: '0.22em',
+              textTransform: 'uppercase',
+              color: 'var(--adm-stone-2)',
+            }}
+          >
             {group.label}
           </p>
           <ul className="grid gap-0.5">
@@ -226,25 +324,25 @@ function ModuleNav({
                     type="button"
                     onClick={() => onSelect(key)}
                     aria-current={isActive ? 'page' : undefined}
-                    className={`group relative flex w-full items-center gap-2.5 rounded-md px-2.5 py-1.5 text-[13px] font-medium transition-colors duration-150 ${
-                      isActive
-                        ? 'bg-white text-slate-900 shadow-[0_1px_2px_rgba(15,23,42,0.04)] ring-1 ring-slate-200'
-                        : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
-                    }`}
+                    className={`admin-nav-item ${isActive ? 'admin-nav-item-active' : ''}`}
                   >
-                    <Icon
-                      size={15}
-                      strokeWidth={1.75}
-                      className={isActive ? 'text-slate-900' : 'text-slate-500 group-hover:text-slate-700'}
-                    />
-                    <span className="flex-1 truncate text-left">{moduleLabels[key]}</span>
+                    <span className="flex items-center gap-2.5">
+                      <Icon
+                        size={15}
+                        strokeWidth={1.6}
+                        style={{ color: isActive ? 'var(--adm-terra)' : 'var(--adm-stone)' }}
+                      />
+                      <span className="truncate">{moduleLabels[key]}</span>
+                    </span>
                     {typeof count === 'number' && count > 0 ? (
                       <span
-                        className={`admin-numeric rounded px-1.5 py-px text-[10px] font-semibold ${
-                          isActive
-                            ? 'bg-slate-900 text-white'
-                            : 'bg-slate-200 text-slate-700'
-                        }`}
+                        className="admin-numeric"
+                        style={{
+                          fontFamily: 'var(--adm-mono)',
+                          fontSize: 10.5,
+                          color: 'var(--adm-stone)',
+                          letterSpacing: '0.02em',
+                        }}
                       >
                         {count}
                       </span>
