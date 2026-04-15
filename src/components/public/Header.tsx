@@ -154,7 +154,7 @@ export default function V2Header({
 
         <div className="relative h-full flex flex-col pt-32 pb-8 px-8">
           {/* Navigation Links */}
-          <nav className="flex-1 flex flex-col justify-center -mt-20">
+          <nav className="flex-1 flex flex-col justify-center">
             {navigation.map((item, index) => {
               const isActive = pathname === item.href;
               return (
