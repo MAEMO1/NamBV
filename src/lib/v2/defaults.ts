@@ -213,20 +213,20 @@ const localizedCta = {
   nl: {
     title: 'Klaar om te beginnen?',
     description: 'Neem contact op voor een vrijblijvend adviesgesprek. Wij denken graag met u mee.',
-    primaryCtaLabel: 'Start uw project',
-    primaryCtaHref: '/afspraak',
+    primaryCtaLabel: 'Vraag een offerte aan',
+    primaryCtaHref: '/offerte',
   },
   fr: {
     title: 'Pr\u00eat \u00e0 commencer ?',
     description: 'Contactez-nous pour une consultation gratuite. Nous r\u00e9fl\u00e9chissons avec vous.',
-    primaryCtaLabel: 'Lancez votre projet',
-    primaryCtaHref: '/afspraak',
+    primaryCtaLabel: 'Demandez un devis',
+    primaryCtaHref: '/offerte',
   },
   en: {
     title: 'Ready to start?',
     description: 'Contact us for a free consultation. We\u2019re happy to think along with you.',
-    primaryCtaLabel: 'Start your project',
-    primaryCtaHref: '/afspraak',
+    primaryCtaLabel: 'Request a quote',
+    primaryCtaHref: '/offerte',
   },
 } satisfies Record<V2Locale, Record<string, string>>;
 
