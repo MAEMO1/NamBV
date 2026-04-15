@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { Prisma } from '@prisma/client';
 import { ZodError } from 'zod';
-import { db } from '@/lib/db';
 import { captureRouteException } from '@/lib/monitoring';
-import { updateV2Quote } from '@/lib/v2/mutations';
+import { deleteV2Quote, updateV2Quote } from '@/lib/v2/mutations';
 import { requireV2AdminRequest, zodErrorResponse } from '@/lib/v2/request';
 import { v2QuoteUpdateSchema } from '@/lib/v2/schemas';
 
@@ -33,6 +33,10 @@ export async function PATCH(
       return zodErrorResponse(error);
     }
 
+    if (error instanceof Error && error.message === 'quote_not_found') {
+      return NextResponse.json({ error: 'Quote not found' }, { status: 404 });
+    }
+
     captureRouteException(error, {
       action: 'admin.quote.patch',
       route: '/api/admin/quotes/[id]',
@@ -50,7 +54,23 @@ export async function DELETE(
     return auth.response;
   }
 
-  const { id } = await params;
-  await db.v2QuoteRequest.delete({ where: { id } });
-  return NextResponse.json({ success: true });
+  try {
+    const { id } = await params;
+    await deleteV2Quote(id, auth.user?.id);
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    if (error instanceof Error && error.message === 'quote_not_found') {
+      return NextResponse.json({ error: 'Quote not found' }, { status: 404 });
+    }
+
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+      return NextResponse.json({ error: 'Quote not found' }, { status: 404 });
+    }
+
+    captureRouteException(error, {
+      action: 'admin.quote.delete',
+      route: '/api/admin/quotes/[id]',
+    });
+    return NextResponse.json({ error: 'Quote delete failed' }, { status: 500 });
+  }
 }

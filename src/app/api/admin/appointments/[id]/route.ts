@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Prisma } from '@prisma/client';
 import { ZodError } from 'zod';
-import { db } from '@/lib/db';
 import { captureRouteException } from '@/lib/monitoring';
-import { updateV2Appointment } from '@/lib/v2/mutations';
+import { deleteV2Appointment, updateV2Appointment } from '@/lib/v2/mutations';
 import { requireV2AdminRequest, zodErrorResponse } from '@/lib/v2/request';
 import { v2AppointmentUpdateSchema } from '@/lib/v2/schemas';
 
@@ -65,7 +64,23 @@ export async function DELETE(
     return auth.response;
   }
 
-  const { id } = await params;
-  await db.v2Appointment.delete({ where: { id } });
-  return NextResponse.json({ success: true });
+  try {
+    const { id } = await params;
+    await deleteV2Appointment(id, auth.user?.id);
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    if (error instanceof Error && error.message === 'appointment_not_found') {
+      return NextResponse.json({ error: 'Appointment not found' }, { status: 404 });
+    }
+
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+      return NextResponse.json({ error: 'Appointment not found' }, { status: 404 });
+    }
+
+    captureRouteException(error, {
+      action: 'admin.appointment.delete',
+      route: '/api/admin/appointments/[id]',
+    });
+    return NextResponse.json({ error: 'Appointment delete failed' }, { status: 500 });
+  }
 }
