@@ -26,11 +26,11 @@ function normalizeLegacySection<T extends V2SectionRecord>(section: T): T {
   if (
     section.pageKey === 'approach'
     && section.sectionKey === 'cta'
-    && section.displayOrder === 3
+    && (section.displayOrder === 3 || section.displayOrder === 5)
   ) {
     return {
       ...section,
-      displayOrder: 5,
+      displayOrder: 6,
     };
   }
 

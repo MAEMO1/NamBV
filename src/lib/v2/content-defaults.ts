@@ -83,7 +83,32 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
             },
           ],
         }),
-        section('approach', 'principles', 'nl', 'content', 2, {
+        section('approach', 'value-highlights', 'nl', 'feature-list', 2, {
+          eyebrow: 'Waarden',
+          title: 'Meer dan planning alleen',
+          description: 'Nog voor de uitvoering start, nemen we ook premiepotentieel, attestering en hergebruik mee in de aanpak.',
+          items: [
+            {
+              title: 'Premies & subsidies',
+              description: 'Premie-proof offertes, juiste documenten en begeleiding zodat subsidiemogelijkheden niet pas achteraf opduiken.',
+              href: '/waarden/subsidies',
+              ctaLabel: 'Bekijk subsidie-ondersteuning',
+            },
+            {
+              title: 'Hergebruik materiaal',
+              description: 'Waar het technisch en esthetisch klopt, bekijken we wat behouden of recupereren zinvol maakt.',
+              href: '/waarden/hergebruik',
+              ctaLabel: 'Ontdek onze circulaire aanpak',
+            },
+            {
+              title: 'Attestering',
+              description: 'AREI-, EPB- en andere vereiste attesten worden vroeg mee bekeken zodat oplevering en premieaanvraag vlot blijven lopen.',
+              href: '/waarden/attestering',
+              ctaLabel: 'Bekijk attestering',
+            },
+          ],
+        }),
+        section('approach', 'principles', 'nl', 'content', 3, {
           eyebrow: 'Principes',
           title: 'Wat u van ons mag verwachten',
           description:
@@ -107,7 +132,7 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
             },
           ],
         }),
-        section('approach', 'guarantees', 'nl', 'feature-list', 3, {
+        section('approach', 'guarantees', 'nl', 'feature-list', 4, {
           eyebrow: 'Garanties',
           title: 'Wat u mag verwachten',
           description: 'Onze garanties voor een zorgeloze samenwerking.',
@@ -130,7 +155,7 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
             },
           ],
         }),
-        section('approach', 'faq', 'nl', 'faq', 4, {
+        section('approach', 'faq', 'nl', 'faq', 5, {
           eyebrow: 'FAQ',
           title: 'Veelgestelde vragen',
           description: 'Antwoorden op de meest voorkomende vragen over onze werkwijze.',
@@ -161,7 +186,7 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
             },
           ],
         }),
-        section('approach', 'cta', 'nl', 'cta', 5, {
+        section('approach', 'cta', 'nl', 'cta', 6, {
           title: 'Wilt u eerst scherpte op planning en haalbaarheid?',
           description: 'Gebruik een eerste gesprek om scope, timing en budgetkader vroeg te structureren.',
           primaryCtaLabel: 'Plan een gesprek',
@@ -680,7 +705,32 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
             },
           ],
         }),
-        section('approach', 'principles', 'fr', 'content', 2, {
+        section('approach', 'value-highlights', 'fr', 'feature-list', 2, {
+          eyebrow: 'Valeurs',
+          title: 'Plus qu’un simple planning',
+          description: 'Avant même le lancement du chantier, nous intégrons aussi primes, certification et réutilisation dans la méthode.',
+          items: [
+            {
+              title: 'Primes & subsides',
+              description: 'Devis conformes, bons documents et accompagnement pour intégrer les aides dès le cadrage du projet.',
+              href: '/waarden/subsidies',
+              ctaLabel: 'Voir l’aide aux subsides',
+            },
+            {
+              title: 'Réutilisation des matériaux',
+              description: 'Lorsque c’est pertinent techniquement et esthétiquement, nous analysons ce qui peut être conservé ou récupéré.',
+              href: '/waarden/hergebruik',
+              ctaLabel: 'Découvrir notre approche circulaire',
+            },
+            {
+              title: 'Certification',
+              description: 'Les attestations AREI, EPB et autres documents requis sont anticipés pour fluidifier la réception et les demandes de primes.',
+              href: '/waarden/attestering',
+              ctaLabel: 'Voir la certification',
+            },
+          ],
+        }),
+        section('approach', 'principles', 'fr', 'content', 3, {
           eyebrow: 'Principes',
           title: 'Ce que vous pouvez attendre de nous',
           description: 'Moins de bruit dans l’exécution, moins de flottement dans les décisions.',
@@ -694,7 +744,7 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
             { title: 'Responsabilité', description: 'Les décisions gardent un propriétaire clair et un effet identifiable.' },
           ],
         }),
-        section('approach', 'guarantees', 'fr', 'feature-list', 3, {
+        section('approach', 'guarantees', 'fr', 'feature-list', 4, {
           eyebrow: 'Garanties',
           title: 'Ce que vous pouvez attendre',
           description: 'Nos garanties pour une collaboration sans souci.',
@@ -705,7 +755,7 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
             { title: 'Prix transparent', description: 'Devis détaillé sans frais cachés. Travaux supplémentaires uniquement sur accord.' },
           ],
         }),
-        section('approach', 'faq', 'fr', 'faq', 4, {
+        section('approach', 'faq', 'fr', 'faq', 5, {
           eyebrow: 'FAQ',
           title: 'Questions fréquentes',
           description: 'Réponses aux questions les plus courantes sur notre approche.',
@@ -736,7 +786,7 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
             },
           ],
         }),
-        section('approach', 'cta', 'fr', 'cta', 5, {
+        section('approach', 'cta', 'fr', 'cta', 6, {
           title: 'Besoin d’abord de clarté sur la faisabilité ?',
           description: 'Un premier entretien permet de cadrer le projet avant d’entrer en exécution.',
           primaryCtaLabel: 'Planifier un entretien',
@@ -1114,7 +1164,32 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
             },
           ],
         }),
-        section('approach', 'principles', 'en', 'content', 2, {
+        section('approach', 'value-highlights', 'en', 'feature-list', 2, {
+          eyebrow: 'Values',
+          title: 'More than scheduling alone',
+          description: 'Before execution starts, we also fold subsidy logic, certification and reuse into the way the project is shaped.',
+          items: [
+            {
+              title: 'Subsidies & premiums',
+              description: 'Subsidy-ready quotes, correct documents and early guidance so available support is built into the project frame.',
+              href: '/waarden/subsidies',
+              ctaLabel: 'See subsidy support',
+            },
+            {
+              title: 'Material reuse',
+              description: 'Where it makes technical and aesthetic sense, we assess what can stay in place or be carefully recovered.',
+              href: '/waarden/hergebruik',
+              ctaLabel: 'Explore our circular approach',
+            },
+            {
+              title: 'Certification',
+              description: 'AREI, EPB and other required documents are considered early so delivery and subsidy follow-up stay smooth.',
+              href: '/waarden/attestering',
+              ctaLabel: 'See certification',
+            },
+          ],
+        }),
+        section('approach', 'principles', 'en', 'content', 3, {
           eyebrow: 'Principles',
           title: 'What this should feel like for the client',
           description: 'Less noise in execution, fewer unclear decisions and a stronger line between planning and delivery.',
@@ -1128,7 +1203,7 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
             { title: 'Accountable', description: 'Every relevant decision keeps a visible owner and impact.' },
           ],
         }),
-        section('approach', 'guarantees', 'en', 'feature-list', 3, {
+        section('approach', 'guarantees', 'en', 'feature-list', 4, {
           eyebrow: 'Guarantees',
           title: 'What you can expect',
           description: 'Our guarantees for a worry-free collaboration.',
@@ -1139,7 +1214,7 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
             { title: 'Transparent pricing', description: 'Detailed quote without hidden costs. Additional work only by agreement.' },
           ],
         }),
-        section('approach', 'faq', 'en', 'faq', 4, {
+        section('approach', 'faq', 'en', 'faq', 5, {
           eyebrow: 'FAQ',
           title: 'Frequently asked questions',
           description: 'Answers to the most common questions about our approach.',
@@ -1170,7 +1245,7 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
             },
           ],
         }),
-        section('approach', 'cta', 'en', 'cta', 5, {
+        section('approach', 'cta', 'en', 'cta', 6, {
           title: 'Need clarity on feasibility first?',
           description: 'Use a first consultation to structure scope, timing and budget before execution starts.',
           primaryCtaLabel: 'Book a consultation',

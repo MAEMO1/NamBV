@@ -22,10 +22,11 @@ test('approach defaults expose the restored section set for every locale', () =>
       [
         '0:hero:hero',
         '1:steps:feature-list',
-        '2:principles:content',
-        '3:guarantees:feature-list',
-        '4:faq:faq',
-        '5:cta:cta',
+        '2:value-highlights:feature-list',
+        '3:principles:content',
+        '4:guarantees:feature-list',
+        '5:faq:faq',
+        '6:cta:cta',
       ],
     );
   }
