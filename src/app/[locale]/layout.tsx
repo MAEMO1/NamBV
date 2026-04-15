@@ -10,7 +10,7 @@ import MobileStickyCta from '@/components/public/MobileStickyCta';
 import { MobileMenuProvider } from '@/components/public/MobileMenuContext';
 import { ConsentProvider } from '@/components/public/ConsentContext';
 import { getV2SettingsMap } from '@/lib/v2/public-data';
-import { dmSans, playfair } from '@/lib/fonts';
+import { dmSans, plusJakarta } from '@/lib/fonts';
 import { LocalBusinessJsonLd, OrganizationJsonLd } from '@/components/seo/JsonLd';
 
 type Props = {
@@ -133,7 +133,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   };
 
   return (
-    <html lang={HTML_LANG[locale] || 'nl-BE'} className={`${dmSans.variable} ${playfair.variable}`}>
+    <html lang={HTML_LANG[locale] || 'nl-BE'} className={`${dmSans.variable} ${plusJakarta.variable}`}>
       <body className="font-sans">
         <OrganizationJsonLd company={companyForLd} legal={legalForLd} siteUrl={siteUrl} />
         <LocalBusinessJsonLd company={companyForLd} legal={legalForLd} siteUrl={siteUrl} />
