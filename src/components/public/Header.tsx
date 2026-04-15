@@ -58,7 +58,10 @@ export default function V2Header({
           <div className="flex items-center justify-between h-20 md:h-24">
             {/* Logo */}
             <Link href="/" locale={locale} className="relative z-10 group">
-              <Logo color={isTransparent ? 'light' : 'dark'} showTagline={!scrolled} />
+              <Logo
+                color={isTransparent ? 'light' : 'dark'}
+                showTagline={!scrolled && !mobileMenuOpen}
+              />
             </Link>
 
             {/* Desktop Navigation */}
@@ -152,9 +155,9 @@ export default function V2Header({
       >
         <div className="absolute inset-0 bg-white" />
 
-        <div className="relative h-full flex flex-col pt-32 pb-8 px-8">
+        <div className="relative h-full flex flex-col pt-32 pb-8 px-8 overflow-y-auto">
           {/* Navigation Links */}
-          <nav className="flex-1 flex flex-col justify-center">
+          <nav className="flex-1 flex flex-col justify-start pt-4">
             {navigation.map((item, index) => {
               const isActive = pathname === item.href;
               return (
