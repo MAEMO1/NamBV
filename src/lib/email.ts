@@ -55,6 +55,40 @@ interface CalendarEventData {
   attendeeName: string
 }
 
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
+function escapeHtmlNullable(value?: string | null, fallback = ''): string {
+  return escapeHtml(value ?? fallback)
+}
+
+function escapeHtmlList(values: string[]): string {
+  return values.map((value) => escapeHtml(value)).join(', ')
+}
+
+function sanitizeEmailHref(value: string): string {
+  return `mailto:${encodeURIComponent(value.trim().replace(/[\r\n]+/g, ''))}`
+}
+
+function sanitizeTelHref(value: string): string {
+  const normalized = value.replace(/[^\d+]/g, '')
+  return normalized ? `tel:${normalized}` : 'tel:+32493812789'
+}
+
+function escapeICalText(value: string): string {
+  return value
+    .replace(/\\/g, '\\\\')
+    .replace(/\r?\n/g, '\\n')
+    .replace(/;/g, '\\;')
+    .replace(/,/g, '\\,')
+}
+
 // ============================================================================
 // EMAIL TEMPLATES
 // ============================================================================
@@ -84,7 +118,7 @@ function getQuoteConfirmationHtml(data: QuoteEmailData): string {
         <h2 style="margin: 0 0 20px; color: #1a1a1a; font-size: 24px;">Bedankt voor uw aanvraag!</h2>
 
         <p style="margin: 0 0 20px; color: #444; line-height: 1.6;">
-          Beste ${data.fullName},
+          Beste ${escapeHtml(data.fullName)},
         </p>
 
         <p style="margin: 0 0 20px; color: #444; line-height: 1.6;">
@@ -96,7 +130,7 @@ function getQuoteConfirmationHtml(data: QuoteEmailData): string {
           <tr>
             <td style="padding: 20px;">
               <p style="margin: 0 0 5px; color: #666; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Referentienummer</p>
-              <p style="margin: 0; color: #3d5a4c; font-size: 20px; font-weight: bold;">${data.referenceNumber}</p>
+              <p style="margin: 0; color: #3d5a4c; font-size: 20px; font-weight: bold;">${escapeHtml(data.referenceNumber)}</p>
             </td>
           </tr>
         </table>
@@ -107,27 +141,27 @@ function getQuoteConfirmationHtml(data: QuoteEmailData): string {
         <table width="100%" cellpadding="0" cellspacing="0">
           <tr>
             <td style="padding: 8px 0; color: #666; font-size: 14px;">Type woning:</td>
-            <td style="padding: 8px 0; color: #1a1a1a; font-size: 14px; text-align: right;">${data.propertyType || '-'}</td>
+            <td style="padding: 8px 0; color: #1a1a1a; font-size: 14px; text-align: right;">${escapeHtmlNullable(data.propertyType, '-')}</td>
           </tr>
           <tr>
             <td style="padding: 8px 0; color: #666; font-size: 14px;">Locatie:</td>
-            <td style="padding: 8px 0; color: #1a1a1a; font-size: 14px; text-align: right;">${data.postalCode} ${data.city || ''}</td>
+            <td style="padding: 8px 0; color: #1a1a1a; font-size: 14px; text-align: right;">${escapeHtml(data.postalCode)} ${escapeHtmlNullable(data.city)}</td>
           </tr>
           <tr>
             <td style="padding: 8px 0; color: #666; font-size: 14px;">Diensten:</td>
-            <td style="padding: 8px 0; color: #1a1a1a; font-size: 14px; text-align: right;">${data.services.join(', ')}</td>
+            <td style="padding: 8px 0; color: #1a1a1a; font-size: 14px; text-align: right;">${escapeHtmlList(data.services)}</td>
           </tr>
           ${data.budgetRange ? `
           <tr>
             <td style="padding: 8px 0; color: #666; font-size: 14px;">Budget:</td>
-            <td style="padding: 8px 0; color: #1a1a1a; font-size: 14px; text-align: right;">${data.budgetRange}</td>
+            <td style="padding: 8px 0; color: #1a1a1a; font-size: 14px; text-align: right;">${escapeHtml(data.budgetRange)}</td>
           </tr>
           ` : ''}
         </table>
 
         <div style="margin: 20px 0; padding: 15px; background-color: #f5f5f0;">
           <p style="margin: 0 0 5px; color: #666; font-size: 12px; text-transform: uppercase;">Omschrijving</p>
-          <p style="margin: 0; color: #1a1a1a; font-size: 14px; line-height: 1.6;">${data.description}</p>
+          <p style="margin: 0; color: #1a1a1a; font-size: 14px; line-height: 1.6;">${escapeHtml(data.description)}</p>
         </div>
 
         <!-- What's Next -->
@@ -196,7 +230,7 @@ function getAppointmentConfirmationHtml(data: AppointmentEmailData): string {
         <h2 style="margin: 0 0 20px; color: #1a1a1a; font-size: 24px;">Uw adviesgesprek is ingepland!</h2>
 
         <p style="margin: 0 0 20px; color: #444; line-height: 1.6;">
-          Beste ${data.fullName},
+          Beste ${escapeHtml(data.fullName)},
         </p>
 
         <p style="margin: 0 0 20px; color: #444; line-height: 1.6;">
@@ -208,8 +242,8 @@ function getAppointmentConfirmationHtml(data: AppointmentEmailData): string {
           <tr>
             <td style="padding: 30px; text-align: center;">
               <p style="margin: 0 0 5px; color: rgba(255,255,255,0.8); font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Uw afspraak</p>
-              <p style="margin: 0 0 10px; color: #ffffff; font-size: 22px; font-weight: bold;">${formattedDate}</p>
-              <p style="margin: 0; color: #ffffff; font-size: 28px; font-weight: bold;">${data.appointmentTime}</p>
+              <p style="margin: 0 0 10px; color: #ffffff; font-size: 22px; font-weight: bold;">${escapeHtml(formattedDate)}</p>
+              <p style="margin: 0; color: #ffffff; font-size: 28px; font-weight: bold;">${escapeHtml(data.appointmentTime)}</p>
             </td>
           </tr>
         </table>
@@ -219,7 +253,7 @@ function getAppointmentConfirmationHtml(data: AppointmentEmailData): string {
           <tr>
             <td style="padding: 15px 20px;">
               <p style="margin: 0 0 5px; color: #666; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Referentienummer</p>
-              <p style="margin: 0; color: #3d5a4c; font-size: 18px; font-weight: bold;">${data.referenceNumber}</p>
+              <p style="margin: 0; color: #3d5a4c; font-size: 18px; font-weight: bold;">${escapeHtml(data.referenceNumber)}</p>
             </td>
           </tr>
         </table>
@@ -230,18 +264,18 @@ function getAppointmentConfirmationHtml(data: AppointmentEmailData): string {
         <table width="100%" cellpadding="0" cellspacing="0">
           <tr>
             <td style="padding: 8px 0; color: #666; font-size: 14px;">Gemeente:</td>
-            <td style="padding: 8px 0; color: #1a1a1a; font-size: 14px; text-align: right;">${data.gemeente}</td>
+            <td style="padding: 8px 0; color: #1a1a1a; font-size: 14px; text-align: right;">${escapeHtml(data.gemeente)}</td>
           </tr>
           ${data.projectType ? `
           <tr>
             <td style="padding: 8px 0; color: #666; font-size: 14px;">Type project:</td>
-            <td style="padding: 8px 0; color: #1a1a1a; font-size: 14px; text-align: right;">${data.projectType}</td>
+            <td style="padding: 8px 0; color: #1a1a1a; font-size: 14px; text-align: right;">${escapeHtml(data.projectType)}</td>
           </tr>
           ` : ''}
           ${data.propertyType ? `
           <tr>
             <td style="padding: 8px 0; color: #666; font-size: 14px;">Type woning:</td>
-            <td style="padding: 8px 0; color: #1a1a1a; font-size: 14px; text-align: right;">${data.propertyType}</td>
+            <td style="padding: 8px 0; color: #1a1a1a; font-size: 14px; text-align: right;">${escapeHtml(data.propertyType)}</td>
           </tr>
           ` : ''}
         </table>
@@ -249,7 +283,7 @@ function getAppointmentConfirmationHtml(data: AppointmentEmailData): string {
         ${data.message ? `
         <div style="margin: 20px 0; padding: 15px; background-color: #f5f5f0;">
           <p style="margin: 0 0 5px; color: #666; font-size: 12px; text-transform: uppercase;">Uw bericht</p>
-          <p style="margin: 0; color: #1a1a1a; font-size: 14px; line-height: 1.6;">${data.message}</p>
+          <p style="margin: 0; color: #1a1a1a; font-size: 14px; line-height: 1.6;">${escapeHtml(data.message)}</p>
         </div>
         ` : ''}
 
@@ -273,7 +307,7 @@ function getAppointmentConfirmationHtml(data: AppointmentEmailData): string {
         <!-- Important Note -->
         <div style="margin: 30px 0; padding: 20px; background-color: #fff8e6; border-left: 4px solid #f5a623;">
           <p style="margin: 0; color: #444; font-size: 14px; line-height: 1.6;">
-            <strong>Belangrijk:</strong> Wij bellen u op het afgesproken tijdstip op <strong>${data.phone}</strong>. Zorg dat u bereikbaar bent.
+            <strong>Belangrijk:</strong> Wij bellen u op het afgesproken tijdstip op <strong>${escapeHtml(data.phone)}</strong>. Zorg dat u bereikbaar bent.
           </p>
         </div>
 
@@ -325,7 +359,7 @@ function getAdminNotificationHtml(type: 'quote' | 'appointment', data: QuoteEmai
           <tr>
             <td style="padding: 15px;">
               <p style="margin: 0; color: #2e7d32; font-weight: bold; font-size: 16px;">
-                ${quoteData.referenceNumber}
+                ${escapeHtml(quoteData.referenceNumber)}
               </p>
             </td>
           </tr>
@@ -333,22 +367,22 @@ function getAdminNotificationHtml(type: 'quote' | 'appointment', data: QuoteEmai
 
         <h3 style="margin: 0 0 15px; color: #1a1a1a; font-size: 14px; text-transform: uppercase;">Contactgegevens</h3>
         <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 20px;">
-          <tr><td style="padding: 5px 0; color: #666; font-size: 14px;">Naam:</td><td style="padding: 5px 0; font-size: 14px;"><strong>${quoteData.fullName}</strong></td></tr>
-          <tr><td style="padding: 5px 0; color: #666; font-size: 14px;">Email:</td><td style="padding: 5px 0; font-size: 14px;"><a href="mailto:${quoteData.email}" style="color: #3d5a4c;">${quoteData.email}</a></td></tr>
-          <tr><td style="padding: 5px 0; color: #666; font-size: 14px;">Telefoon:</td><td style="padding: 5px 0; font-size: 14px;"><a href="tel:${quoteData.phone}" style="color: #3d5a4c;">${quoteData.phone}</a></td></tr>
-          <tr><td style="padding: 5px 0; color: #666; font-size: 14px;">Locatie:</td><td style="padding: 5px 0; font-size: 14px;">${quoteData.postalCode} ${quoteData.city || ''}</td></tr>
+          <tr><td style="padding: 5px 0; color: #666; font-size: 14px;">Naam:</td><td style="padding: 5px 0; font-size: 14px;"><strong>${escapeHtml(quoteData.fullName)}</strong></td></tr>
+          <tr><td style="padding: 5px 0; color: #666; font-size: 14px;">Email:</td><td style="padding: 5px 0; font-size: 14px;"><a href="${sanitizeEmailHref(quoteData.email)}" style="color: #3d5a4c;">${escapeHtml(quoteData.email)}</a></td></tr>
+          <tr><td style="padding: 5px 0; color: #666; font-size: 14px;">Telefoon:</td><td style="padding: 5px 0; font-size: 14px;"><a href="${sanitizeTelHref(quoteData.phone)}" style="color: #3d5a4c;">${escapeHtml(quoteData.phone)}</a></td></tr>
+          <tr><td style="padding: 5px 0; color: #666; font-size: 14px;">Locatie:</td><td style="padding: 5px 0; font-size: 14px;">${escapeHtml(quoteData.postalCode)} ${escapeHtmlNullable(quoteData.city)}</td></tr>
         </table>
 
         <h3 style="margin: 0 0 15px; color: #1a1a1a; font-size: 14px; text-transform: uppercase;">Projectdetails</h3>
         <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 20px;">
-          <tr><td style="padding: 5px 0; color: #666; font-size: 14px;">Type woning:</td><td style="padding: 5px 0; font-size: 14px;">${quoteData.propertyType || '-'}</td></tr>
-          <tr><td style="padding: 5px 0; color: #666; font-size: 14px;">Diensten:</td><td style="padding: 5px 0; font-size: 14px;">${quoteData.services.join(', ')}</td></tr>
-          ${quoteData.budgetRange ? `<tr><td style="padding: 5px 0; color: #666; font-size: 14px;">Budget:</td><td style="padding: 5px 0; font-size: 14px;">${quoteData.budgetRange}</td></tr>` : ''}
+          <tr><td style="padding: 5px 0; color: #666; font-size: 14px;">Type woning:</td><td style="padding: 5px 0; font-size: 14px;">${escapeHtmlNullable(quoteData.propertyType, '-')}</td></tr>
+          <tr><td style="padding: 5px 0; color: #666; font-size: 14px;">Diensten:</td><td style="padding: 5px 0; font-size: 14px;">${escapeHtmlList(quoteData.services)}</td></tr>
+          ${quoteData.budgetRange ? `<tr><td style="padding: 5px 0; color: #666; font-size: 14px;">Budget:</td><td style="padding: 5px 0; font-size: 14px;">${escapeHtml(quoteData.budgetRange)}</td></tr>` : ''}
         </table>
 
         <div style="padding: 15px; background-color: #f5f5f0; margin-bottom: 20px;">
           <p style="margin: 0 0 5px; color: #666; font-size: 12px; text-transform: uppercase;">Omschrijving</p>
-          <p style="margin: 0; font-size: 14px; line-height: 1.6;">${quoteData.description}</p>
+          <p style="margin: 0; font-size: 14px; line-height: 1.6;">${escapeHtml(quoteData.description)}</p>
         </div>
 
         <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://namconstruction.be'}/admin" style="display: inline-block; padding: 12px 24px; background-color: #3d5a4c; color: #ffffff; text-decoration: none; font-size: 14px;">
@@ -388,33 +422,33 @@ function getAdminNotificationHtml(type: 'quote' | 'appointment', data: QuoteEmai
         <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #e3f2fd; margin-bottom: 20px;">
           <tr>
             <td style="padding: 20px; text-align: center;">
-              <p style="margin: 0 0 5px; color: #666; font-size: 12px; text-transform: uppercase;">${appointmentData.referenceNumber}</p>
-              <p style="margin: 0 0 5px; color: #1565c0; font-size: 18px; font-weight: bold;">${formattedDate}</p>
-              <p style="margin: 0; color: #1565c0; font-size: 24px; font-weight: bold;">${appointmentData.appointmentTime}</p>
+              <p style="margin: 0 0 5px; color: #666; font-size: 12px; text-transform: uppercase;">${escapeHtml(appointmentData.referenceNumber)}</p>
+              <p style="margin: 0 0 5px; color: #1565c0; font-size: 18px; font-weight: bold;">${escapeHtml(formattedDate)}</p>
+              <p style="margin: 0; color: #1565c0; font-size: 24px; font-weight: bold;">${escapeHtml(appointmentData.appointmentTime)}</p>
             </td>
           </tr>
         </table>
 
         <h3 style="margin: 0 0 15px; color: #1a1a1a; font-size: 14px; text-transform: uppercase;">Contactgegevens</h3>
         <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 20px;">
-          <tr><td style="padding: 5px 0; color: #666; font-size: 14px;">Naam:</td><td style="padding: 5px 0; font-size: 14px;"><strong>${appointmentData.fullName}</strong></td></tr>
-          <tr><td style="padding: 5px 0; color: #666; font-size: 14px;">Email:</td><td style="padding: 5px 0; font-size: 14px;"><a href="mailto:${appointmentData.email}" style="color: #3d5a4c;">${appointmentData.email}</a></td></tr>
-          <tr><td style="padding: 5px 0; color: #666; font-size: 14px;">Telefoon:</td><td style="padding: 5px 0; font-size: 14px;"><a href="tel:${appointmentData.phone}" style="color: #3d5a4c;">${appointmentData.phone}</a></td></tr>
-          <tr><td style="padding: 5px 0; color: #666; font-size: 14px;">Gemeente:</td><td style="padding: 5px 0; font-size: 14px;">${appointmentData.gemeente}</td></tr>
+          <tr><td style="padding: 5px 0; color: #666; font-size: 14px;">Naam:</td><td style="padding: 5px 0; font-size: 14px;"><strong>${escapeHtml(appointmentData.fullName)}</strong></td></tr>
+          <tr><td style="padding: 5px 0; color: #666; font-size: 14px;">Email:</td><td style="padding: 5px 0; font-size: 14px;"><a href="${sanitizeEmailHref(appointmentData.email)}" style="color: #3d5a4c;">${escapeHtml(appointmentData.email)}</a></td></tr>
+          <tr><td style="padding: 5px 0; color: #666; font-size: 14px;">Telefoon:</td><td style="padding: 5px 0; font-size: 14px;"><a href="${sanitizeTelHref(appointmentData.phone)}" style="color: #3d5a4c;">${escapeHtml(appointmentData.phone)}</a></td></tr>
+          <tr><td style="padding: 5px 0; color: #666; font-size: 14px;">Gemeente:</td><td style="padding: 5px 0; font-size: 14px;">${escapeHtml(appointmentData.gemeente)}</td></tr>
         </table>
 
         ${appointmentData.projectType || appointmentData.propertyType ? `
         <h3 style="margin: 0 0 15px; color: #1a1a1a; font-size: 14px; text-transform: uppercase;">Project</h3>
         <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 20px;">
-          ${appointmentData.projectType ? `<tr><td style="padding: 5px 0; color: #666; font-size: 14px;">Type:</td><td style="padding: 5px 0; font-size: 14px;">${appointmentData.projectType}</td></tr>` : ''}
-          ${appointmentData.propertyType ? `<tr><td style="padding: 5px 0; color: #666; font-size: 14px;">Woning:</td><td style="padding: 5px 0; font-size: 14px;">${appointmentData.propertyType}</td></tr>` : ''}
+          ${appointmentData.projectType ? `<tr><td style="padding: 5px 0; color: #666; font-size: 14px;">Type:</td><td style="padding: 5px 0; font-size: 14px;">${escapeHtml(appointmentData.projectType)}</td></tr>` : ''}
+          ${appointmentData.propertyType ? `<tr><td style="padding: 5px 0; color: #666; font-size: 14px;">Woning:</td><td style="padding: 5px 0; font-size: 14px;">${escapeHtml(appointmentData.propertyType)}</td></tr>` : ''}
         </table>
         ` : ''}
 
         ${appointmentData.message ? `
         <div style="padding: 15px; background-color: #f5f5f0; margin-bottom: 20px;">
           <p style="margin: 0 0 5px; color: #666; font-size: 12px; text-transform: uppercase;">Bericht</p>
-          <p style="margin: 0; font-size: 14px; line-height: 1.6;">${appointmentData.message}</p>
+          <p style="margin: 0; font-size: 14px; line-height: 1.6;">${escapeHtml(appointmentData.message)}</p>
         </div>
         ` : ''}
 
@@ -454,17 +488,17 @@ UID:${uid}
 DTSTAMP:${now}
 DTSTART:${start}
 DTEND:${end}
-SUMMARY:${data.title}
-DESCRIPTION:${data.description.replace(/\n/g, '\\n')}
-${data.location ? `LOCATION:${data.location}` : ''}
-ORGANIZER;CN=NAM Construction:mailto:${data.organizerEmail}
-ATTENDEE;CN=${data.attendeeName};RSVP=TRUE:mailto:${data.attendeeEmail}
+SUMMARY:${escapeICalText(data.title)}
+DESCRIPTION:${escapeICalText(data.description)}
+${data.location ? `LOCATION:${escapeICalText(data.location)}` : ''}
+ORGANIZER;CN=NAM Construction:mailto:${escapeICalText(data.organizerEmail)}
+ATTENDEE;CN=${escapeICalText(data.attendeeName)};RSVP=TRUE:mailto:${escapeICalText(data.attendeeEmail)}
 STATUS:CONFIRMED
 SEQUENCE:0
 BEGIN:VALARM
 TRIGGER:-PT30M
 ACTION:DISPLAY
-DESCRIPTION:Herinnering: ${data.title}
+DESCRIPTION:${escapeICalText(`Herinnering: ${data.title}`)}
 END:VALARM
 END:VEVENT
 END:VCALENDAR`
