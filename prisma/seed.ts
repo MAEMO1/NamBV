@@ -315,7 +315,9 @@ async function main() {
     }
   })
 
-  const sampleV2Quote = await prisma.v2QuoteRequest.findFirst()
+  const sampleV2Quote = await prisma.v2QuoteRequest.findFirst({
+    where: { deletedAt: null },
+  })
   if (!sampleV2Quote) {
     await prisma.v2QuoteRequest.create({
       data: {
@@ -334,7 +336,9 @@ async function main() {
     })
   }
 
-  const sampleV2Appointment = await prisma.v2Appointment.findFirst()
+  const sampleV2Appointment = await prisma.v2Appointment.findFirst({
+    where: { deletedAt: null },
+  })
   if (!sampleV2Appointment) {
     await prisma.v2Appointment.create({
       data: {

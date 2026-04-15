@@ -8,7 +8,9 @@ export async function GET(request: NextRequest) {
     return auth.response;
   }
 
+  const includeDeleted = request.nextUrl.searchParams.get('includeDeleted') === 'true';
   const quotes = await db.v2QuoteRequest.findMany({
+    where: includeDeleted ? undefined : { deletedAt: null },
     orderBy: { createdAt: 'desc' },
   });
 

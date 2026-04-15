@@ -131,6 +131,7 @@ async function ensureV2AppointmentSlotAvailable(
       where: {
         appointmentDate,
         appointmentTime: selectedTime,
+        deletedAt: null,
         status: { notIn: INACTIVE_APPOINTMENT_STATUSES },
       },
       select: { id: true },
@@ -245,6 +246,18 @@ export async function updateV2Quote(input: {
   status?: string;
   adminNotes?: string | null;
 }) {
+  const currentQuote = await db.v2QuoteRequest.findFirst({
+    where: {
+      id: input.quoteId,
+      deletedAt: null,
+    },
+    select: { id: true },
+  });
+
+  if (!currentQuote) {
+    throw new Error('quote_not_found');
+  }
+
   const quote = await db.v2QuoteRequest.update({
     where: { id: input.quoteId },
     data: {
@@ -266,6 +279,42 @@ export async function updateV2Quote(input: {
   return quote;
 }
 
+export async function deleteV2Quote(quoteId: string, actorId?: string | null) {
+  const quote = await db.$transaction(async (tx) => {
+    const currentQuote = await tx.v2QuoteRequest.findFirst({
+      where: {
+        id: quoteId,
+        deletedAt: null,
+      },
+    });
+
+    if (!currentQuote) {
+      throw new Error('quote_not_found');
+    }
+
+    return tx.v2QuoteRequest.update({
+      where: { id: quoteId },
+      data: {
+        deletedAt: new Date(),
+      },
+    });
+  });
+
+  await recordV2AuditEvent({
+    action: 'quote.deleted',
+    entityType: 'quote',
+    entityId: quote.id,
+    actorId,
+    payload: {
+      referenceNumber: quote.referenceNumber,
+      status: quote.status,
+      email: quote.email,
+    },
+  });
+
+  return quote;
+}
+
 export async function updateV2Appointment(input: {
   appointmentId: string;
   actorId?: string | null;
@@ -280,10 +329,11 @@ export async function updateV2Appointment(input: {
       appointmentDate: true,
       appointmentTime: true,
       activeSlotKey: true,
+      deletedAt: true,
     },
   });
 
-  if (!currentAppointment) {
+  if (!currentAppointment || currentAppointment.deletedAt) {
     throw new Error('appointment_not_found');
   }
 
@@ -301,6 +351,7 @@ export async function updateV2Appointment(input: {
         id: { not: input.appointmentId },
         appointmentDate: currentAppointment.appointmentDate,
         appointmentTime: currentAppointment.appointmentTime,
+        deletedAt: null,
         status: { notIn: INACTIVE_APPOINTMENT_STATUSES },
       },
       select: { id: true },
@@ -332,6 +383,45 @@ export async function updateV2Appointment(input: {
       status: input.status,
       proposedDate: input.proposedDate,
       proposedTime: input.proposedTime,
+    },
+  });
+
+  return appointment;
+}
+
+export async function deleteV2Appointment(appointmentId: string, actorId?: string | null) {
+  const appointment = await db.$transaction(async (tx) => {
+    const currentAppointment = await tx.v2Appointment.findFirst({
+      where: {
+        id: appointmentId,
+        deletedAt: null,
+      },
+    });
+
+    if (!currentAppointment) {
+      throw new Error('appointment_not_found');
+    }
+
+    return tx.v2Appointment.update({
+      where: { id: appointmentId },
+      data: {
+        deletedAt: new Date(),
+        activeSlotKey: null,
+      },
+    });
+  });
+
+  await recordV2AuditEvent({
+    action: 'appointment.deleted',
+    entityType: 'appointment',
+    entityId: appointment.id,
+    actorId,
+    payload: {
+      referenceNumber: appointment.referenceNumber,
+      status: appointment.status,
+      appointmentDate: appointment.appointmentDate.toISOString().slice(0, 10),
+      appointmentTime: appointment.appointmentTime,
+      email: appointment.email,
     },
   });
 
