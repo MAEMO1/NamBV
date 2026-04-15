@@ -1,4 +1,4 @@
-import { fraunces, geist, geistMono } from '@/lib/fonts';
+import { geist, geistMono } from '@/lib/fonts';
 
 export default function AdminLayout({
   children,
@@ -8,7 +8,7 @@ export default function AdminLayout({
   return (
     <html
       lang="nl"
-      className={`${geist.variable} ${geistMono.variable} ${fraunces.variable}`}
+      className={`${geist.variable} ${geistMono.variable}`}
     >
       <body className="admin-body font-sans">
         {children}

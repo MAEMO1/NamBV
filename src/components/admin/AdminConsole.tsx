@@ -760,11 +760,11 @@ function ContentModule({
         <div className="admin-rail-body">
           <div className="admin-rail-group-label">
             <span>Secties · {locale.toUpperCase()}</span>
-            <span style={{ color: 'var(--adm-stone-2)' }}>{filteredSections.length}</span>
+            <span style={{ color: 'var(--adm-text-4)' }}>{filteredSections.length}</span>
           </div>
           {filteredSections.length === 0 ? (
             <div style={{ padding: '24px 12px', textAlign: 'center' }}>
-              <p style={{ fontSize: 12, color: 'var(--adm-stone)' }}>
+              <p style={{ fontSize: 12, color: 'var(--adm-text-3)' }}>
                 Nog geen secties voor deze pagina/taal.
               </p>
             </div>
@@ -939,7 +939,7 @@ function ContentModule({
               </FieldGroupBlock>
             </>
           ) : (
-            <p style={{ fontSize: 13, color: 'var(--adm-stone)', padding: 24 }}>
+            <p style={{ fontSize: 13, color: 'var(--adm-text-3)', padding: 24 }}>
               Selecteer of maak een sectie om te bewerken.
             </p>
           )}
@@ -1007,7 +1007,7 @@ function ContentModule({
               />
             </div>
           ) : (
-            <div style={{ alignSelf: 'center', textAlign: 'center', color: 'var(--adm-stone)' }}>
+            <div style={{ alignSelf: 'center', textAlign: 'center', color: 'var(--adm-text-3)' }}>
               <p style={{ fontSize: 13 }}>Geen preview beschikbaar.</p>
             </div>
           )}
@@ -1408,14 +1408,16 @@ function ProjectsModule({
                   setSelectionKey(getSelectionKey(project));
                   setMobileView('detail');
                 }}
-                className={`rounded-2xl border p-4 text-left transition ${
-                  selectionKey === getSelectionKey(project)
-                    ? 'border-accent-600 bg-accent-50'
-                    : 'border-noir-200 bg-white hover:border-noir-300'
-                }`}
+                className="admin-list-card"
+                data-selected={selectionKey === getSelectionKey(project) || undefined}
               >
-                <p className="text-sm font-semibold text-noir-900">{project.translations.find((translation) => translation.locale === 'nl')?.title || project.slug}</p>
-                <p className="mt-1 text-xs uppercase tracking-[0.14em] text-noir-500">
+                <p style={{ fontSize: 13.5, fontWeight: 600, color: 'var(--adm-text)', letterSpacing: '-0.005em' }}>
+                  {project.translations.find((translation) => translation.locale === 'nl')?.title || project.slug}
+                </p>
+                <p
+                  className="admin-eyebrow"
+                  style={{ marginTop: 4 }}
+                >
                   {project.category || 'Geen categorie'} · {project.sortOrder}
                 </p>
                 <div className="mt-3 flex flex-wrap gap-1.5 text-xs">
@@ -1437,10 +1439,15 @@ function ProjectsModule({
         <BackToListButton onClick={() => setMobileView('list')} />
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="min-w-0">
-            <h2 className="break-words text-lg font-display font-bold text-noir-900 sm:text-xl">
+            <h2
+              className="admin-page-title break-words"
+              style={{ fontSize: 18 }}
+            >
               {draft ? draft.slug : 'Selecteer een project'}
             </h2>
-            <p className="mt-1 text-sm text-noir-500">Cover, vertalingen en gallery-afbeeldingen blijven URL-based.</p>
+            <p style={{ marginTop: 4, fontSize: 13, color: 'var(--adm-text-3)' }}>
+              Cover, vertalingen en gallery-afbeeldingen blijven URL-based.
+            </p>
           </div>
           <div className="flex flex-wrap gap-2">
             {selectedProject?.id ? (
@@ -1705,11 +1712,23 @@ function SettingsModule({
           <SectionHeader as="h2" title="Read-only keys" description="Onbekende setting-keys blijven read-only tot ze expliciet gemodelleerd zijn." />
           {unknown.map((setting) => (
             <details key={setting.key} className="admin-card-muted group">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-sm font-semibold text-noir-900">
-                <span className="truncate">{setting.key}</span>
+              <summary
+                className="flex cursor-pointer list-none items-center justify-between gap-3"
+                style={{ fontSize: 13, fontWeight: 600, color: 'var(--adm-text)' }}
+              >
+                <span className="truncate" style={{ fontFamily: 'var(--adm-mono)', fontSize: 12.5 }}>{setting.key}</span>
                 <span className="admin-eyebrow shrink-0 transition group-open:rotate-180">▾</span>
               </summary>
-              <pre className="mt-3 max-w-full overflow-hidden whitespace-pre-wrap break-all rounded-xl bg-noir-950 p-4 text-xs text-white">
+              <pre
+                className="mt-3 max-w-full overflow-hidden whitespace-pre-wrap break-all p-4"
+                style={{
+                  background: 'var(--adm-text)',
+                  color: 'var(--adm-surface)',
+                  fontFamily: 'var(--adm-mono)',
+                  fontSize: 12,
+                  borderRadius: 6,
+                }}
+              >
                 {JSON.stringify(setting.valueJson, null, 2)}
               </pre>
             </details>
@@ -1756,17 +1775,35 @@ function AssetsModule({
       <div className={`${mobileView === 'list' ? 'grid' : 'hidden'} content-start gap-4 lg:grid`}>
         <SectionHeader title="Assets" description="Upload naar Supabase storage en koppel URLs in content/projecten." />
         <div className="admin-card">
-          <p className={`text-sm font-medium ${storageEnabled ? 'text-emerald-700' : 'text-amber-700'}`}>
+          <p
+            style={{
+              fontSize: 13,
+              fontWeight: 500,
+              color: storageEnabled ? 'var(--adm-success)' : 'var(--adm-warning)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 8,
+            }}
+          >
+            <span
+              aria-hidden="true"
+              style={{
+                width: 8,
+                height: 8,
+                borderRadius: '50%',
+                background: storageEnabled ? 'var(--adm-success)' : 'var(--adm-warning)',
+              }}
+            />
             {storageEnabled ? 'Supabase upload is actief.' : 'Upload is niet geconfigureerd. Je kunt wel externe URLs registreren.'}
           </p>
           {storageEnabled ? (
             <div className="mt-4 grid gap-3">
-              <label className="grid gap-2 text-sm text-noir-700">
-                <span className="font-medium">Bestand</span>
+              <label className="grid gap-2" style={{ fontSize: 13, color: 'var(--adm-text-2)' }}>
+                <span style={{ fontWeight: 500, color: 'var(--adm-text)' }}>Bestand</span>
                 <input
                   type="file"
                   accept="image/*"
-                  className="block w-full rounded-xl border border-noir-200 bg-white px-3 py-2 text-sm text-noir-700 file:mr-3 file:rounded-full file:border-0 file:bg-accent-600 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-white hover:file:bg-accent-700"
+                  className="admin-file-input"
                   onChange={(event) => setUploadFile(event.target.files?.[0] ?? null)}
                 />
               </label>
@@ -1791,8 +1828,11 @@ function AssetsModule({
             </div>
           ) : null}
 
-          <div className="mt-5 border-t border-noir-200 pt-5 grid gap-3">
-            <p className="text-sm font-semibold text-noir-900">Externe URL registreren</p>
+          <div
+            className="mt-5 pt-5 grid gap-3"
+            style={{ borderTop: '1px solid var(--adm-border)' }}
+          >
+            <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--adm-text)' }}>Externe URL registreren</p>
             <LabeledInput label="Naam" value={manualName} onChange={setManualName} />
             <LabeledInput label="URL" value={manualUrl} onChange={setManualUrl} />
             <button
@@ -1836,12 +1876,18 @@ function AssetsModule({
                   setSelectionId(asset.id);
                   setMobileView('detail');
                 }}
-                className={`rounded-2xl border p-3 text-left transition ${
-                  activeSelectionId === asset.id ? 'border-accent-600 bg-accent-50' : 'border-noir-200 bg-white hover:border-noir-300'
-                }`}
+                className="admin-list-card"
+                data-selected={activeSelectionId === asset.id || undefined}
               >
-                <p className="break-words text-sm font-semibold text-noir-900">{asset.originalName}</p>
-                <p className="mt-1 text-xs text-noir-500">{asset.bucket} · {asset.tags.join(', ') || 'geen tags'}</p>
+                <p
+                  className="break-words"
+                  style={{ fontSize: 13, fontWeight: 600, color: 'var(--adm-text)', letterSpacing: '-0.005em' }}
+                >
+                  {asset.originalName}
+                </p>
+                <p style={{ marginTop: 4, fontSize: 12, color: 'var(--adm-text-3)' }}>
+                  <span style={{ fontFamily: 'var(--adm-mono)' }}>{asset.bucket}</span> · {asset.tags.join(', ') || 'geen tags'}
+                </p>
               </button>
             ))}
             {filteredAssets.length === 0 ? <EmptyState description="Geen assets gevonden." compact /> : null}
@@ -1884,7 +1930,8 @@ function AssetEditor({
         <img
           src={draft.url}
           alt={draft.alt ?? draft.originalName}
-          className="h-48 w-full rounded-xl bg-noir-100 object-contain md:h-64"
+          className="h-48 w-full object-contain md:h-64"
+          style={{ background: 'var(--adm-surface-2)', borderRadius: 6, border: '1px solid var(--adm-border)' }}
         />
       ) : null}
       <div className="grid gap-3 sm:grid-cols-2">
@@ -1984,7 +2031,7 @@ function AvailabilityModule({
         {ruleDrafts.map((rule) => (
           <div key={rule.dayOfWeek} className="admin-card">
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <p className="text-sm font-semibold text-noir-900">{weekdays[rule.dayOfWeek]}</p>
+              <p style={{ fontSize: 13.5, fontWeight: 600, color: 'var(--adm-text)', letterSpacing: '-0.005em' }}>{weekdays[rule.dayOfWeek]}</p>
               <ToggleField
                 label="Actief"
                 checked={rule.isActive}
@@ -2054,7 +2101,14 @@ function AvailabilityModule({
                   <LabeledInput label="Datum" value={source.date} onChange={(value) => setEditingException({ ...source, date: value })} type="date" />
                   <LabeledInput label="Reason" value={source.reason ?? ''} onChange={(value) => setEditingException({ ...source, reason: value })} />
                 </div>
-                <div className="mt-4 rounded-xl border border-noir-200 bg-white p-4">
+                <div
+                  className="mt-4 p-4"
+                  style={{
+                    border: '1px solid var(--adm-border)',
+                    background: 'var(--adm-surface)',
+                    borderRadius: 6,
+                  }}
+                >
                   <ToggleField
                     label="Hele dag blokkeren"
                     checked={source.blockedTimes.includes('all')}
@@ -2127,8 +2181,13 @@ function LeadCard({
     <div className="admin-card grid gap-4">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-sm font-semibold text-noir-900">{title}</p>
-          <p className="mt-0.5 break-words text-sm text-noir-500">{subtitle}</p>
+          <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--adm-text)', letterSpacing: '-0.005em' }}>{title}</p>
+          <p
+            className="mt-0.5 break-words"
+            style={{ fontSize: 13, color: 'var(--adm-text-3)' }}
+          >
+            {subtitle}
+          </p>
         </div>
         <StatusChip status={currentStatus} />
       </div>
@@ -2215,11 +2274,24 @@ function AppointmentCard({
     <div className="admin-card grid gap-4">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-sm font-semibold text-noir-900">{appointment.referenceNumber}</p>
-          <p className="mt-0.5 break-words text-sm text-noir-500">
+          <p
+            style={{
+              fontFamily: 'var(--adm-mono)',
+              fontSize: 12.5,
+              fontWeight: 500,
+              color: 'var(--adm-text-3)',
+              letterSpacing: '-0.005em',
+            }}
+          >
+            {appointment.referenceNumber}
+          </p>
+          <p
+            className="mt-1 break-words"
+            style={{ fontSize: 14, fontWeight: 600, color: 'var(--adm-text)', letterSpacing: '-0.005em' }}
+          >
             {appointment.fullName} · {appointment.email}
           </p>
-          <p className="mt-0.5 text-xs text-noir-500">
+          <p style={{ marginTop: 2, fontSize: 12.5, color: 'var(--adm-text-3)' }}>
             {formatDate(appointment.appointmentDate)} · {appointment.appointmentTime}
           </p>
         </div>
@@ -2302,13 +2374,30 @@ function AssetPickerModal({
       role="dialog"
       aria-modal="true"
       aria-label={title}
-      className="fixed inset-0 z-[60] flex items-end justify-center bg-black/40 p-0 sm:items-center sm:p-4"
+      className="fixed inset-0 z-[60] flex items-end justify-center p-0 sm:items-center sm:p-4"
+      style={{ background: 'var(--adm-overlay)' }}
     >
-      <div className="flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-t-3xl bg-white shadow-soft-lg sm:rounded-3xl">
-        <div className="flex items-center justify-between gap-3 border-b border-noir-200 px-4 py-3 sm:px-6 sm:py-4">
+      <div
+        className="flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden sm:rounded-lg"
+        style={{
+          background: 'var(--adm-surface)',
+          border: '1px solid var(--adm-border)',
+          boxShadow: 'var(--adm-shadow-lg)',
+          borderRadius: 8,
+        }}
+      >
+        <div
+          className="flex items-center justify-between gap-3 px-5 py-4"
+          style={{ borderBottom: '1px solid var(--adm-border)' }}
+        >
           <div className="min-w-0 flex-1">
-            <p className="truncate text-base font-display font-bold text-noir-900 sm:text-lg">{title}</p>
-            <p className="mt-0.5 text-xs text-noir-500 sm:text-sm">Kies een bestaande asset.</p>
+            <p
+              className="truncate"
+              style={{ fontSize: 16, fontWeight: 600, color: 'var(--adm-text)', letterSpacing: '-0.01em' }}
+            >
+              {title}
+            </p>
+            <p style={{ marginTop: 2, fontSize: 12.5, color: 'var(--adm-text-3)' }}>Kies een bestaande asset.</p>
           </div>
           <button
             type="button"
@@ -2327,18 +2416,29 @@ function AssetPickerModal({
                 key={asset.id}
                 type="button"
                 onClick={() => onSelect(asset)}
-                className="group rounded-2xl border border-noir-200 bg-white p-3 text-left transition hover:border-accent-600 hover:bg-accent-50"
+                className="admin-asset-tile group text-left"
               >
                 {asset.mimeType.startsWith('image/') ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={asset.url}
                     alt={asset.alt ?? asset.originalName}
-                    className="h-32 w-full rounded-xl bg-noir-100 object-cover sm:h-40"
+                    className="h-32 w-full object-cover sm:h-40"
+                    style={{ background: 'var(--adm-surface-2)', borderRadius: 4 }}
                   />
                 ) : null}
-                <p className="mt-3 truncate text-sm font-semibold text-noir-900">{asset.originalName}</p>
-                <p className="mt-1 truncate text-xs text-noir-500">{asset.tags.join(', ') || 'geen tags'}</p>
+                <p
+                  className="mt-3 truncate"
+                  style={{ fontSize: 13, fontWeight: 600, color: 'var(--adm-text)', letterSpacing: '-0.005em' }}
+                >
+                  {asset.originalName}
+                </p>
+                <p
+                  className="mt-1 truncate"
+                  style={{ fontSize: 12, color: 'var(--adm-text-3)' }}
+                >
+                  {asset.tags.join(', ') || 'geen tags'}
+                </p>
               </button>
             ))}
             {filtered.length === 0 ? <EmptyState description="Geen assets gevonden." compact /> : null}
@@ -2362,7 +2462,7 @@ function SettingsCard({
     <div className="admin-card grid gap-4">
       <div>
         <p className="admin-section-title">{title}</p>
-        <p className="mt-1 text-sm text-noir-500">{description}</p>
+        <p style={{ marginTop: 4, fontSize: 13, color: 'var(--adm-text-3)' }}>{description}</p>
       </div>
       {children}
     </div>

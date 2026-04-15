@@ -75,7 +75,7 @@ export function LabeledSelect({ label, hint, value, options, onChange, className
         value={value}
         onChange={(event) => onChange(event.target.value)}
         className={`admin-input ${className ?? ''}`}
-        style={{ paddingRight: 34, appearance: 'none', WebkitAppearance: 'none', backgroundImage: "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237A715F' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>\")", backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center' }}
+        style={{ paddingRight: 34, appearance: 'none', WebkitAppearance: 'none', backgroundImage: "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23697386' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>\")", backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center' }}
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>
@@ -105,10 +105,10 @@ export function ToggleField({ label, description, checked, onChange }: ToggleFie
       style={{ textAlign: 'left' }}
     >
       <span className="admin-toggle-switch" aria-hidden="true" />
-      <span style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.2 }}>
-        <span style={{ fontSize: 13, color: 'var(--adm-ink)', fontWeight: 500 }}>{label}</span>
+      <span style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.3, gap: 2 }}>
+        <span style={{ fontSize: 13, color: 'var(--adm-text)', fontWeight: 500 }}>{label}</span>
         {description ? (
-          <span style={{ fontSize: 11.5, color: 'var(--adm-stone)' }}>{description}</span>
+          <span style={{ fontSize: 12, color: 'var(--adm-text-3)' }}>{description}</span>
         ) : null}
       </span>
     </button>

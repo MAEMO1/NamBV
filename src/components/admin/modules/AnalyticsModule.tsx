@@ -84,7 +84,7 @@ export function AnalyticsModule({
       </div>
 
       {/* Donut distributions */}
-      <div className="grid gap-3 lg:grid-cols-2">
+      <div className="grid gap-4 lg:grid-cols-2">
         <Card padding="lg">
           <CardHeader
             eyebrow="Offertes"
@@ -108,86 +108,97 @@ export function AnalyticsModule({
       </div>
 
       {/* Recent items */}
-      <div className="grid gap-3 lg:grid-cols-2">
-        <Card padding="lg">
-          <CardHeader
-            eyebrow="Recent"
-            title="Laatste offertes"
-            action={
-              <button
-                type="button"
-                onClick={() => onJumpTo('quotes')}
-                className="text-xs font-medium text-slate-600 transition hover:text-slate-900"
-              >
-                Alles bekijken →
-              </button>
-            }
-          />
-          <div className="mt-3">
-            {recentQuotes.length === 0 ? (
-              <EmptyState description="Nog geen offertes binnengekomen." compact />
-            ) : (
-              <ul className="divide-y divide-slate-200">
-                {recentQuotes.map((quote) => (
-                  <li
-                    key={quote.id}
-                    className="flex items-center justify-between gap-3 py-2.5 first:pt-0 last:pb-0"
-                  >
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium text-slate-900">
-                        {quote.fullName}
-                      </p>
-                      <p className="mt-0.5 truncate text-xs text-slate-500">
-                        {quote.referenceNumber} · {formatDate(quote.createdAt)}
-                      </p>
-                    </div>
-                    <StatusChip kind="quote" status={quote.status} />
-                  </li>
-                ))}
-              </ul>
-            )}
+      <div className="grid gap-4 lg:grid-cols-2">
+        <Card padding="none" className="overflow-hidden">
+          <div className="flex flex-wrap items-center justify-between gap-2 px-5 py-4" style={{ borderBottom: '1px solid var(--adm-border)' }}>
+            <div>
+              <p className="admin-eyebrow">Recent</p>
+              <h3 style={{ marginTop: 2, fontSize: 15, fontWeight: 600, color: 'var(--adm-text)', letterSpacing: '-0.005em' }}>Laatste offertes</h3>
+            </div>
+            <button
+              type="button"
+              onClick={() => onJumpTo('quotes')}
+              className="admin-link-btn"
+            >
+              Alles bekijken →
+            </button>
           </div>
+          {recentQuotes.length === 0 ? (
+            <div className="p-5">
+              <EmptyState description="Nog geen offertes binnengekomen." compact />
+            </div>
+          ) : (
+            <table className="admin-table dense">
+              <thead>
+                <tr>
+                  <th>Klant</th>
+                  <th>Referentie</th>
+                  <th>Ontvangen</th>
+                  <th className="num">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {recentQuotes.map((quote) => (
+                  <tr key={quote.id}>
+                    <td style={{ fontWeight: 500, color: 'var(--adm-text)' }}>{quote.fullName}</td>
+                    <td style={{ fontFamily: 'var(--adm-mono)', fontSize: 12, color: 'var(--adm-text-3)' }}>
+                      {quote.referenceNumber}
+                    </td>
+                    <td style={{ color: 'var(--adm-text-3)' }}>{formatDate(quote.createdAt)}</td>
+                    <td className="num">
+                      <StatusChip kind="quote" status={quote.status} />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </Card>
 
-        <Card padding="lg">
-          <CardHeader
-            eyebrow="Recent"
-            title="Laatste afspraken"
-            action={
-              <button
-                type="button"
-                onClick={() => onJumpTo('appointments')}
-                className="text-xs font-medium text-slate-600 transition hover:text-slate-900"
-              >
-                Alles bekijken →
-              </button>
-            }
-          />
-          <div className="mt-3">
-            {recentAppointments.length === 0 ? (
-              <EmptyState description="Nog geen afspraken binnengekomen." compact />
-            ) : (
-              <ul className="divide-y divide-slate-200">
-                {recentAppointments.map((appointment) => (
-                  <li
-                    key={appointment.id}
-                    className="flex items-center justify-between gap-3 py-2.5 first:pt-0 last:pb-0"
-                  >
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium text-slate-900">
-                        {appointment.fullName}
-                      </p>
-                      <p className="mt-0.5 truncate text-xs text-slate-500">
-                        {appointment.municipality} ·{' '}
-                        {formatDate(appointment.appointmentDate)} · {appointment.appointmentTime}
-                      </p>
-                    </div>
-                    <StatusChip kind="appointment" status={appointment.status} />
-                  </li>
-                ))}
-              </ul>
-            )}
+        <Card padding="none" className="overflow-hidden">
+          <div className="flex flex-wrap items-center justify-between gap-2 px-5 py-4" style={{ borderBottom: '1px solid var(--adm-border)' }}>
+            <div>
+              <p className="admin-eyebrow">Recent</p>
+              <h3 style={{ marginTop: 2, fontSize: 15, fontWeight: 600, color: 'var(--adm-text)', letterSpacing: '-0.005em' }}>Laatste afspraken</h3>
+            </div>
+            <button
+              type="button"
+              onClick={() => onJumpTo('appointments')}
+              className="admin-link-btn"
+            >
+              Alles bekijken →
+            </button>
           </div>
+          {recentAppointments.length === 0 ? (
+            <div className="p-5">
+              <EmptyState description="Nog geen afspraken binnengekomen." compact />
+            </div>
+          ) : (
+            <table className="admin-table dense">
+              <thead>
+                <tr>
+                  <th>Klant</th>
+                  <th>Gemeente</th>
+                  <th>Datum</th>
+                  <th className="num">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {recentAppointments.map((appointment) => (
+                  <tr key={appointment.id}>
+                    <td style={{ fontWeight: 500, color: 'var(--adm-text)' }}>{appointment.fullName}</td>
+                    <td style={{ color: 'var(--adm-text-3)' }}>{appointment.municipality}</td>
+                    <td style={{ color: 'var(--adm-text-3)' }}>
+                      {formatDate(appointment.appointmentDate)} · {appointment.appointmentTime}
+                    </td>
+                    <td className="num">
+                      <StatusChip kind="appointment" status={appointment.status} />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </Card>
       </div>
     </div>
