@@ -37,6 +37,7 @@ export type AppointmentRecord = {
   municipality: string;
   appointmentDate: string;
   appointmentTime: string;
+  projectType?: string | null;
   status: string;
   adminNotes: string | null;
   proposedDate: string | null;

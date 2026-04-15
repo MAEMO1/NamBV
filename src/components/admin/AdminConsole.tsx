@@ -48,6 +48,7 @@ import {
 import { Banner } from './ui/Banner';
 import { EmptyState } from './ui/EmptyState';
 import { LabeledInput, LabeledSelect, LabeledTextarea, ToggleField } from './ui/Input';
+import { formatStoredAppointmentProjectType } from '@/lib/v2/locale';
 import { ItemListEditor, TextListEditor, TimeSlotEditor } from './ui/ListEditors';
 import { SectionHeader } from './ui/SectionHeader';
 
@@ -2269,6 +2270,7 @@ function AppointmentCard({
   const [proposedDate, setProposedDate] = useState(appointment.proposedDate?.slice(0, 10) ?? '');
   const [proposedTime, setProposedTime] = useState(appointment.proposedTime ?? '');
   const [saving, setSaving] = useState(false);
+  const projectTypeLabel = formatStoredAppointmentProjectType('nl', appointment.projectType);
 
   return (
     <div className="admin-card grid gap-4">
@@ -2294,6 +2296,11 @@ function AppointmentCard({
           <p style={{ marginTop: 2, fontSize: 12.5, color: 'var(--adm-text-3)' }}>
             {formatDate(appointment.appointmentDate)} · {appointment.appointmentTime}
           </p>
+          {projectTypeLabel ? (
+            <p style={{ marginTop: 2, fontSize: 12.5, color: 'var(--adm-text-3)' }}>
+              {projectTypeLabel}
+            </p>
+          ) : null}
         </div>
         <StatusChip status={appointment.status} />
       </div>

@@ -55,6 +55,7 @@ export const defaultQuoteFormOptions = {
     { id: 'renovatie', name: 'Renovatie & verbouwing', slug: 'renovatie', icon: 'hammer' },
     { id: 'afwerking', name: 'Afwerking', slug: 'afwerking', icon: 'paintbrush' },
     { id: 'technieken', name: 'Technieken', slug: 'technieken', icon: 'zap' },
+    { id: 'anders', name: 'Anders', slug: 'anders', icon: 'help-circle' },
   ],
 };
 
