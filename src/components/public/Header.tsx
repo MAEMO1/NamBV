@@ -7,6 +7,7 @@ import { getV2UiCopy } from '@/lib/v2/locale';
 import { Link, usePathname } from '@/i18n/routing';
 import Logo from '@/components/Logo';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { useMobileMenu } from './MobileMenuContext';
 
 export default function V2Header({
   locale,
@@ -18,7 +19,7 @@ export default function V2Header({
   const copy = getV2UiCopy(locale);
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { open: mobileMenuOpen, setOpen: setMobileMenuOpen } = useMobileMenu();
 
   const phone = String(company.phone ?? '');
   const hasTransparentHero = pathname === '/' || (pathname.startsWith('/projecten/') && pathname !== '/projecten');

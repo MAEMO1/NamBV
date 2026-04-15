@@ -1,9 +1,7 @@
 'use client';
 
 import Script from 'next/script';
-import { useState } from 'react';
-
-const STORAGE_KEY = 'nam_v2_marketing_consent';
+import { useConsent } from './ConsentContext';
 
 declare global {
   interface Window {
@@ -28,24 +26,8 @@ export default function MarketingAnalytics({
 }: {
   gtmId?: string | null;
 }) {
-  const [consent, setConsent] = useState<'accepted' | 'declined' | null>(() => {
-    if (typeof window === 'undefined') {
-      return null;
-    }
-
-    const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (stored === 'accepted' || stored === 'declined') {
-      return stored;
-    }
-
-    return null;
-  });
+  const { consent, setConsent, bannerVisible } = useConsent();
   const effectiveGtmId = gtmId || process.env.NEXT_PUBLIC_GTM_ID || null;
-
-  const updateConsent = (nextValue: 'accepted' | 'declined') => {
-    window.localStorage.setItem(STORAGE_KEY, nextValue);
-    setConsent(nextValue);
-  };
 
   return (
     <>
@@ -77,7 +59,7 @@ export default function MarketingAnalytics({
         </>
       ) : null}
 
-      {consent === null ? (
+      {bannerVisible ? (
         <div className="fixed inset-x-4 bottom-4 z-50 rounded-2xl border border-noir-200 bg-white/95 p-4 shadow-soft-lg backdrop-blur">
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
@@ -89,14 +71,14 @@ export default function MarketingAnalytics({
             <div className="flex gap-3">
               <button
                 type="button"
-                onClick={() => updateConsent('declined')}
+                onClick={() => setConsent('declined')}
                 className="rounded-full border border-noir-200 px-4 py-2 text-sm font-medium text-noir-700 transition hover:border-noir-300 hover:text-noir-900"
               >
                 Weigeren
               </button>
               <button
                 type="button"
-                onClick={() => updateConsent('accepted')}
+                onClick={() => setConsent('accepted')}
                 className="rounded-full bg-accent-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-accent-700"
               >
                 Toestaan
