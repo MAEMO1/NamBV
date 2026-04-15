@@ -3,6 +3,8 @@
 import type { HTMLAttributes, ReactNode } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import AdminShell, { type AdminShellModule } from './AdminShell';
+import { AnalyticsModule } from './modules/AnalyticsModule';
+import { Banner } from './ui/Banner';
 
 type ModuleKey =
   | 'analytics'
@@ -343,14 +345,6 @@ function formatDate(value?: string | null) {
   return new Date(value).toLocaleDateString('nl-BE');
 }
 
-function getStatusCountValue(value: number | { _all?: number }) {
-  if (typeof value === 'number') {
-    return value;
-  }
-
-  return value?._all ?? 0;
-}
-
 export default function AdminConsole({ adminName }: { adminName: string }) {
   const [activeModule, setActiveModule] = useState<ModuleKey>('analytics');
   const [loading, setLoading] = useState(true);
@@ -687,9 +681,8 @@ export default function AdminConsole({ adminName }: { adminName: string }) {
     window.location.href = '/admin/login';
   }
 
-  const shellModules: ReadonlyArray<AdminShellModule<ModuleKey>> = modules.map((module) => ({
+  const shellModules: ReadonlyArray<AdminShellModule> = modules.map((module) => ({
     key: module.key,
-    label: module.label,
     count:
       module.key === 'quotes'
         ? counts.quotes
@@ -699,7 +692,7 @@ export default function AdminConsole({ adminName }: { adminName: string }) {
   }));
 
   return (
-    <AdminShell<ModuleKey>
+    <AdminShell
       adminName={adminName}
       modules={shellModules}
       activeModule={activeModule}
@@ -707,21 +700,26 @@ export default function AdminConsole({ adminName }: { adminName: string }) {
       onSignOut={signOut}
     >
       {error ? (
-        <div className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-          {error}
+        <div className="mb-4">
+          <Banner variant="danger">{error}</Banner>
         </div>
       ) : null}
 
       {loading ? (
         <div className="grid gap-4">
-          <div className="h-20 animate-pulse rounded-2xl bg-noir-100" />
-          <div className="h-64 animate-pulse rounded-2xl bg-noir-100" />
-          <div className="h-40 animate-pulse rounded-2xl bg-noir-100" />
+          <div className="h-24 animate-pulse rounded-2xl bg-parchment-100" />
+          <div className="h-64 animate-pulse rounded-2xl bg-parchment-100" />
+          <div className="h-40 animate-pulse rounded-2xl bg-parchment-100" />
         </div>
       ) : null}
 
       {!loading && activeModule === 'analytics' && analytics ? (
-        <AnalyticsPanel analytics={analytics} />
+        <AnalyticsModule
+          analytics={analytics}
+          quotes={quotes}
+          appointments={appointments}
+          onJumpTo={setActiveModule}
+        />
       ) : null}
 
       {!loading && activeModule === 'quotes' ? (
@@ -795,20 +793,6 @@ export default function AdminConsole({ adminName }: { adminName: string }) {
   );
 }
 
-function AnalyticsPanel({ analytics }: { analytics: AnalyticsOverview }) {
-  return (
-    <div className="grid gap-6">
-      <div className="grid gap-4 md:grid-cols-2">
-        <StatCard label="Offertes" value={analytics.totals.quotes} />
-        <StatCard label="Afspraken" value={analytics.totals.appointments} />
-      </div>
-      <div className="grid gap-6 md:grid-cols-2">
-        <StatusList title="Quote statussen" items={analytics.quoteStatuses} />
-        <StatusList title="Afspraak statussen" items={analytics.appointmentStatuses} />
-      </div>
-    </div>
-  );
-}
 
 function LeadModule<T extends QuoteRecord>({
   title,
@@ -1083,8 +1067,8 @@ function ContentModule({
   }
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[260px_minmax(0,1fr)]">
-      <div className={`${mobileView === 'list' ? 'grid' : 'hidden'} gap-4 lg:grid`}>
+    <div className="grid items-start gap-6 lg:grid-cols-[260px_minmax(0,1fr)]">
+      <div className={`${mobileView === 'list' ? 'grid' : 'hidden'} content-start gap-4 lg:grid`}>
         <SectionHeader title="Content" description="Gestructureerde page sections per pagina en taal." />
         <div className="admin-card-muted">
           <p className="admin-eyebrow">Pagina</p>
@@ -1317,8 +1301,8 @@ function ProjectsModule({
   }
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
-      <div className={`${mobileView === 'list' ? 'grid' : 'hidden'} gap-4 lg:grid`}>
+    <div className="grid items-start gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
+      <div className={`${mobileView === 'list' ? 'grid' : 'hidden'} content-start gap-4 lg:grid`}>
         <SectionHeader title="Projecten" description="CRUD voor projecten, vertalingen en galerijen." />
         <button
           type="button"
@@ -1690,8 +1674,8 @@ function AssetsModule({
   const selectedAsset = activeSelectionId ? assets.find((asset) => asset.id === activeSelectionId) ?? null : null;
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
-      <div className={`${mobileView === 'list' ? 'grid' : 'hidden'} gap-4 lg:grid`}>
+    <div className="grid items-start gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
+      <div className={`${mobileView === 'list' ? 'grid' : 'hidden'} content-start gap-4 lg:grid`}>
         <SectionHeader title="Assets" description="Upload naar Supabase storage en koppel URLs in content/projecten." />
         <div className="admin-card">
           <p className={`text-sm font-medium ${storageEnabled ? 'text-emerald-700' : 'text-amber-700'}`}>
@@ -2458,37 +2442,6 @@ function SettingsCard({
         <p className="mt-1 text-sm text-noir-500">{description}</p>
       </div>
       {children}
-    </div>
-  );
-}
-
-function StatCard({ label, value }: { label: string; value: number }) {
-  return (
-    <div className="admin-card-muted">
-      <p className="admin-eyebrow">{label}</p>
-      <p className="mt-2 text-3xl font-display font-bold text-noir-900">{value}</p>
-    </div>
-  );
-}
-
-function StatusList({
-  title,
-  items,
-}: {
-  title: string;
-  items: Array<{ status: string; _count: number | { _all?: number } }>;
-}) {
-  return (
-    <div className="admin-card">
-      <p className="text-sm font-semibold text-noir-900">{title}</p>
-      <div className="mt-4 grid gap-2">
-        {items.map((item, index) => (
-          <div key={`${title}-${index}`} className="flex items-center justify-between rounded-xl bg-noir-50 px-3.5 py-2.5 text-sm text-noir-700">
-            <span className="truncate">{String(item.status ?? 'unknown')}</span>
-            <span className="font-semibold">{getStatusCountValue(item._count)}</span>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }

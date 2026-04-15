@@ -46,6 +46,24 @@ export default {
           400: '#e2e8f0',
           500: '#cbd5e1',
         },
+        // Warm ivory canvas — reserved for the admin console
+        parchment: {
+          50: '#FAF7F2',
+          100: '#F4EFE6',
+          200: '#EBE3D4',
+          300: '#DACEB8',
+          400: '#B9A88A',
+          500: '#8E7E63',
+        },
+        // Warm neutral for hairline borders and dividers in the admin
+        taupe: {
+          50: '#F4EFE8',
+          100: '#E8E3DA',
+          200: '#D5CDBF',
+          300: '#B5A996',
+          400: '#8A7E6A',
+          500: '#5F5644',
+        },
       },
       fontFamily: {
         sans: ['var(--font-dm-sans)', 'system-ui', 'sans-serif'],
@@ -74,6 +92,7 @@ export default {
         'soft-lg': '0 10px 50px rgba(0, 0, 0, 0.1)',
         'soft-xl': '0 25px 80px rgba(0, 0, 0, 0.12)',
         'glow': '0 0 40px rgba(45, 74, 71, 0.3)',
+        'editorial': '0 20px 60px -30px rgba(45, 53, 48, 0.25)',
       },
       animation: {
         'fade-in': 'fadeIn 1s ease-out forwards',
