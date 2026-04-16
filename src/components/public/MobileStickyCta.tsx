@@ -44,9 +44,10 @@ export default function MobileStickyCta({ locale, phone }: Props) {
 
   return (
     <div
-      className={`lg:hidden fixed bottom-0 left-0 right-0 z-40 pb-[env(safe-area-inset-bottom)] transition-all duration-300 ease-out ${
+      className={`lg:hidden fixed inset-x-0 bottom-0 z-40 transition-all duration-300 ease-out will-change-transform ${
         visible ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-full pointer-events-none'
       }`}
+      style={{ paddingBottom: 'max(env(safe-area-inset-bottom), 0px)' }}
       aria-hidden={!visible}
     >
       <div className="bg-white/95 backdrop-blur-md border-t border-noir-100 shadow-[0_-4px_16px_rgba(0,0,0,0.06)]">
