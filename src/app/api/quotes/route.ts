@@ -2,7 +2,7 @@ export { GET } from '@/app/api/public/quote-form/route';
 
 import { NextRequest, NextResponse } from 'next/server';
 import { ZodError } from 'zod';
-import { sendAdminNotification } from '@/lib/email';
+import { sendAdminNotification, sendQuoteConfirmation } from '@/lib/email';
 import { captureRouteException } from '@/lib/monitoring';
 import { getV2QuoteFormOptions } from '@/lib/v2/public-data';
 import { createV2QuoteRequest } from '@/lib/v2/mutations';
@@ -44,7 +44,7 @@ async function sendQuoteNotifications(input: {
       serviceTypes.find((item) => item.id === serviceTypeId)?.name ?? serviceTypeId
     ));
 
-    const result = await sendAdminNotification('quote', {
+    const emailData = {
       referenceNumber: input.referenceNumber,
       fullName: input.fullName,
       email: input.email,
@@ -55,10 +55,15 @@ async function sendQuoteNotifications(input: {
       services,
       description: input.description,
       budgetRange: input.budgetRange ? (budgetRangeLabels[input.budgetRange] ?? input.budgetRange) : undefined,
-    });
+    };
 
-    if (!result.success) {
-      captureRouteException(new Error(result.error ?? 'quote admin notification failed'), {
+    const [adminResult, confirmationResult] = await Promise.all([
+      sendAdminNotification('quote', emailData),
+      sendQuoteConfirmation(emailData),
+    ]);
+
+    if (!adminResult.success) {
+      captureRouteException(new Error(adminResult.error ?? 'quote admin notification failed'), {
         action: 'quote.notification.admin',
         route: '/api/quotes',
         extra: {
@@ -67,9 +72,20 @@ async function sendQuoteNotifications(input: {
         },
       });
     }
+
+    if (!confirmationResult.success) {
+      captureRouteException(new Error(confirmationResult.error ?? 'quote confirmation failed'), {
+        action: 'quote.notification.customer',
+        route: '/api/quotes',
+        extra: {
+          referenceNumber: input.referenceNumber,
+          recipient: input.email,
+        },
+      });
+    }
   } catch (error) {
     captureRouteException(error, {
-      action: 'quote.notification.admin',
+      action: 'quote.notification',
       route: '/api/quotes',
       extra: {
         referenceNumber: input.referenceNumber,
