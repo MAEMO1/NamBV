@@ -115,14 +115,14 @@ function getQuoteConfirmationHtml(data: QuoteEmailData): string {
     <!-- Content -->
     <tr>
       <td style="padding: 40px 30px;">
-        <h2 style="margin: 0 0 20px; color: #1a1a1a; font-size: 24px;">Bedankt voor uw aanvraag!</h2>
+        <h2 style="margin: 0 0 20px; color: #1a1a1a; font-size: 24px;">Uw offerteaanvraag is goed ontvangen</h2>
 
         <p style="margin: 0 0 20px; color: #444; line-height: 1.6;">
-          Beste ${escapeHtml(data.fullName)},
+          Geachte ${escapeHtml(data.fullName)},
         </p>
 
         <p style="margin: 0 0 20px; color: #444; line-height: 1.6;">
-          Wij hebben uw offerteaanvraag goed ontvangen. Ons team zal deze zo snel mogelijk bekijken en contact met u opnemen.
+          Hartelijk dank voor uw vertrouwen in NAM Construction. Wij bevestigen hierbij de goede ontvangst van uw offerteaanvraag en verzekeren u dat wij deze zo spoedig mogelijk &mdash; in regel binnen &eacute;&eacute;n werkdag &mdash; persoonlijk zullen behandelen.
         </p>
 
         <!-- Reference Box -->
@@ -136,7 +136,7 @@ function getQuoteConfirmationHtml(data: QuoteEmailData): string {
         </table>
 
         <!-- Details -->
-        <h3 style="margin: 30px 0 15px; color: #1a1a1a; font-size: 16px; border-bottom: 1px solid #eee; padding-bottom: 10px;">Uw aanvraag</h3>
+        <h3 style="margin: 30px 0 15px; color: #1a1a1a; font-size: 16px; border-bottom: 1px solid #eee; padding-bottom: 10px;">Samenvatting van uw aanvraag</h3>
 
         <table width="100%" cellpadding="0" cellspacing="0">
           <tr>
@@ -148,38 +148,39 @@ function getQuoteConfirmationHtml(data: QuoteEmailData): string {
             <td style="padding: 8px 0; color: #1a1a1a; font-size: 14px; text-align: right;">${escapeHtml(data.postalCode)} ${escapeHtmlNullable(data.city)}</td>
           </tr>
           <tr>
-            <td style="padding: 8px 0; color: #666; font-size: 14px;">Diensten:</td>
+            <td style="padding: 8px 0; color: #666; font-size: 14px;">Gevraagde diensten:</td>
             <td style="padding: 8px 0; color: #1a1a1a; font-size: 14px; text-align: right;">${escapeHtmlList(data.services)}</td>
           </tr>
           ${data.budgetRange ? `
           <tr>
-            <td style="padding: 8px 0; color: #666; font-size: 14px;">Budget:</td>
+            <td style="padding: 8px 0; color: #666; font-size: 14px;">Indicatief budget:</td>
             <td style="padding: 8px 0; color: #1a1a1a; font-size: 14px; text-align: right;">${escapeHtml(data.budgetRange)}</td>
           </tr>
           ` : ''}
         </table>
 
         <div style="margin: 20px 0; padding: 15px; background-color: #f5f5f0;">
-          <p style="margin: 0 0 5px; color: #666; font-size: 12px; text-transform: uppercase;">Omschrijving</p>
+          <p style="margin: 0 0 5px; color: #666; font-size: 12px; text-transform: uppercase;">Uw omschrijving</p>
           <p style="margin: 0; color: #1a1a1a; font-size: 14px; line-height: 1.6;">${escapeHtml(data.description)}</p>
         </div>
 
         <!-- What's Next -->
-        <h3 style="margin: 30px 0 15px; color: #1a1a1a; font-size: 16px;">Wat gebeurt er nu?</h3>
+        <h3 style="margin: 30px 0 15px; color: #1a1a1a; font-size: 16px;">Het verdere verloop</h3>
         <ol style="margin: 0; padding: 0 0 0 20px; color: #444; line-height: 1.8;">
-          <li>Ons team bekijkt uw aanvraag binnen 24-48 uur</li>
-          <li>We nemen contact met u op om de details te bespreken</li>
-          <li>Indien gewenst, plannen we een plaatsbezoek in</li>
-          <li>U ontvangt een vrijblijvende offerte op maat</li>
+          <li>Wij bestuderen uw aanvraag zorgvuldig en bereiden een eerste reactie voor.</li>
+          <li>U wordt persoonlijk gecontacteerd om de details en uw wensen af te stemmen.</li>
+          <li>Indien gewenst plannen wij een vrijblijvend plaatsbezoek in.</li>
+          <li>U ontvangt een heldere, uitgewerkte offerte op maat &mdash; zonder enige verplichting.</li>
         </ol>
 
         <p style="margin: 30px 0 0; color: #444; line-height: 1.6;">
-          Heeft u vragen? Neem gerust contact met ons op via <a href="tel:+32493812789" style="color: #3d5a4c;">+32 493 81 27 89</a> of <a href="mailto:info@namconstruction.be" style="color: #3d5a4c;">info@namconstruction.be</a>
+          Heeft u in tussentijd een vraag? Aarzel niet ons te bellen op <a href="tel:+32493812789" style="color: #3d5a4c;">+32 493 81 27 89</a> of te antwoorden op deze e-mail.
         </p>
 
-        <p style="margin: 20px 0 0; color: #444; line-height: 1.6;">
+        <p style="margin: 30px 0 0; color: #444; line-height: 1.6;">
           Met vriendelijke groeten,<br>
-          <strong>Team NAM Construction</strong>
+          <strong>Na&iuml;m</strong><br>
+          NAM Construction
         </p>
       </td>
     </tr>
@@ -227,14 +228,14 @@ function getAppointmentConfirmationHtml(data: AppointmentEmailData): string {
     <!-- Content -->
     <tr>
       <td style="padding: 40px 30px;">
-        <h2 style="margin: 0 0 20px; color: #1a1a1a; font-size: 24px;">Uw adviesgesprek is ingepland!</h2>
+        <h2 style="margin: 0 0 20px; color: #1a1a1a; font-size: 24px;">Uw adviesgesprek is bevestigd</h2>
 
         <p style="margin: 0 0 20px; color: #444; line-height: 1.6;">
-          Beste ${escapeHtml(data.fullName)},
+          Geachte ${escapeHtml(data.fullName)},
         </p>
 
         <p style="margin: 0 0 20px; color: #444; line-height: 1.6;">
-          Bedankt voor het inplannen van een adviesgesprek met NAM Construction. Hieronder vindt u de details van uw afspraak.
+          Hartelijk dank voor uw vertrouwen. Uw adviesgesprek met NAM Construction is met zorg ingepland. Hieronder vindt u de details van de afspraak ter bevestiging.
         </p>
 
         <!-- Appointment Box -->
@@ -296,28 +297,29 @@ function getAppointmentConfirmationHtml(data: AppointmentEmailData): string {
         </div>
 
         <!-- What to Expect -->
-        <h3 style="margin: 30px 0 15px; color: #1a1a1a; font-size: 16px;">Wat kunt u verwachten?</h3>
+        <h3 style="margin: 30px 0 15px; color: #1a1a1a; font-size: 16px;">Wat mag u verwachten?</h3>
         <ul style="margin: 0; padding: 0 0 0 20px; color: #444; line-height: 1.8;">
-          <li>Een vrijblijvend telefonisch gesprek van ca. 20-30 minuten</li>
-          <li>We bespreken uw wensen en mogelijkheden</li>
-          <li>U ontvangt direct een eerste inschatting</li>
-          <li>Indien gewenst, plannen we een plaatsbezoek in</li>
+          <li>Een vrijblijvend telefonisch gesprek van circa 20 tot 30 minuten.</li>
+          <li>Wij luisteren naar uw wensen en lichten de mogelijkheden toe.</li>
+          <li>U ontvangt meteen een eerste, realistische inschatting.</li>
+          <li>Indien gewenst plannen wij een vrijblijvend plaatsbezoek in.</li>
         </ul>
 
         <!-- Important Note -->
         <div style="margin: 30px 0; padding: 20px; background-color: #fff8e6; border-left: 4px solid #f5a623;">
           <p style="margin: 0; color: #444; font-size: 14px; line-height: 1.6;">
-            <strong>Belangrijk:</strong> Wij bellen u op het afgesproken tijdstip op <strong>${escapeHtml(data.phone)}</strong>. Zorg dat u bereikbaar bent.
+            <strong>Belangrijk:</strong> Wij bellen u op het afgesproken tijdstip op <strong>${escapeHtml(data.phone)}</strong>. Gelieve bereikbaar te zijn.
           </p>
         </div>
 
         <p style="margin: 30px 0 0; color: #444; line-height: 1.6;">
-          Moet u de afspraak wijzigen of annuleren? Neem contact met ons op via <a href="tel:+32493812789" style="color: #3d5a4c;">+32 493 81 27 89</a> of <a href="mailto:info@namconstruction.be" style="color: #3d5a4c;">info@namconstruction.be</a>
+          Dient u de afspraak te wijzigen of te annuleren? Neem gerust contact met ons op via <a href="tel:+32493812789" style="color: #3d5a4c;">+32 493 81 27 89</a> of <a href="mailto:info@namconstruction.be" style="color: #3d5a4c;">info@namconstruction.be</a>.
         </p>
 
-        <p style="margin: 20px 0 0; color: #444; line-height: 1.6;">
-          Tot binnenkort!<br>
-          <strong>Team NAM Construction</strong>
+        <p style="margin: 30px 0 0; color: #444; line-height: 1.6;">
+          Met vriendelijke groeten,<br>
+          <strong>Na&iuml;m</strong><br>
+          NAM Construction
         </p>
       </td>
     </tr>
