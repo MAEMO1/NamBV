@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "eslint eslint.config.mjs middleware.ts prisma/seed.ts scripts src tests",
+    "lint": "eslint eslint.config.mjs prisma/seed.ts scripts src tests",
     "lint:repo": "eslint .",
     "typecheck": "rm -rf .next && tsc --noEmit",
     "test": "tsx --test",
