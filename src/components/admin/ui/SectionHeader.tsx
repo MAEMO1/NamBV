@@ -22,21 +22,31 @@ export function SectionHeader({
 }: SectionHeaderProps) {
   const Heading = as;
   return (
-    <header className="flex flex-wrap items-start justify-between gap-3 border-b border-slate-200 pb-4">
+    <header
+      className="flex flex-wrap items-start justify-between gap-3 pb-4"
+      style={{ borderBottom: '1px solid var(--adm-border)' }}
+    >
       <div className="min-w-0">
-        {eyebrow ? (
-          <p className="text-[10px] font-medium uppercase tracking-wider text-slate-500">
-            {eyebrow}
-          </p>
-        ) : null}
+        {eyebrow ? <p className="admin-eyebrow">{eyebrow}</p> : null}
         <Heading
           data-testid={as === 'h1' ? 'admin-page-title' : undefined}
-          className="mt-0.5 text-lg font-semibold text-slate-900 md:text-xl"
+          className="mt-1"
+          style={{
+            fontFamily: 'var(--adm-sans)',
+            fontWeight: 600,
+            fontSize: as === 'h1' ? 20 : 16,
+            letterSpacing: '-0.01em',
+            color: 'var(--adm-text)',
+            lineHeight: 1.2,
+          }}
         >
           {title}
         </Heading>
         {description ? (
-          <p className="mt-1 max-w-prose text-xs leading-relaxed text-slate-500 md:text-sm">
+          <p
+            className="mt-1.5 max-w-prose"
+            style={{ fontSize: 13, color: 'var(--adm-text-3)', lineHeight: 1.5 }}
+          >
             {description}
           </p>
         ) : null}

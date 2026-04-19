@@ -1,8 +1,5 @@
 import type { HTMLAttributes, InputHTMLAttributes, ReactNode, SelectHTMLAttributes, TextareaHTMLAttributes } from 'react';
 
-const fieldBase =
-  'w-full min-h-[38px] rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10 disabled:opacity-60';
-
 type FieldLabelProps = {
   label: string;
   hint?: string;
@@ -12,10 +9,10 @@ type FieldLabelProps = {
 
 export function FieldLabel({ label, hint, children, className = '' }: FieldLabelProps) {
   return (
-    <label className={`grid gap-1 text-sm text-slate-800 ${className}`}>
-      <span className="text-xs font-medium text-slate-700">{label}</span>
+    <label className={`admin-field ${className}`}>
+      <span className="admin-field-label">{label}</span>
       {children}
-      {hint ? <span className="text-xs text-slate-500">{hint}</span> : null}
+      {hint ? <span className="admin-field-hint">{hint}</span> : null}
     </label>
   );
 }
@@ -34,7 +31,7 @@ export function LabeledInput({ label, hint, value, onChange, className, ...rest 
         {...rest}
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className={`${fieldBase} ${className ?? ''}`}
+        className={`admin-input ${className ?? ''}`}
       />
     </FieldLabel>
   );
@@ -55,7 +52,8 @@ export function LabeledTextarea({ label, hint, value, onChange, className, rows 
         value={value}
         rows={rows}
         onChange={(event) => onChange(event.target.value)}
-        className={`${fieldBase} min-h-[96px] resize-y ${className ?? ''}`}
+        className={`admin-input ${className ?? ''}`}
+        style={{ minHeight: 96, resize: 'vertical' }}
       />
     </FieldLabel>
   );
@@ -76,7 +74,8 @@ export function LabeledSelect({ label, hint, value, options, onChange, className
         {...rest}
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className={`${fieldBase} pr-8 ${className ?? ''}`}
+        className={`admin-input ${className ?? ''}`}
+        style={{ paddingRight: 34, appearance: 'none', WebkitAppearance: 'none', backgroundImage: "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23697386' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>\")", backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center' }}
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>
@@ -97,24 +96,26 @@ type ToggleFieldProps = {
 
 export function ToggleField({ label, description, checked, onChange }: ToggleFieldProps) {
   return (
-    <label className="flex cursor-pointer items-start gap-2.5 rounded-md border border-slate-200 bg-white px-3 py-2.5 transition hover:border-slate-300">
-      <input
-        type="checkbox"
-        checked={checked}
-        onChange={(event) => onChange(event.target.checked)}
-        className="mt-0.5 h-4 w-4 shrink-0 rounded border-slate-300 text-slate-900 focus:ring-slate-900/30"
-      />
-      <span className="min-w-0">
-        <span className="block text-sm font-medium text-slate-900">{label}</span>
+    <button
+      type="button"
+      onClick={() => onChange(!checked)}
+      className={`admin-toggle ${checked ? 'on' : ''}`}
+      role="switch"
+      aria-checked={checked}
+      style={{ textAlign: 'left' }}
+    >
+      <span className="admin-toggle-switch" aria-hidden="true" />
+      <span style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.3, gap: 2 }}>
+        <span style={{ fontSize: 13, color: 'var(--adm-text)', fontWeight: 500 }}>{label}</span>
         {description ? (
-          <span className="mt-0.5 block text-xs text-slate-500">{description}</span>
+          <span style={{ fontSize: 12, color: 'var(--adm-text-3)' }}>{description}</span>
         ) : null}
       </span>
-    </label>
+    </button>
   );
 }
 
-export const inputClassName = fieldBase;
+export const inputClassName = 'admin-input';
 
 export function FieldGroup({
   children,

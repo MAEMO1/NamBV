@@ -57,19 +57,19 @@ export function getStatusMeta(kind: 'quote' | 'appointment', status: string): St
 }
 
 export const variantClassName: Record<StatusVariant, string> = {
-  neutral: 'bg-slate-100 text-slate-700',
-  info: 'bg-sky-100 text-sky-700',
-  success: 'bg-emerald-100 text-emerald-700',
-  warning: 'bg-amber-100 text-amber-800',
-  danger: 'bg-rose-100 text-rose-700',
-  accent: 'bg-slate-100 text-slate-800',
+  neutral: 'admin-chip admin-chip-neutral',
+  info: 'admin-chip admin-chip-info',
+  success: 'admin-chip admin-chip-success',
+  warning: 'admin-chip admin-chip-warning',
+  danger: 'admin-chip admin-chip-danger',
+  accent: 'admin-chip admin-chip-accent',
 };
 
 export const variantDotColor: Record<StatusVariant, string> = {
-  neutral: '#64748b',
-  info: '#0284c7',
-  success: '#059669',
-  warning: '#b45309',
-  danger: '#e11d48',
-  accent: '#0f172a',
+  neutral: 'var(--adm-text-3)',
+  info: 'var(--adm-info)',
+  success: 'var(--adm-success)',
+  warning: 'var(--adm-warning)',
+  danger: 'var(--adm-danger)',
+  accent: 'var(--adm-accent)',
 };

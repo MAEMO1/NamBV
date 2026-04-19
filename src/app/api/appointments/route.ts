@@ -3,6 +3,7 @@ import { NextRequest } from 'next/server';
 import { ZodError } from 'zod';
 import { sendAdminNotification, sendAppointmentConfirmation } from '@/lib/email';
 import { captureRouteException } from '@/lib/monitoring';
+import { getAppointmentProjectTypeLabel, resolveAppointmentProjectTypeId } from '@/lib/v2/locale';
 import { createV2Appointment } from '@/lib/v2/mutations';
 import {
   getPublicWriteMetaFromRequest,
@@ -21,28 +22,37 @@ async function sendAppointmentNotifications(input: {
   gemeente: string;
   selectedDate: string;
   selectedTime: string;
-  projectType?: string;
+  projectTypeLabel?: string;
   propertyType?: string;
   message?: string;
   referenceNumber: string;
 }) {
   try {
-    const emailData = {
-      referenceNumber: input.referenceNumber,
-      fullName: input.name,
-      email: input.email,
-      phone: input.phone,
-      gemeente: input.gemeente,
-      appointmentDate: input.selectedDate,
-      appointmentTime: input.selectedTime,
-      projectType: input.projectType,
-      propertyType: input.propertyType,
-      message: input.message,
-    };
-
     const [adminResult, confirmationResult] = await Promise.all([
-      sendAdminNotification('appointment', emailData),
-      sendAppointmentConfirmation(emailData),
+      sendAdminNotification('appointment', {
+        referenceNumber: input.referenceNumber,
+        fullName: input.name,
+        email: input.email,
+        phone: input.phone,
+        gemeente: input.gemeente,
+        appointmentDate: input.selectedDate,
+        appointmentTime: input.selectedTime,
+        projectType: input.projectTypeLabel,
+        propertyType: input.propertyType,
+        message: input.message,
+      }),
+      sendAppointmentConfirmation({
+        referenceNumber: input.referenceNumber,
+        fullName: input.name,
+        email: input.email,
+        phone: input.phone,
+        gemeente: input.gemeente,
+        appointmentDate: input.selectedDate,
+        appointmentTime: input.selectedTime,
+        projectType: input.projectTypeLabel,
+        propertyType: input.propertyType,
+        message: input.message,
+      }),
     ]);
 
     if (!adminResult.success) {
@@ -107,6 +117,10 @@ export async function POST(request: NextRequest) {
 
     const payload = v2AppointmentCreateSchema.parse(body);
     const appointment = await createV2Appointment(payload);
+    const canonicalProjectTypeId = resolveAppointmentProjectTypeId(payload.projectTypeId);
+    const projectTypeLabel = canonicalProjectTypeId
+      ? getAppointmentProjectTypeLabel(payload.locale, canonicalProjectTypeId)
+      : undefined;
     await recordPublicSubmissionAttempt({
       kind: 'appointment',
       meta,
@@ -120,10 +134,10 @@ export async function POST(request: NextRequest) {
       gemeente: payload.gemeente,
       selectedDate: payload.selectedDate,
       selectedTime: payload.selectedTime,
-      projectType: payload.projectType || undefined,
+      referenceNumber: appointment.referenceNumber,
+      projectTypeLabel,
       propertyType: payload.propertyType || undefined,
       message: payload.message || undefined,
-      referenceNumber: appointment.referenceNumber,
     });
 
     return NextResponse.json(

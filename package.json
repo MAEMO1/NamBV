@@ -9,7 +9,7 @@
     "lint": "eslint eslint.config.mjs middleware.ts prisma/seed.ts scripts src tests",
     "lint:repo": "eslint .",
     "typecheck": "rm -rf .next && tsc --noEmit",
-    "test": "tsx --test \"src/**/*.test.ts\"",
+    "test": "tsx --test",
     "test:smoke": "playwright test",
     "test:smoke:prod": "PLAYWRIGHT_BASE_URL=https://nambv.vercel.app playwright test",
     "ci": "npm run lint && npm run typecheck && npm run test && npm run build",

@@ -6,7 +6,11 @@ import { captureRouteException } from '@/lib/monitoring';
 import { deleteV2Asset, updateV2Asset } from '@/lib/v2/mutations';
 import { requireV2AdminRequest, zodErrorResponse } from '@/lib/v2/request';
 import { v2AssetUpdateSchema } from '@/lib/v2/schemas';
-import { getSupabaseAdminClient, hasSupabaseAdminStorage } from '@/lib/supabase-admin';
+import {
+  getSupabaseAdminClient,
+  hasSupabaseAdminStorage,
+  isSupabaseManagedBucket,
+} from '@/lib/supabase-admin';
 
 export async function PATCH(
   request: NextRequest,
@@ -59,7 +63,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Asset not found' }, { status: 404 });
     }
 
-    if (hasSupabaseAdminStorage()) {
+    if (hasSupabaseAdminStorage() && isSupabaseManagedBucket(asset.bucket)) {
       const supabase = getSupabaseAdminClient();
       const removal = await supabase.storage.from(asset.bucket).remove([asset.path]);
       if (removal.error) {

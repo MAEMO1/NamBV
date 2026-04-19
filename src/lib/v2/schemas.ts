@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { BudgetRangeSchema, QuoteStatusSchema } from '@/lib/validations/quote';
-import { V2_LOCALES } from './locale';
+import { V2_LOCALES, normalizeV2Locale, resolveAppointmentProjectTypeId } from './locale';
 
 const v2LocaleSchema = z.enum(V2_LOCALES);
 
@@ -42,14 +42,19 @@ export const v2QuoteUpdateSchema = z.object({
   adminNotes: z.string().max(5000).nullable().optional(),
 });
 
+const appointmentProjectTypeFieldSchema = z.string().max(100).optional().or(z.literal(''));
+
 export const v2AppointmentCreateSchema = z.object({
+  locale: v2LocaleSchema.optional(),
   name: z.string().min(2).max(100),
   email: emailSchema,
   phone: phoneSchema,
   gemeente: z.string().min(2).max(120),
   selectedDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   selectedTime: z.string().regex(/^\d{2}:\d{2}$/),
-  projectType: z.string().max(100).optional().or(z.literal('')),
+  projectTypeId: appointmentProjectTypeFieldSchema,
+  // Legacy field kept temporarily so stale clients still normalize to a canonical id.
+  projectType: appointmentProjectTypeFieldSchema,
   propertyType: z.string().max(100).optional().or(z.literal('')),
   propertyAge: z.string().max(100).optional().or(z.literal('')),
   priorities: z.array(z.string()).default([]),
@@ -60,6 +65,38 @@ export const v2AppointmentCreateSchema = z.object({
   paymentSpread: z.boolean().default(false),
   motivation: z.string().max(2000).optional().or(z.literal('')),
   message: z.string().max(5000).optional().or(z.literal('')),
+}).superRefine((value, ctx) => {
+  const rawProjectType = value.projectTypeId || value.projectType || '';
+  if (rawProjectType && !resolveAppointmentProjectTypeId(rawProjectType)) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'Invalid project type',
+      path: [value.projectTypeId ? 'projectTypeId' : 'projectType'],
+    });
+  }
+}).transform((value) => {
+  const canonicalProjectTypeId = resolveAppointmentProjectTypeId(value.projectTypeId || value.projectType || '') ?? '';
+
+  return {
+    locale: normalizeV2Locale(value.locale),
+    name: value.name,
+    email: value.email,
+    phone: value.phone,
+    gemeente: value.gemeente,
+    selectedDate: value.selectedDate,
+    selectedTime: value.selectedTime,
+    projectTypeId: canonicalProjectTypeId,
+    propertyType: value.propertyType,
+    propertyAge: value.propertyAge,
+    priorities: value.priorities,
+    materialPreference: value.materialPreference,
+    budget: value.budget,
+    timing: value.timing,
+    subsidyInterest: value.subsidyInterest,
+    paymentSpread: value.paymentSpread,
+    motivation: value.motivation,
+    message: value.message,
+  };
 });
 
 export const v2AppointmentUpdateSchema = z.object({
@@ -77,7 +114,7 @@ export const v2AppointmentUpdateSchema = z.object({
   proposedTime: z.string().regex(/^\d{2}:\d{2}$/).nullable().optional(),
 });
 
-export const V2_ADMIN_CONTENT_SCHEMA_KEYS = ['hero', 'feature-list', 'content', 'contact', 'cta', 'legal'] as const;
+export const V2_ADMIN_CONTENT_SCHEMA_KEYS = ['hero', 'feature-list', 'content', 'contact', 'cta', 'faq', 'legal'] as const;
 
 export const v2AdminContentSchemaKeySchema = z.enum(V2_ADMIN_CONTENT_SCHEMA_KEYS);
 
@@ -132,6 +169,16 @@ const ctaSectionDataSchema = z.object({
   primaryCtaHref: z.string().optional(),
 }).passthrough();
 
+const faqSectionDataSchema = z.object({
+  eyebrow: z.string().optional(),
+  title: z.string().optional(),
+  description: z.string().optional(),
+  items: z.array(z.object({
+    question: z.string().min(1),
+    answer: z.string().min(1),
+  })).default([]),
+}).passthrough();
+
 const legalSectionDataSchema = z.object({
   updatedAt: z.string().optional(),
   introduction: z.string().optional(),
@@ -150,6 +197,8 @@ function getV2AdminContentDataSchema(schemaKey: z.infer<typeof v2AdminContentSch
       return contactSectionDataSchema;
     case 'cta':
       return ctaSectionDataSchema;
+    case 'faq':
+      return faqSectionDataSchema;
     case 'legal':
       return legalSectionDataSchema;
   }

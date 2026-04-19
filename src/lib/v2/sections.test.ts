@@ -54,3 +54,64 @@ test('getAdminV2Sections exposes preview metadata and stored/default origin flag
   assert.equal(hero?.isDefault, true);
   assert.equal(hero?.hasStoredValue, false);
 });
+
+test('legacy and intermediate approach CTA overrides are normalized to the new display order', () => {
+  const defaults = defaultPageSections.filter((section) => section.pageKey === 'approach' && section.locale === 'nl');
+
+  const published = getPublishedV2Sections(defaults, [
+    {
+      id: 'legacy-approach-cta',
+      pageKey: 'approach',
+      sectionKey: 'cta',
+      locale: 'nl',
+      schemaKey: 'cta',
+      dataJson: { title: 'Stored CTA' },
+      displayOrder: 3,
+      published: true,
+    },
+    {
+      id: 'intermediate-approach-cta',
+      pageKey: 'approach',
+      sectionKey: 'cta',
+      locale: 'nl',
+      schemaKey: 'cta',
+      dataJson: { title: 'Intermediate CTA' },
+      displayOrder: 5,
+      published: true,
+    },
+  ]);
+
+  const ctas = published.filter((section) => section.sectionKey === 'cta');
+
+  assert.equal(ctas.length, 1);
+  assert.equal(ctas[0]?.displayOrder, 6);
+  assert.deepEqual(ctas[0]?.dataJson, { title: 'Intermediate CTA' });
+
+  const adminSections = getAdminV2Sections([
+    {
+      id: 'legacy-approach-cta',
+      pageKey: 'approach',
+      sectionKey: 'cta',
+      locale: 'nl',
+      schemaKey: 'cta',
+      dataJson: { title: 'Stored CTA' },
+      displayOrder: 3,
+      published: true,
+    },
+    {
+      id: 'intermediate-approach-cta',
+      pageKey: 'approach',
+      sectionKey: 'cta',
+      locale: 'nl',
+      schemaKey: 'cta',
+      dataJson: { title: 'Intermediate CTA' },
+      displayOrder: 5,
+      published: true,
+    },
+  ]);
+
+  const adminCta = adminSections.find((section) => section.id === 'intermediate-approach-cta');
+
+  assert.equal(adminCta?.displayOrder, 6);
+  assert.equal(adminCta?.hasStoredValue, true);
+});

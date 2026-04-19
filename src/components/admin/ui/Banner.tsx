@@ -1,13 +1,13 @@
 import { AlertTriangle, CheckCircle2, Info } from 'lucide-react';
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
 type Variant = 'info' | 'success' | 'warning' | 'danger';
 
-const variantClass: Record<Variant, string> = {
-  info: 'border-sky-200 bg-sky-50 text-sky-900',
-  success: 'border-emerald-200 bg-emerald-50 text-emerald-900',
-  warning: 'border-amber-200 bg-amber-50 text-amber-900',
-  danger: 'border-rose-200 bg-rose-50 text-rose-900',
+const variantStyle: Record<Variant, { bg: string; fg: string; accent: string }> = {
+  info:    { bg: 'var(--adm-info-soft)',    fg: 'var(--adm-info)',    accent: 'var(--adm-info)' },
+  success: { bg: 'var(--adm-success-soft)', fg: '#0B6E4F',            accent: 'var(--adm-success)' },
+  warning: { bg: 'var(--adm-warning-soft)', fg: '#8A3F04',            accent: 'var(--adm-warning)' },
+  danger:  { bg: 'var(--adm-danger-soft)',  fg: 'var(--adm-danger)',  accent: 'var(--adm-danger)' },
 };
 
 const variantIcon: Record<Variant, typeof Info> = {
@@ -25,9 +25,18 @@ export function Banner({
   children: ReactNode;
 }) {
   const Icon = variantIcon[variant];
+  const style: CSSProperties = {
+    background: variantStyle[variant].bg,
+    color: variantStyle[variant].fg,
+    borderLeft: `2px solid ${variantStyle[variant].accent}`,
+    borderRadius: 6,
+    fontSize: 13,
+    lineHeight: 1.5,
+  };
   return (
     <div
-      className={`flex items-start gap-2 rounded-md border px-3 py-2 text-sm ${variantClass[variant]}`}
+      className="flex items-start gap-2 px-3 py-2.5"
+      style={style}
       role={variant === 'danger' || variant === 'warning' ? 'alert' : undefined}
     >
       <Icon size={15} strokeWidth={2} className="mt-0.5 shrink-0" />

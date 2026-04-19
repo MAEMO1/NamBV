@@ -3,6 +3,8 @@
 import type { ReactNode } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 
+import { ExternalLink, Monitor, Plus, Smartphone, Tablet } from 'lucide-react';
+
 import AdminShell, { type AdminShellModule } from './AdminShell';
 import { moduleOrder } from './icons';
 import {
@@ -46,6 +48,7 @@ import {
 import { Banner } from './ui/Banner';
 import { EmptyState } from './ui/EmptyState';
 import { LabeledInput, LabeledSelect, LabeledTextarea, ToggleField } from './ui/Input';
+import { formatStoredAppointmentProjectType } from '@/lib/v2/locale';
 import { ItemListEditor, TextListEditor, TimeSlotEditor } from './ui/ListEditors';
 import { SectionHeader } from './ui/SectionHeader';
 
@@ -402,6 +405,7 @@ export default function AdminConsole({ adminName }: { adminName: string }) {
       activeModule={activeModule}
       onChangeModule={setActiveModule}
       onSignOut={signOut}
+      padded={activeModule !== 'content'}
     >
       {error ? (
         <div className="mb-4">
@@ -583,12 +587,29 @@ function ContentModule({
   const [saving, setSaving] = useState(false);
   const [assetPicker, setAssetPicker] = useState<null | { title: string; onSelect: (url: string) => void }>(null);
   const [mobileView, setMobileView] = useState<'list' | 'detail'>('list');
+  const [previewNonce, setPreviewNonce] = useState(0);
+  const [viewport, setViewport] = useState<'desktop' | 'tablet' | 'phone'>('desktop');
+  const [metaCollapsed, setMetaCollapsed] = useState(true);
+  const [lastSavedAt, setLastSavedAt] = useState<Date | null>(null);
 
   const filteredSections = useMemo(
     () => sections.filter((section) => section.pageKey === pageKey && section.locale === locale)
       .sort((left, right) => left.displayOrder - right.displayOrder),
     [locale, pageKey, sections],
   );
+
+  // Locale availability for the currently focused sectionKey (used by tabs)
+  const currentSectionKey = draft?.sectionKey;
+  const localeAvailability = useMemo(() => {
+    const map: Record<'nl' | 'fr' | 'en', boolean> = { nl: true, fr: false, en: false };
+    if (!currentSectionKey) return map;
+    for (const section of sections) {
+      if (section.pageKey === pageKey && section.sectionKey === currentSectionKey && section.hasStoredValue) {
+        map[section.locale] = true;
+      }
+    }
+    return map;
+  }, [sections, pageKey, currentSectionKey]);
 
   useEffect(() => {
     if (pages.length > 0 && !pages.some((page) => page.key === pageKey)) {
@@ -620,6 +641,33 @@ function ContentModule({
 
   const selectedSection = filteredSections.find((section) => getSelectionKey(section) === selectionKey) ?? null;
 
+  const isDirty = useMemo(() => {
+    if (!draft) return false;
+    if (selectedSection) {
+      const left = JSON.stringify({
+        sectionKey: selectedSection.sectionKey,
+        schemaKey: selectedSection.schemaKey,
+        displayOrder: selectedSection.displayOrder,
+        published: selectedSection.published,
+        dataJson: selectedSection.dataJson,
+      });
+      const right = JSON.stringify({
+        sectionKey: draft.sectionKey,
+        schemaKey: draft.schemaKey,
+        displayOrder: draft.displayOrder,
+        published: draft.published,
+        dataJson: draft.dataJson,
+      });
+      return left !== right;
+    }
+    // New section is dirty if any data field carries content
+    return Object.values(draft.dataJson).some((value) => {
+      if (typeof value === 'string') return value.trim().length > 0;
+      if (Array.isArray(value)) return value.length > 0;
+      return value != null;
+    });
+  }, [draft, selectedSection]);
+
   async function handleSave() {
     if (!draft) {
       return;
@@ -629,6 +677,8 @@ function ContentModule({
     try {
       const saved = await onSave(draft);
       setSelectionKey(saved.id ?? getSelectionKey(draft));
+      setLastSavedAt(new Date());
+      setPreviewNonce((value) => value + 1);
     } finally {
       setSaving(false);
     }
@@ -644,281 +694,326 @@ function ContentModule({
     }
 
     await onDelete(selectedSection);
+    setPreviewNonce((value) => value + 1);
   }
 
   function updateDraftField(key: string, value: unknown) {
     setDraft((current) => current ? { ...current, dataJson: { ...current.dataJson, [key]: value } } : current);
   }
 
-  function renderSchemaEditor() {
-    if (!draft) {
-      return null;
-    }
-
-    switch (draft.schemaKey) {
-      case 'hero':
-        return (
-          <>
-            <LabeledInput label="Eyebrow" value={ensureString(draft.dataJson.eyebrow)} onChange={(value) => updateDraftField('eyebrow', value)} />
-            <LabeledInput label="Titel" value={ensureString(draft.dataJson.title)} onChange={(value) => updateDraftField('title', value)} />
-            <LabeledTextarea label="Beschrijving" value={ensureString(draft.dataJson.description)} onChange={(value) => updateDraftField('description', value)} rows={4} />
-            <div className="grid gap-4 md:grid-cols-2">
-              <LabeledInput label="Primary CTA label" value={ensureString(draft.dataJson.primaryCtaLabel)} onChange={(value) => updateDraftField('primaryCtaLabel', value)} />
-              <LabeledInput label="Primary CTA href" value={ensureString(draft.dataJson.primaryCtaHref)} onChange={(value) => updateDraftField('primaryCtaHref', value)} />
-              <LabeledInput label="Secondary CTA label" value={ensureString(draft.dataJson.secondaryCtaLabel)} onChange={(value) => updateDraftField('secondaryCtaLabel', value)} />
-              <LabeledInput label="Secondary CTA href" value={ensureString(draft.dataJson.secondaryCtaHref)} onChange={(value) => updateDraftField('secondaryCtaHref', value)} />
-            </div>
-            <ImageUrlInput
-              label="Hero image"
-              value={ensureString(draft.dataJson.image)}
-              onChange={(value) => updateDraftField('image', value)}
-              onPickAsset={() => setAssetPicker({
-                title: 'Kies hero image',
-                onSelect: (url) => updateDraftField('image', url),
-              })}
-            />
-          </>
-        );
-      case 'feature-list':
-        return (
-          <>
-            <LabeledInput label="Eyebrow" value={ensureString(draft.dataJson.eyebrow)} onChange={(value) => updateDraftField('eyebrow', value)} />
-            <LabeledInput label="Titel" value={ensureString(draft.dataJson.title)} onChange={(value) => updateDraftField('title', value)} />
-            <LabeledTextarea label="Beschrijving" value={ensureString(draft.dataJson.description)} onChange={(value) => updateDraftField('description', value)} rows={3} />
-            <ItemListEditor
-              label="Items"
-              items={ensureItemArray(draft.dataJson.items)}
-              onChange={(items) => updateDraftField('items', items)}
-              fields={[
-                { key: 'title', label: 'Titel' },
-                { key: 'description', label: 'Beschrijving', multiline: true },
-                { key: 'href', label: 'Href' },
-                { key: 'ctaLabel', label: 'CTA label' },
-              ]}
-            />
-          </>
-        );
-      case 'content':
-        return (
-          <>
-            <LabeledInput label="Eyebrow" value={ensureString(draft.dataJson.eyebrow)} onChange={(value) => updateDraftField('eyebrow', value)} />
-            <LabeledInput label="Titel" value={ensureString(draft.dataJson.title)} onChange={(value) => updateDraftField('title', value)} />
-            <LabeledTextarea label="Beschrijving" value={ensureString(draft.dataJson.description)} onChange={(value) => updateDraftField('description', value)} rows={3} />
-            <TextListEditor
-              label="Paragrafen"
-              items={ensureStringArray(draft.dataJson.paragraphs)}
-              onChange={(items) => updateDraftField('paragraphs', items)}
-            />
-            <ItemListEditor
-              label="Detail cards"
-              items={ensureItemArray(draft.dataJson.items)}
-              onChange={(items) => updateDraftField('items', items)}
-              fields={[
-                { key: 'title', label: 'Titel' },
-                { key: 'description', label: 'Beschrijving', multiline: true },
-              ]}
-            />
-          </>
-        );
-      case 'contact':
-        return (
-          <>
-            <LabeledInput label="Eyebrow" value={ensureString(draft.dataJson.eyebrow)} onChange={(value) => updateDraftField('eyebrow', value)} />
-            <LabeledInput label="Titel" value={ensureString(draft.dataJson.title)} onChange={(value) => updateDraftField('title', value)} />
-            <LabeledTextarea label="Beschrijving" value={ensureString(draft.dataJson.description)} onChange={(value) => updateDraftField('description', value)} rows={3} />
-            <TextListEditor
-              label="Highlights"
-              items={ensureStringArray(draft.dataJson.highlights)}
-              onChange={(items) => updateDraftField('highlights', items)}
-            />
-            <div className="grid gap-4 md:grid-cols-2">
-              <LabeledInput label="CTA label" value={ensureString(draft.dataJson.primaryCtaLabel)} onChange={(value) => updateDraftField('primaryCtaLabel', value)} />
-              <LabeledInput label="CTA href" value={ensureString(draft.dataJson.primaryCtaHref)} onChange={(value) => updateDraftField('primaryCtaHref', value)} />
-            </div>
-          </>
-        );
-      case 'cta':
-        return (
-          <>
-            <LabeledInput label="Titel" value={ensureString(draft.dataJson.title)} onChange={(value) => updateDraftField('title', value)} />
-            <LabeledTextarea label="Beschrijving" value={ensureString(draft.dataJson.description)} onChange={(value) => updateDraftField('description', value)} rows={3} />
-            <div className="grid gap-4 md:grid-cols-2">
-              <LabeledInput label="CTA label" value={ensureString(draft.dataJson.primaryCtaLabel)} onChange={(value) => updateDraftField('primaryCtaLabel', value)} />
-              <LabeledInput label="CTA href" value={ensureString(draft.dataJson.primaryCtaHref)} onChange={(value) => updateDraftField('primaryCtaHref', value)} />
-            </div>
-          </>
-        );
-      case 'legal':
-        return (
-          <>
-            <div className="grid gap-4 md:grid-cols-2">
-              <LabeledInput label="Updated at" value={ensureString(draft.dataJson.updatedAt)} onChange={(value) => updateDraftField('updatedAt', value)} />
-            </div>
-            <LabeledTextarea label="Introductie" value={ensureString(draft.dataJson.introduction)} onChange={(value) => updateDraftField('introduction', value)} rows={4} />
-            <ItemListEditor
-              label="Legal secties"
-              items={ensureItemArray(draft.dataJson.sections)}
-              onChange={(items) => updateDraftField('sections', items)}
-              fields={[
-                { key: 'title', label: 'Titel' },
-                { key: 'body', label: 'Body', multiline: true },
-                { key: 'items', label: 'Items (1 per regel)', multiline: true, isStringList: true },
-              ]}
-            />
-          </>
-        );
-    }
+  function handleNewSection() {
+    const created = createNewSection(pageKey, locale, filteredSections);
+    setDraft(created);
+    setSelectionKey(`new:${Date.now()}`);
+    setMobileView('detail');
   }
 
+  // Save-state label
+  let saveLabel = 'Geen wijzigingen';
+  let saveDirty = false;
+  if (saving) {
+    saveLabel = 'Opslaan…';
+  } else if (isDirty) {
+    saveLabel = 'Niet opgeslagen';
+    saveDirty = true;
+  } else if (lastSavedAt) {
+    saveLabel = `Laatst opgeslagen ${lastSavedAt.toLocaleTimeString('nl-BE', { hour: '2-digit', minute: '2-digit' })}`;
+  }
+
+  const previewUrl = draft ? buildPreviewUrl(draft.locale, draft.previewPath) : '';
+  const frameClass =
+    viewport === 'tablet'
+      ? 'admin-preview-frame admin-preview-frame-tablet'
+      : viewport === 'phone'
+        ? 'admin-preview-frame admin-preview-frame-phone'
+        : 'admin-preview-frame';
+
   return (
-    <div className="grid items-start gap-6 lg:grid-cols-[260px_minmax(0,1fr)]">
-      <div className={`${mobileView === 'list' ? 'grid' : 'hidden'} content-start gap-4 lg:grid`}>
-        <SectionHeader title="Content" description="Gestructureerde page sections per pagina en taal." />
-        <div className="admin-card-muted">
-          <p className="admin-eyebrow">Pagina</p>
-          <div className="admin-pill-row mt-3">
+    <div className="admin-workspace">
+      {/* RAIL */}
+      <aside className={`admin-rail ${mobileView === 'list' ? '' : 'hidden lg:flex'}`}>
+        <div className="admin-rail-head">
+          <div className="admin-pill-row">
             {pages.map((page) => (
               <button
                 key={page.key}
                 type="button"
-                onClick={() => setPageKey(page.key)}
+                onClick={() => {
+                  setPageKey(page.key);
+                  setSelectionKey(null);
+                }}
                 className={`admin-pill ${pageKey === page.key ? 'admin-pill-active' : ''}`}
               >
                 {page.key}
               </button>
             ))}
           </div>
-          <p className="admin-eyebrow mt-5">Taal</p>
-          <div className="admin-pill-row mt-3">
-            {locales.map((entry) => (
-              <button
-                key={entry.value}
-                type="button"
-                onClick={() => setLocale(entry.value)}
-                className={`admin-pill ${locale === entry.value ? 'admin-pill-active' : ''}`}
-              >
-                {entry.label}
-              </button>
-            ))}
-          </div>
           <button
             type="button"
-            onClick={() => {
-              const created = createNewSection(pageKey, locale, filteredSections);
-              setDraft(created);
-              setSelectionKey(`new:${Date.now()}`);
-              setMobileView('detail');
-            }}
-            className="admin-btn-secondary mt-5 w-full"
+            onClick={handleNewSection}
+            className="admin-btn-secondary admin-btn-sm"
+            style={{ alignSelf: 'flex-start', display: 'inline-flex', alignItems: 'center', gap: 6 }}
           >
-            Nieuwe sectie
+            <Plus size={13} strokeWidth={1.8} />
+            <span>Nieuwe sectie</span>
           </button>
         </div>
-
-        <div className="grid gap-2">
-          {filteredSections.map((section) => (
-            <button
-              key={getSelectionKey(section)}
-              type="button"
-              onClick={() => {
-                setSelectionKey(getSelectionKey(section));
-                setMobileView('detail');
-              }}
-              className={`rounded-2xl border p-4 text-left transition ${
-                selectionKey === getSelectionKey(section)
-                  ? 'border-accent-600 bg-accent-50'
-                  : 'border-noir-200 bg-white hover:border-noir-300'
-              }`}
-            >
-              <p className="text-sm font-semibold text-noir-900">{section.sectionKey}</p>
-              <p className="mt-1 text-xs uppercase tracking-[0.14em] text-noir-500">
-                {section.schemaKey} · order {section.displayOrder}
-              </p>
-              <div className="mt-3 flex flex-wrap gap-1.5 text-xs">
-                <span className={section.published ? 'admin-chip-success' : 'admin-chip-neutral'}>
-                  {section.published ? 'Published' : 'Hidden'}
-                </span>
-                <span className="admin-chip-neutral">
-                  {section.hasStoredValue ? 'Stored' : 'Default'}
-                </span>
-              </div>
-            </button>
-          ))}
-          {filteredSections.length === 0 ? <EmptyState description="Nog geen secties voor deze pagina/taal." compact /> : null}
-        </div>
-      </div>
-
-      <div className={`${mobileView === 'detail' ? 'grid' : 'hidden'} min-w-0 gap-4 lg:grid`}>
-        <BackToListButton onClick={() => setMobileView('list')} />
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div className="min-w-0">
-            <h2 className="break-words text-lg font-display font-bold text-noir-900 sm:text-xl">
-              {draft ? `${draft.pageKey} / ${draft.locale} / ${draft.sectionKey}` : 'Selecteer een sectie'}
-            </h2>
-            {draft ? (
-              <a
-                href={buildPreviewUrl(draft.locale, draft.previewPath)}
-                target="_blank"
-                rel="noreferrer"
-                className="mt-1 inline-flex text-sm font-semibold text-accent-700 transition hover:text-accent-900"
-              >
-                Open preview →
-              </a>
-            ) : null}
+        <div className="admin-rail-body">
+          <div className="admin-rail-group-label">
+            <span>Secties · {locale.toUpperCase()}</span>
+            <span style={{ color: 'var(--adm-text-4)' }}>{filteredSections.length}</span>
           </div>
-          <div className="flex flex-wrap gap-2">
-            {selectedSection?.id ? (
+          {filteredSections.length === 0 ? (
+            <div style={{ padding: '24px 12px', textAlign: 'center' }}>
+              <p style={{ fontSize: 12, color: 'var(--adm-text-3)' }}>
+                Nog geen secties voor deze pagina/taal.
+              </p>
+            </div>
+          ) : (
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: 2 }}>
+              {filteredSections.map((section) => {
+                const key = getSelectionKey(section);
+                const isActive = selectionKey === key;
+                return (
+                  <li key={key}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectionKey(key);
+                        setMobileView('detail');
+                      }}
+                      className={`admin-section-card ${isActive ? 'admin-section-card-active' : ''}`}
+                    >
+                      <span className="admin-drag-handle" aria-hidden="true">⋮⋮</span>
+                      <span style={{ minWidth: 0, display: 'block' }}>
+                        <span className="admin-section-card-name">{section.sectionKey}</span>
+                        <span className="admin-section-card-meta">
+                          <span>{section.schemaKey}</span>
+                          <span className="dot">·</span>
+                          <span>order {section.displayOrder}</span>
+                        </span>
+                        <span style={{ display: 'flex', gap: 6, marginTop: 8, flexWrap: 'wrap' }}>
+                          <span className={`admin-chip ${section.published ? 'admin-chip-success' : 'admin-chip-neutral'}`}>
+                            {section.published ? 'Live' : 'Hidden'}
+                          </span>
+                          <span className={`admin-chip ${section.hasStoredValue ? 'admin-chip-accent' : 'admin-chip-neutral'}`}>
+                            {section.hasStoredValue ? 'Override' : 'Default'}
+                          </span>
+                        </span>
+                      </span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </div>
+      </aside>
+
+      {/* EDITOR */}
+      <section className={`admin-editor ${mobileView === 'detail' ? '' : 'hidden lg:flex'}`}>
+        <div className="admin-editor-head">
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingTop: 4, paddingBottom: 12, flexWrap: 'wrap' }}>
+            <BackToListButton onClick={() => setMobileView('list')} />
+            <div className="admin-crumbs" style={{ flex: 1, minWidth: 0 }}>
+              <span>Content</span>
+              <span className="sep">/</span>
+              <span>{pageKey}</span>
+              <span className="sep">/</span>
+              <span>{locale}</span>
+              {draft ? (
+                <span className="leaf" style={{ marginLeft: 4 }}>{draft.sectionKey || '—'}</span>
+              ) : null}
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+              <span className={`admin-save-state ${saveDirty ? 'dirty' : ''}`}>
+                <span className="dot" />
+                {saveLabel}
+              </span>
+              {selectedSection?.id ? (
+                <button
+                  type="button"
+                  onClick={handleDelete}
+                  className="admin-btn-ghost admin-btn-sm"
+                >
+                  Reset override
+                </button>
+              ) : null}
               <button
                 type="button"
-                onClick={handleDelete}
-                className="admin-btn-danger admin-btn-sm"
+                disabled={!draft || saving || !isDirty}
+                onClick={() => {
+                  void handleSave();
+                }}
+                className="admin-btn-primary admin-btn-sm"
               >
-                Reset override
+                {saving ? 'Bezig…' : 'Opslaan'}
               </button>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, paddingBottom: 14, flexWrap: 'wrap' }}>
+            <div className="admin-locale-tabs" role="tablist" aria-label="Taal">
+              {locales.map((entry) => {
+                const ok = entry.value === 'nl' || localeAvailability[entry.value];
+                return (
+                  <button
+                    key={entry.value}
+                    type="button"
+                    role="tab"
+                    aria-selected={locale === entry.value}
+                    onClick={() => setLocale(entry.value)}
+                    className={`admin-locale-tab ${locale === entry.value ? 'admin-locale-tab-active' : ''}`}
+                    title={ok ? `${entry.label} — beschikbaar` : `${entry.label} — geen override (synced from NL)`}
+                  >
+                    <span className={`admin-locale-badge ${ok ? 'admin-locale-badge-ok' : ''}`} />
+                    {entry.label}
+                  </button>
+                );
+              })}
+            </div>
+            {draft ? (
+              <span className={`admin-chip ${draft.hasStoredValue ? 'admin-chip-accent' : 'admin-chip-neutral'}`}>
+                {draft.hasStoredValue ? 'Overschrijft default' : 'Default waarde'}
+              </span>
             ) : null}
-            <button
-              type="button"
-              disabled={!draft || saving}
-              onClick={() => {
-                void handleSave();
-              }}
-              className="admin-btn-primary admin-btn-sm"
-            >
-              {saving ? 'Bezig…' : 'Opslaan'}
-            </button>
           </div>
         </div>
 
-        {draft ? (
-          <div className="admin-card grid gap-4">
-            <div className="grid gap-3 sm:grid-cols-2">
-              <LabeledInput label="Section key" value={draft.sectionKey} onChange={(value) => setDraft((current) => current ? { ...current, sectionKey: value } : current)} />
-              <LabeledSelect
-                label="Schema"
-                value={draft.schemaKey}
-                options={contentSchemaOptions}
-                onChange={(value) => setDraft((current) => current ? {
-                  ...current,
-                  schemaKey: value as ContentSchemaKey,
-                  dataJson: createEmptySectionData(value as ContentSchemaKey),
-                } : current)}
-              />
-              <LabeledInput
-                label="Display order"
-                value={String(draft.displayOrder)}
-                onChange={(value) => setDraft((current) => current ? { ...current, displayOrder: Number.parseInt(value || '0', 10) || 0 } : current)}
-                inputMode="numeric"
-              />
-              <ToggleField
-                label="Published"
-                checked={draft.published}
-                onChange={(checked) => setDraft((current) => current ? { ...current, published: checked } : current)}
+        <div className="admin-editor-body">
+          {draft ? (
+            <>
+              <h2 className="admin-editor-title">
+                Sectie: <em>{draft.sectionKey || 'nieuw'}</em>
+              </h2>
+              <p className="admin-eyebrow" style={{ marginTop: 6, marginBottom: 22 }}>
+                {draft.hasStoredValue
+                  ? 'Wijzigingen overschrijven de default content voor deze taal.'
+                  : 'Bewerken maakt een override op de default content.'}
+              </p>
+
+              <ContentSchemaFields draft={draft} updateDraftField={updateDraftField} setAssetPicker={setAssetPicker} />
+
+              <FieldGroupBlock
+                label="Meta"
+                hint="Infrastructuur"
+                collapsed={metaCollapsed}
+                onToggle={() => setMetaCollapsed((value) => !value)}
+              >
+                <div className="admin-field-row">
+                  <LabeledInput
+                    label="Section key"
+                    value={draft.sectionKey}
+                    onChange={(value) => setDraft((current) => current ? { ...current, sectionKey: value } : current)}
+                    style={{ fontFamily: 'var(--adm-mono)', fontSize: 12.5 }}
+                  />
+                  <LabeledSelect
+                    label="Schema"
+                    value={draft.schemaKey}
+                    options={contentSchemaOptions}
+                    onChange={(value) => setDraft((current) => current ? {
+                      ...current,
+                      schemaKey: value as ContentSchemaKey,
+                      dataJson: createEmptySectionData(value as ContentSchemaKey),
+                    } : current)}
+                  />
+                </div>
+                <div className="admin-field-row">
+                  <LabeledInput
+                    label="Display order"
+                    value={String(draft.displayOrder)}
+                    onChange={(value) => setDraft((current) => current ? { ...current, displayOrder: Number.parseInt(value || '0', 10) || 0 } : current)}
+                    inputMode="numeric"
+                  />
+                  <label className="admin-field">
+                    <span className="admin-field-label">Status</span>
+                    <span style={{ paddingTop: 6, display: 'inline-flex' }}>
+                      <ToggleField
+                        label={draft.published ? 'Gepubliceerd' : 'Verborgen'}
+                        description={draft.published ? 'Zichtbaar op de site' : 'Niet zichtbaar voor bezoekers'}
+                        checked={draft.published}
+                        onChange={(checked) => setDraft((current) => current ? { ...current, published: checked } : current)}
+                      />
+                    </span>
+                  </label>
+                </div>
+              </FieldGroupBlock>
+            </>
+          ) : (
+            <p style={{ fontSize: 13, color: 'var(--adm-text-3)', padding: 24 }}>
+              Selecteer of maak een sectie om te bewerken.
+            </p>
+          )}
+        </div>
+      </section>
+
+      {/* PREVIEW */}
+      <aside className="admin-preview">
+        <div className="admin-preview-head">
+          <span className="admin-preview-url" title={previewUrl || 'Geen preview-pad'}>
+            {previewUrl || '—'}
+          </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            {previewUrl ? (
+              <a
+                href={previewUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="admin-link-btn"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}
+              >
+                <ExternalLink size={12} strokeWidth={1.8} />
+                <span>Open</span>
+              </a>
+            ) : null}
+            <div className="admin-vp-toggle" role="group" aria-label="Viewport">
+              <button
+                type="button"
+                className={`admin-vp-btn ${viewport === 'desktop' ? 'admin-vp-btn-active' : ''}`}
+                onClick={() => setViewport('desktop')}
+                aria-label="Desktop"
+                title="Desktop"
+              >
+                <Monitor size={13} strokeWidth={1.8} />
+              </button>
+              <button
+                type="button"
+                className={`admin-vp-btn ${viewport === 'tablet' ? 'admin-vp-btn-active' : ''}`}
+                onClick={() => setViewport('tablet')}
+                aria-label="Tablet"
+                title="Tablet"
+              >
+                <Tablet size={13} strokeWidth={1.8} />
+              </button>
+              <button
+                type="button"
+                className={`admin-vp-btn ${viewport === 'phone' ? 'admin-vp-btn-active' : ''}`}
+                onClick={() => setViewport('phone')}
+                aria-label="Telefoon"
+                title="Telefoon"
+              >
+                <Smartphone size={13} strokeWidth={1.8} />
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="admin-preview-body">
+          {previewUrl ? (
+            <div className={frameClass}>
+              <iframe
+                key={previewNonce}
+                src={previewUrl}
+                title="Live preview"
+                loading="lazy"
               />
             </div>
-            {renderSchemaEditor()}
-          </div>
-        ) : <EmptyState description="Selecteer of maak een sectie om te bewerken." />}
-      </div>
+          ) : (
+            <div style={{ alignSelf: 'center', textAlign: 'center', color: 'var(--adm-text-3)' }}>
+              <p style={{ fontSize: 13 }}>Geen preview beschikbaar.</p>
+            </div>
+          )}
+        </div>
+      </aside>
 
       {assetPicker ? (
         <AssetPickerModal
@@ -931,6 +1026,308 @@ function ContentModule({
           }}
         />
       ) : null}
+    </div>
+  );
+}
+
+function ContentSchemaFields({
+  draft,
+  updateDraftField,
+  setAssetPicker,
+}: {
+  draft: ContentSection;
+  updateDraftField: (key: string, value: unknown) => void;
+  setAssetPicker: (picker: { title: string; onSelect: (url: string) => void } | null) => void;
+}) {
+  switch (draft.schemaKey) {
+    case 'hero':
+      return (
+        <>
+          <FieldGroupBlock label="Kop" hint="Header copy">
+            <LabeledInput label="Eyebrow" value={ensureString(draft.dataJson.eyebrow)} onChange={(value) => updateDraftField('eyebrow', value)} />
+            <LabeledInput label="Titel" value={ensureString(draft.dataJson.title)} onChange={(value) => updateDraftField('title', value)} />
+            <LabeledTextarea label="Beschrijving" value={ensureString(draft.dataJson.description)} onChange={(value) => updateDraftField('description', value)} rows={4} />
+          </FieldGroupBlock>
+          <FieldGroupBlock label="Acties" hint="Call-to-actions">
+            <CtaPair
+              variant="primary"
+              labelValue={ensureString(draft.dataJson.primaryCtaLabel)}
+              onLabelChange={(value) => updateDraftField('primaryCtaLabel', value)}
+              hrefValue={ensureString(draft.dataJson.primaryCtaHref)}
+              onHrefChange={(value) => updateDraftField('primaryCtaHref', value)}
+            />
+            <CtaPair
+              variant="secondary"
+              labelValue={ensureString(draft.dataJson.secondaryCtaLabel)}
+              onLabelChange={(value) => updateDraftField('secondaryCtaLabel', value)}
+              hrefValue={ensureString(draft.dataJson.secondaryCtaHref)}
+              onHrefChange={(value) => updateDraftField('secondaryCtaHref', value)}
+            />
+          </FieldGroupBlock>
+          <FieldGroupBlock label="Media" hint="Hero image">
+            <Dropzone
+              value={ensureString(draft.dataJson.image)}
+              onChange={(value) => updateDraftField('image', value)}
+              onPickAsset={() => setAssetPicker({
+                title: 'Kies hero image',
+                onSelect: (url) => updateDraftField('image', url),
+              })}
+            />
+          </FieldGroupBlock>
+        </>
+      );
+    case 'feature-list':
+      return (
+        <>
+          <FieldGroupBlock label="Kop" hint="Header copy">
+            <LabeledInput label="Eyebrow" value={ensureString(draft.dataJson.eyebrow)} onChange={(value) => updateDraftField('eyebrow', value)} />
+            <LabeledInput label="Titel" value={ensureString(draft.dataJson.title)} onChange={(value) => updateDraftField('title', value)} />
+            <LabeledTextarea label="Beschrijving" value={ensureString(draft.dataJson.description)} onChange={(value) => updateDraftField('description', value)} rows={3} />
+          </FieldGroupBlock>
+          <FieldGroupBlock label="Items" hint="Lijst items">
+            <ItemListEditor
+              label=""
+              items={ensureItemArray(draft.dataJson.items)}
+              onChange={(items) => updateDraftField('items', items)}
+              fields={[
+                { key: 'title', label: 'Titel' },
+                { key: 'description', label: 'Beschrijving', multiline: true },
+                { key: 'items', label: 'Bullets (1 per regel)', multiline: true, isStringList: true },
+                { key: 'href', label: 'Href' },
+                { key: 'ctaLabel', label: 'CTA label' },
+              ]}
+            />
+          </FieldGroupBlock>
+        </>
+      );
+    case 'content':
+      return (
+        <>
+          <FieldGroupBlock label="Kop" hint="Header copy">
+            <LabeledInput label="Eyebrow" value={ensureString(draft.dataJson.eyebrow)} onChange={(value) => updateDraftField('eyebrow', value)} />
+            <LabeledInput label="Titel" value={ensureString(draft.dataJson.title)} onChange={(value) => updateDraftField('title', value)} />
+            <LabeledTextarea label="Beschrijving" value={ensureString(draft.dataJson.description)} onChange={(value) => updateDraftField('description', value)} rows={3} />
+          </FieldGroupBlock>
+          <FieldGroupBlock label="Paragrafen" hint="Lopende tekst">
+            <TextListEditor
+              label=""
+              items={ensureStringArray(draft.dataJson.paragraphs)}
+              onChange={(items) => updateDraftField('paragraphs', items)}
+            />
+          </FieldGroupBlock>
+          <FieldGroupBlock label="Detail cards" hint="Optionele cards">
+            <ItemListEditor
+              label=""
+              items={ensureItemArray(draft.dataJson.items)}
+              onChange={(items) => updateDraftField('items', items)}
+              fields={[
+                { key: 'title', label: 'Titel' },
+                { key: 'description', label: 'Beschrijving', multiline: true },
+              ]}
+            />
+          </FieldGroupBlock>
+        </>
+      );
+    case 'contact':
+      return (
+        <>
+          <FieldGroupBlock label="Kop" hint="Header copy">
+            <LabeledInput label="Eyebrow" value={ensureString(draft.dataJson.eyebrow)} onChange={(value) => updateDraftField('eyebrow', value)} />
+            <LabeledInput label="Titel" value={ensureString(draft.dataJson.title)} onChange={(value) => updateDraftField('title', value)} />
+            <LabeledTextarea label="Beschrijving" value={ensureString(draft.dataJson.description)} onChange={(value) => updateDraftField('description', value)} rows={3} />
+          </FieldGroupBlock>
+          <FieldGroupBlock label="Highlights" hint="Bullet points">
+            <TextListEditor
+              label=""
+              items={ensureStringArray(draft.dataJson.highlights)}
+              onChange={(items) => updateDraftField('highlights', items)}
+            />
+          </FieldGroupBlock>
+          <FieldGroupBlock label="Acties" hint="Call-to-action">
+            <CtaPair
+              variant="primary"
+              labelValue={ensureString(draft.dataJson.primaryCtaLabel)}
+              onLabelChange={(value) => updateDraftField('primaryCtaLabel', value)}
+              hrefValue={ensureString(draft.dataJson.primaryCtaHref)}
+              onHrefChange={(value) => updateDraftField('primaryCtaHref', value)}
+            />
+          </FieldGroupBlock>
+        </>
+      );
+    case 'cta':
+      return (
+        <>
+          <FieldGroupBlock label="Kop" hint="Header copy">
+            <LabeledInput label="Titel" value={ensureString(draft.dataJson.title)} onChange={(value) => updateDraftField('title', value)} />
+            <LabeledTextarea label="Beschrijving" value={ensureString(draft.dataJson.description)} onChange={(value) => updateDraftField('description', value)} rows={3} />
+          </FieldGroupBlock>
+          <FieldGroupBlock label="Acties" hint="Call-to-action">
+            <CtaPair
+              variant="primary"
+              labelValue={ensureString(draft.dataJson.primaryCtaLabel)}
+              onLabelChange={(value) => updateDraftField('primaryCtaLabel', value)}
+              hrefValue={ensureString(draft.dataJson.primaryCtaHref)}
+              onHrefChange={(value) => updateDraftField('primaryCtaHref', value)}
+            />
+          </FieldGroupBlock>
+        </>
+      );
+    case 'faq':
+      return (
+        <>
+          <FieldGroupBlock label="Kop" hint="FAQ header">
+            <LabeledInput label="Eyebrow" value={ensureString(draft.dataJson.eyebrow)} onChange={(value) => updateDraftField('eyebrow', value)} />
+            <LabeledInput label="Titel" value={ensureString(draft.dataJson.title)} onChange={(value) => updateDraftField('title', value)} />
+            <LabeledTextarea label="Beschrijving" value={ensureString(draft.dataJson.description)} onChange={(value) => updateDraftField('description', value)} rows={3} />
+          </FieldGroupBlock>
+          <FieldGroupBlock label="Vragen" hint="Accordion items">
+            <ItemListEditor
+              label=""
+              items={ensureItemArray(draft.dataJson.items)}
+              onChange={(items) => updateDraftField('items', items)}
+              fields={[
+                { key: 'question', label: 'Vraag' },
+                { key: 'answer', label: 'Antwoord', multiline: true },
+              ]}
+            />
+          </FieldGroupBlock>
+        </>
+      );
+    case 'legal':
+      return (
+        <>
+          <FieldGroupBlock label="Kop" hint="Header">
+            <LabeledInput label="Updated at" value={ensureString(draft.dataJson.updatedAt)} onChange={(value) => updateDraftField('updatedAt', value)} />
+            <LabeledTextarea label="Introductie" value={ensureString(draft.dataJson.introduction)} onChange={(value) => updateDraftField('introduction', value)} rows={4} />
+          </FieldGroupBlock>
+          <FieldGroupBlock label="Legal secties" hint="Body">
+            <ItemListEditor
+              label=""
+              items={ensureItemArray(draft.dataJson.sections)}
+              onChange={(items) => updateDraftField('sections', items)}
+              fields={[
+                { key: 'title', label: 'Titel' },
+                { key: 'body', label: 'Body', multiline: true },
+                { key: 'items', label: 'Items (1 per regel)', multiline: true, isStringList: true },
+              ]}
+            />
+          </FieldGroupBlock>
+        </>
+      );
+    default:
+      return null;
+  }
+}
+
+function FieldGroupBlock({
+  label,
+  hint,
+  collapsed,
+  onToggle,
+  children,
+}: {
+  label: string;
+  hint?: string;
+  collapsed?: boolean;
+  onToggle?: () => void;
+  children: ReactNode;
+}) {
+  return (
+    <div className={`admin-field-group ${collapsed ? 'collapsed' : ''}`}>
+      <div
+        className="admin-field-group-head"
+        style={onToggle ? { cursor: 'pointer', userSelect: 'none' } : undefined}
+        onClick={onToggle}
+      >
+        <span className="admin-field-group-label">{label}</span>
+        {hint ? <span className="admin-field-group-hint">{hint}</span> : null}
+      </div>
+      <div className="admin-field-group-body">{children}</div>
+    </div>
+  );
+}
+
+function CtaPair({
+  variant,
+  labelValue,
+  onLabelChange,
+  hrefValue,
+  onHrefChange,
+}: {
+  variant: 'primary' | 'secondary';
+  labelValue: string;
+  onLabelChange: (value: string) => void;
+  hrefValue: string;
+  onHrefChange: (value: string) => void;
+}) {
+  return (
+    <div className="admin-cta-pair">
+      <div className="admin-cta-pair-head">
+        <span className={`swatch ${variant === 'secondary' ? 'swatch-secondary' : ''}`} />
+        <span>{variant === 'primary' ? 'Primary CTA' : 'Secondary CTA'}</span>
+      </div>
+      <div className="admin-field-row">
+        <LabeledInput
+          label="Label"
+          value={labelValue}
+          onChange={onLabelChange}
+          placeholder={variant === 'primary' ? 'Plan een gesprek' : 'Bekijk projecten'}
+        />
+        <LabeledInput
+          label="Href"
+          value={hrefValue}
+          onChange={onHrefChange}
+          placeholder="/contact"
+          style={{ fontFamily: 'var(--adm-mono)', fontSize: 12.5 }}
+        />
+      </div>
+    </div>
+  );
+}
+
+function Dropzone({
+  value,
+  onChange,
+  onPickAsset,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+  onPickAsset: () => void;
+}) {
+  const fileName = value ? value.split('/').pop() ?? value : '';
+  return (
+    <div className="admin-dropzone">
+      <div
+        className={`admin-dropzone-preview ${value ? '' : 'admin-dropzone-preview-empty'}`}
+        style={value ? { backgroundImage: `url("${value}")` } : undefined}
+        aria-hidden="true"
+      />
+      <div className="admin-dropzone-body">
+        <span className="admin-dropzone-title">Hero afbeelding</span>
+        <span className="admin-dropzone-file">{fileName || 'Geen afbeelding gekozen'}</span>
+        <div className="admin-dropzone-actions">
+          <button type="button" className="admin-link-btn" onClick={onPickAsset}>
+            {value ? 'Vervang' : 'Kies uit beeldbank'}
+          </button>
+          {value ? (
+            <button
+              type="button"
+              className="admin-link-btn admin-link-btn-danger"
+              onClick={() => onChange('')}
+            >
+              Verwijderen
+            </button>
+          ) : null}
+        </div>
+        <input
+          type="text"
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+          className="admin-input"
+          placeholder="of plak een URL"
+          style={{ marginTop: 8, fontFamily: 'var(--adm-mono)', fontSize: 12 }}
+        />
+      </div>
     </div>
   );
 }
@@ -1034,14 +1431,16 @@ function ProjectsModule({
                   setSelectionKey(getSelectionKey(project));
                   setMobileView('detail');
                 }}
-                className={`rounded-2xl border p-4 text-left transition ${
-                  selectionKey === getSelectionKey(project)
-                    ? 'border-accent-600 bg-accent-50'
-                    : 'border-noir-200 bg-white hover:border-noir-300'
-                }`}
+                className="admin-list-card"
+                data-selected={selectionKey === getSelectionKey(project) || undefined}
               >
-                <p className="text-sm font-semibold text-noir-900">{project.translations.find((translation) => translation.locale === 'nl')?.title || project.slug}</p>
-                <p className="mt-1 text-xs uppercase tracking-[0.14em] text-noir-500">
+                <p style={{ fontSize: 13.5, fontWeight: 600, color: 'var(--adm-text)', letterSpacing: '-0.005em' }}>
+                  {project.translations.find((translation) => translation.locale === 'nl')?.title || project.slug}
+                </p>
+                <p
+                  className="admin-eyebrow"
+                  style={{ marginTop: 4 }}
+                >
                   {project.category || 'Geen categorie'} · {project.sortOrder}
                 </p>
                 <div className="mt-3 flex flex-wrap gap-1.5 text-xs">
@@ -1063,10 +1462,15 @@ function ProjectsModule({
         <BackToListButton onClick={() => setMobileView('list')} />
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="min-w-0">
-            <h2 className="break-words text-lg font-display font-bold text-noir-900 sm:text-xl">
+            <h2
+              className="admin-page-title break-words"
+              style={{ fontSize: 18 }}
+            >
               {draft ? draft.slug : 'Selecteer een project'}
             </h2>
-            <p className="mt-1 text-sm text-noir-500">Cover, vertalingen en gallery-afbeeldingen blijven URL-based.</p>
+            <p style={{ marginTop: 4, fontSize: 13, color: 'var(--adm-text-3)' }}>
+              Cover, vertalingen en gallery-afbeeldingen blijven URL-based.
+            </p>
           </div>
           <div className="flex flex-wrap gap-2">
             {selectedProject?.id ? (
@@ -1331,11 +1735,23 @@ function SettingsModule({
           <SectionHeader as="h2" title="Read-only keys" description="Onbekende setting-keys blijven read-only tot ze expliciet gemodelleerd zijn." />
           {unknown.map((setting) => (
             <details key={setting.key} className="admin-card-muted group">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-sm font-semibold text-noir-900">
-                <span className="truncate">{setting.key}</span>
+              <summary
+                className="flex cursor-pointer list-none items-center justify-between gap-3"
+                style={{ fontSize: 13, fontWeight: 600, color: 'var(--adm-text)' }}
+              >
+                <span className="truncate" style={{ fontFamily: 'var(--adm-mono)', fontSize: 12.5 }}>{setting.key}</span>
                 <span className="admin-eyebrow shrink-0 transition group-open:rotate-180">▾</span>
               </summary>
-              <pre className="mt-3 max-w-full overflow-hidden whitespace-pre-wrap break-all rounded-xl bg-noir-950 p-4 text-xs text-white">
+              <pre
+                className="mt-3 max-w-full overflow-hidden whitespace-pre-wrap break-all p-4"
+                style={{
+                  background: 'var(--adm-text)',
+                  color: 'var(--adm-surface)',
+                  fontFamily: 'var(--adm-mono)',
+                  fontSize: 12,
+                  borderRadius: 6,
+                }}
+              >
                 {JSON.stringify(setting.valueJson, null, 2)}
               </pre>
             </details>
@@ -1382,17 +1798,35 @@ function AssetsModule({
       <div className={`${mobileView === 'list' ? 'grid' : 'hidden'} content-start gap-4 lg:grid`}>
         <SectionHeader title="Assets" description="Upload naar Supabase storage en koppel URLs in content/projecten." />
         <div className="admin-card">
-          <p className={`text-sm font-medium ${storageEnabled ? 'text-emerald-700' : 'text-amber-700'}`}>
+          <p
+            style={{
+              fontSize: 13,
+              fontWeight: 500,
+              color: storageEnabled ? 'var(--adm-success)' : 'var(--adm-warning)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 8,
+            }}
+          >
+            <span
+              aria-hidden="true"
+              style={{
+                width: 8,
+                height: 8,
+                borderRadius: '50%',
+                background: storageEnabled ? 'var(--adm-success)' : 'var(--adm-warning)',
+              }}
+            />
             {storageEnabled ? 'Supabase upload is actief.' : 'Upload is niet geconfigureerd. Je kunt wel externe URLs registreren.'}
           </p>
           {storageEnabled ? (
             <div className="mt-4 grid gap-3">
-              <label className="grid gap-2 text-sm text-noir-700">
-                <span className="font-medium">Bestand</span>
+              <label className="grid gap-2" style={{ fontSize: 13, color: 'var(--adm-text-2)' }}>
+                <span style={{ fontWeight: 500, color: 'var(--adm-text)' }}>Bestand</span>
                 <input
                   type="file"
                   accept="image/*"
-                  className="block w-full rounded-xl border border-noir-200 bg-white px-3 py-2 text-sm text-noir-700 file:mr-3 file:rounded-full file:border-0 file:bg-accent-600 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-white hover:file:bg-accent-700"
+                  className="admin-file-input"
                   onChange={(event) => setUploadFile(event.target.files?.[0] ?? null)}
                 />
               </label>
@@ -1417,8 +1851,11 @@ function AssetsModule({
             </div>
           ) : null}
 
-          <div className="mt-5 border-t border-noir-200 pt-5 grid gap-3">
-            <p className="text-sm font-semibold text-noir-900">Externe URL registreren</p>
+          <div
+            className="mt-5 pt-5 grid gap-3"
+            style={{ borderTop: '1px solid var(--adm-border)' }}
+          >
+            <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--adm-text)' }}>Externe URL registreren</p>
             <LabeledInput label="Naam" value={manualName} onChange={setManualName} />
             <LabeledInput label="URL" value={manualUrl} onChange={setManualUrl} />
             <button
@@ -1462,12 +1899,18 @@ function AssetsModule({
                   setSelectionId(asset.id);
                   setMobileView('detail');
                 }}
-                className={`rounded-2xl border p-3 text-left transition ${
-                  activeSelectionId === asset.id ? 'border-accent-600 bg-accent-50' : 'border-noir-200 bg-white hover:border-noir-300'
-                }`}
+                className="admin-list-card"
+                data-selected={activeSelectionId === asset.id || undefined}
               >
-                <p className="break-words text-sm font-semibold text-noir-900">{asset.originalName}</p>
-                <p className="mt-1 text-xs text-noir-500">{asset.bucket} · {asset.tags.join(', ') || 'geen tags'}</p>
+                <p
+                  className="break-words"
+                  style={{ fontSize: 13, fontWeight: 600, color: 'var(--adm-text)', letterSpacing: '-0.005em' }}
+                >
+                  {asset.originalName}
+                </p>
+                <p style={{ marginTop: 4, fontSize: 12, color: 'var(--adm-text-3)' }}>
+                  <span style={{ fontFamily: 'var(--adm-mono)' }}>{asset.bucket}</span> · {asset.tags.join(', ') || 'geen tags'}
+                </p>
               </button>
             ))}
             {filteredAssets.length === 0 ? <EmptyState description="Geen assets gevonden." compact /> : null}
@@ -1510,7 +1953,8 @@ function AssetEditor({
         <img
           src={draft.url}
           alt={draft.alt ?? draft.originalName}
-          className="h-48 w-full rounded-xl bg-noir-100 object-contain md:h-64"
+          className="h-48 w-full object-contain md:h-64"
+          style={{ background: 'var(--adm-surface-2)', borderRadius: 6, border: '1px solid var(--adm-border)' }}
         />
       ) : null}
       <div className="grid gap-3 sm:grid-cols-2">
@@ -1610,7 +2054,7 @@ function AvailabilityModule({
         {ruleDrafts.map((rule) => (
           <div key={rule.dayOfWeek} className="admin-card">
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <p className="text-sm font-semibold text-noir-900">{weekdays[rule.dayOfWeek]}</p>
+              <p style={{ fontSize: 13.5, fontWeight: 600, color: 'var(--adm-text)', letterSpacing: '-0.005em' }}>{weekdays[rule.dayOfWeek]}</p>
               <ToggleField
                 label="Actief"
                 checked={rule.isActive}
@@ -1680,7 +2124,14 @@ function AvailabilityModule({
                   <LabeledInput label="Datum" value={source.date} onChange={(value) => setEditingException({ ...source, date: value })} type="date" />
                   <LabeledInput label="Reason" value={source.reason ?? ''} onChange={(value) => setEditingException({ ...source, reason: value })} />
                 </div>
-                <div className="mt-4 rounded-xl border border-noir-200 bg-white p-4">
+                <div
+                  className="mt-4 p-4"
+                  style={{
+                    border: '1px solid var(--adm-border)',
+                    background: 'var(--adm-surface)',
+                    borderRadius: 6,
+                  }}
+                >
                   <ToggleField
                     label="Hele dag blokkeren"
                     checked={source.blockedTimes.includes('all')}
@@ -1753,8 +2204,13 @@ function LeadCard({
     <div className="admin-card grid gap-4">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-sm font-semibold text-noir-900">{title}</p>
-          <p className="mt-0.5 break-words text-sm text-noir-500">{subtitle}</p>
+          <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--adm-text)', letterSpacing: '-0.005em' }}>{title}</p>
+          <p
+            className="mt-0.5 break-words"
+            style={{ fontSize: 13, color: 'var(--adm-text-3)' }}
+          >
+            {subtitle}
+          </p>
         </div>
         <StatusChip status={currentStatus} />
       </div>
@@ -1836,18 +2292,37 @@ function AppointmentCard({
   const [proposedDate, setProposedDate] = useState(appointment.proposedDate?.slice(0, 10) ?? '');
   const [proposedTime, setProposedTime] = useState(appointment.proposedTime ?? '');
   const [saving, setSaving] = useState(false);
+  const projectTypeLabel = formatStoredAppointmentProjectType('nl', appointment.projectType);
 
   return (
     <div className="admin-card grid gap-4">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-sm font-semibold text-noir-900">{appointment.referenceNumber}</p>
-          <p className="mt-0.5 break-words text-sm text-noir-500">
+          <p
+            style={{
+              fontFamily: 'var(--adm-mono)',
+              fontSize: 12.5,
+              fontWeight: 500,
+              color: 'var(--adm-text-3)',
+              letterSpacing: '-0.005em',
+            }}
+          >
+            {appointment.referenceNumber}
+          </p>
+          <p
+            className="mt-1 break-words"
+            style={{ fontSize: 14, fontWeight: 600, color: 'var(--adm-text)', letterSpacing: '-0.005em' }}
+          >
             {appointment.fullName} · {appointment.email}
           </p>
-          <p className="mt-0.5 text-xs text-noir-500">
+          <p style={{ marginTop: 2, fontSize: 12.5, color: 'var(--adm-text-3)' }}>
             {formatDate(appointment.appointmentDate)} · {appointment.appointmentTime}
           </p>
+          {projectTypeLabel ? (
+            <p style={{ marginTop: 2, fontSize: 12.5, color: 'var(--adm-text-3)' }}>
+              {projectTypeLabel}
+            </p>
+          ) : null}
         </div>
         <StatusChip status={appointment.status} />
       </div>
@@ -1928,13 +2403,30 @@ function AssetPickerModal({
       role="dialog"
       aria-modal="true"
       aria-label={title}
-      className="fixed inset-0 z-[60] flex items-end justify-center bg-black/40 p-0 sm:items-center sm:p-4"
+      className="fixed inset-0 z-[60] flex items-end justify-center p-0 sm:items-center sm:p-4"
+      style={{ background: 'var(--adm-overlay)' }}
     >
-      <div className="flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-t-3xl bg-white shadow-soft-lg sm:rounded-3xl">
-        <div className="flex items-center justify-between gap-3 border-b border-noir-200 px-4 py-3 sm:px-6 sm:py-4">
+      <div
+        className="flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden sm:rounded-lg"
+        style={{
+          background: 'var(--adm-surface)',
+          border: '1px solid var(--adm-border)',
+          boxShadow: 'var(--adm-shadow-lg)',
+          borderRadius: 8,
+        }}
+      >
+        <div
+          className="flex items-center justify-between gap-3 px-5 py-4"
+          style={{ borderBottom: '1px solid var(--adm-border)' }}
+        >
           <div className="min-w-0 flex-1">
-            <p className="truncate text-base font-display font-bold text-noir-900 sm:text-lg">{title}</p>
-            <p className="mt-0.5 text-xs text-noir-500 sm:text-sm">Kies een bestaande asset.</p>
+            <p
+              className="truncate"
+              style={{ fontSize: 16, fontWeight: 600, color: 'var(--adm-text)', letterSpacing: '-0.01em' }}
+            >
+              {title}
+            </p>
+            <p style={{ marginTop: 2, fontSize: 12.5, color: 'var(--adm-text-3)' }}>Kies een bestaande asset.</p>
           </div>
           <button
             type="button"
@@ -1953,18 +2445,29 @@ function AssetPickerModal({
                 key={asset.id}
                 type="button"
                 onClick={() => onSelect(asset)}
-                className="group rounded-2xl border border-noir-200 bg-white p-3 text-left transition hover:border-accent-600 hover:bg-accent-50"
+                className="admin-asset-tile group text-left"
               >
                 {asset.mimeType.startsWith('image/') ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={asset.url}
                     alt={asset.alt ?? asset.originalName}
-                    className="h-32 w-full rounded-xl bg-noir-100 object-cover sm:h-40"
+                    className="h-32 w-full object-cover sm:h-40"
+                    style={{ background: 'var(--adm-surface-2)', borderRadius: 4 }}
                   />
                 ) : null}
-                <p className="mt-3 truncate text-sm font-semibold text-noir-900">{asset.originalName}</p>
-                <p className="mt-1 truncate text-xs text-noir-500">{asset.tags.join(', ') || 'geen tags'}</p>
+                <p
+                  className="mt-3 truncate"
+                  style={{ fontSize: 13, fontWeight: 600, color: 'var(--adm-text)', letterSpacing: '-0.005em' }}
+                >
+                  {asset.originalName}
+                </p>
+                <p
+                  className="mt-1 truncate"
+                  style={{ fontSize: 12, color: 'var(--adm-text-3)' }}
+                >
+                  {asset.tags.join(', ') || 'geen tags'}
+                </p>
               </button>
             ))}
             {filtered.length === 0 ? <EmptyState description="Geen assets gevonden." compact /> : null}
@@ -1988,7 +2491,7 @@ function SettingsCard({
     <div className="admin-card grid gap-4">
       <div>
         <p className="admin-section-title">{title}</p>
-        <p className="mt-1 text-sm text-noir-500">{description}</p>
+        <p style={{ marginTop: 4, fontSize: 13, color: 'var(--adm-text-3)' }}>{description}</p>
       </div>
       {children}
     </div>

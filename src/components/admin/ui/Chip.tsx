@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { getStatusMeta, variantClassName, type StatusVariant } from '../statusMeta';
+import { getStatusMeta, type StatusVariant } from '../statusMeta';
 
 type StatusChipProps = {
   kind: 'quote' | 'appointment';
@@ -8,14 +8,12 @@ type StatusChipProps = {
   showIcon?: boolean;
 };
 
-export function StatusChip({ kind, status, showIcon = true }: StatusChipProps) {
+export function StatusChip({ kind, status, showIcon = false }: StatusChipProps) {
   const meta = getStatusMeta(kind, status);
   const Icon = meta.icon;
 
   return (
-    <span
-      className={`inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[11px] font-medium ${variantClassName[meta.variant]}`}
-    >
+    <span className={`admin-chip admin-chip-${meta.variant}`}>
       {showIcon ? <Icon size={11} strokeWidth={2} /> : null}
       {meta.label}
     </span>
@@ -28,11 +26,5 @@ type ChipProps = {
 };
 
 export function Chip({ variant = 'neutral', children }: ChipProps) {
-  return (
-    <span
-      className={`inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[11px] font-medium ${variantClassName[variant]}`}
-    >
-      {children}
-    </span>
-  );
+  return <span className={`admin-chip admin-chip-${variant}`}>{children}</span>;
 }

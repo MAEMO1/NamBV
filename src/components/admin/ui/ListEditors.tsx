@@ -21,7 +21,7 @@ export function ItemListEditor({
   return (
     <div className="grid gap-3">
       <div className="flex items-center justify-between gap-3">
-        <p className="text-sm font-semibold text-slate-900">{label}</p>
+        <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--adm-text)', letterSpacing: '-0.005em' }}>{label}</p>
         <Button
           variant="secondary"
           size="sm"
@@ -34,7 +34,8 @@ export function ItemListEditor({
       {items.map((item, index) => (
         <div
           key={index}
-          className="rounded-md border border-slate-200 bg-slate-50 p-4"
+          className="rounded-md border p-4"
+          style={{ borderColor: 'var(--adm-border)', background: 'var(--adm-surface-2)' }}
         >
           <div className="grid gap-4">
             {fields.map((field) =>
@@ -112,7 +113,7 @@ export function TextListEditor({
   return (
     <div className="grid gap-3">
       <div className="flex items-center justify-between gap-3">
-        <p className="text-sm font-semibold text-slate-900">{label}</p>
+        <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--adm-text)', letterSpacing: '-0.005em' }}>{label}</p>
         <Button
           variant="secondary"
           size="sm"
@@ -140,7 +141,20 @@ export function TextListEditor({
             onClick={() =>
               onChange(items.filter((_, entryIndex) => entryIndex !== index))
             }
-            className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-rose-200 bg-white text-rose-700 transition hover:border-rose-300 hover:bg-rose-50"
+            className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border transition"
+            style={{
+              borderColor: 'var(--adm-border)',
+              background: 'var(--adm-surface)',
+              color: 'var(--adm-danger)',
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.background = 'var(--adm-danger-soft)';
+              e.currentTarget.style.borderColor = 'var(--adm-danger)';
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.background = 'var(--adm-surface)';
+              e.currentTarget.style.borderColor = 'var(--adm-border)';
+            }}
             aria-label="Verwijderen"
           >
             <Trash2 size={15} strokeWidth={1.75} />
@@ -182,7 +196,20 @@ export function TimeSlotEditor({
             onClick={() =>
               onChange(slots.filter((_, entryIndex) => entryIndex !== index))
             }
-            className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-rose-200 bg-white text-rose-700 transition hover:border-rose-300 hover:bg-rose-50"
+            className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border transition"
+            style={{
+              borderColor: 'var(--adm-border)',
+              background: 'var(--adm-surface)',
+              color: 'var(--adm-danger)',
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.background = 'var(--adm-danger-soft)';
+              e.currentTarget.style.borderColor = 'var(--adm-danger)';
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.background = 'var(--adm-surface)';
+              e.currentTarget.style.borderColor = 'var(--adm-border)';
+            }}
             aria-label="Verwijderen"
           >
             <Trash2 size={15} strokeWidth={1.75} />

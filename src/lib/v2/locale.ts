@@ -1,3 +1,5 @@
+import { TOP_SERVICE_IDS, isTopServiceId, type TopServiceId } from './services';
+
 export const V2_LOCALES = ['nl', 'fr', 'en'] as const;
 
 export type V2Locale = (typeof V2_LOCALES)[number];
@@ -54,7 +56,7 @@ type V2UiCopy = {
     fields: Record<string, string>;
     sectionLabels: string[];
     newQuote: string;
-    serviceCategories: { slug: string; label: string; services: string[] }[];
+    serviceCategories: { id: TopServiceId; label: string }[];
   };
   appointment: {
     title: string;
@@ -72,6 +74,13 @@ type V2UiCopy = {
     next: string;
     back: string;
     newAppointment: string;
+    sectionHeaders: {
+      project: string;
+      property: string;
+      budget: string;
+    };
+    optionalLabel: string;
+    budgetHelper: string;
     projectTypes: V2ProjectTypeOption[];
     propertyTypes: V2SelectOption[];
     budgetRanges: V2SelectOption[];
@@ -148,10 +157,11 @@ export const v2UiCopy: Record<V2Locale, V2UiCopy> = {
       sectionLabels: ['Uw gegevens', 'Uw woning', 'Uw project', 'Bevestiging'],
       newQuote: 'Nieuwe offerte aanvragen',
       serviceCategories: [
-        { slug: 'volledig', label: 'Volledig', services: ['totaalrenovatie'] },
-        { slug: 'ruimtes', label: 'Ruimtes', services: ['badkamer', 'keuken', 'toilet', 'woonkamer', 'slaapkamer', 'uitbouw-zolder'] },
-        { slug: 'werken', label: 'Werken', services: ['elektriciteit', 'sanitair', 'vloeren', 'schilderwerk'] },
-        { slug: 'overig', label: 'Overig', services: ['anders'] },
+        { id: 'totaalrenovatie', label: 'Totaalrenovatie' },
+        { id: 'renovatie', label: 'Renovatie & verbouwing' },
+        { id: 'afwerking', label: 'Afwerking' },
+        { id: 'technieken', label: 'Technieken' },
+        { id: 'anders', label: 'Anders' },
       ],
     },
     appointment: {
@@ -171,7 +181,7 @@ export const v2UiCopy: Record<V2Locale, V2UiCopy> = {
         propertyAge: 'Leeftijd woning',
         priorities: 'Prioriteiten',
         materialPreference: 'Materiaalvoorkeur',
-        budget: 'Budget',
+        budget: 'Budgetindicatie',
         timing: 'Timing',
         subsidyInterest: 'Interesse in subsidies',
         paymentSpread: 'Interesse in betalingsspreiding',
@@ -188,13 +198,19 @@ export const v2UiCopy: Record<V2Locale, V2UiCopy> = {
       next: 'Volgende',
       back: 'Vorige',
       newAppointment: 'Nieuwe afspraak plannen',
+      sectionHeaders: {
+        project: 'Uw project',
+        property: 'Type woning',
+        budget: 'Budgetindicatie',
+      },
+      optionalLabel: 'optioneel',
+      budgetHelper: 'Een richtcijfer helpt ons het gesprek voor te bereiden — geen probleem als dit nog niet vaststaat.',
       projectTypes: [
         { id: 'totaalrenovatie', label: 'Totaalrenovatie', description: 'Volledige renovatie van uw woning' },
-        { id: 'keuken', label: 'Keukenrenovatie', description: 'Nieuwe keuken of keukenverbouwing' },
-        { id: 'badkamer', label: 'Badkamerrenovatie', description: 'Moderne badkamer op maat' },
-        { id: 'schilderwerk', label: 'Schilderwerk', description: 'Binnen- en buitenschilderwerk' },
-        { id: 'elektriciteit', label: 'Elektriciteit', description: 'Elektrische installaties en keuring' },
-        { id: 'loodgieterij', label: 'Loodgieterij', description: 'Sanitair en leidingwerk' },
+        { id: 'renovatie', label: 'Renovatie & verbouwing', description: 'Specifieke ruimte of verbouwing (badkamer, keuken, uitbouw…)' },
+        { id: 'afwerking', label: 'Afwerking', description: 'Tegelwerk, schilderwerk, vloeren, plafonds…' },
+        { id: 'technieken', label: 'Technieken', description: 'Elektriciteit, sanitair, verwarming, ventilatie…' },
+        { id: 'anders', label: 'Iets anders', description: 'Nog niet zeker — beschrijf het in uw bericht' },
       ],
       propertyTypes: [
         { id: 'appartement', label: 'Appartement' },
@@ -290,10 +306,11 @@ export const v2UiCopy: Record<V2Locale, V2UiCopy> = {
       sectionLabels: ['Vos coordonn\u00e9es', 'Votre bien', 'Votre projet', 'Confirmation'],
       newQuote: 'Nouvelle demande de devis',
       serviceCategories: [
-        { slug: 'volledig', label: 'Complet', services: ['totaalrenovatie'] },
-        { slug: 'ruimtes', label: 'Pi\u00e8ces', services: ['badkamer', 'keuken', 'toilet', 'woonkamer', 'slaapkamer', 'uitbouw-zolder'] },
-        { slug: 'werken', label: 'Travaux', services: ['elektriciteit', 'sanitair', 'vloeren', 'schilderwerk'] },
-        { slug: 'overig', label: 'Autre', services: ['anders'] },
+        { id: 'totaalrenovatie', label: 'Rénovation complète' },
+        { id: 'renovatie', label: 'Rénovation & transformation' },
+        { id: 'afwerking', label: 'Finitions' },
+        { id: 'technieken', label: 'Techniques' },
+        { id: 'anders', label: 'Autre' },
       ],
     },
     appointment: {
@@ -313,7 +330,7 @@ export const v2UiCopy: Record<V2Locale, V2UiCopy> = {
         propertyAge: 'Âge du bien',
         priorities: 'Priorités',
         materialPreference: 'Préférence matériaux',
-        budget: 'Budget',
+        budget: 'Budget estimé',
         timing: 'Timing',
         subsidyInterest: 'Intérêt pour les subventions',
         paymentSpread: "Intérêt pour l'échelonnement",
@@ -330,13 +347,19 @@ export const v2UiCopy: Record<V2Locale, V2UiCopy> = {
       next: 'Suivant',
       back: 'Précédent',
       newAppointment: 'Planifier un nouveau rendez-vous',
+      sectionHeaders: {
+        project: 'Votre projet',
+        property: 'Type de bien',
+        budget: 'Budget estimé',
+      },
+      optionalLabel: 'facultatif',
+      budgetHelper: 'Un ordre de grandeur nous aide à préparer l’entretien — aucun souci si ce n’est pas encore défini.',
       projectTypes: [
         { id: 'totaalrenovatie', label: 'Rénovation complète', description: 'Rénovation intégrale de votre bien' },
-        { id: 'keuken', label: 'Rénovation cuisine', description: 'Nouvelle cuisine ou transformation' },
-        { id: 'badkamer', label: 'Rénovation salle de bain', description: 'Salle de bain moderne sur mesure' },
-        { id: 'schilderwerk', label: 'Peinture', description: 'Peinture intérieure et extérieure' },
-        { id: 'elektriciteit', label: 'Électricité', description: 'Installations électriques et contrôle' },
-        { id: 'loodgieterij', label: 'Plomberie', description: 'Sanitaire et tuyauterie' },
+        { id: 'renovatie', label: 'Rénovation & transformation', description: 'Pièce spécifique ou transformation (salle de bain, cuisine, extension…)' },
+        { id: 'afwerking', label: 'Finitions', description: 'Carrelage, peinture, revêtements de sol, plafonds…' },
+        { id: 'technieken', label: 'Techniques', description: 'Électricité, sanitaire, chauffage, ventilation…' },
+        { id: 'anders', label: 'Autre', description: 'Pas encore sûr — décrivez-le dans votre message' },
       ],
       propertyTypes: [
         { id: 'appartement', label: 'Appartement' },
@@ -432,10 +455,11 @@ export const v2UiCopy: Record<V2Locale, V2UiCopy> = {
       sectionLabels: ['Your details', 'Your property', 'Your project', 'Confirmation'],
       newQuote: 'Request another quote',
       serviceCategories: [
-        { slug: 'volledig', label: 'Full scope', services: ['totaalrenovatie'] },
-        { slug: 'ruimtes', label: 'Rooms', services: ['badkamer', 'keuken', 'toilet', 'woonkamer', 'slaapkamer', 'uitbouw-zolder'] },
-        { slug: 'werken', label: 'Works', services: ['elektriciteit', 'sanitair', 'vloeren', 'schilderwerk'] },
-        { slug: 'overig', label: 'Other', services: ['anders'] },
+        { id: 'totaalrenovatie', label: 'Full renovation' },
+        { id: 'renovatie', label: 'Renovation & remodeling' },
+        { id: 'afwerking', label: 'Finishing works' },
+        { id: 'technieken', label: 'Technical works' },
+        { id: 'anders', label: 'Other' },
       ],
     },
     appointment: {
@@ -455,7 +479,7 @@ export const v2UiCopy: Record<V2Locale, V2UiCopy> = {
         propertyAge: 'Property age',
         priorities: 'Priorities',
         materialPreference: 'Material preference',
-        budget: 'Budget',
+        budget: 'Budget range',
         timing: 'Timing',
         subsidyInterest: 'Interested in subsidies',
         paymentSpread: 'Interested in payment spread',
@@ -472,13 +496,19 @@ export const v2UiCopy: Record<V2Locale, V2UiCopy> = {
       next: 'Next',
       back: 'Back',
       newAppointment: 'Schedule a new appointment',
+      sectionHeaders: {
+        project: 'Your project',
+        property: 'Property type',
+        budget: 'Budget range',
+      },
+      optionalLabel: 'optional',
+      budgetHelper: 'A ballpark helps us prepare the conversation — no problem if it is not yet defined.',
       projectTypes: [
         { id: 'totaalrenovatie', label: 'Full renovation', description: 'Complete renovation of your property' },
-        { id: 'keuken', label: 'Kitchen renovation', description: 'New kitchen or kitchen remodel' },
-        { id: 'badkamer', label: 'Bathroom renovation', description: 'Custom modern bathroom' },
-        { id: 'schilderwerk', label: 'Painting', description: 'Interior and exterior painting' },
-        { id: 'elektriciteit', label: 'Electrical', description: 'Electrical installations and inspection' },
-        { id: 'loodgieterij', label: 'Plumbing', description: 'Plumbing and pipe work' },
+        { id: 'renovatie', label: 'Renovation & remodeling', description: 'Specific room or remodel (bathroom, kitchen, extension…)' },
+        { id: 'afwerking', label: 'Finishing works', description: 'Tiling, painting, flooring, ceilings…' },
+        { id: 'technieken', label: 'Technical works', description: 'Electrical, plumbing, heating, ventilation…' },
+        { id: 'anders', label: 'Something else', description: 'Not sure yet — describe it in your message' },
       ],
       propertyTypes: [
         { id: 'appartement', label: 'Apartment' },
@@ -528,4 +558,58 @@ export const v2UiCopy: Record<V2Locale, V2UiCopy> = {
 
 export function getV2UiCopy(locale: V2Locale) {
   return v2UiCopy[locale];
+}
+
+export function getAppointmentProjectTypeOption(
+  locale: V2Locale,
+  projectTypeId: TopServiceId,
+) {
+  return v2UiCopy[locale].appointment.projectTypes.find((option) => option.id === projectTypeId);
+}
+
+export function getAppointmentProjectTypeLabel(
+  locale: V2Locale,
+  projectTypeId: TopServiceId,
+) {
+  return getAppointmentProjectTypeOption(locale, projectTypeId)?.label ?? projectTypeId;
+}
+
+export function resolveAppointmentProjectTypeId(value?: string | null): TopServiceId | null {
+  if (!value) {
+    return null;
+  }
+
+  if (isTopServiceId(value)) {
+    return value;
+  }
+
+  for (const locale of V2_LOCALES) {
+    const match = v2UiCopy[locale].appointment.projectTypes.find((option) => option.label === value);
+    if (match) {
+      return match.id as TopServiceId;
+    }
+  }
+
+  return null;
+}
+
+export function formatStoredAppointmentProjectType(
+  locale: V2Locale,
+  storedValue?: string | null,
+) {
+  if (!storedValue) {
+    return null;
+  }
+
+  return isTopServiceId(storedValue)
+    ? getAppointmentProjectTypeLabel(locale, storedValue)
+    : storedValue;
+}
+
+export function getTopServiceCategoryLabels(locale: V2Locale) {
+  const categories = v2UiCopy[locale].quote.serviceCategories;
+
+  return Object.fromEntries(
+    TOP_SERVICE_IDS.map((id) => [id, categories.find((category) => category.id === id)?.label ?? id]),
+  ) as Record<TopServiceId, string>;
 }

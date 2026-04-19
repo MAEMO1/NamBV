@@ -35,6 +35,10 @@ const globalForPrisma = globalThis as unknown as {
 
 const prismaDatabaseUrl = getPrismaDatabaseUrl()
 
+export function hasDatabaseUrl() {
+  return Boolean(prismaDatabaseUrl)
+}
+
 export const db = globalForPrisma.prisma ?? new PrismaClient({
   ...(prismaDatabaseUrl
     ? {

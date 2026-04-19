@@ -4,28 +4,26 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   ArrowLeft,
   ArrowRight,
-  Bath,
   Calendar,
   Check,
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
   Clock,
-  CookingPot,
   Hammer,
+  HelpCircle,
+  Home,
   Loader2,
   Mail,
-  MapPin,
-  PaintRoller,
-  Phone,
+  Paintbrush,
   Shield,
-  User,
   Wrench,
   Zap,
 } from 'lucide-react';
 import { trackV2Conversion } from './MarketingAnalytics';
 import type { V2Locale } from '@/lib/v2/locale';
 import { getV2UiCopy } from '@/lib/v2/locale';
+import type { TopServiceId } from '@/lib/v2/services';
 
 type AvailabilityMap = Record<string, { available: string[]; booked: string[]; isOpen: boolean }>;
 type TrustSignalIcon = 'Calendar' | 'Clock' | 'Shield' | 'Mail';
@@ -38,13 +36,12 @@ const TRUST_ICONS: Record<TrustSignalIcon, React.ElementType> = {
   Mail,
 };
 
-const PROJECT_TYPE_ICONS: Record<string, React.ElementType> = {
-  totaalrenovatie: Hammer,
-  keuken: CookingPot,
-  badkamer: Bath,
-  schilderwerk: PaintRoller,
-  elektriciteit: Zap,
-  loodgieterij: Wrench,
+const PROJECT_TYPE_ICONS: Record<TopServiceId, React.ElementType> = {
+  totaalrenovatie: Home,
+  renovatie: Hammer,
+  afwerking: Paintbrush,
+  technieken: Zap,
+  anders: HelpCircle,
 };
 
 const TOTAL_STEPS = 4;
@@ -75,7 +72,7 @@ export default function V2AppointmentForm({
     gemeente: '',
     selectedDate: '',
     selectedTime: '',
-    projectType: '',
+    projectTypeId: '' as TopServiceId | '',
     propertyType: '',
     budget: '',
     timing: '',
@@ -118,10 +115,12 @@ export default function V2AppointmentForm({
     setFormData((current) => ({ ...current, [key]: value }));
   };
 
+  const selectedProjectType = ac.projectTypes.find((option) => option.id === formData.projectTypeId);
+
   const canProceed = useMemo(() => {
     switch (step) {
       case 1:
-        return formData.projectType !== '';
+        return formData.projectTypeId !== '';
       case 2:
         return formData.name.length >= 2 && formData.email.includes('@') && formData.phone.length >= 4 && formData.gemeente.length >= 2;
       case 3:
@@ -155,6 +154,7 @@ export default function V2AppointmentForm({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
+          locale,
           propertyAge: '',
           priorities: [],
           materialPreference: '',
@@ -183,7 +183,7 @@ export default function V2AppointmentForm({
     setStep(1);
     setFormData({
       name: '', email: '', phone: '', website: '', gemeente: '',
-      selectedDate: '', selectedTime: '', projectType: '', propertyType: '',
+      selectedDate: '', selectedTime: '', projectTypeId: '', propertyType: '',
       budget: '', timing: '', subsidyInterest: false, paymentSpread: false, message: '',
     });
     setState({ loading: false, success: null, error: null });
@@ -260,77 +260,101 @@ export default function V2AppointmentForm({
 
           {/* ── Step 1: Project type ── */}
           {step === 1 && (
-            <div className="animate-fade-up">
-              {/* Project type circles */}
-              <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-8">
-                {ac.projectTypes.map((pt) => {
-                  const active = formData.projectType === pt.label;
-                  const Icon = PROJECT_TYPE_ICONS[pt.id] ?? Wrench;
-                  return (
-                    <button
-                      type="button"
-                      key={pt.id}
-                      onClick={() => updateField('projectType', active ? '' : pt.label)}
-                      className="group flex flex-col items-center gap-3"
-                    >
-                      <div className={`flex h-24 w-24 items-center justify-center rounded-full transition-all duration-300 sm:h-28 sm:w-28 ${
-                        active
-                          ? 'bg-accent-100 shadow-lg shadow-accent-600/10 ring-2 ring-accent-500'
-                          : 'bg-noir-50 group-hover:bg-noir-100 group-hover:shadow-md'
-                      }`}>
-                        <Icon className={`h-9 w-9 transition-colors sm:h-10 sm:w-10 ${active ? 'text-accent-600' : 'text-noir-400 group-hover:text-noir-600'}`} />
-                      </div>
-                      <span className={`text-sm font-medium transition-colors ${active ? 'text-accent-700' : 'text-noir-500 group-hover:text-noir-700'}`}>
-                        {pt.label}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
+            <div className="animate-fade-up space-y-12">
+              {/* Project section */}
+              <section>
+                <h3 className="mb-6 text-center text-xs font-semibold uppercase tracking-[0.2em] text-noir-400">
+                  {ac.sectionHeaders.project}
+                </h3>
+                <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-8">
+                  {ac.projectTypes.map((pt) => {
+                    const active = formData.projectTypeId === pt.id;
+                    const Icon = PROJECT_TYPE_ICONS[pt.id as TopServiceId] ?? Wrench;
+                    return (
+                      <button
+                        type="button"
+                        key={pt.id}
+                        onClick={() => updateField('projectTypeId', active ? '' : pt.id)}
+                        className="group flex flex-col items-center gap-3"
+                      >
+                        <div className={`flex h-24 w-24 items-center justify-center rounded-full transition-all duration-300 sm:h-28 sm:w-28 ${
+                          active
+                            ? 'bg-accent-100 shadow-lg shadow-accent-600/10 ring-2 ring-accent-500'
+                            : 'bg-noir-50 group-hover:bg-noir-100 group-hover:shadow-md'
+                        }`}>
+                          <Icon className={`h-9 w-9 transition-colors sm:h-10 sm:w-10 ${active ? 'text-accent-600' : 'text-noir-400 group-hover:text-noir-600'}`} />
+                        </div>
+                        <span className={`text-sm font-medium transition-colors ${active ? 'text-accent-700' : 'text-noir-500 group-hover:text-noir-700'}`}>
+                          {pt.label}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
 
-              {/* Property type pills */}
-              <div className="mt-12 flex flex-wrap items-center justify-center gap-3">
-                {ac.propertyTypes.map((pt) => {
-                  const active = formData.propertyType === pt.label;
-                  return (
-                    <button
-                      type="button"
-                      key={pt.id}
-                      onClick={() => updateField('propertyType', active ? '' : pt.label)}
-                      className={`rounded-full border px-6 py-3 text-sm font-medium transition-all duration-300 ${
-                        active
-                          ? 'border-accent-500 bg-accent-50 text-accent-700 shadow-sm'
-                          : 'border-noir-200 text-noir-500 hover:border-noir-300 hover:text-noir-700'
-                      }`}
-                    >
-                      {pt.label}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Budget pills */}
-              <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-                {ac.budgetRanges.map((br) => {
-                  const active = formData.budget === br.label;
-                  return (
-                    <button
-                      type="button"
-                      key={br.id}
-                      onClick={() => updateField('budget', active ? '' : br.label)}
-                      className={`rounded-full border px-5 py-2.5 text-sm transition-all duration-300 ${
-                        active
-                          ? 'border-accent-500 bg-accent-50 text-accent-700 shadow-sm'
-                          : br.id === 'unknown'
-                            ? 'border-dashed border-noir-300 text-noir-400 hover:border-noir-400 hover:text-noir-600'
+              {/* Property section */}
+              <section>
+                <h3 className="mb-5 text-center text-xs font-semibold uppercase tracking-[0.2em] text-noir-400">
+                  {ac.sectionHeaders.property}
+                  <span className="ml-2 font-normal normal-case tracking-normal text-noir-300">
+                    ({ac.optionalLabel})
+                  </span>
+                </h3>
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                  {ac.propertyTypes.map((pt) => {
+                    const active = formData.propertyType === pt.label;
+                    return (
+                      <button
+                        type="button"
+                        key={pt.id}
+                        onClick={() => updateField('propertyType', active ? '' : pt.label)}
+                        className={`rounded-full border px-6 py-3 text-sm font-medium transition-all duration-300 ${
+                          active
+                            ? 'border-accent-500 bg-accent-50 text-accent-700 shadow-sm'
                             : 'border-noir-200 text-noir-500 hover:border-noir-300 hover:text-noir-700'
-                      }`}
-                    >
-                      {br.label}
-                    </button>
-                  );
-                })}
-              </div>
+                        }`}
+                      >
+                        {pt.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
+
+              {/* Budget section */}
+              <section>
+                <h3 className="mb-2 text-center text-xs font-semibold uppercase tracking-[0.2em] text-noir-400">
+                  {ac.sectionHeaders.budget}
+                  <span className="ml-2 font-normal normal-case tracking-normal text-noir-300">
+                    ({ac.optionalLabel})
+                  </span>
+                </h3>
+                <p className="mx-auto mb-5 max-w-md text-center text-sm text-noir-400">
+                  {ac.budgetHelper}
+                </p>
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                  {ac.budgetRanges.map((br) => {
+                    const active = formData.budget === br.label;
+                    return (
+                      <button
+                        type="button"
+                        key={br.id}
+                        onClick={() => updateField('budget', active ? '' : br.label)}
+                        className={`rounded-full border px-5 py-2.5 text-sm transition-all duration-300 ${
+                          active
+                            ? 'border-accent-500 bg-accent-50 text-accent-700 shadow-sm'
+                            : br.id === 'unknown'
+                              ? 'border-dashed border-noir-300 text-noir-400 hover:border-noir-400 hover:text-noir-600'
+                              : 'border-noir-200 text-noir-500 hover:border-noir-300 hover:text-noir-700'
+                        }`}
+                      >
+                        {br.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
             </div>
           )}
 
@@ -445,7 +469,7 @@ export default function V2AppointmentForm({
                 <ReviewRow label={ac.fields.phone} value={formData.phone} onClick={() => goToStep(2)} />
                 <ReviewRow label={ac.fields.gemeente} value={formData.gemeente} onClick={() => goToStep(2)} />
                 <div className="!my-4 h-px bg-noir-100" />
-                {formData.projectType && <ReviewRow label={ac.fields.projectType} value={formData.projectType} onClick={() => goToStep(1)} />}
+                {selectedProjectType && <ReviewRow label={ac.fields.projectType} value={selectedProjectType.label} onClick={() => goToStep(1)} />}
                 {formData.propertyType && <ReviewRow label={ac.fields.propertyType} value={formData.propertyType} onClick={() => goToStep(1)} />}
                 {formData.budget && <ReviewRow label={ac.fields.budget} value={formData.budget} onClick={() => goToStep(1)} />}
                 <div className="!my-4 h-px bg-noir-100" />

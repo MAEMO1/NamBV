@@ -22,6 +22,21 @@ function getSectionKey(section: Pick<V2SectionRecord, 'pageKey' | 'sectionKey' |
   return `${section.pageKey}:${section.sectionKey}:${section.locale}:${section.displayOrder}`;
 }
 
+function normalizeLegacySection<T extends V2SectionRecord>(section: T): T {
+  if (
+    section.pageKey === 'approach'
+    && section.sectionKey === 'cta'
+    && (section.displayOrder === 3 || section.displayOrder === 5)
+  ) {
+    return {
+      ...section,
+      displayOrder: 6,
+    };
+  }
+
+  return section;
+}
+
 function sortSections<T extends Pick<V2SectionRecord, 'displayOrder' | 'sectionKey'>>(items: T[]) {
   return [...items].sort((left, right) => {
     if (left.displayOrder !== right.displayOrder) {
@@ -82,14 +97,16 @@ export function mergeV2Sections(
   const merged = new Map<string, V2SectionRecord>();
 
   for (const section of defaults) {
-    merged.set(getSectionKey(section), { ...section });
+    const normalized = normalizeLegacySection(section);
+    merged.set(getSectionKey(normalized), { ...normalized });
   }
 
   for (const section of stored) {
-    merged.set(getSectionKey(section), {
-      ...section,
-      dataJson: section.dataJson && typeof section.dataJson === 'object' && !Array.isArray(section.dataJson)
-        ? section.dataJson
+    const normalized = normalizeLegacySection(section);
+    merged.set(getSectionKey(normalized), {
+      ...normalized,
+      dataJson: normalized.dataJson && typeof normalized.dataJson === 'object' && !Array.isArray(normalized.dataJson)
+        ? normalized.dataJson
         : {},
     });
   }
@@ -106,7 +123,7 @@ export function getPublishedV2Sections(
 
 export function getAdminV2Sections(stored: V2SectionRecord[]) {
   const merged = mergeV2Sections(defaultPageSections, stored);
-  const storedKeys = new Set(stored.map((section) => getSectionKey(section)));
+  const storedKeys = new Set(stored.map((section) => getSectionKey(normalizeLegacySection(section))));
   const defaultKeys = new Set(defaultPageSections.map((section) => getSectionKey(section)));
 
   return merged.map((section) => ({

@@ -1,10 +1,21 @@
 import { cache } from 'react';
-import { db } from '@/lib/db';
+import { db, hasDatabaseUrl } from '@/lib/db';
 import { defaultAvailabilityRules, defaultPageSections, defaultProjects, defaultQuoteFormOptions, defaultSettings } from './defaults';
 import type { V2Locale } from './locale';
 import { getPublishedV2Sections } from './sections';
 
+const defaultSettingsMap = Object.fromEntries(defaultSettings.map((setting) => [setting.key, setting.valueJson]));
+
+function hasPublicDataDatabase() {
+  return hasDatabaseUrl();
+}
+
 export const getV2PageSections = cache(async (pageKey: string, locale: V2Locale) => {
+  const defaults = defaultPageSections.filter((section) => section.pageKey === pageKey && section.locale === locale);
+  if (!hasPublicDataDatabase()) {
+    return defaults;
+  }
+
   const stored = await db.v2PageSection.findMany({
     where: {
       pageKey,
@@ -12,18 +23,20 @@ export const getV2PageSections = cache(async (pageKey: string, locale: V2Locale)
     },
     orderBy: [{ displayOrder: 'asc' }, { sectionKey: 'asc' }],
   });
-  const defaults = defaultPageSections.filter((section) => section.pageKey === pageKey && section.locale === locale);
 
   return getPublishedV2Sections(defaults, stored);
 });
 
 const getStoredV2SettingsMap = cache(async () => {
+  if (!hasPublicDataDatabase()) {
+    return defaultSettingsMap;
+  }
+
   const rows = await db.v2SiteSetting.findMany();
-  const base = Object.fromEntries(defaultSettings.map((setting) => [setting.key, setting.valueJson]));
   const overrides = Object.fromEntries(rows.map((row) => [row.key, row.valueJson]));
 
   return {
-    ...base,
+    ...defaultSettingsMap,
     ...overrides,
   };
 });
@@ -39,16 +52,18 @@ function withProjectTranslation<T extends { locale: string }>(translations: T[],
 }
 
 export const getV2Projects = cache(async (locale: V2Locale) => {
-  const projects = await db.v2Project.findMany({
-    where: { isPublished: true },
-    include: {
-      translations: true,
-      images: {
-        orderBy: { sortOrder: 'asc' },
-      },
-    },
-    orderBy: [{ featured: 'desc' }, { sortOrder: 'asc' }, { year: 'desc' }],
-  });
+  const projects = hasPublicDataDatabase()
+    ? await db.v2Project.findMany({
+        where: { isPublished: true },
+        include: {
+          translations: true,
+          images: {
+            orderBy: { sortOrder: 'asc' },
+          },
+        },
+        orderBy: [{ featured: 'desc' }, { sortOrder: 'asc' }, { year: 'desc' }],
+      })
+    : [];
 
   const source = projects.length > 0
     ? projects.map((project) => {
@@ -84,18 +99,20 @@ export const getV2Projects = cache(async (locale: V2Locale) => {
 });
 
 export const getV2ProjectBySlug = cache(async (slug: string, locale: V2Locale) => {
-  const project = await db.v2Project.findFirst({
-    where: {
-      slug,
-      isPublished: true,
-    },
-    include: {
-      translations: true,
-      images: {
-        orderBy: { sortOrder: 'asc' },
-      },
-    },
-  });
+  const project = hasPublicDataDatabase()
+    ? await db.v2Project.findFirst({
+        where: {
+          slug,
+          isPublished: true,
+        },
+        include: {
+          translations: true,
+          images: {
+            orderBy: { sortOrder: 'asc' },
+          },
+        },
+      })
+    : null;
 
   if (project) {
     return {
@@ -128,6 +145,10 @@ export const getV2ProjectBySlug = cache(async (slug: string, locale: V2Locale) =
 });
 
 export async function getV2QuoteFormOptions() {
+  if (!hasPublicDataDatabase()) {
+    return defaultQuoteFormOptions;
+  }
+
   const serviceTypes = await db.serviceType.findMany({
     where: { isActive: true },
     orderBy: { sortOrder: 'asc' },
@@ -158,24 +179,30 @@ export async function getV2Availability(month?: string) {
     endDate.setMonth(endDate.getMonth() + 1);
   }
 
-  const rules = await db.v2AvailabilityRule.findMany({
-    orderBy: { dayOfWeek: 'asc' },
-  });
-  const exceptions = await db.v2AvailabilityException.findMany({
-    where: { date: { gte: startDate, lte: endDate } },
-    orderBy: { date: 'asc' },
-  });
-  const appointments = await db.v2Appointment.findMany({
-    where: {
-      appointmentDate: { gte: startDate, lte: endDate },
-      deletedAt: null,
-      status: { notIn: ['CANCELLED', 'REJECTED'] },
-    },
-    select: {
-      appointmentDate: true,
-      appointmentTime: true,
-    },
-  });
+  const rules = hasPublicDataDatabase()
+    ? await db.v2AvailabilityRule.findMany({
+        orderBy: { dayOfWeek: 'asc' },
+      })
+    : [];
+  const exceptions = hasPublicDataDatabase()
+    ? await db.v2AvailabilityException.findMany({
+        where: { date: { gte: startDate, lte: endDate } },
+        orderBy: { date: 'asc' },
+      })
+    : [];
+  const appointments = hasPublicDataDatabase()
+    ? await db.v2Appointment.findMany({
+        where: {
+          appointmentDate: { gte: startDate, lte: endDate },
+          deletedAt: null,
+          status: { notIn: ['CANCELLED', 'REJECTED'] },
+        },
+        select: {
+          appointmentDate: true,
+          appointmentTime: true,
+        },
+      })
+    : [];
 
   const effectiveRules = rules.length > 0 ? rules : defaultAvailabilityRules;
   const rulesByDay = new Map(effectiveRules.map((rule) => [rule.dayOfWeek, rule]));
