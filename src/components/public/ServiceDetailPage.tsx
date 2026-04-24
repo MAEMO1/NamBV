@@ -340,27 +340,37 @@ function AfwerkingBody({
       {/* Quality */}
       <section className="bg-noir-50 section-padding">
         <div className="container-wide">
-          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
-            <AnimatedSection animation="fade-up">
-              <div className="max-w-3xl">
+          <div className="grid gap-10 lg:grid-cols-2 items-start">
+            <AnimatedSection animation="slide-left">
+              <div className="relative aspect-[4/5] overflow-hidden rounded-2xl">
+                <Image
+                  src={servicePageImages.afwerking.quality}
+                  alt=""
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </AnimatedSection>
+            <div>
+              <AnimatedSection animation="fade-up">
                 <p className="text-sm font-semibold uppercase tracking-[0.2em] text-accent-700">{data.qualityBadge}</p>
                 <h2 className="mt-4 text-display-md font-display font-bold text-noir-900">{data.qualityTitle}</h2>
                 <p className="mt-4 text-lg leading-8 text-noir-600">{data.qualityDescription}</p>
-              </div>
-            </AnimatedSection>
-            <AnimatedSection animation="fade-up" delay={150}>
-              <div className="grid gap-3">
-                {data.qualityPoints.map((point) => (
-                  <div
-                    key={point}
-                    className="flex items-center gap-3 rounded-2xl border border-noir-200 bg-white px-4 py-3 transition-all duration-300 hover:border-accent-600/30 hover:shadow-soft"
-                  >
-                    <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-accent-600" />
-                    <span className="text-sm text-noir-700">{point}</span>
-                  </div>
-                ))}
-              </div>
-            </AnimatedSection>
+              </AnimatedSection>
+              <AnimatedSection animation="fade-up" delay={150} className="mt-8">
+                <div className="grid gap-3">
+                  {data.qualityPoints.map((point) => (
+                    <div
+                      key={point}
+                      className="flex items-center gap-3 rounded-2xl border border-noir-200 bg-white px-4 py-3 transition-all duration-300 hover:border-accent-600/30 hover:shadow-soft"
+                    >
+                      <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-accent-600" />
+                      <span className="text-sm text-noir-700">{point}</span>
+                    </div>
+                  ))}
+                </div>
+              </AnimatedSection>
+            </div>
           </div>
         </div>
       </section>

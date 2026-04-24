@@ -113,15 +113,15 @@ export const servicePageImages = {
     card: projectImages.oostende.main,
   },
   afwerking: {
-    hero: projectImages.parijs.main,
-    quality: projectImages.parijs.after[0],
-    card: projectImages.parijs.main,
+    hero: '/services/afwerking/eiken-parket.jpg',
+    quality: '/services/afwerking/haard-interieur.jpg',
+    card: '/services/afwerking/tegelvloer-gang.jpg',
   },
   technieken: {
-    hero: projectImages.oostende.photos[2],
+    hero: '/services/technieken/vloerverwarming.jpg',
     certifications: projectImages.wasstraat.photos[1],
     certBackground: projectImages.wasstraat.photos[1],
-    card: projectImages.oostende.photos[2],
+    card: '/services/technieken/vloerverwarming.jpg',
   },
 }
 
