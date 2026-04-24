@@ -196,7 +196,7 @@ export default function V2AppointmentForm({
         <div className="mb-8 flex h-28 w-28 items-center justify-center rounded-full bg-accent-100 animate-scale-in">
           <CheckCircle2 className="h-14 w-14 text-accent-600" />
         </div>
-        <h2 className="text-display-md font-display font-bold italic text-noir-900">{ac.success}</h2>
+        <h2 className="text-display-md font-display font-bold text-noir-900">{ac.success}</h2>
         {formData.selectedDate && formData.selectedTime && (
           <div className="mt-6 inline-flex items-center gap-3 rounded-2xl border border-accent-200 bg-accent-50/50 px-8 py-5">
             <Calendar className="h-5 w-5 text-accent-600" />
@@ -244,7 +244,7 @@ export default function V2AppointmentForm({
       <div className="flex min-h-[75vh] flex-col items-center justify-center px-6 py-12">
         {/* Persistent headline */}
         <div className="mb-2 text-center">
-          <h1 className="text-display-lg font-display font-bold italic text-noir-900">
+          <h1 className="text-display-lg font-display font-bold text-noir-900">
             {ac.title}
           </h1>
           <p className="mt-3 text-lg text-noir-500">

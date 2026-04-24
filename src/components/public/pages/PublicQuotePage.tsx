@@ -38,7 +38,7 @@ export default async function PublicQuotePage({
     <section className="relative min-h-screen bg-white pt-20">
       {/* Immersive heading */}
       <div className="flex flex-col items-center px-6 pt-12 text-center">
-        <h1 className="text-display-lg font-display font-bold italic text-noir-900">
+        <h1 className="text-display-lg font-display font-bold text-noir-900">
           {copy.quote.title}
         </h1>
         <p className="mt-3 text-lg text-noir-500">

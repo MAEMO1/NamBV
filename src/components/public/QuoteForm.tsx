@@ -142,7 +142,7 @@ export default function V2QuoteForm({
         <div className="mb-8 flex h-28 w-28 items-center justify-center rounded-full bg-accent-100 animate-scale-in">
           <CheckCircle2 className="h-14 w-14 text-accent-600" />
         </div>
-        <h2 className="text-display-md font-display font-bold italic text-noir-900">{state.success}</h2>
+        <h2 className="text-display-md font-display font-bold text-noir-900">{state.success}</h2>
         {state.referenceNumber && (
           <p className="mt-4 text-sm text-noir-500">
             Ref: <span className="font-mono font-semibold text-noir-700">{state.referenceNumber}</span>
