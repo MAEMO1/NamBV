@@ -147,24 +147,134 @@ const localizedHero = {
   },
 } satisfies Record<V2Locale, Record<string, string>>;
 
+const localizedWhyUs = {
+  nl: {
+    eyebrow: 'Waarom NAM Construction',
+    title: 'Gebouwd op 5 pijlers',
+    description:
+      'Elke renovatie rust op een fundament van waarden. Dit is waar wij voor staan.',
+    items: [
+      {
+        title: 'Attestering',
+        description: 'Profiteer van BTW-voordelen met onze erkende attesten.',
+        href: '/waarden/attestering',
+      },
+      {
+        title: 'Hergebruik',
+        description: 'Duurzaam renoveren met respect voor bestaande materialen.',
+        href: '/waarden/hergebruik',
+      },
+      {
+        title: 'Betalingsspreiding',
+        description: 'Flexibele betalingsmogelijkheden voor uw renovatieproject.',
+        href: '/waarden/betalingsspreiding',
+      },
+      {
+        title: 'Subsidies',
+        description: 'Wij helpen u bij het aanvragen van beschikbare subsidies.',
+        href: '/waarden/subsidies',
+      },
+      {
+        title: 'Communicatie',
+        description: 'Transparante communicatie gedurende het hele project.',
+        href: '/waarden/communicatie',
+      },
+    ],
+  },
+  fr: {
+    eyebrow: 'Pourquoi NAM Construction',
+    title: 'Construit sur 5 piliers',
+    description:
+      'Chaque r\u00e9novation repose sur un fondement de valeurs. Voici ce que nous d\u00e9fendons.',
+    items: [
+      {
+        title: 'Certification',
+        description: 'Profitez des avantages TVA avec nos certificats reconnus.',
+        href: '/waarden/attestering',
+      },
+      {
+        title: 'Circularit\u00e9',
+        description: 'R\u00e9novation durable avec respect des mat\u00e9riaux existants.',
+        href: '/waarden/hergebruik',
+      },
+      {
+        title: '\u00c9chelonnement des paiements',
+        description: 'Options de paiement flexibles pour votre projet de r\u00e9novation.',
+        href: '/waarden/betalingsspreiding',
+      },
+      {
+        title: 'Subventions',
+        description: 'Nous vous aidons \u00e0 demander les subventions disponibles.',
+        href: '/waarden/subsidies',
+      },
+      {
+        title: 'Communication',
+        description: 'Communication transparente tout au long du projet.',
+        href: '/waarden/communicatie',
+      },
+    ],
+  },
+  en: {
+    eyebrow: 'Why NAM Construction',
+    title: 'Built on 5 pillars',
+    description:
+      'Every renovation rests on a foundation of values. This is what we stand for.',
+    items: [
+      {
+        title: 'Certification',
+        description: 'Benefit from VAT advantages with our recognized certificates.',
+        href: '/waarden/attestering',
+      },
+      {
+        title: 'Circularity',
+        description: 'Sustainable renovation with respect for existing materials.',
+        href: '/waarden/hergebruik',
+      },
+      {
+        title: 'Payment spreading',
+        description: 'Flexible payment options for your renovation project.',
+        href: '/waarden/betalingsspreiding',
+      },
+      {
+        title: 'Subsidies',
+        description: 'We help you apply for available subsidies.',
+        href: '/waarden/subsidies',
+      },
+      {
+        title: 'Communication',
+        description: 'Transparent communication throughout the entire project.',
+        href: '/waarden/communicatie',
+      },
+    ],
+  },
+} satisfies Record<V2Locale, Record<string, unknown>>;
+
 const localizedServices = {
   nl: {
     eyebrow: 'Onze expertise',
     title: 'Van concept tot afwerking',
     description:
-      'Elk project verdient vakmanschap. Ontdek onze diensten.',
+      'Elk project verdient vakmanschap \u2014 van ruwbouw tot laatste afwerkingsdetail.',
     items: [
       {
-        title: 'Kwaliteitsgarantie',
-        description: 'Wij garanderen vakkundige afwerking met hoogwaardige materialen.',
+        title: 'Totaalrenovatie',
+        description: 'E\u00e9n integrale lijn voor structuur, technieken, afwerking en planning.',
+        href: '/diensten/totaalrenovatie',
       },
       {
-        title: 'Transparante prijzen',
-        description: 'Geen verrassingen. Duidelijke offertes en eerlijke communicatie.',
+        title: 'Renovatie & verbouwing',
+        description: 'Gerichte verbouwingen met aandacht voor circulatie, licht en gebruik.',
+        href: '/diensten/renovatie',
       },
       {
-        title: 'Persoonlijke aanpak',
-        description: 'E\u00e9n aanspreekpunt van start tot oplevering.',
+        title: 'Afwerking',
+        description: 'Interieurafwerking die detail, ritme en materiaalconsistentie bewaakt.',
+        href: '/diensten/afwerking',
+      },
+      {
+        title: 'Technieken',
+        description: 'Elektriciteit, sanitair, HVAC en integratie met de rest van de werf.',
+        href: '/diensten/technieken',
       },
     ],
   },
@@ -172,19 +282,27 @@ const localizedServices = {
     eyebrow: 'Notre expertise',
     title: 'Du concept \u00e0 la finition',
     description:
-      'Chaque projet m\u00e9rite un savoir-faire. D\u00e9couvrez nos services.',
+      'Chaque projet m\u00e9rite un savoir-faire \u2014 de la structure aux finitions.',
     items: [
       {
-        title: 'Garantie de qualit\u00e9',
-        description: 'Nous garantissons des finitions expertes avec des mat\u00e9riaux de haute qualit\u00e9.',
+        title: 'R\u00e9novation compl\u00e8te',
+        description: 'Une seule ligne directrice pour structure, techniques et finitions.',
+        href: '/diensten/totaalrenovatie',
       },
       {
-        title: 'Prix transparents',
-        description: 'Pas de surprises. Devis clairs et communication honn\u00eate.',
+        title: 'R\u00e9novation',
+        description: 'Interventions cibl\u00e9es avec attention port\u00e9e \u00e0 l\u2019usage et \u00e0 la circulation.',
+        href: '/diensten/renovatie',
       },
       {
-        title: 'Approche personnelle',
-        description: 'Un seul point de contact du d\u00e9but \u00e0 la livraison.',
+        title: 'Finitions',
+        description: 'Finitions int\u00e9rieures qui tiennent le niveau de d\u00e9tail jusqu\u2019au bout.',
+        href: '/diensten/afwerking',
+      },
+      {
+        title: 'Techniques',
+        description: 'Installations techniques coordonn\u00e9es avec le reste du chantier.',
+        href: '/diensten/technieken',
       },
     ],
   },
@@ -192,19 +310,27 @@ const localizedServices = {
     eyebrow: 'Our expertise',
     title: 'From concept to finish',
     description:
-      'Every project deserves craftsmanship. Discover our services.',
+      'Every project deserves craftsmanship \u2014 from structure through final detail.',
     items: [
       {
-        title: 'Quality guarantee',
-        description: 'We guarantee expert finishing with high-quality materials.',
+        title: 'Full renovation',
+        description: 'One coordinated line for structure, systems and finish.',
+        href: '/diensten/totaalrenovatie',
       },
       {
-        title: 'Transparent pricing',
-        description: 'No surprises. Clear quotes and honest communication.',
+        title: 'Renovation',
+        description: 'Targeted changes with attention to circulation, light and use.',
+        href: '/diensten/renovatie',
       },
       {
-        title: 'Personal approach',
-        description: 'One point of contact from start to delivery.',
+        title: 'Finishing',
+        description: 'Interior finishing that protects detail quality through the last phase.',
+        href: '/diensten/afwerking',
+      },
+      {
+        title: 'Technical systems',
+        description: 'Electrical, plumbing and HVAC aligned with the rest of the build.',
+        href: '/diensten/technieken',
       },
     ],
   },
@@ -303,10 +429,19 @@ export const defaultPageSections: V2DefaultPageSection[] = [
   },
   {
     pageKey: 'home',
-    sectionKey: 'services',
+    sectionKey: 'why-us',
     locale,
     schemaKey: 'feature-list',
     displayOrder: 1,
+    published: true,
+    dataJson: localizedWhyUs[locale],
+  },
+  {
+    pageKey: 'home',
+    sectionKey: 'services',
+    locale,
+    schemaKey: 'feature-list',
+    displayOrder: 2,
     published: true,
     dataJson: localizedServices[locale],
   },
@@ -315,7 +450,7 @@ export const defaultPageSections: V2DefaultPageSection[] = [
     sectionKey: 'cta',
     locale,
     schemaKey: 'cta',
-    displayOrder: 2,
+    displayOrder: 3,
     published: true,
     dataJson: localizedCta[locale],
   },

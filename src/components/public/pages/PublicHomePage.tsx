@@ -24,9 +24,11 @@ export default async function PublicHomePage({
   const projects = await getV2Projects(locale);
   const copy = getV2UiCopy(locale);
   const hero = asData(sections.find((section) => section.sectionKey === 'hero') ?? { dataJson: {} });
+  const whyUs = asData(sections.find((section) => section.sectionKey === 'why-us') ?? { dataJson: {} });
   const services = asData(sections.find((section) => section.sectionKey === 'services') ?? { dataJson: {} });
   const cta = asData(sections.find((section) => section.sectionKey === 'cta') ?? { dataJson: {} });
 
+  const whyUsItems = Array.isArray(whyUs.items) ? whyUs.items as Array<Record<string, unknown>> : [];
   const serviceItems = Array.isArray(services.items) ? services.items as Array<Record<string, unknown>> : [];
 
   return (
@@ -95,21 +97,25 @@ export default async function PublicHomePage({
             <div>
               <AnimatedSection animation="fade-up">
                 <span className="inline-block px-4 py-1.5 bg-accent-100 text-accent-700 text-xs font-semibold uppercase tracking-[0.15em] rounded-full mb-6">
-                  {String(services.eyebrow ?? '')}
+                  {String(whyUs.eyebrow ?? '')}
                 </span>
                 <h2 className="text-display-lg font-display font-bold text-noir-900 mb-6">
-                  {String(services.title ?? '')}
+                  {String(whyUs.title ?? '')}
                 </h2>
                 <p className="text-lg text-noir-500 mb-10 leading-relaxed">
-                  {String(services.description ?? '')}
+                  {String(whyUs.description ?? '')}
                 </p>
               </AnimatedSection>
 
-              {/* Values list using service items */}
+              {/* Values list */}
               <div className="space-y-3">
-                {serviceItems.map((item, index) => (
+                {whyUsItems.map((item, index) => (
                   <AnimatedSection key={index} animation="fade-up" delay={index * 100}>
-                    <div className="group flex gap-5 p-4 bg-noir-50 rounded-xl hover:bg-accent-50 transition-all duration-300 cursor-default">
+                    <IntlLink
+                      href={String(item.href ?? '/') as '/'}
+                      locale={locale}
+                      className="group flex gap-5 p-4 bg-noir-50 rounded-xl hover:bg-accent-50 transition-all duration-300"
+                    >
                       <div className="flex-shrink-0 w-11 h-11 flex items-center justify-center bg-white rounded-lg group-hover:bg-accent-600 transition-colors duration-300">
                         <span className="text-sm font-semibold text-noir-400 group-hover:text-white transition-colors">
                           {String(index + 1).padStart(2, '0')}
@@ -121,12 +127,12 @@ export default async function PublicHomePage({
                         </h3>
                         <p className="text-noir-500 text-sm">{String(item.description ?? '')}</p>
                       </div>
-                    </div>
+                    </IntlLink>
                   </AnimatedSection>
                 ))}
               </div>
 
-              <AnimatedSection animation="fade-up" delay={serviceItems.length * 100 + 100} className="mt-8">
+              <AnimatedSection animation="fade-up" delay={whyUsItems.length * 100 + 100} className="mt-8">
                 <IntlLink
                   href="/afspraak"
                   locale={locale}
@@ -189,7 +195,7 @@ export default async function PublicHomePage({
               {serviceItems.map((item, index) => (
                 <AnimatedSection key={index} animation="fade-up" delay={index * 100}>
                   <IntlLink
-                    href="/diensten"
+                    href={String(item.href ?? '/diensten') as '/'}
                     locale={locale}
                     className="group flex items-center justify-between py-6 border-b border-noir-200 hover:border-accent-400 transition-colors duration-300"
                   >
