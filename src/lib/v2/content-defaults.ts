@@ -313,7 +313,7 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
         description:
           'Voor verbouwingen die geen volledige reset vragen, maar wel degelijk gecoördineerd moeten worden.',
         primaryCtaLabel: 'Bespreek uw verbouwing',
-        primaryCtaHref: '/offerte',
+        primaryCtaHref: '/afspraak',
         secondaryCtaLabel: 'Bekijk aanpak',
         secondaryCtaHref: '/aanpak',
       },
@@ -365,9 +365,9 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
         description:
           'We integreren technieken zo dat comfort, onderhoud en afwerking logisch op elkaar aansluiten.',
         primaryCtaLabel: 'Bespreek uw project',
-        primaryCtaHref: '/offerte',
-        secondaryCtaLabel: 'Plan een afspraak',
-        secondaryCtaHref: '/afspraak',
+        primaryCtaHref: '/afspraak',
+        secondaryCtaLabel: 'Vraag een offerte aan',
+        secondaryCtaHref: '/offerte',
       },
       sections: [
         section('service-technical', 'scope', 'nl', 'content', 1, {
@@ -447,7 +447,7 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
         title: 'Hergebruik waar het technisch en esthetisch echt klopt',
         description: 'Duurzaamheid is voor ons geen losse belofte, maar een afweging per materiaal en context.',
         primaryCtaLabel: 'Bespreek uw renovatie',
-        primaryCtaHref: '/offerte',
+        primaryCtaHref: '/afspraak',
       },
       sections: [
         section('value-reuse', 'content', 'nl', 'content', 1, {
@@ -867,7 +867,7 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
         title: 'Des transformations ciblées avec contrôle technique',
         description: 'Pour des interventions plus ciblées qui doivent malgré tout rester bien coordonnées.',
         primaryCtaLabel: 'Parler de votre chantier',
-        primaryCtaHref: '/offerte',
+        primaryCtaHref: '/afspraak',
       },
       sections: [
         section('service-renovation', 'scope', 'fr', 'content', 1, {
@@ -905,7 +905,7 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
         title: 'Des installations pensées pour le confort et la cohérence',
         description: 'Les choix techniques sont évalués avec leur impact sur l’usage et la finition.',
         primaryCtaLabel: 'Discuter du projet',
-        primaryCtaHref: '/offerte',
+        primaryCtaHref: '/afspraak',
       },
       sections: [
         section('service-technical', 'scope', 'fr', 'content', 1, {
@@ -931,7 +931,7 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
       sections: [section('value-communication', 'content', 'fr', 'content', 1, { eyebrow: 'Coordination', title: 'Une ligne claire entre client, administration et chantier', description: 'Chaque information doit rester traçable et actionnable.' })],
     },
     'value-reuse': {
-      hero: { eyebrow: 'Valeurs', title: 'Le réemploi lorsqu’il améliore vraiment le résultat', description: 'Le durable doit rester techniquement juste et visuellement cohérent.', primaryCtaLabel: 'Parler de votre projet', primaryCtaHref: '/offerte' },
+      hero: { eyebrow: 'Valeurs', title: 'Le réemploi lorsqu’il améliore vraiment le résultat', description: 'Le durable doit rester techniquement juste et visuellement cohérent.', primaryCtaLabel: 'Parler de votre projet', primaryCtaHref: '/afspraak' },
       sections: [section('value-reuse', 'content', 'fr', 'content', 1, { eyebrow: 'Circularité', title: 'Réutiliser avec discernement', description: 'Nous évaluons la qualité, la durée de vie et la cohérence d’ensemble.' })],
     },
     'value-subsidies': {
@@ -1304,7 +1304,7 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
       sections: [section('service-full-renovation', 'scope', 'en', 'content', 1, { eyebrow: 'Fit', title: 'When this service makes sense', description: 'When structure, systems and finish all need to be reconsidered together.', paragraphs: ['Full renovation only works well when coordination is treated as part of the job, not an afterthought.'] })],
     },
     'service-renovation': {
-      hero: { eyebrow: 'Renovation', title: 'Targeted changes with proper technical control', description: 'For partial transformations that still need disciplined coordination.', primaryCtaLabel: 'Discuss your project', primaryCtaHref: '/offerte' },
+      hero: { eyebrow: 'Renovation', title: 'Targeted changes with proper technical control', description: 'For partial transformations that still need disciplined coordination.', primaryCtaLabel: 'Discuss your project', primaryCtaHref: '/afspraak' },
       sections: [section('service-renovation', 'scope', 'en', 'content', 1, { eyebrow: 'Focus', title: 'Transform without losing coherence', description: 'We connect the existing building, your ambitions and site impact.', paragraphs: ['Partial renovation often becomes difficult at the edges where old and new meet.'] })],
     },
     'service-finishing': {
@@ -1312,7 +1312,7 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
       sections: [section('service-finishing', 'scope', 'en', 'content', 1, { eyebrow: 'Detail', title: 'A finished interior should read as one whole', description: 'Joints, lines and material rhythm matter just as much as the material choice itself.', paragraphs: ['We coordinate the final phase so it does not fragment into rushed, low-signal decisions.'] })],
     },
     'service-technical': {
-      hero: { eyebrow: 'Technical systems', title: 'Systems that support the home instead of disrupting it', description: 'Technical choices are evaluated against comfort, maintenance and finish quality.', primaryCtaLabel: 'Discuss your project', primaryCtaHref: '/offerte' },
+      hero: { eyebrow: 'Technical systems', title: 'Systems that support the home instead of disrupting it', description: 'Technical choices are evaluated against comfort, maintenance and finish quality.', primaryCtaLabel: 'Discuss your project', primaryCtaHref: '/afspraak' },
       sections: [section('service-technical', 'scope', 'en', 'content', 1, { eyebrow: 'Systems', title: 'From engineering decisions to a usable home', description: 'Electrical, plumbing and HVAC need to be technically right and spatially well integrated.', paragraphs: ['We align systems with layout, finish and future use so the build stays maintainable.'] })],
     },
     'value-certification': {
@@ -1328,7 +1328,7 @@ const pageContent: Record<V2Locale, Record<string, { hero: SectionData; sections
       sections: [section('value-communication', 'content', 'en', 'content', 1, { eyebrow: 'Coordination', title: 'A clearer line between client, admin and site', description: 'Information should stay traceable and actionable.' })],
     },
     'value-reuse': {
-      hero: { eyebrow: 'Values', title: 'Reuse where it genuinely strengthens the result', description: 'Sustainability should still be technically sound and visually coherent.', primaryCtaLabel: 'Discuss your renovation', primaryCtaHref: '/offerte' },
+      hero: { eyebrow: 'Values', title: 'Reuse where it genuinely strengthens the result', description: 'Sustainability should still be technically sound and visually coherent.', primaryCtaLabel: 'Discuss your renovation', primaryCtaHref: '/afspraak' },
       sections: [section('value-reuse', 'content', 'en', 'content', 1, { eyebrow: 'Circularity', title: 'Use what exists with judgement', description: 'We assess materials for quality, life span and fit within the final composition.' })],
     },
     'value-subsidies': {
