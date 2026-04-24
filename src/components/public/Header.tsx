@@ -45,6 +45,10 @@ export default function V2Header({
 
   const isTransparent = hasTransparentHero && !scrolled && !mobileMenuOpen;
 
+  const onAfspraak = pathname === '/afspraak';
+  const headerCtaHref = (onAfspraak ? '/offerte' : '/afspraak') as '/afspraak' | '/offerte';
+  const headerCtaLabel = onAfspraak ? copy.common.getQuote : copy.common.bookAppointment;
+
   return (
     <>
       <header
@@ -102,7 +106,7 @@ export default function V2Header({
                 </a>
               )}
               <Link
-                href="/afspraak"
+                href={headerCtaHref}
                 locale={locale}
                 className={`inline-flex items-center gap-2 px-6 py-2.5 border-2 rounded-full text-sm font-semibold transition-all duration-300 ${
                   isTransparent
@@ -110,7 +114,7 @@ export default function V2Header({
                     : 'border-accent-600 text-accent-600 hover:bg-accent-600 hover:text-white'
                 }`}
               >
-                <span>{copy.common.bookAppointment}</span>
+                <span>{headerCtaLabel}</span>
                 <ArrowUpRight className="h-4 w-4" />
               </Link>
             </div>
