@@ -1,4 +1,5 @@
 import { geistMono } from '@/lib/fonts';
+import { Analytics } from '@vercel/analytics/next';
 
 export default function AdminLayout({
   children,
@@ -24,6 +25,7 @@ export default function AdminLayout({
       </head>
       <body className="admin-body font-sans">
         {children}
+        <Analytics />
       </body>
     </html>
   );
