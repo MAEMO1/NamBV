@@ -12,6 +12,7 @@ import { ConsentProvider } from '@/components/public/ConsentContext';
 import { getV2SettingsMap } from '@/lib/v2/public-data';
 import { dmSans, plusJakarta } from '@/lib/fonts';
 import { LocalBusinessJsonLd, OrganizationJsonLd } from '@/components/seo/JsonLd';
+import { Analytics } from '@vercel/analytics/next';
 
 type Props = {
   children: React.ReactNode;
@@ -153,6 +154,7 @@ export default async function LocaleLayout({ children, params }: Props) {
             </MobileMenuProvider>
           </ConsentProvider>
         </NextIntlClientProvider>
+        <Analytics />
       </body>
     </html>
   );
